@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
  * Created by RK on 05/06/2016.
  */
 public class SearchCourseListAdapter extends
-        RecyclerView.Adapter<SearchCourseListAdapter.SearchCourseListViewHolder> {
+        RecyclerView.Adapter<SearchCourseListAdapter.SearchNotesListViewHolder> {
 
     Context context;
 
@@ -35,23 +35,23 @@ public class SearchCourseListAdapter extends
     }
 
     @Override
-    public void onBindViewHolder(SearchCourseListViewHolder SearchCourseListViewHolder, int i) {
+    public void onBindViewHolder(SearchNotesListViewHolder SearchNotesListViewHolder, int i) {
     }
 
     @Override
-    public SearchCourseListViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public SearchNotesListViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(
                 R.layout.card_layout_search_course, viewGroup, false);
 
-        return new SearchCourseListViewHolder(itemView);
+        return new SearchNotesListViewHolder(itemView);
     }
 
-    public class SearchCourseListViewHolder extends RecyclerView.ViewHolder {
+    public class SearchNotesListViewHolder extends RecyclerView.ViewHolder {
 
         @Bind(R.id.search_course_card)
         CardView search_course_card;
 
-        public SearchCourseListViewHolder(View v) {
+        public SearchNotesListViewHolder(View v) {
             super(v);
             ButterKnife.bind(this, v);
 

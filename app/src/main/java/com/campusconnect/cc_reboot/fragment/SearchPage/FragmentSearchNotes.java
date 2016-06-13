@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.campusconnect.cc_reboot.R;
 import com.campusconnect.cc_reboot.adapter.SearchCourseListAdapter;
+import com.campusconnect.cc_reboot.adapter.SearchNotesListAdapter;
 
 /**
  * Created by RK on 05/06/2016.
@@ -19,7 +20,7 @@ import com.campusconnect.cc_reboot.adapter.SearchCourseListAdapter;
 public class FragmentSearchNotes extends Fragment {
 
     RecyclerView course_list;
-    SearchCourseListAdapter mCourseAdapter;
+    SearchNotesListAdapter mSearchNotesAdapter;
     LinearLayoutManager mLayoutManager;
 
     @Override
@@ -30,10 +31,10 @@ public class FragmentSearchNotes extends Fragment {
 
         //Setting the recyclerView
         mLayoutManager = new LinearLayoutManager(v.getContext());
-        mCourseAdapter = new SearchCourseListAdapter(v.getContext());
+        mSearchNotesAdapter = new SearchNotesListAdapter(v.getContext());
         course_list.setLayoutManager(mLayoutManager);
         course_list.setItemAnimator(new DefaultItemAnimator());
-        course_list.setAdapter(mCourseAdapter);
+        course_list.setAdapter(mSearchNotesAdapter);
 
         return v;
     }

@@ -18,8 +18,8 @@
 
             <!-- ViewPagerAdapter_home Toolbar   -->
             <include
-                android:id="@+id/include_acb_home"
-                layout="@layout/actionbar_home"
+                android:id="@+id/include_acb_search"
+                layout="@layout/actionbar_search"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_scrollFlags="scroll"></include>
