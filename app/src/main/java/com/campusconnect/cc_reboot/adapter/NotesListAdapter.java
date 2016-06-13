@@ -10,7 +10,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.campusconnect.cc_reboot.CoursePageActivity;
+import com.campusconnect.cc_reboot.NotePageActivity;
 import com.campusconnect.cc_reboot.R;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by RK on 05/06/2016.
@@ -44,17 +48,32 @@ public class NotesListAdapter extends
 
     public class NotesListViewHolder extends RecyclerView.ViewHolder {
 
+        @Bind(R.id.notes_card)
         CardView notes_card;
+
+        @Bind(R.id.tv_note_name)
+        TextView note_name;
+        @Bind(R.id.tv_uploader)
+        TextView note_uploader;
+        @Bind(R.id.tv_date_posted)
+        TextView note_posted_on;
+        @Bind(R.id.tv_description)
+        TextView note_description;
+        @Bind(R.id.tv_views_count)
+        TextView note_views;
+        @Bind(R.id.tv_rating)
+        TextView note_rating;
+        @Bind(R.id.tv_pages_count)
+        TextView note_pages_count;
 
         public NotesListViewHolder(View v) {
             super(v);
-
-            notes_card = (CardView) v.findViewById(R.id.notes_card);
+            ButterKnife.bind(this,v);
 
             notes_card.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
+                    Intent intent_temp = new Intent(v.getContext(), NotePageActivity.class);
                     context.startActivity(intent_temp);
                 }
             });
