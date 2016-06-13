@@ -7,10 +7,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.campusconnect.cc_reboot.CoursePageActivity;
 import com.campusconnect.cc_reboot.ExamPageActivity;
 import com.campusconnect.cc_reboot.R;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by RK on 05/06/2016.
@@ -44,12 +48,25 @@ public class ExamsListAdapter extends
 
     public class ExamsListViewHolder extends RecyclerView.ViewHolder {
 
+        @Bind(R.id.exam_card)
         CardView exam_card;
+
+        @Bind(R.id.tv_exam_name)
+        TextView exam_name;
+        @Bind(R.id.tv_uploader)
+        TextView exam_uploader;
+        @Bind(R.id.tv_date_posted)
+        TextView exam_posted_on;
+        @Bind(R.id.tv_description)
+        TextView exam_description;
+        @Bind(R.id.tv_views_count)
+        TextView exam_views;
+        @Bind(R.id.tv_exam_date)
+        TextView exam_date; //Format in which it is to be set: "Date : 14 Sept, 2016"
 
         public ExamsListViewHolder(View v) {
             super(v);
-
-            exam_card = (CardView) v.findViewById(R.id.exam_card);
+            ButterKnife.bind(this,v);
 
             exam_card.setOnClickListener(new View.OnClickListener() {
                 @Override

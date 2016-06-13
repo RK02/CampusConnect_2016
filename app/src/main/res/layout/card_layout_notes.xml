@@ -36,6 +36,7 @@
                 android:paddingRight="64dp">
 
                 <TextView
+                    android:id="@+id/tv_note_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="LOGARITHMS"
@@ -187,7 +188,7 @@
                     android:background="@android:color/transparent"
                     android:src="@mipmap/ic_pages_18"/>
                 <TextView
-                    android:id="@+id/tv_pages"
+                    android:id="@+id/tv_pages_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="8dp"
