@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.campusconnect.cc_reboot.CoursePageActivity;
+import com.campusconnect.cc_reboot.ExamPageActivity;
 import com.campusconnect.cc_reboot.R;
 
 /**
@@ -53,7 +54,7 @@ public class ExamsListAdapter extends
             exam_card.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
+                    Intent intent_temp = new Intent(v.getContext(), ExamPageActivity.class);
                     context.startActivity(intent_temp);
                 }
             });

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.campusconnect.cc_reboot.AssignmentPageActivity;
 import com.campusconnect.cc_reboot.CoursePageActivity;
 import com.campusconnect.cc_reboot.R;
 
@@ -53,7 +54,7 @@ public class AssignmentsListAdapter extends
             assignment_card.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
+                    Intent intent_temp = new Intent(v.getContext(), AssignmentPageActivity.class);
                     context.startActivity(intent_temp);
                 }
             });
