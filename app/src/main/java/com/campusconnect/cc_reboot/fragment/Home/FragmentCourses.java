@@ -30,7 +30,7 @@ public class FragmentCourses extends Fragment {
         course_list = (RecyclerView) v.findViewById (R.id.rv_courses);
 
         //Setting the recyclerView
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        mLayoutManager = new LinearLayoutManager(v.getContext());
         mCourseAdapter = new CourseListAdapter(v.getContext());
         course_list.setLayoutManager(mLayoutManager);
         course_list.setItemAnimator(new DefaultItemAnimator());

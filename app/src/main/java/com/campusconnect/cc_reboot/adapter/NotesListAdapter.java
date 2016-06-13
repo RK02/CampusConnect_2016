@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.campusconnect.cc_reboot.CoursePageActivity;
+import com.campusconnect.cc_reboot.NotePageActivity;
 import com.campusconnect.cc_reboot.R;
 
 /**
@@ -54,7 +55,7 @@ public class NotesListAdapter extends
             notes_card.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
+                    Intent intent_temp = new Intent(v.getContext(), NotePageActivity.class);
                     context.startActivity(intent_temp);
                 }
             });
