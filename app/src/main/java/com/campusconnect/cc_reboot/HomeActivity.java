@@ -23,7 +23,6 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
         home_pager = (ViewPager) findViewById(R.id.pager_home);
         home_tabs = (SlidingTabLayout_home) findViewById(R.id.tabs_home);
         home_adapter = new ViewPagerAdapter_home(getSupportFragmentManager(), Titles, Numboftabs, this);
@@ -31,7 +30,6 @@ public class HomeActivity extends AppCompatActivity {
         home_pager.setCurrentItem(0);
         home_tabs.setDistributeEvenly(true);
         home_tabs.setViewPager(home_pager);
-
     }
 }
 
