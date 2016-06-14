@@ -1,3 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" />
+<items version="2" >
 
+    <item
+        jar="C:\Users\RK\.gradle\caches\modules-2\files-2.1\com.squareup.okio\okio\1.6.0\98476622f10715998eacf9240d6b479f12c66143\okio-1.6.0.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="98476622f10715998eacf9240d6b479f12c66143">
+        <dex dex="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\okio-1.6.0_06e0274be292b6d435d2f6045843018b1829b0ee\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\RK\.gradle\caches\modules-2\files-2.1\com.squareup.retrofit2\converter-gson\2.0.2\f8d87f15b94b8d74e7ccf61d7eedb558811cdb30\converter-gson-2.0.2.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="f8d87f15b94b8d74e7ccf61d7eedb558811cdb30">
+        <dex dex="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\converter-gson-2.0.2_91f82f4cdc9961a73b1bcba4edf85ecc9d144d5e\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\RK\.gradle\caches\modules-2\files-2.1\com.squareup.picasso\picasso\2.5.2\7446d06ec8d4f7ffcc53f1da37c95f200dcb9387\picasso-2.5.2.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="7446d06ec8d4f7ffcc53f1da37c95f200dcb9387">
+        <dex dex="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\picasso-2.5.2_7d1e7b45700dece8450116908a5820177d6eb935\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\RK\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp3\okhttp\3.2.0\f7873a2ebde246a45c2a8d6f3247108b4c88a879\okhttp-3.2.0.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="f7873a2ebde246a45c2a8d6f3247108b4c88a879">
+        <dex dex="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\okhttp-3.2.0_b30f37c8167dfcd4b43dadfadd360e1c9380a926\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\RK\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.6.2\f1bc476cc167b18e66c297df599b2377131a8947\gson-2.6.2.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="f1bc476cc167b18e66c297df599b2377131a8947">
+        <dex dex="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\gson-2.6.2_1c792a17925227f0daede306588681703f85b5e0\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\RK\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp3\logging-interceptor\3.2.0\a56f28d5b7fab623c6c1d2afa08dd496d873ac21\logging-interceptor-3.2.0.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="a56f28d5b7fab623c6c1d2afa08dd496d873ac21">
+        <dex dex="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\logging-interceptor-3.2.0_d88b17a07f78310b8d72fa014292397199911d3b\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\RK\.gradle\caches\modules-2\files-2.1\com.squareup.retrofit2\retrofit\2.0.2\43eeae0b9fb087bb3194ba59ab63a38a32fbf3e\retrofit-2.0.2.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="043eeae0b9fb087bb3194ba59ab63a38a32fbf3e">
+        <dex dex="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\retrofit-2.0.2_f01ebbf1b37da7657e0237c0a82d9c63e398a6a3\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="b12d8f3a8e1778aa54c4ce7b9c0e939422d52df9">
+        <dex dex="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_57cc4b8cf933427f5513f3a686cf274e49c2cb49\classes.dex" />
+    </item>
+
+</items>

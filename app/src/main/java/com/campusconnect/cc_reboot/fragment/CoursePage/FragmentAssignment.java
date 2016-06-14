@@ -10,31 +10,66 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.campusconnect.cc_reboot.CoursePageActivity;
+import com.campusconnect.cc_reboot.POJO.AssList;
+import com.campusconnect.cc_reboot.POJO.ModelAssignmentList;
+import com.campusconnect.cc_reboot.POJO.MyApi;
 import com.campusconnect.cc_reboot.R;
 import com.campusconnect.cc_reboot.adapter.AssignmentsListAdapter;
-import com.campusconnect.cc_reboot.adapter.NotesListAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by RK on 05/06/2016.
  */
 public class FragmentAssignment extends Fragment {
-
     RecyclerView assignments_list;
     AssignmentsListAdapter mAssignmentsAdapter;
     LinearLayoutManager mLayoutManager;
-
+    ArrayList<AssList> mAssignments;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_assignment, container, false);
 
         assignments_list = (RecyclerView) v.findViewById (R.id.rv_assignments);
-
+        mAssignments = new ArrayList<>();
         //Setting the recyclerView
         mLayoutManager = new LinearLayoutManager(getActivity());
-        mAssignmentsAdapter = new AssignmentsListAdapter(v.getContext());
+        mAssignmentsAdapter = new AssignmentsListAdapter(v.getContext(),mAssignments);
         assignments_list.setLayoutManager(mLayoutManager);
         assignments_list.setItemAnimator(new DefaultItemAnimator());
         assignments_list.setAdapter(mAssignmentsAdapter);
+
+        Retrofit retrofit = new Retrofit.
+                Builder()
+                .baseUrl(MyApi.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        MyApi myApi = retrofit.create(MyApi.class);
+        MyApi.getAssignmentListRequest body = new MyApi.getAssignmentListRequest(CoursePageActivity.courseId);
+        Call<ModelAssignmentList> call = myApi.getAssignmentList(body);
+        call.enqueue(new Callback<ModelAssignmentList>() {
+            @Override
+            public void onResponse(Call<ModelAssignmentList> call, Response<ModelAssignmentList> response) {
+                ModelAssignmentList modelAssignmentList = response.body();
+                List<AssList> modelAssignmentAssList = modelAssignmentList.getAssList();
+                for(AssList i: modelAssignmentAssList){
+                    mAssignmentsAdapter.add(i);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ModelAssignmentList> call, Throwable t) {
+
+            }
+        });
 
         return v;
     }
