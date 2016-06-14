@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +14,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.campusconnect.cc_reboot.CoursePageActivity;
+import com.campusconnect.cc_reboot.POJO.SubscribedCourseList;
 import com.campusconnect.cc_reboot.R;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -27,26 +32,56 @@ public class CourseListAdapter extends
         RecyclerView.Adapter<CourseListAdapter.CourseListViewHolder> {
 
     Context context;
+    private ArrayList<SubscribedCourseList> mCourses;
 
-    public CourseListAdapter(Context context) {
+
+    public CourseListAdapter(Context context, ArrayList<SubscribedCourseList> courses) {
         this.context = context;
+        this.mCourses = courses;
+    }
 
+    public void add(SubscribedCourseList v)
+    {
+        mCourses.add(v);
+        notifyDataSetChanged();
+    }
+    public String getCourseId(String courseName)
+    {
+        for(SubscribedCourseList s : mCourses)
+        {
+            if(s.getCourseName().equalsIgnoreCase(courseName))
+                return s.getCourseId();
+        }
+        return null;
+    }
+    public SubscribedCourseList getItem(int position)
+    {
+        return mCourses.get(position);
+    }
+    public SubscribedCourseList getItem(SubscribedCourseList subscribedCourseList)
+    {
+        return mCourses.get(mCourses.indexOf(subscribedCourseList));
     }
 
     @Override
     public int getItemCount() {
-        return 6;
+        return mCourses.size();
     }
 
     @Override
     public void onBindViewHolder(CourseListViewHolder courseListViewHolder, int i) {
+        courseListViewHolder.notes_unseen_count.setText(mCourses.get(i).getRecentNotes());
+        courseListViewHolder.exams_count.setText(mCourses.get(i).getDueTests());
+        courseListViewHolder.assignments_count.setText(mCourses.get(i).getDueAssignments());
+        courseListViewHolder.course_title.setText(mCourses.get(i).getCourseName());
     }
+
+
 
     @Override
     public CourseListViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(
-                R.layout.card_layout_course, viewGroup, false);
-
+              R.layout.card_layout_course, viewGroup, false);
         return new CourseListViewHolder(itemView);
     }
 
@@ -60,6 +95,14 @@ public class CourseListAdapter extends
         RelativeLayout assignments_count_container;
         @Bind(R.id.container_exams_count)
         RelativeLayout exams_count_container;
+        @Bind(R.id.tv_course_title)
+        TextView course_title;
+        @Bind(R.id.tv_unseen_notes_count)
+        TextView notes_unseen_count;
+        @Bind(R.id.tv_assignments_count)
+        TextView assignments_count;
+        @Bind(R.id.tv_exams_count)
+        TextView exams_count;
 
         public CourseListViewHolder(View v) {
             super(v);
@@ -69,6 +112,9 @@ public class CourseListAdapter extends
                 @Override
                 public void onClick(View v) {
                     Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
+                    intent_temp.putExtra("courseId",getCourseId(((TextView)v.findViewById(R.id.tv_course_title)).getText().toString()));
+
+                    Log.i("sw32",((TextView)v.findViewById(R.id.tv_course_title)).getText().toString());
                     context.startActivity(intent_temp);
                 }
             });

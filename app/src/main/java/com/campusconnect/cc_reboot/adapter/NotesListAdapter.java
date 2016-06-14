@@ -2,6 +2,7 @@ package com.campusconnect.cc_reboot.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,7 +12,13 @@ import android.widget.TextView;
 
 import com.campusconnect.cc_reboot.CoursePageActivity;
 import com.campusconnect.cc_reboot.NotePageActivity;
+import com.campusconnect.cc_reboot.POJO.ModelNoteBookList;
+import com.campusconnect.cc_reboot.POJO.NoteBookList;
+import com.campusconnect.cc_reboot.POJO.SubscribedCourseList;
 import com.campusconnect.cc_reboot.R;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -23,19 +30,42 @@ public class NotesListAdapter extends
         RecyclerView.Adapter<NotesListAdapter.NotesListViewHolder> {
 
     Context context;
-
-    public NotesListAdapter(Context context) {
+    ArrayList<NoteBookList> mNotes;
+    public NotesListAdapter(Context context, ArrayList<NoteBookList> mNotes) {
         this.context = context;
+        this.mNotes = mNotes;
 
+    }
+    public void add(NoteBookList noteBookList)
+    {
+        mNotes.add(noteBookList);
+        notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        return 10;
+        return mNotes.size();
     }
 
     @Override
-    public void onBindViewHolder(NotesListViewHolder courseListViewHolder, int i) {
+    public void onBindViewHolder(NotesListViewHolder notesListViewHolder, int i) {
+        notesListViewHolder.note_name.setText(mNotes.get(i).getCourseName());
+        notesListViewHolder.note_pages_count.setText(mNotes.get(i).getPages());
+        notesListViewHolder.note_views.setText(mNotes.get(i).getViews());
+        notesListViewHolder.note_description.setText(mNotes.get(i).getCourseName());
+        notesListViewHolder.note_uploader.setText(mNotes.get(i).getUploaderName());
+        notesListViewHolder.note_rating.setText(mNotes.get(i).getTotalRating());
+        notesListViewHolder.note_posted_on.setText(mNotes.get(i).getLastUpdated());
+    }
+
+    public String getNoteBookId(String noteBookName)
+    {
+        for(NoteBookList s : mNotes)
+        {
+            if(s.getCourseName().equalsIgnoreCase(noteBookName))
+                return s.getNoteBookId();
+        }
+        return null;
     }
 
     @Override
@@ -50,7 +80,6 @@ public class NotesListAdapter extends
 
         @Bind(R.id.notes_card)
         CardView notes_card;
-
         @Bind(R.id.tv_note_name)
         TextView note_name;
         @Bind(R.id.tv_uploader)
@@ -74,6 +103,7 @@ public class NotesListAdapter extends
                 @Override
                 public void onClick(View v) {
                     Intent intent_temp = new Intent(v.getContext(), NotePageActivity.class);
+                    intent_temp.putExtra("noteBookId",getNoteBookId(note_name.getText().toString()));
                     context.startActivity(intent_temp);
                 }
             });

@@ -10,19 +10,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.campusconnect.cc_reboot.CoursePageActivity;
 import com.campusconnect.cc_reboot.R;
 import com.campusconnect.cc_reboot.adapter.AssignmentsListAdapter;
-import com.campusconnect.cc_reboot.adapter.NotesListAdapter;
 
 /**
  * Created by RK on 05/06/2016.
  */
 public class FragmentAssignment extends Fragment {
-
     RecyclerView assignments_list;
     AssignmentsListAdapter mAssignmentsAdapter;
     LinearLayoutManager mLayoutManager;
-
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_assignment, container, false);
