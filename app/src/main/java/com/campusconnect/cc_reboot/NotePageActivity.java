@@ -34,6 +34,9 @@ import org.w3c.dom.Text;
 import java.util.List;
 
 
+
+
+
 /**
  * Created by RK on 04/06/2016.
  */
@@ -53,6 +56,9 @@ public class NotePageActivity extends AppCompatActivity {
     TextView uploader;
     TextView description;
     TextView datePosted;
+
+
+
 
 
     @Override

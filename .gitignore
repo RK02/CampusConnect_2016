@@ -1,4 +1,12 @@
 .gradle/2.10/taskArtifacts/cache.properties.lock
+<<<<<<< HEAD
+=======
+.gradle/2.10/taskArtifacts/fileSnapshots.bin
+.gradle/2.10/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.bin
+.gradle/2.10/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock
+build/generated/mockable-android-23.jar
+.gradle/2.10/taskArtifacts/cache.properties.lock
+>>>>>>> origin/master
 .gradle/2.10/taskArtifacts/fileHashes.bin
 .gradle/2.10/taskArtifacts/fileSnapshots.bin
 .gradle/2.10/taskArtifacts/outputFileStates.bin
