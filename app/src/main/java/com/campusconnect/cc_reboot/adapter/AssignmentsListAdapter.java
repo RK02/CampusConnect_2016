@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,10 @@ import android.widget.TextView;
 
 import com.campusconnect.cc_reboot.AssignmentPageActivity;
 import com.campusconnect.cc_reboot.CoursePageActivity;
+import com.campusconnect.cc_reboot.POJO.AssList;
 import com.campusconnect.cc_reboot.R;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -23,20 +27,36 @@ public class AssignmentsListAdapter extends
         RecyclerView.Adapter<AssignmentsListAdapter.AssignmentsListViewHolder> {
 
     Context context;
+    ArrayList<AssList> mAssignments;
 
-    public AssignmentsListAdapter(Context context) {
+    public AssignmentsListAdapter(Context context,ArrayList<AssList> mAssignments) {
         this.context = context;
+        this.mAssignments = mAssignments;
 
     }
 
     @Override
     public int getItemCount() {
-        return 2;
+        return mAssignments.size();
+    }
+
+    public void add(AssList a)
+    {
+        mAssignments.add(a);
+        notifyDataSetChanged();
     }
 
     @Override
-    public void onBindViewHolder(AssignmentsListViewHolder courseListViewHolder, int i) {
+    public void onBindViewHolder(AssignmentsListViewHolder assignmentsListViewHolder, int i) {
+        AssList a = mAssignments.get(i);
+        assignmentsListViewHolder.assignment_name.setText(a.getCourseName());
+        assignmentsListViewHolder.assignment_description.setText(a.getAssignmentDesc());
+        assignmentsListViewHolder.assignment_due_date.setText(a.getDueDate());
+        assignmentsListViewHolder.assignment_posted_on.setText(a.getLastUpdated());
+        assignmentsListViewHolder.assignment_views.setText(a.getViews());
+        assignmentsListViewHolder.assignment_uploader.setText(a.getUploaderName());
     }
+    //public void getAssignmentId(String )
 
     @Override
     public AssignmentsListViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
@@ -73,6 +93,8 @@ public class AssignmentsListAdapter extends
                 @Override
                 public void onClick(View v) {
                     Intent intent_temp = new Intent(v.getContext(), AssignmentPageActivity.class);
+                    ViewGroup viewGroup = (ViewGroup) assignment_card.getParent();
+                    intent_temp.putExtra("assignmentId",mAssignments.get(viewGroup.indexOfChild(v)).getAssignmentId());
                     context.startActivity(intent_temp);
                 }
             });

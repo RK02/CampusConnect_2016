@@ -1,12 +1,10 @@
 package com.campusconnect.cc_reboot.POJO;
 
-import java.util.List;
-
+import butterknife.Bind;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -56,5 +54,42 @@ public interface MyApi {
             }
         }
 
+    @POST("assignmentList")
+    Call<ModelAssignmentList> getAssignmentList(@Body getAssignmentListRequest body);
+        class getAssignmentListRequest{
+            private String courseId;
+            public getAssignmentListRequest(String courseId){
+                this.courseId = courseId;
+            }
+        }
+    @POST("getAssignment")
+    Call<ModelAssignment> getAssignment(@Body getAssignmentRequest body);
+        class getAssignmentRequest{
+            private String assignmentId;
+            private String profileId;
+            public getAssignmentRequest(String assignmentId, String profileId){
+                this.assignmentId = assignmentId;
+                this.profileId = profileId;
+            }
+        }
+    @POST("testList")
+    Call<ModelTestList> getTestList(@Body getTestListRequest body);
+        class getTestListRequest{
+            private String courseId;
+            public getTestListRequest(String courseId){
+                this.courseId = courseId;
+            }
+        }
+
+    @POST("getTest")
+    Call<Test> getTest(@Body getTestRequest body);
+    class getTestRequest{
+        private String testId;
+        private String profileId;
+        public getTestRequest(String testId, String profileId){
+            this.testId = testId;
+            this.profileId = profileId;
+        }
+    }
 
 }
