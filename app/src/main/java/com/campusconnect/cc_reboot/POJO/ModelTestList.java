@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class ModelTestList {
 
-    private List<Test> testList = new ArrayList<Test>();
+    private List<ModelTest> modelTestList = new ArrayList<ModelTest>();
     private String response;
     private String description;
     private String kind;
@@ -20,19 +20,19 @@ public class ModelTestList {
     /**
      *
      * @return
-     * The testList
+     * The modelTestList
      */
-    public List<Test> getTestList() {
-        return testList;
+    public List<ModelTest> getModelTestList() {
+        return modelTestList;
     }
 
     /**
      *
-     * @param testList
-     * The testList
+     * @param modelTestList
+     * The modelTestList
      */
-    public void setTestList(List<Test> testList) {
-        this.testList = testList;
+    public void setModelTestList(List<ModelTest> modelTestList) {
+        this.modelTestList = modelTestList;
     }
 
     /**

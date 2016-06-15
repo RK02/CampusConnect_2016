@@ -29,8 +29,12 @@ import com.campusconnect.cc_reboot.POJO.*;
 import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -48,7 +52,6 @@ public class NotePageActivity extends AppCompatActivity {
 
     String noteBookId;
     Retrofit retrofit;
-    ImageView lastPage;
     TextView views;
     TextView rating;
     TextView pages;
@@ -56,10 +59,8 @@ public class NotePageActivity extends AppCompatActivity {
     TextView uploader;
     TextView description;
     TextView datePosted;
-
-
-
-
+    List<Note> noteList;
+    public static JSONObject jsonNoteList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,15 +69,8 @@ public class NotePageActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        notes_container.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent_temp = new Intent(v.getContext(), NotesSliderActivity.class);
-                startActivity(intent_temp);
-            }
-        });
 
-        lastPage = (ImageView) findViewById(R.id.iv_notes);
+
         noteBookId = getIntent().getStringExtra("noteBookId");
         views = (TextView) findViewById(R.id.tv_views_count);
         rating = (TextView) findViewById(R.id.tv_rating);
@@ -107,11 +101,19 @@ public class NotePageActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ModelNoteBook> call, Response<ModelNoteBook> response) {
                 ModelNoteBook noteBook = response.body();
-                Log.i("sw32",""+response.code());
-                List<Note> noteList = noteBook.getNotes();
+                noteList = noteBook.getNotes();
+                jsonNoteList = new JSONObject();
+                for(Note a : noteList)
+                {
+                    try {
+                        jsonNoteList.put(a.getClassNumber(),a);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
                 List<String> urls = noteList.get(noteList.size()-1).getUrlList();
                 String last = urls.get(urls.size()-1);
-                Picasso.with(NotePageActivity.this).load(last).into(lastPage);
+                Picasso.with(NotePageActivity.this).load(last).into(notes_container);
                 courseName.setText(noteBook.getCourseName());
                 views.setText(noteBook.getViews());
                 rating.setText(noteBook.getTotalRating());
@@ -124,6 +126,13 @@ public class NotePageActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ModelNoteBook> call, Throwable t) {
 
+            }
+        });
+        notes_container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent_temp = new Intent(v.getContext(), NotesSliderActivity.class);
+                startActivity(intent_temp);
             }
         });
 

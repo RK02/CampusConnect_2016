@@ -6,7 +6,7 @@ package com.campusconnect.cc_reboot.POJO;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Test {
+public class ModelTest {
 
     private String isAuthor;
     private String views;
