@@ -11,11 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.campusconnect.cc_reboot.CoursePageActivity;
+import com.campusconnect.cc_reboot.POJO.ModelTest;
 import com.campusconnect.cc_reboot.POJO.ModelTestList;
 import com.campusconnect.cc_reboot.POJO.MyApi;
-import com.campusconnect.cc_reboot.POJO.Test;
 import com.campusconnect.cc_reboot.R;
-import com.campusconnect.cc_reboot.adapter.AssignmentsListAdapter;
 import com.campusconnect.cc_reboot.adapter.ExamsListAdapter;
 
 import java.util.ArrayList;
@@ -35,18 +34,18 @@ public class FragmentExam extends Fragment {
     RecyclerView exams_list;
     ExamsListAdapter mExamsAdapter;
     LinearLayoutManager mLayoutManager;
-    ArrayList<Test> mTests;
+    ArrayList<ModelTest> mModelTests;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_exam, container, false);
 
         exams_list = (RecyclerView) v.findViewById (R.id.rv_exams);
-        mTests = new ArrayList<>();
+        mModelTests = new ArrayList<>();
         //Setting the recyclerView
 
         mLayoutManager = new LinearLayoutManager(getActivity());
-        mExamsAdapter = new ExamsListAdapter(v.getContext(),mTests);
+        mExamsAdapter = new ExamsListAdapter(v.getContext(), mModelTests);
         exams_list.setLayoutManager(mLayoutManager);
         exams_list.setItemAnimator(new DefaultItemAnimator());
         exams_list.setAdapter(mExamsAdapter);
@@ -63,9 +62,9 @@ public class FragmentExam extends Fragment {
             @Override
             public void onResponse(Call<ModelTestList> call, Response<ModelTestList> response) {
                 ModelTestList testList = response.body();
-                List<Test> tests = testList.getTestList();
-                for(Test test:tests){
-                    mExamsAdapter.add(test);
+                List<ModelTest> modelTests = testList.getModelTestList();
+                for(ModelTest modelTest : modelTests){
+                    mExamsAdapter.add(modelTest);
                 }
             }
 

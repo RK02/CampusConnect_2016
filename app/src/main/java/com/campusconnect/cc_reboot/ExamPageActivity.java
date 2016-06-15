@@ -5,8 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.campusconnect.cc_reboot.POJO.ModelTest;
 import com.campusconnect.cc_reboot.POJO.MyApi;
-import com.campusconnect.cc_reboot.POJO.Test;
 import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
 
 import butterknife.Bind;
@@ -52,21 +52,21 @@ public class ExamPageActivity extends AppCompatActivity {
                 .build();
         MyApi myApi = retrofit.create(MyApi.class);
         MyApi.getTestRequest body = new MyApi.getTestRequest(testId, FragmentCourses.profileId);
-        Call<Test> call = myApi.getTest(body);
-        call.enqueue(new Callback<Test>() {
+        Call<ModelTest> call = myApi.getTest(body);
+        call.enqueue(new Callback<ModelTest>() {
             @Override
-            public void onResponse(Call<Test> call, Response<Test> response) {
-                Test test = response.body();
-                testName.setText(test.getTestTitle());
-                desc.setText(test.getTestDesc());
-                uploader.setText(test.getUploaderName());
-                date.setText(test.getLastUpdated());
-                due.setText(test.getDueDate());
-                views.setText(test.getViews());
+            public void onResponse(Call<ModelTest> call, Response<ModelTest> response) {
+                ModelTest modelTest = response.body();
+                testName.setText(modelTest.getTestTitle());
+                desc.setText(modelTest.getTestDesc());
+                uploader.setText(modelTest.getUploaderName());
+                date.setText(modelTest.getLastUpdated());
+                due.setText(modelTest.getDueDate());
+                views.setText(modelTest.getViews());
             }
 
             @Override
-            public void onFailure(Call<Test> call, Throwable t) {
+            public void onFailure(Call<ModelTest> call, Throwable t) {
 
             }
         });
