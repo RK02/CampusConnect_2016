@@ -4,66 +4,66 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <group android:checkableBehavior="single">
+    <group android:checkableBehavior="single"
+        android:id="@+id/top_part">
 
         <item
-            android:id="@+id/inbox"
+            android:id="@+id/item_add"
             android:checked="false"
             android:icon="@mipmap/ic_edit_24"
-
-            android:title="EDIT"  />
-
-
+            android:title="Add Course"  />
 
         <item
-            android:id="@+id/starred"
+            android:id="@+id/item_getting_points"
             android:checked="false"
             android:icon="@mipmap/ic_edit_24"
-
-            android:title="EDIT"  />
-
+            android:title="How to Get Points"  />
 
 
         <item
-            android:id="@+id/sent_mail"
+            android:id="@+id/item_gifts"
             android:checked="false"
             android:icon="@mipmap/ic_edit_24"
-
-            android:title="EDIT"  />
-
-
-
-        <item
-            android:id="@+id/drafts"
-            android:checked="false"
-            android:icon="@mipmap/ic_edit_24"
-            android:title="EDIT" />
-
-
-        <item
-            android:id="@+id/allmail"
-            android:checked="false"
-            android:icon="@mipmap/ic_edit_24"
-
-            android:title="EDIT"  />
-
-
-        <item
-            android:id="@+id/trash"
-            android:checked="false"
-            android:icon="@mipmap/ic_edit_24"
-
-            android:title="EDIT"  />
-
-
-        <item
-            android:id="@+id/spam"
-            android:checked="false"
-            android:icon="@mipmap/ic_edit_24"
-
-            android:title="EDIT"  />
-
-
-
+            android:title="Gifts"  />
     </group>
+
+        <group android:checkableBehavior="single"
+            android:id="@+id/bottom_part">
+
+                <item
+                    android:id="@+id/item_invite"
+                    android:checked="false"
+                    android:icon="@mipmap/ic_edit_24"
+                    android:title="Invite" />
+
+
+                <item
+                    android:id="@+id/item_about"
+                    android:checked="false"
+                    android:icon="@mipmap/ic_edit_24"
+                    android:title="About"  />
+
+
+                <item
+                    android:id="@+id/item_rate"
+                    android:checked="false"
+                    android:icon="@mipmap/ic_edit_24"
+                    android:title="Rate"  />
+
+                <item
+                    android:id="@+id/item_settings"
+                    android:checked="false"
+                    android:icon="@mipmap/ic_edit_24"
+                    android:title="Settings"  />
+
+                <item
+                    android:id="@+id/item_logout"
+                    android:checked="false"
+                    android:icon="@mipmap/ic_edit_24"
+                    android:title="Logout"  />
+
+
+        </group>
+
+
 </menu>

@@ -18,7 +18,7 @@
         </activity>
 
         <activity
-            android:name="com.campusconnect.cc_reboot.HomeActivity"
+            android:name="com.campusconnect.cc_reboot.HomeActivity2"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
 
@@ -50,6 +50,11 @@
         <activity
             android:name="com.campusconnect.cc_reboot.NotesSliderActivity"
             android:label="@string/app_name" />
+
+        <activity
+            android:name="com.campusconnect.cc_reboot.ProfilePageActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
 
     </application>
 

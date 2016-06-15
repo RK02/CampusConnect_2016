@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">CC_reboot</string>
+    <string name="openDrawer">Open Drawer </string>
+    <string name="closeDrawer">Close Drawer </string>
 </resources>
