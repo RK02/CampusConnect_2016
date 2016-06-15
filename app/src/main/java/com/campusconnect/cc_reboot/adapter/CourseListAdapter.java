@@ -113,8 +113,8 @@ public class CourseListAdapter extends
                 public void onClick(View v) {
                     Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
                     intent_temp.putExtra("courseId",getCourseId(((TextView)v.findViewById(R.id.tv_course_title)).getText().toString()));
-
-                    Log.i("sw32",((TextView)v.findViewById(R.id.tv_course_title)).getText().toString());
+                    ViewGroup viewGroup = (ViewGroup) v.getParent();
+                    viewGroup.indexOfChild(v);
                     context.startActivity(intent_temp);
                 }
             });
@@ -123,6 +123,10 @@ public class CourseListAdapter extends
                 public void onClick(View v) {
                     Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
                     intent_temp.putExtra("TAB",0);
+                    ViewGroup viewGroup = (ViewGroup) course_card.getParent();
+                    String id = mCourses.get(viewGroup.indexOfChild(course_card)).getCourseId();
+                    intent_temp.putExtra("courseId",id);
+
                     context.startActivity(intent_temp);
                 }
             });
@@ -131,6 +135,10 @@ public class CourseListAdapter extends
                 public void onClick(View v) {
                     Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
                     intent_temp.putExtra("TAB",1);
+                    ViewGroup viewGroup = (ViewGroup) course_card.getParent();
+                    String id = mCourses.get(viewGroup.indexOfChild(course_card)).getCourseId();
+                    intent_temp.putExtra("courseId",id);
+
                     context.startActivity(intent_temp);
                 }
             });
@@ -139,6 +147,10 @@ public class CourseListAdapter extends
                 public void onClick(View v) {
                     Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
                     intent_temp.putExtra("TAB",2);
+                    ViewGroup viewGroup = (ViewGroup) course_card.getParent();
+                    String id = mCourses.get(viewGroup.indexOfChild(course_card)).getCourseId();
+                    intent_temp.putExtra("courseId",id);
+
                     context.startActivity(intent_temp);
                 }
             });
