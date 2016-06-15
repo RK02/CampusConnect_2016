@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/inbox"
+            android:checked="false"
+            android:icon="@mipmap/ic_edit_24"
+
+            android:title="EDIT"  />
+
+
+
+        <item
+            android:id="@+id/starred"
+            android:checked="false"
+            android:icon="@mipmap/ic_edit_24"
+
+            android:title="EDIT"  />
+
+
+
+        <item
+            android:id="@+id/sent_mail"
+            android:checked="false"
+            android:icon="@mipmap/ic_edit_24"
+
+            android:title="EDIT"  />
+
+
+
+        <item
+            android:id="@+id/drafts"
+            android:checked="false"
+            android:icon="@mipmap/ic_edit_24"
+            android:title="EDIT" />
+
+
+        <item
+            android:id="@+id/allmail"
+            android:checked="false"
+            android:icon="@mipmap/ic_edit_24"
+
+            android:title="EDIT"  />
+
+
+        <item
+            android:id="@+id/trash"
+            android:checked="false"
+            android:icon="@mipmap/ic_edit_24"
+
+            android:title="EDIT"  />
+
+
+        <item
+            android:id="@+id/spam"
+            android:checked="false"
+            android:icon="@mipmap/ic_edit_24"
+
+            android:title="EDIT"  />
+
+
+
+    </group>
+</menu>
