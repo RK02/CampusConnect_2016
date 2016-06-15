@@ -1,6 +1,5 @@
 package com.campusconnect.cc_reboot.POJO;
 
-import butterknife.Bind;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -82,7 +81,7 @@ public interface MyApi {
         }
 
     @POST("getTest")
-    Call<Test> getTest(@Body getTestRequest body);
+    Call<ModelTest> getTest(@Body getTestRequest body);
     class getTestRequest{
         private String testId;
         private String profileId;

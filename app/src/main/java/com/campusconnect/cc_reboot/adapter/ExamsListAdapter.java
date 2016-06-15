@@ -9,9 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.campusconnect.cc_reboot.CoursePageActivity;
 import com.campusconnect.cc_reboot.ExamPageActivity;
-import com.campusconnect.cc_reboot.POJO.Test;
+import com.campusconnect.cc_reboot.POJO.ModelTest;
 import com.campusconnect.cc_reboot.R;
 
 import java.util.ArrayList;
@@ -26,23 +25,23 @@ public class ExamsListAdapter extends
         RecyclerView.Adapter<ExamsListAdapter.ExamsListViewHolder> {
 
     Context context;
-    ArrayList<Test> mTests;
+    ArrayList<ModelTest> mModelTests;
 
-    public ExamsListAdapter(Context context, ArrayList<Test> mTests) {
+    public ExamsListAdapter(Context context, ArrayList<ModelTest> mModelTests) {
         this.context = context;
-        this.mTests = mTests;
+        this.mModelTests = mModelTests;
 
     }
 
     @Override
     public int getItemCount() {
-        return mTests.size();
+        return mModelTests.size();
     }
 
     @Override
     public void onBindViewHolder(ExamsListViewHolder examsListViewHolder, int i) {
 
-        Test temp = mTests.get(i);
+        ModelTest temp = mModelTests.get(i);
         examsListViewHolder.exam_date.setText(temp.getDueDate());
         examsListViewHolder.exam_description.setText(temp.getTestDesc());
         examsListViewHolder.exam_posted_on.setText(temp.getLastUpdated());
@@ -58,8 +57,8 @@ public class ExamsListAdapter extends
 
         return new ExamsListViewHolder(itemView);
     }
-    public void add(Test t){
-        mTests.add(t);
+    public void add(ModelTest t){
+        mModelTests.add(t);
         notifyDataSetChanged();
     }
 
@@ -90,7 +89,7 @@ public class ExamsListAdapter extends
                 public void onClick(View v) {
                     Intent intent_temp = new Intent(v.getContext(), ExamPageActivity.class);
                     ViewGroup temp = (ViewGroup) v.getParent();
-                    String testId = mTests.get(temp.indexOfChild(v)).getTestId();
+                    String testId = mModelTests.get(temp.indexOfChild(v)).getTestId();
                     intent_temp.putExtra("testId",testId);
                     context.startActivity(intent_temp);
                 }
