@@ -19,7 +19,7 @@ public class SplashActivity extends AppCompatActivity {
                 super.run();
                 try {
                     sleep(2000);
-                    Intent next = new Intent(SplashActivity.this, HomeActivity.class);
+                    Intent next = new Intent(SplashActivity.this, HomeActivity2.class);
                     startActivity(next);
                     finish();
 

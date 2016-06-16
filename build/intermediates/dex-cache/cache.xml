@@ -1,2 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" />
+<items version="2" >
+
+    <item
+        jar="C:\Users\RK\.gradle\caches\modules-2\files-2.1\com.squareup.retrofit2\converter-gson\2.0.2\f8d87f15b94b8d74e7ccf61d7eedb558811cdb30\converter-gson-2.0.2.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="f8d87f15b94b8d74e7ccf61d7eedb558811cdb30">
+        <dex dex="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\converter-gson-2.0.2_91f82f4cdc9961a73b1bcba4edf85ecc9d144d5e\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\build\intermediates\exploded-aar\com.android.support\design\23.1.1\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="379471b2bd17d9737c050345c08e8c7d16589784">
+        <dex dex="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-design-23.1.1_b397692b8fd16a9adfd75e69365c7eab635cc11e\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\jars\libs\internal_impl-23.1.1.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="a4de9c81ae239414e1ed0f86441b02abaf29bca9">
+        <dex dex="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-23.1.1_22bc838f5bf7e052e45f66810f32503ee77e11a6\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\build\intermediates\exploded-aar\com.android.support\cardview-v7\23.1.1\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="5e412e954a24c5310a459c09870e4e2081aceb03">
+        <dex dex="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-cardview-v7-23.1.1_40bc58432a9a0472a58fe69a86b0b54244dbf447\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\RK\.gradle\caches\modules-2\files-2.1\com.jakewharton\butterknife\7.0.1\d5d13ea991eab0252e3710e5df3d6a9d4b21d461\butterknife-7.0.1.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="d5d13ea991eab0252e3710e5df3d6a9d4b21d461">
+        <dex dex="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\butterknife-7.0.1_118d4f7178cf24bb10f4c5870838b42532dee9b4\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\RK\.gradle\caches\modules-2\files-2.1\com.squareup.retrofit2\retrofit\2.0.2\43eeae0b9fb087bb3194ba59ab63a38a32fbf3e\retrofit-2.0.2.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="043eeae0b9fb087bb3194ba59ab63a38a32fbf3e">
+        <dex dex="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\retrofit-2.0.2_f01ebbf1b37da7657e0237c0a82d9c63e398a6a3\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.1.1\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="5c5699834e9722f1c288fea2de82725d078ba127">
+        <dex dex="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-appcompat-v7-23.1.1_8b0427ee2999dbe4d878ff03225843418b88ba9d\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="33e3b6a1b8036367d1574dc4ea2667657b51dd7b">
+        <dex dex="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_57cc4b8cf933427f5513f3a686cf274e49c2cb49\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="6cbc7773921fcfedbe55657578f0cbfe614778dc">
+        <dex dex="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v4-23.1.1_4bdfdbf38bbe0fbd6729933cb44e03232741f24e\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="419db2888b9d43d8b3e1fa7a2cc6429ef055ee69">
+        <dex dex="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_8bfb521e7516a83da28cae61cc9db7575a9e2a33\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\RK\.gradle\caches\modules-2\files-2.1\com.squareup.okio\okio\1.6.0\98476622f10715998eacf9240d6b479f12c66143\okio-1.6.0.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="98476622f10715998eacf9240d6b479f12c66143">
+        <dex dex="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\okio-1.6.0_06e0274be292b6d435d2f6045843018b1829b0ee\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\RK\.gradle\caches\modules-2\files-2.1\com.squareup.picasso\picasso\2.5.2\7446d06ec8d4f7ffcc53f1da37c95f200dcb9387\picasso-2.5.2.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="7446d06ec8d4f7ffcc53f1da37c95f200dcb9387">
+        <dex dex="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\picasso-2.5.2_7d1e7b45700dece8450116908a5820177d6eb935\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\RK\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp3\okhttp\3.2.0\f7873a2ebde246a45c2a8d6f3247108b4c88a879\okhttp-3.2.0.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="f7873a2ebde246a45c2a8d6f3247108b4c88a879">
+        <dex dex="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\okhttp-3.2.0_b30f37c8167dfcd4b43dadfadd360e1c9380a926\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\RK\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.6.2\f1bc476cc167b18e66c297df599b2377131a8947\gson-2.6.2.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="f1bc476cc167b18e66c297df599b2377131a8947">
+        <dex dex="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\gson-2.6.2_1c792a17925227f0daede306588681703f85b5e0\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\RK\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp3\logging-interceptor\3.2.0\a56f28d5b7fab623c6c1d2afa08dd496d873ac21\logging-interceptor-3.2.0.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="a56f28d5b7fab623c6c1d2afa08dd496d873ac21">
+        <dex dex="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\logging-interceptor-3.2.0_d88b17a07f78310b8d72fa014292397199911d3b\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.1.1\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="09c5e804bc67fc0580360043dff067df574a60d4">
+        <dex dex="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-recyclerview-v7-23.1.1_fa1a5390130f90f63bbae869c42bf65cbba49bd8\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\RK\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\23.1.1\support-annotations-23.1.1.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="8d680ba5a623724d1fb0e81c36a790f023a6cede">
+        <dex dex="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-23.1.1_5f976dc2ac232d69d71c3c0efd87b836ab17ac64\classes.dex" />
+    </item>
+
+</items>
