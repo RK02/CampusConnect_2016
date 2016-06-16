@@ -2,6 +2,7 @@ package com.campusconnect.cc_reboot.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -74,6 +75,13 @@ public class CourseListAdapter extends
         courseListViewHolder.exams_count.setText(mCourses.get(i).getDueTests());
         courseListViewHolder.assignments_count.setText(mCourses.get(i).getDueAssignments());
         courseListViewHolder.course_title.setText(mCourses.get(i).getCourseName());
+
+        if(i==0)
+            courseListViewHolder.course_card.setBackgroundColor(Color.rgb(156,204,101));
+        else if(i==1)
+            courseListViewHolder.course_card.setBackgroundColor(Color.rgb(229,115,115));
+        else
+            courseListViewHolder.course_card.setBackgroundColor(Color.rgb(255,255,255));
     }
 
 
