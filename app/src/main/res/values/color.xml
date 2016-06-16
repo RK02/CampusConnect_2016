@@ -14,5 +14,8 @@
     <!--Tabs-->
     <color name="ColorTabTextSelected">#FFFFFF</color>
     <color name="ColorTabText">#AFFFFFFF</color>
+
+    <!--Key Stats/Divider-->
+    <color name="ColorKeyStatContainer">#BDBDBD</color>
 </resources>
 

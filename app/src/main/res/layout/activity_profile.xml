@@ -51,8 +51,11 @@
                         android:layout_width="76dp"
                         android:layout_height="76dp"
                         android:layout_marginTop="16dp"
-                        android:src="@drawable/profile"
-                        android:layout_centerHorizontal="true"/>
+                        android:src="@drawable/ic_profile_48"
+                        android:layout_centerHorizontal="true"
+                        app:border_color="#55000000"
+                        app:border_overlay="false"
+                        app:border_width="2dp"/>
                     <TextView
                         android:id="@+id/tv_username"
                         android:layout_width="wrap_content"

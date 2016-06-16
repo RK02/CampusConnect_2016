@@ -1,15 +1,21 @@
 package com.campusconnect.cc_reboot.fragment.Drawer;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.CardView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 
 import com.campusconnect.cc_reboot.R;
 import com.campusconnect.cc_reboot.slidingtab.SlidingTabLayout_home;
@@ -22,7 +28,7 @@ import butterknife.ButterKnife;
 /**
  * Created by RK on 15/06/2016.
  */
-public class FragmentHome extends Fragment implements FloatingActionsMenu.OnFloatingActionsMenuUpdateListener{
+public class FragmentHome extends Fragment{
 
     @Bind(R.id.pager_home)
     ViewPager home_pager;
@@ -30,11 +36,7 @@ public class FragmentHome extends Fragment implements FloatingActionsMenu.OnFloa
     @Bind(R.id.tabs_home)
     SlidingTabLayout_home home_tabs;
 
-    @Bind(R.id.container_fab)
-    FrameLayout fab_menu_container;
 
-    @Bind(R.id.fab_menu)
-    FloatingActionsMenu fabMenu;
 
     ViewPagerAdapter_home home_adapter;
     CharSequence Titles[] = {"Courses", "Timetable"};
@@ -46,9 +48,6 @@ public class FragmentHome extends Fragment implements FloatingActionsMenu.OnFloa
 
         ButterKnife.bind(this,v);
 
-        //Setting FAB container's background to be fully transparent by default
-        fab_menu_container.getBackground().setAlpha(0);
-
         //Setting the ViewPager adapter
         home_adapter = new ViewPagerAdapter_home(getChildFragmentManager(), Titles, Numboftabs, v.getContext());
         //Binding the ViewPager and the Adapter
@@ -59,30 +58,7 @@ public class FragmentHome extends Fragment implements FloatingActionsMenu.OnFloa
         home_tabs.setDistributeEvenly(true);
         home_tabs.setViewPager(home_pager);
 
-        //Listener to define layouts for FAB expanded and collapsed modes
-        fabMenu.setOnFloatingActionsMenuUpdateListener(this);
-
         return v;
-    }
-
-    //Layout definition when FAB is expanded
-    @Override
-    public void onMenuExpanded() {
-        fab_menu_container.getBackground().setAlpha(230);
-        fab_menu_container.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                fabMenu.collapse();
-                return true;
-            }
-        });
-    }
-
-    //Layout definition when FAB is collapsed
-    @Override
-    public void onMenuCollapsed() {
-        fab_menu_container.getBackground().setAlpha(0);
-        fab_menu_container.setOnTouchListener(null);
     }
 
 }

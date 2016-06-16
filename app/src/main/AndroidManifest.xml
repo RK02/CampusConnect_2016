@@ -56,6 +56,11 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name="com.campusconnect.cc_reboot.NotificationActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>
