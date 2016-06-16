@@ -36,7 +36,6 @@ public class FragmentHome extends Fragment implements FloatingActionsMenu.OnFloa
     @Bind(R.id.fab_menu)
     FloatingActionsMenu fabMenu;
 
-
     ViewPagerAdapter_home home_adapter;
     CharSequence Titles[] = {"Courses", "Timetable"};
     int Numboftabs = 2;
@@ -44,17 +43,23 @@ public class FragmentHome extends Fragment implements FloatingActionsMenu.OnFloa
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_home,container,false);
+
         ButterKnife.bind(this,v);
 
+        //Setting FAB container's background to be fully transparent by default
         fab_menu_container.getBackground().setAlpha(0);
 
+        //Setting the ViewPager adapter
         home_adapter = new ViewPagerAdapter_home(getChildFragmentManager(), Titles, Numboftabs, v.getContext());
+        //Binding the ViewPager and the Adapter
         home_pager.setAdapter(home_adapter);
+
+        //Custom Pager and Tab settings
         home_pager.setCurrentItem(0);
         home_tabs.setDistributeEvenly(true);
         home_tabs.setViewPager(home_pager);
 
-        //Listener to define layouts for FAB expanded and collapsed
+        //Listener to define layouts for FAB expanded and collapsed modes
         fabMenu.setOnFloatingActionsMenuUpdateListener(this);
 
         return v;

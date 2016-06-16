@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="ColorPrimary">#D9D9D9</color>
-    <color name="ColorPrimaryDark">#D0D0D0</color>
-    <color name="ColorAccent">#000000</color>
+    <!--App related-->
+    <color name="ColorPrimary">#FF9800</color>
+    <color name="ColorPrimaryDark">#F57C00</color>
+
+    <!--RecyclerView-->
+    <color name="ColorRecyclerBackground">#E0E0E0</color>
+
+    <!--Text-->
+    <color name="ColorTextHeading">#FFFFFF</color>
+    <color name="ColorTextInfo">#000000</color>
+
+    <!--Tabs-->
+    <color name="ColorTabTextSelected">#FFFFFF</color>
+    <color name="ColorTabText">#AFFFFFFF</color>
 </resources>
+

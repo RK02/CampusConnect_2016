@@ -28,7 +28,7 @@
                 android:id="@+id/tabs_home"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/ColorPrimaryDark"
+                android:background="@color/ColorPrimary"
                 android:elevation="4dp" />
 
         </android.support.design.widget.AppBarLayout>
@@ -55,8 +55,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
             android:layout_margin="@dimen/fab_margin"
-            fab:fab_addButtonColorNormal="#FF9800"
-            fab:fab_addButtonColorPressed="#F57C00"
+            fab:fab_addButtonColorNormal="@color/ColorPrimary"
+            fab:fab_addButtonColorPressed="@color/ColorPrimaryDark"
             fab:fab_addButtonPlusIconColor="#FFFFFF"
             fab:fab_addButtonStrokeVisible="false"
             fab:fab_labelStyle="@style/menu_labels_style"
@@ -66,8 +66,8 @@
                 android:id="@+id/fab_event"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                fab:fab_colorNormal="#FF9800"
-                fab:fab_colorPressed="#F57C00"
+                fab:fab_colorNormal="@color/ColorPrimary"
+                fab:fab_colorPressed="@color/ColorPrimaryDark"
                 fab:fab_icon="@mipmap/ic_create_exam_18_white"
                 fab:fab_size="mini"
                 fab:fab_title="Exam" />
@@ -76,8 +76,8 @@
                 android:id="@+id/fab_photo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                fab:fab_colorNormal="#FF9800"
-                fab:fab_colorPressed="#F57C00"
+                fab:fab_colorNormal="@color/ColorPrimary"
+                fab:fab_colorPressed="@color/ColorPrimaryDark"
                 fab:fab_icon="@mipmap/ic_create_assignment_18_white"
                 fab:fab_size="mini"
                 fab:fab_title="Assignment" />
@@ -86,8 +86,8 @@
                 android:id="@+id/fab_others"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                fab:fab_colorNormal="#FF9800"
-                fab:fab_colorPressed="#F57C00"
+                fab:fab_colorNormal="@color/ColorPrimary"
+                fab:fab_colorPressed="@color/ColorPrimaryDark"
                 fab:fab_icon="@mipmap/ic_create_note_18_white"
                 fab:fab_size="mini"
                 fab:fab_title="Note" />
