@@ -26,11 +26,12 @@ public class ExamsListAdapter extends
 
     Context context;
     ArrayList<ModelTest> mModelTests;
+    int courseColor;
 
-    public ExamsListAdapter(Context context, ArrayList<ModelTest> mModelTests) {
+    public ExamsListAdapter(Context context, ArrayList<ModelTest> mModelTests, int mCourseColor) {
         this.context = context;
         this.mModelTests = mModelTests;
-
+        this.courseColor = mCourseColor;
     }
 
     @Override
@@ -44,7 +45,7 @@ public class ExamsListAdapter extends
         ModelTest temp = mModelTests.get(i);
         examsListViewHolder.exam_date.setText(temp.getDueDate());
         examsListViewHolder.exam_description.setText(temp.getTestDesc());
-        examsListViewHolder.exam_posted_on.setText(temp.getLastUpdated());
+        examsListViewHolder.exam_posted_on.setText(temp.getLastUpdated().substring(0,10));
         examsListViewHolder.exam_uploader.setText(temp.getUploaderName());
         examsListViewHolder.exam_views.setText(temp.getViews());
         examsListViewHolder.exam_name.setText(temp.getCourseName());
@@ -91,6 +92,7 @@ public class ExamsListAdapter extends
                     ViewGroup temp = (ViewGroup) v.getParent();
                     String testId = mModelTests.get(temp.indexOfChild(v)).getTestId();
                     intent_temp.putExtra("testId",testId);
+                    intent_temp.putExtra("CourseColor",courseColor);
                     context.startActivity(intent_temp);
                 }
             });

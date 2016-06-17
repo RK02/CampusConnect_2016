@@ -28,11 +28,12 @@ public class AssignmentsListAdapter extends
 
     Context context;
     ArrayList<AssList> mAssignments;
+    int courseColor;
 
-    public AssignmentsListAdapter(Context context,ArrayList<AssList> mAssignments) {
+    public AssignmentsListAdapter(Context context,ArrayList<AssList> mAssignments, int mCourseColor) {
         this.context = context;
         this.mAssignments = mAssignments;
-
+        this.courseColor = mCourseColor;
     }
 
     @Override
@@ -52,7 +53,7 @@ public class AssignmentsListAdapter extends
         assignmentsListViewHolder.assignment_name.setText(a.getCourseName());
         assignmentsListViewHolder.assignment_description.setText(a.getAssignmentDesc());
         assignmentsListViewHolder.assignment_due_date.setText(a.getDueDate());
-        assignmentsListViewHolder.assignment_posted_on.setText(a.getLastUpdated());
+        assignmentsListViewHolder.assignment_posted_on.setText(a.getLastUpdated().substring(0,10));
         assignmentsListViewHolder.assignment_views.setText(a.getViews());
         assignmentsListViewHolder.assignment_uploader.setText(a.getUploaderName());
     }
@@ -94,6 +95,7 @@ public class AssignmentsListAdapter extends
                 public void onClick(View v) {
                     Intent intent_temp = new Intent(v.getContext(), AssignmentPageActivity.class);
                     ViewGroup viewGroup = (ViewGroup) assignment_card.getParent();
+                    intent_temp.putExtra("CourseColor",courseColor);
                     intent_temp.putExtra("assignmentId",mAssignments.get(viewGroup.indexOfChild(v)).getAssignmentId());
                     context.startActivity(intent_temp);
                 }

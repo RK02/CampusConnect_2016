@@ -97,9 +97,9 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
         ButterKnife.bind(this);
 
         courseColor = getIntent().getIntExtra("CourseColor", Color.rgb(224,224,224));
-        noteBookId = getIntent().getStringExtra("noteBookId");
-
         notes_container.setBackgroundColor(courseColor);
+
+        noteBookId = getIntent().getStringExtra("noteBookId");
 
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
 // set your desired log level
@@ -148,13 +148,6 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onFailure(Call<ModelNoteBook> call, Throwable t) {
 
-            }
-        });
-        notes_last_page.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent_temp = new Intent(v.getContext(), NotesSliderActivity.class);
-                startActivity(intent_temp);
             }
         });
 

@@ -35,17 +35,20 @@ public class FragmentExam extends Fragment {
     ExamsListAdapter mExamsAdapter;
     LinearLayoutManager mLayoutManager;
     ArrayList<ModelTest> mModelTests;
+    Bundle fragArgs;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_exam, container, false);
 
+        fragArgs = getArguments();
+
         exams_list = (RecyclerView) v.findViewById (R.id.rv_exams);
         mModelTests = new ArrayList<>();
-        //Setting the recyclerView
 
+        //Setting the recyclerView
         mLayoutManager = new LinearLayoutManager(getActivity());
-        mExamsAdapter = new ExamsListAdapter(v.getContext(), mModelTests);
+        mExamsAdapter = new ExamsListAdapter(v.getContext(), mModelTests, fragArgs.getInt("CourseColor"));
         exams_list.setLayoutManager(mLayoutManager);
         exams_list.setItemAnimator(new DefaultItemAnimator());
         exams_list.setAdapter(mExamsAdapter);

@@ -30,19 +30,25 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by RK on 05/06/2016.
  */
 public class FragmentAssignment extends Fragment {
+
     RecyclerView assignments_list;
     AssignmentsListAdapter mAssignmentsAdapter;
     LinearLayoutManager mLayoutManager;
     ArrayList<AssList> mAssignments;
+    Bundle fragArgs;
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_assignment, container, false);
 
+        fragArgs = getArguments();
+
         assignments_list = (RecyclerView) v.findViewById (R.id.rv_assignments);
         mAssignments = new ArrayList<>();
+
         //Setting the recyclerView
         mLayoutManager = new LinearLayoutManager(getActivity());
-        mAssignmentsAdapter = new AssignmentsListAdapter(v.getContext(),mAssignments);
+        mAssignmentsAdapter = new AssignmentsListAdapter(v.getContext(),mAssignments, fragArgs.getInt("CourseColor"));
         assignments_list.setLayoutManager(mLayoutManager);
         assignments_list.setItemAnimator(new DefaultItemAnimator());
         assignments_list.setAdapter(mAssignmentsAdapter);

@@ -33,7 +33,6 @@ public class NotesListAdapter extends
     ArrayList<NoteBookList> mNotes;
     int courseColor;
 
-
     public NotesListAdapter(Context context, ArrayList<NoteBookList> mNotes, int mCourseColor) {
         this.context = context;
         this.mNotes = mNotes;
