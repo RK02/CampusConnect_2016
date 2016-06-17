@@ -108,6 +108,12 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
         fragmentTransaction.replace(R.id.frame, new FragmentHome());
         fragmentTransaction.commit();
 
+        //Unchecking all the drawer menu items before going back to home in case the app crashes
+        int size = navigationView.getMenu().size();
+        for (int i = 0; i < size; i++) {
+            navigationView.getMenu().getItem(i).setChecked(false);
+        }
+
         //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 

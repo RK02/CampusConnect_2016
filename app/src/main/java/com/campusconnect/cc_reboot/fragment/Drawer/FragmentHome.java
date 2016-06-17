@@ -36,8 +36,6 @@ public class FragmentHome extends Fragment{
     @Bind(R.id.tabs_home)
     SlidingTabLayout_home home_tabs;
 
-
-
     ViewPagerAdapter_home home_adapter;
     CharSequence Titles[] = {"Courses", "Timetable"};
     int Numboftabs = 2;

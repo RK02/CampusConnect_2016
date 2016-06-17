@@ -145,7 +145,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    android:src="@mipmap/ic_views_18"/>
+                    android:src="@mipmap/ic_views_18_black"/>
                 <TextView
                     android:id="@+id/tv_views_count"
                     android:layout_width="wrap_content"
@@ -170,7 +170,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    android:src="@mipmap/ic_rating_18"/>
+                    android:src="@mipmap/ic_views_18_black"/>
                 <TextView
                     android:id="@+id/tv_rating"
                     android:layout_width="wrap_content"
