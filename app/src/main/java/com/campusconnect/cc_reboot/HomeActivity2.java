@@ -44,7 +44,7 @@ import butterknife.ButterKnife;
 /**
  * Created by RK on 04/06/2016.
  */
-public class HomeActivity2 extends AppCompatActivity implements  FloatingActionsMenu.OnFloatingActionsMenuUpdateListener, View.OnClickListener{
+public class HomeActivity2 extends AppCompatActivity implements FloatingActionsMenu.OnFloatingActionsMenuUpdateListener, View.OnClickListener{
 
     //Data binding
     @Bind(R.id.drawer)

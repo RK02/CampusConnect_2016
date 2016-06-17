@@ -2,12 +2,12 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/exam_card"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
     android:layout_marginTop="8dp"
-    android:background="#ffffff"
+    android:background="#FFFFFF"
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
     android:orientation="vertical"
@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:paddingTop="16dp">
 
-        <!--Notes card top container-->
+        <!--Exam card top container-->
         <RelativeLayout
             android:id="@+id/top_part_card"
             android:layout_width="wrap_content"
@@ -32,27 +32,28 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_toLeftOf="@+id/container_date_posted"
-                android:orientation="vertical"
-                android:paddingRight="64dp">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/tv_exam_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="ALGEBRA TEST"
-                    android:textColor="#000000"
+                    android:textColor="@color/ColorTextInfo"
                     android:textSize="18sp" />
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:paddingTop="2dp"
+                    android:paddingLeft="2dp">
 
                     <View
                         android:layout_width="4dp"
                         android:layout_height="match_parent"
                         android:layout_alignBottom="@+id/tv_uploader"
                         android:layout_alignTop="@+id/tv_uploader"
-                        android:background="#383838" />
+                        android:background="#000000" />
 
                     <TextView
                         android:id="@+id/tv_uploader"
@@ -60,14 +61,14 @@
                         android:layout_height="wrap_content"
                         android:paddingLeft="10dp"
                         android:text="by Blah456"
-                        android:textColor="#383838"
+                        android:textColor="@color/ColorTextInfo"
                         android:textSize="14sp" />
                 </RelativeLayout>
 
             </LinearLayout>
 
             <!--Date Posted container-->
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/container_date_posted"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -75,50 +76,61 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tv_posted_on_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Posted on"
-                    android:textColor="#000000"
+                    android:paddingLeft="40dp"
+                    android:gravity="center_vertical|right"
+                    android:textColor="@color/ColorTextInfo"
                     android:textSize="18sp" />
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <View
-                        android:layout_width="4dp"
-                        android:layout_height="match_parent"
-                        android:layout_alignBottom="@+id/tv_date_posted"
-                        android:layout_alignTop="@+id/tv_date_posted"
-                        android:background="#383838" />
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_posted_on_title"
+                    android:layout_alignLeft="@+id/tv_posted_on_title"
+                    android:layout_alignRight="@+id/tv_posted_on_title"
+                    android:gravity="right"
+                    android:paddingRight="2dp"
+                    android:paddingTop="2dp">
 
                     <TextView
                         android:id="@+id/tv_date_posted"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
                         android:text="1 Sept, 2016"
-                        android:textColor="#383838"
+                        android:textColor="@color/ColorTextInfo"
                         android:textSize="14sp" />
+
+                    <View
+                        android:layout_width="4dp"
+                        android:layout_toRightOf="@+id/tv_date_posted"
+                        android:layout_height="match_parent"
+                        android:layout_alignBottom="@+id/tv_date_posted"
+                        android:layout_alignTop="@+id/tv_date_posted"
+                        android:background="#000000" />
+
                 </RelativeLayout>
-            </LinearLayout>
+            </RelativeLayout>
         </RelativeLayout>
 
         <TextView
             android:id="@+id/tv_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="16dp"
+            android:padding="24dp"
             android:text="Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
             android:layout_below="@+id/top_part_card"
-            android:textColor="#000000"
+            android:textColor="@color/ColorTextInfo"
             android:textSize="16sp" />
 
         <LinearLayout
             android:id="@+id/container_stats"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#eaebec"
+            android:background="@color/ColorKeyStatContainer"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
             android:orientation="horizontal"
@@ -146,7 +158,7 @@
                     android:text="23864"
                     android:maxLines="1"
                     android:ellipsize="end"
-                    android:textColor="#383838"/>
+                    android:textColor="@color/ColorTextInfo"/>
             </LinearLayout>
 
             <LinearLayout
@@ -171,7 +183,7 @@
                     android:maxLines="1"
                     android:ellipsize="end"
                     android:text="Date : 14 Sept, 2016"
-                    android:textColor="#383838"/>
+                    android:textColor="@color/ColorTextInfo"/>
             </LinearLayout>
 
         </LinearLayout>

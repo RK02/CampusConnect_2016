@@ -52,10 +52,10 @@ public class NotesListAdapter extends
         notesListViewHolder.note_name.setText(mNotes.get(i).getCourseName());
         notesListViewHolder.note_pages_count.setText(mNotes.get(i).getPages());
         notesListViewHolder.note_views.setText(mNotes.get(i).getViews());
-        notesListViewHolder.note_description.setText(mNotes.get(i).getCourseName());
+//        notesListViewHolder.note_description.setText(mNotes.get(i).getCourseName());
         notesListViewHolder.note_uploader.setText(mNotes.get(i).getUploaderName());
         notesListViewHolder.note_rating.setText(mNotes.get(i).getTotalRating());
-        notesListViewHolder.note_posted_on.setText(mNotes.get(i).getLastUpdated());
+        notesListViewHolder.last_updated.setText(mNotes.get(i).getLastUpdated().substring(0,10));
     }
 
     public String getNoteBookId(String noteBookName)
@@ -80,20 +80,22 @@ public class NotesListAdapter extends
 
         @Bind(R.id.notes_card)
         CardView notes_card;
+
         @Bind(R.id.tv_note_name)
         TextView note_name;
         @Bind(R.id.tv_uploader)
         TextView note_uploader;
-        @Bind(R.id.tv_date_posted)
-        TextView note_posted_on;
-        @Bind(R.id.tv_description)
-        TextView note_description;
+        @Bind(R.id.tv_last_updated)
+        TextView last_updated;
         @Bind(R.id.tv_views_count)
         TextView note_views;
         @Bind(R.id.tv_rating)
         TextView note_rating;
         @Bind(R.id.tv_pages_count)
         TextView note_pages_count;
+
+//        @Bind(R.id.tv_description)
+//        TextView note_description;
 
         public NotesListViewHolder(View v) {
             super(v);

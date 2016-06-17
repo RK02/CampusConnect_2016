@@ -1,3 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" />
+<items version="2" >
 
+    <item
+        jar="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="0217be24a241e1e2a1f55e7541401b072a46dfff">
+        <dex dex="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_57cc4b8cf933427f5513f3a686cf274e49c2cb49\classes.dex" />
+    </item>
+
+</items>
