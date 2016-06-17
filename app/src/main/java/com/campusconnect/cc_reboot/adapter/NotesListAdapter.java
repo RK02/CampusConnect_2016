@@ -31,11 +31,15 @@ public class NotesListAdapter extends
 
     Context context;
     ArrayList<NoteBookList> mNotes;
-    public NotesListAdapter(Context context, ArrayList<NoteBookList> mNotes) {
+    int courseColor;
+
+
+    public NotesListAdapter(Context context, ArrayList<NoteBookList> mNotes, int mCourseColor) {
         this.context = context;
         this.mNotes = mNotes;
-
+        this.courseColor = mCourseColor;
     }
+
     public void add(NoteBookList noteBookList)
     {
         mNotes.add(noteBookList);
@@ -106,6 +110,7 @@ public class NotesListAdapter extends
                 public void onClick(View v) {
                     Intent intent_temp = new Intent(v.getContext(), NotePageActivity.class);
                     intent_temp.putExtra("noteBookId",getNoteBookId(note_name.getText().toString()));
+                    intent_temp.putExtra("CourseColor",courseColor);
                     context.startActivity(intent_temp);
                 }
             });

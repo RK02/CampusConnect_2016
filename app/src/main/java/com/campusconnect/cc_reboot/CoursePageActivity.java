@@ -79,6 +79,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
     int Numboftabs = 3;
 
     static public String courseId;
+    int courseColor;
     int defaultTabPosition=0;
 
     @Override
@@ -91,13 +92,14 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
         fab_menu_container.getBackground().setAlpha(0);
 
         defaultTabPosition = getIntent().getIntExtra("TAB",0);
-
         courseId = getIntent().getStringExtra("courseId");
-        course_info_container.setBackgroundColor(getIntent().getIntExtra("courseColor", Color.rgb(224,224,224)));
+        courseColor = getIntent().getIntExtra("courseColor", Color.rgb(224,224,224));
+
+        course_info_container.setBackgroundColor(courseColor);
 
         course_pager = (ViewPager) findViewById(R.id.pager_course);
         course_tabs = (SlidingTabLayout_home) findViewById(R.id.tabs_course);
-        course_adapter = new ViewPagerAdapter_course(getSupportFragmentManager(), Titles, Numboftabs, this);
+        course_adapter = new ViewPagerAdapter_course(getSupportFragmentManager(), Titles, Numboftabs, courseColor, this);
         course_pager.setAdapter(course_adapter);
         course_pager.setCurrentItem(defaultTabPosition);
         course_tabs.setDistributeEvenly(true);

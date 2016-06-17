@@ -41,7 +41,7 @@
         <item
             android:id="@+id/item_invite"
             android:checked="false"
-            android:icon="@mipmap/ic_share_24"
+            android:icon="@mipmap/ic_share_24_black"
             android:title="Invite" />
 
         <item
