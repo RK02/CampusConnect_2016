@@ -50,7 +50,7 @@ public class NotesSliderPageFragment extends Fragment {
 
     int img_1[] = { R.mipmap.ic_due_18,
             R.mipmap.ic_launcher,
-            R.mipmap.ic_share_24,
+            R.mipmap.ic_share_24_black,
             R.mipmap.ic_sort_24 };
 
     int img_2[] = { R.mipmap.ic_notifications_24,

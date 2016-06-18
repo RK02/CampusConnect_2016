@@ -14,7 +14,6 @@
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appBarLayout_acb"
             android:layout_width="match_parent"
-            android:background="@color/ColorPrimaryDark"
             android:layout_height="wrap_content">
 
             <!-- ViewPagerAdapter_home Toolbar   -->
@@ -29,21 +28,25 @@
             <android.support.design.widget.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:elevation="5dp"
-                android:background="@color/ColorPrimaryDark"
                 app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
 
-                <!--Course Info-->
-                <ImageView
-                    android:id="@+id/iv_notes"
+                <RelativeLayout
+                    android:id="@+id/container_exam"
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    android:background="@color/ColorPrimaryDark"
-                    android:paddingBottom="16dp"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
+                    android:layout_height="280dp"
+                    android:background="@color/ColorRecyclerBackground"
+                    android:paddingLeft="24dp"
+                    android:paddingRight="24dp"
+                    android:paddingTop="24dp"
                     app:layout_collapseMode="parallax">
-                </ImageView>
+
+                    <ImageView
+                        android:id="@+id/iv_exam"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="-50dp"
+                        android:scaleType="fitCenter" />
+                </RelativeLayout>
             </android.support.design.widget.CollapsingToolbarLayout>
         </android.support.design.widget.AppBarLayout>
 
@@ -57,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="16dp">
 
-                <!--Notes card top container-->
+                <!--Exam card top container-->
                 <RelativeLayout
                     android:id="@+id/top_part_card"
                     android:layout_width="wrap_content"
@@ -71,27 +74,28 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_toLeftOf="@+id/container_date_posted"
-                        android:orientation="vertical"
-                        android:paddingRight="64dp">
+                        android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tv_exam_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="ALGEBRA TEST"
-                            android:textColor="#000000"
-                            android:textSize="18sp"
-                            android:id="@+id/test_name" />
+                            android:textColor="@color/ColorTextInfo"
+                            android:textSize="18sp" />
 
                         <RelativeLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:paddingTop="2dp"
+                            android:paddingLeft="2dp">
 
                             <View
                                 android:layout_width="4dp"
                                 android:layout_height="match_parent"
                                 android:layout_alignBottom="@+id/tv_uploader"
                                 android:layout_alignTop="@+id/tv_uploader"
-                                android:background="#383838" />
+                                android:background="#000000" />
 
                             <TextView
                                 android:id="@+id/tv_uploader"
@@ -99,14 +103,14 @@
                                 android:layout_height="wrap_content"
                                 android:paddingLeft="10dp"
                                 android:text="by Blah456"
-                                android:textColor="#383838"
+                                android:textColor="@color/ColorTextInfo"
                                 android:textSize="14sp" />
                         </RelativeLayout>
 
                     </LinearLayout>
 
                     <!--Date Posted container-->
-                    <LinearLayout
+                    <RelativeLayout
                         android:id="@+id/container_date_posted"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -114,43 +118,54 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tv_posted_on_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Posted on"
-                            android:textColor="#000000"
+                            android:paddingLeft="40dp"
+                            android:gravity="center_vertical|right"
+                            android:textColor="@color/ColorTextInfo"
                             android:textSize="18sp" />
 
                         <RelativeLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-
-                            <View
-                                android:layout_width="4dp"
-                                android:layout_height="match_parent"
-                                android:layout_alignBottom="@+id/tv_date_posted"
-                                android:layout_alignTop="@+id/tv_date_posted"
-                                android:background="#383838" />
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tv_posted_on_title"
+                            android:layout_alignLeft="@+id/tv_posted_on_title"
+                            android:layout_alignRight="@+id/tv_posted_on_title"
+                            android:gravity="right"
+                            android:paddingRight="2dp"
+                            android:paddingTop="2dp">
 
                             <TextView
                                 android:id="@+id/tv_date_posted"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
                                 android:text="1 Sept, 2016"
-                                android:textColor="#383838"
+                                android:textColor="@color/ColorTextInfo"
                                 android:textSize="14sp" />
+
+                            <View
+                                android:layout_width="4dp"
+                                android:layout_toRightOf="@+id/tv_date_posted"
+                                android:layout_height="match_parent"
+                                android:layout_alignBottom="@+id/tv_date_posted"
+                                android:layout_alignTop="@+id/tv_date_posted"
+                                android:background="#000000" />
+
                         </RelativeLayout>
-                    </LinearLayout>
+                    </RelativeLayout>
                 </RelativeLayout>
 
                 <TextView
                     android:id="@+id/tv_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:text="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout."
+                    android:padding="24dp"
+                    android:text="Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
                     android:layout_below="@+id/top_part_card"
-                    android:textColor="#000000"
+                    android:textColor="@color/ColorTextInfo"
                     android:textSize="16sp" />
 
             </RelativeLayout>
@@ -162,9 +177,9 @@
         android:id="@+id/container_stats"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#eaebec"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
+        android:background="@color/ColorKeyStatContainer"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
         android:orientation="horizontal"
         android:layout_above="@+id/container_action_buttons"
         android:weightSum="2">
@@ -180,7 +195,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:src="@mipmap/ic_views_18"/>
+                android:src="@mipmap/ic_views_18_black"/>
             <TextView
                 android:id="@+id/tv_views_count"
                 android:layout_width="wrap_content"
@@ -190,7 +205,7 @@
                 android:text="23864"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:textColor="#383838"/>
+                android:textColor="@color/ColorTextInfo"/>
         </LinearLayout>
 
         <LinearLayout
@@ -215,7 +230,7 @@
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:text="Date : 14 Sept, 2016"
-                android:textColor="#383838"/>
+                android:textColor="@color/ColorTextInfo"/>
         </LinearLayout>
 
     </LinearLayout>
@@ -227,17 +242,18 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
-        <Button
+        <ToggleButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="0dp"
-            android:background="#000000"
-            android:textColor="#ffffff"
+            android:background="@color/ColorPrimary"
+            android:textColor="@color/ColorTextHeading"
             android:paddingTop="12dp"
             android:paddingBottom="12dp"
             android:textSize="16sp"
             android:gravity="center"
-            android:text="REMIND ME"/>
+            android:textOff="REMIND ME"
+            android:textOn="ADDED TO REMIND ME"/>
 
     </LinearLayout>
 

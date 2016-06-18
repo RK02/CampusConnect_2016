@@ -1,10 +1,13 @@
 package com.campusconnect.cc_reboot;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import butterknife.Bind;
@@ -12,6 +15,7 @@ import butterknife.ButterKnife;
 
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.campusconnect.cc_reboot.POJO.ModelNoteBook;
@@ -44,23 +48,46 @@ import java.util.List;
 /**
  * Created by RK on 04/06/2016.
  */
-public class NotePageActivity extends AppCompatActivity {
+public class NotePageActivity extends AppCompatActivity implements View.OnClickListener{
 
 
     @Bind(R.id.iv_notes)
-    ImageView notes_container;
+    ImageView notes_last_page;
+
+    @Bind(R.id.container_notes)
+    RelativeLayout notes_container;
+
+    @Bind(R.id.tv_views_count)
+    TextView views;
+    @Bind(R.id.tv_rating)
+    TextView rating;
+    @Bind(R.id.tv_pages)
+    TextView pages;
+    @Bind(R.id.tv_note_name)
+    TextView courseName;
+    @Bind(R.id.tv_uploader)
+    TextView uploader;
+    @Bind(R.id.tv_last_updated)
+    TextView lastPosted;
+
+    @Bind(R.id.ib_edit_note)
+    ImageButton edit_note_button;
+    @Bind(R.id.ib_fullscreen)
+    ImageButton fullscreen_button;
+    @Bind(R.id.ib_share)
+    ImageButton share_note_button;
+
+    @Bind(R.id.tb_bookmark)
+    Button bookmark_note_button;
+    @Bind(R.id.b_rent)
+    Button rent_note_button;
 
     String noteBookId;
+    int courseColor;
     Retrofit retrofit;
-    TextView views;
-    TextView rating;
-    TextView pages;
-    TextView courseName;
-    TextView uploader;
-    TextView description;
-    TextView datePosted;
     List<Note> noteList;
     public static JSONObject jsonNoteList;
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,16 +96,11 @@ public class NotePageActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-
+        courseColor = getIntent().getIntExtra("CourseColor", Color.rgb(224,224,224));
+        notes_container.setBackgroundColor(courseColor);
 
         noteBookId = getIntent().getStringExtra("noteBookId");
-        views = (TextView) findViewById(R.id.tv_views_count);
-        rating = (TextView) findViewById(R.id.tv_rating);
-        pages = (TextView) findViewById(R.id.tv_pages);
-        courseName = (TextView) findViewById(R.id.course_name);
-        uploader = (TextView) findViewById(R.id.tv_uploader);
-        description=(TextView) findViewById(R.id.tv_description);
-        datePosted = (TextView) findViewById(R.id.tv_date_posted);
+
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
 // set your desired log level
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -113,13 +135,13 @@ public class NotePageActivity extends AppCompatActivity {
                 }
                 List<String> urls = noteList.get(noteList.size()-1).getUrlList();
                 String last = urls.get(urls.size()-1);
-                Picasso.with(NotePageActivity.this).load(last).into(notes_container);
+                Picasso.with(NotePageActivity.this).load(last).into(notes_last_page);
                 courseName.setText(noteBook.getCourseName());
                 views.setText(noteBook.getViews());
                 rating.setText(noteBook.getTotalRating());
                 pages.setText(noteBook.getPages());
                 uploader.setText(noteBook.getUploaderName());
-                datePosted.setText(noteBook.getLastUpdated());
+                lastPosted.setText(noteBook.getLastUpdated().substring(0,10));
 
             }
 
@@ -128,18 +150,55 @@ public class NotePageActivity extends AppCompatActivity {
 
             }
         });
-        notes_container.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent_temp = new Intent(v.getContext(), NotesSliderActivity.class);
-                startActivity(intent_temp);
-            }
-        });
 
-
-
-
+        //OnClickListeners
+        edit_note_button.setOnClickListener(this);
+        fullscreen_button.setOnClickListener(this);
+        share_note_button.setOnClickListener(this);
+        notes_last_page.setOnClickListener(this);
+        bookmark_note_button.setOnClickListener(this);
+        rent_note_button.setOnClickListener(this);
 
     }
+
+    @Override
+    public void onClick(View view) {
+
+        switch (view.getId()){
+
+            case R.id.ib_edit_note:
+                intent = new Intent(getApplicationContext(), EditNoteActivity.class);
+                startActivity(intent);
+                break;
+
+            case R.id.ib_fullscreen:
+                intent = new Intent(getApplicationContext(), NotesSliderActivity.class);
+                startActivity(intent);
+                break;
+
+            case R.id.ib_share:
+
+                break;
+
+            case R.id.iv_notes:
+                intent = new Intent(getApplicationContext(), NotesSliderActivity.class);
+                startActivity(intent);
+                break;
+
+            case R.id.tb_bookmark:
+                
+                break;
+
+            case R.id.b_rent:
+                intent = new Intent(getApplicationContext(), RentNoteActivity.class);
+                startActivity(intent);
+                break;
+
+            default:
+                break;
+        }
+
+    }
+
 }
 
