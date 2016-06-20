@@ -65,9 +65,11 @@ public class FragmentAssignment extends Fragment {
             @Override
             public void onResponse(Call<ModelAssignmentList> call, Response<ModelAssignmentList> response) {
                 ModelAssignmentList modelAssignmentList = response.body();
-                List<AssList> modelAssignmentAssList = modelAssignmentList.getAssList();
-                for(AssList i: modelAssignmentAssList){
-                    mAssignmentsAdapter.add(i);
+                if(modelAssignmentList!=null) {
+                    List<AssList> modelAssignmentAssList = modelAssignmentList.getAssList();
+                    for (AssList i : modelAssignmentAssList) {
+                        mAssignmentsAdapter.add(i);
+                    }
                 }
             }
 

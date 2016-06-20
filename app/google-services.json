@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1079305745706",
+    "project_id": "campus-connect-7361d"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1079305745706:android:726d359e260ba541",
+        "android_client_info": {
+          "package_name": "com.campusconnect.cc_reboot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1079305745706-klqhir2d135qs0nnpfvgnpcco6llespj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.campusconnect.cc_reboot",
+            "certificate_hash": "3BE0F628B34D1F619F58CD16E6B8CBD86B539BCD"
+          }
+        },
+        {
+          "client_id": "1079305745706-vb625g8ln0e1f6seghudvfq3vf32bh3d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFnvaAAu5vmy0l6XJuOi4W0D48RuE3rU4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

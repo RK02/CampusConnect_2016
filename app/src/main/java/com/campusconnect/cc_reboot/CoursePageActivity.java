@@ -119,8 +119,10 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
             @Override
             public void onResponse(Call<ModelCoursePage> call, Response<ModelCoursePage> response) {
                 ModelCoursePage modelCoursePage = response.body();
-                course_title.setText(modelCoursePage.getCourseName());
-                course_details.setText(modelCoursePage.getDescription());
+                if(modelCoursePage != null) {
+                    course_title.setText(modelCoursePage.getCourseName());
+                    course_details.setText(modelCoursePage.getDescription());
+                }
             }
 
             @Override
