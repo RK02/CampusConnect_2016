@@ -28,6 +28,7 @@ public class AddEventActivity extends AppCompatActivity {
     String[] categories = {"Arts", "CA and CS", "Commerce", "eBooks", "Engg and tech", "IAS", "JEE"};
     Button submit;
     Button upload;
+    String courseName;
     private ProgressDialog progressDialog;
 
     @Override
@@ -35,11 +36,16 @@ public class AddEventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
         int mode = getIntent().getIntExtra("Mode",3);
+        course = (EditText) findViewById(R.id.course);
+        if(getIntent().hasExtra("courseId"))
+        {
+            courseName = getIntent().getStringExtra("courseId");
+            course.setText(courseName);
+            course.setEnabled(false);
+        }
         progressDialog = new ProgressDialog(this);
         name = (EditText) findViewById(R.id.noteName);
-        name.setFocusable(false);
         description = (EditText) findViewById(R.id.noteDate);
-        course = (EditText) findViewById(R.id.course);
         course.setFocusable(false);
         upload = (Button) findViewById(R.id.uploadPhotos);
         submit = (Button) findViewById(R.id.submit);

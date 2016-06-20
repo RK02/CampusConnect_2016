@@ -84,6 +84,7 @@ public class UploadPicturesActivity extends AppCompatActivity {
                 else {
                     Intent description = new Intent(UploadPicturesActivity.this, AddEventActivity.class);
                     description.putExtra("Mode",3);
+                    description.putExtra("courseId",CoursePageActivity.courseId);
                     startActivityForResult(description,1);
 
                 }
