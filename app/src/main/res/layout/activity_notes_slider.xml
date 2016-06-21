@@ -1,6 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.view.ViewPager
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/pager"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    android:layout_height="match_parent">
+
+    <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <RelativeLayout
+        android:id="@+id/container_note_page_info"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#FFFFFF"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tv_note_page_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="21 May, 2016"
+            android:textColor="#000000" />
+
+        <RelativeLayout
+            android:id="@+id/container_page_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true">
+
+            <TextView
+                android:id="@+id/tv_book_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="BOOK 1"
+                android:textColor="#000000" />
+
+            <View
+                android:id="@+id/divider_book_page_indicator"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/tv_book_indicator"
+                android:layout_alignTop="@+id/tv_book_indicator"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_toRightOf="@+id/tv_book_indicator"
+                android:background="#000000" />
+
+            <TextView
+                android:id="@+id/tv_page_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/divider_book_page_indicator"
+                android:text="1/5"
+                android:textColor="#000000" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/tv_note_page_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/container_note_page_info"
+        android:background="#FFFFFF"
+        android:padding="16dp"
+        android:text="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout."
+        android:visibility="gone" />
+
+    <ImageButton
+        android:id="@+id/ib_trial"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tv_note_page_description"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        android:background="@android:color/transparent"
+        android:src="@mipmap/ic_edit_24" />
+</RelativeLayout>
