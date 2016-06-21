@@ -79,5 +79,5 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="30dp"
         android:background="@android:color/transparent"
-        android:src="@mipmap/ic_edit_24" />
+        android:src="@mipmap/ic_edit_24_white" />
 </RelativeLayout>
