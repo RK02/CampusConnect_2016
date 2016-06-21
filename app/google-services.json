@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "1079305745706",
-    "project_id": "campus-connect-7361d"
+    "project_number": "614993624541",
+    "project_id": "campusconnect-a0b96"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1079305745706:android:726d359e260ba541",
+        "mobilesdk_app_id": "1:614993624541:android:726d359e260ba541",
         "android_client_info": {
           "package_name": "com.campusconnect.cc_reboot"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1079305745706-klqhir2d135qs0nnpfvgnpcco6llespj.apps.googleusercontent.com",
+          "client_id": "614993624541-4rc1lvobb76p6392ng1i1g6cvi66dl1f.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.campusconnect.cc_reboot",
-            "certificate_hash": "3BE0F628B34D1F619F58CD16E6B8CBD86B539BCD"
+            "certificate_hash": "35E52DFC558E51FE27239BEA20BE1F50F5DF6210"
           }
         },
         {
-          "client_id": "1079305745706-vb625g8ln0e1f6seghudvfq3vf32bh3d.apps.googleusercontent.com",
+          "client_id": "614993624541-7igkq9hl819s4vuh2k46tun3f8kbf8kf.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCFnvaAAu5vmy0l6XJuOi4W0D48RuE3rU4"
+          "current_key": "AIzaSyCzTAnS0gQQ9ikHOn295y1v6lqdvPD7EU4"
         }
       ],
       "services": {
