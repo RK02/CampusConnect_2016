@@ -81,11 +81,12 @@ public class FragmentNotes extends Fragment {
             @Override
             public void onResponse(Call<ModelNoteBookList> call, Response<ModelNoteBookList> response) {
                 ModelNoteBookList modelNoteBookList = response.body();
-                List<NoteBookList> noteBookLists = modelNoteBookList.getNoteBookList();
-                for(NoteBookList x : noteBookLists)
-                {
-                    mNotesAdapter.add(x);
-                    mNotesAdapter.notifyDataSetChanged();
+                if(modelNoteBookList != null) {
+                    List<NoteBookList> noteBookLists = modelNoteBookList.getNoteBookList();
+                    for (NoteBookList x : noteBookLists) {
+                        mNotesAdapter.add(x);
+                        mNotesAdapter.notifyDataSetChanged();
+                    }
                 }
             }
 

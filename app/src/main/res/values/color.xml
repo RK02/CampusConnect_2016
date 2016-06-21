@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--App related-->
+   <!--App related-->
     <color name="ColorPrimary">#FF9800</color>
     <color name="ColorPrimaryDark">#F57C00</color>
 
     <!--RecyclerView-->
-    <color name="ColorRecyclerBackground">#E0E0E0</color>
+    <color name="ColorRecyclerBackground">#DFDFDF</color>
 
     <!--Text-->
     <color name="ColorTextHeading">#FFFFFF</color>
@@ -17,5 +17,10 @@
 
     <!--Key Stats/Divider-->
     <color name="ColorKeyStatContainer">#BDBDBD</color>
+    <color name="blue_grey_500">#607D8B</color>
+<color name="blue_grey_600">#546E7A</color>
+<color name="blue_grey_700">#455A64</color>
+<color name="blue_grey_800">#37474F</color>
+<color name="blue_grey_900">#263238</color>
 </resources>
 

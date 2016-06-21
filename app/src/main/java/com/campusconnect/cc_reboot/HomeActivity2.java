@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -73,6 +74,7 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
 
     @Bind(R.id.fab_menu)
     FloatingActionsMenu fabMenu;
+
 
     //Flags
     boolean doubleBackToExitPressedOnce = false;
@@ -211,6 +213,33 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
     //Layout definition when FAB is expanded
     @Override
     public void onMenuExpanded() {
+        fabMenu.findViewById(R.id.fab_event).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent exam = new Intent(HomeActivity2.this,AddEventActivity.class);
+                exam.putExtra("Mode",1);
+                startActivity(exam);
+                fabMenu.collapse();
+            }
+        });
+        fabMenu.findViewById(R.id.fab_photo).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent assignment = new Intent(HomeActivity2.this,AddEventActivity.class);
+                assignment.putExtra("Mode",2);
+                startActivity(assignment);
+                fabMenu.collapse();
+
+            }
+        });
+        fabMenu.findViewById(R.id.fab_others).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HomeActivity2.this,UploadPicturesActivity.class));
+                fabMenu.collapse();
+
+            }
+        });
         fab_menu_container.getBackground().setAlpha(230);
         fab_menu_container.setOnTouchListener(new View.OnTouchListener() {
             @Override

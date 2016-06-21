@@ -119,8 +119,10 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
             @Override
             public void onResponse(Call<ModelCoursePage> call, Response<ModelCoursePage> response) {
                 ModelCoursePage modelCoursePage = response.body();
-                course_title.setText(modelCoursePage.getCourseName());
-                course_details.setText(modelCoursePage.getDescription());
+                if(modelCoursePage != null) {
+                    course_title.setText(modelCoursePage.getCourseName());
+                    course_details.setText(modelCoursePage.getDescription());
+                }
             }
 
             @Override
@@ -173,6 +175,40 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
     //Layout definition when FAB is expanded
     @Override
     public void onMenuExpanded() {
+        final String courseId = course_title.getText().toString();
+        fabMenu.findViewById(R.id.fab_event).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent exam = new Intent(CoursePageActivity.this,AddEventActivity.class);
+                exam.putExtra("Mode",1);
+                exam.putExtra("courseId",courseId);
+                startActivity(exam);
+                fabMenu.collapse();
+            }
+        });
+        fabMenu.findViewById(R.id.fab_photo).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent assignment = new Intent(CoursePageActivity.this,AddEventActivity.class);
+                assignment.putExtra("Mode",2);
+                assignment.putExtra("courseId",courseId);
+                startActivity(assignment);
+                fabMenu.collapse();
+
+            }
+        });
+        fabMenu.findViewById(R.id.fab_others).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent notes = new Intent(CoursePageActivity.this,UploadPicturesActivity.class);
+                notes.putExtra("courseId",courseId);
+
+                startActivity(notes);
+
+                fabMenu.collapse();
+
+            }
+        });
         fab_menu_container.getBackground().setAlpha(230);
         fab_menu_container.setOnTouchListener(new View.OnTouchListener() {
             @Override

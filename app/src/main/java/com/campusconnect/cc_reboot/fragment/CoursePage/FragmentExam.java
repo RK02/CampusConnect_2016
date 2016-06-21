@@ -65,9 +65,11 @@ public class FragmentExam extends Fragment {
             @Override
             public void onResponse(Call<ModelTestList> call, Response<ModelTestList> response) {
                 ModelTestList testList = response.body();
-                List<ModelTest> modelTests = testList.getModelTestList();
-                for(ModelTest modelTest : modelTests){
-                    mExamsAdapter.add(modelTest);
+                if(testList!=null) {
+                    List<ModelTest> modelTests = testList.getModelTestList();
+                    for (ModelTest modelTest : modelTests) {
+                        mExamsAdapter.add(modelTest);
+                    }
                 }
             }
 
