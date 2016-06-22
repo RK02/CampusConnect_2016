@@ -42,7 +42,7 @@ public class FragmentCourses extends Fragment{
     CourseListAdapter mCourseAdapter;
     LinearLayoutManager mLayoutManager;
     public static final String BASE_URL = "https://uploadnotes-2016.appspot.com/_ah/api/notesapi/v1/";
-    public static String profileId = "";
+    public static String profileId = "ahJzfnVwbG9hZG5vdGVzLTIwMTZyFAsSB1Byb2ZpbGUYgICAgJ2KlgoM";
 
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

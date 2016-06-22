@@ -1,5 +1,6 @@
 package com.campusconnect.cc_reboot.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -32,14 +34,12 @@ import butterknife.ButterKnife;
 /**
  * Created by RK on 13/06/2016.
  */
-public class NotesSliderPageFragment extends Fragment {
+public class NotesSliderPageFragment extends Fragment implements View.OnTouchListener{
 
-    @Bind(R.id.tv_book_indicator)
-    TextView book_title;
-    @Bind(R.id.tv_page_indicator)
-    TextView page_number;
-    @Bind(R.id.container_page_indicator)
-    RelativeLayout page_indicator_cont;
+    @Bind(R.id.view_touch_handler)
+    View touch_handling_view;
+
+    String class_no, total_pages, curr_page;
 
     ArrayList<ArrayList<String>> urls = NotesSliderActivity.urls;
     ArrayList<Integer> pages;
@@ -56,6 +56,12 @@ public class NotesSliderPageFragment extends Fragment {
     int img_2[] = { R.mipmap.ic_notifications_24,
             R.mipmap.ic_notifications_none_24,
             R.mipmap.ic_pages_18 };
+
+    public interface NotePageInfoToActivity{
+        public void notePageInfo(String class_no, String curr_page, String total_pages);
+        public void pageInfoVisibility(boolean flag);
+    }
+    NotePageInfoToActivity notePageInfoToActivity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,16 +86,17 @@ public class NotesSliderPageFragment extends Fragment {
         //String[] urls = temp.split(",");
 
         pager_img.setAdapter(new CustomPagerAdapter(getActivity(),urls.get(page_pos),page_pos));
-        book_title.setText(fragArgs.getString("PageTitle"));
-        page_number.setText(1+"/"+pager_img.getAdapter().getCount());
+
+        class_no = fragArgs.getString("PageTitle");
+        total_pages = Integer.toString(pager_img.getAdapter().getCount());
+        curr_page = Integer.toString(1);
 
 
         pager_img.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageSelected(int index) {
                 // TODO Auto-generated method stub
-                book_title.setText(fragArgs.getString("PageTitle"));
-                page_number.setText(index+1+"/"+pager_img.getAdapter().getCount());
+                curr_page = Integer.toString(index+1);
             }
             @Override
             public void onPageScrolled(int arg0, float arg1, int arg2) {
@@ -103,7 +110,45 @@ public class NotesSliderPageFragment extends Fragment {
             }
         });
 
+        notePageInfoToActivity.notePageInfo(class_no,curr_page,total_pages);
+
+        touch_handling_view.setOnTouchListener(this);
 
         return rootView;
     }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+
+        switch (motionEvent.getAction()){
+
+            case MotionEvent.ACTION_UP:
+
+                break;
+
+            case MotionEvent.ACTION_DOWN:
+
+                notePageInfoToActivity.pageInfoVisibility(true);
+
+                break;
+
+            case MotionEvent.ACTION_MOVE:
+
+                break;
+
+        }
+
+        return false;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            notePageInfoToActivity = (NotePageInfoToActivity) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement notePageInfoToActivity");
+        }
+    }
+
 }
