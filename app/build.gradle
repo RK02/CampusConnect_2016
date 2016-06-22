@@ -3,10 +3,10 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         config {
-            keyAlias 'cckey'
-            keyPassword '143,kets'
-            storeFile file('/Users/sarthak/keystore.jks')
-            storePassword '143,kets'
+//            keyAlias 'cckey'
+//            keyPassword '143,kets'
+//            storeFile file('/Users/sarthak/keystore.jks')
+//            storePassword '143,kets'
         }
     }
     compileSdkVersion 23
@@ -24,7 +24,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            signingConfig signingConfigs.config
+//            signingConfig signingConfigs.config
         }
     }
 }

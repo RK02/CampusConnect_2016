@@ -6,6 +6,7 @@ import android.os.Build;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.campusconnect.cc_reboot.R;
@@ -159,7 +161,7 @@ public class SlidingTabLayout_home extends HorizontalScrollView {
         textView.setAllCaps(true);
         textView.setTypeface(Typeface.DEFAULT_BOLD);
         textView.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         TypedValue outValue = new TypedValue();
         getContext().getTheme().resolveAttribute(android.R.attr.selectableItemBackground,
@@ -194,6 +196,14 @@ public class SlidingTabLayout_home extends HorizontalScrollView {
             if (tabTitleView == null && TextView.class.isInstance(tabView)) {
                 tabTitleView = (TextView) tabView;
             }
+
+//            if(getContext().getClass().getSimpleName().toString().equals("CoursePageActivity")) {
+//                if (i == 1 || i == 2) {
+//                    tabTitleView.setPadding(0, 0, 120, 0);
+//                    tabTitleView.setCompoundDrawablePadding(-100);
+//                    tabTitleView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.ic_rating_18_white, 0);
+//                }
+//            }
 
             if (mDistributeEvenly) {
                 LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) tabView.getLayoutParams();

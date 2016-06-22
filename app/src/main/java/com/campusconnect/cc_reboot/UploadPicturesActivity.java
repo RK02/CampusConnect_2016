@@ -13,14 +13,20 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.io.File;
@@ -29,7 +35,18 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class UploadPicturesActivity extends AppCompatActivity {
+
+    @Bind(R.id.container_action_buttons)
+    LinearLayout action_buttons_top;
+    @Bind(R.id.container_action_buttons_more)
+    LinearLayout action_buttons_bottom;
+
+    @Bind(R.id.for_height)
+    View for_measure;
 
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     private Button btnSelect;
@@ -40,11 +57,26 @@ public class UploadPicturesActivity extends AppCompatActivity {
     GridView gridView;
     ImageAdapter imageAdapter;
 
+    public static float width;
+    public static float height;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_pictures);
+
+        ButterKnife.bind(this);
+
+        final ViewTreeObserver observer= for_measure.getViewTreeObserver();
+        observer.addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        width = for_measure.getWidth();
+                        height = for_measure.getHeight();
+                    }
+                });
+
         btnSelect = (Button) findViewById(R.id.btnSelectPhoto);
         cancel = (Button) findViewById(R.id.BtnCancel);
         camera = (Button) findViewById(R.id.btnCamera);
@@ -199,7 +231,7 @@ public class UploadPicturesActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            ImageAdapter.mThumbIds.add(Bitmap.createScaledBitmap(bm,400,400,false));
+            ImageAdapter.mThumbIds.add(Bitmap.createScaledBitmap(bm,400,600,false));
             imageAdapter.notifyDataSetChanged();
 
         }
@@ -219,7 +251,7 @@ public class UploadPicturesActivity extends AppCompatActivity {
             }
 
             for(Bitmap temp : bitmaps){
-                ImageAdapter.mThumbIds.add(Bitmap.createScaledBitmap(temp,400,400,false));
+                ImageAdapter.mThumbIds.add(Bitmap.createScaledBitmap(temp,400,600,false));
                 imageAdapter.notifyDataSetChanged();
             }
         }
@@ -253,8 +285,10 @@ class ImageAdapter extends BaseAdapter {
         if (convertView == null) {
             holder = new ViewHolder();
             convertView = mInflater.inflate(R.layout.gallery_item, null);
+            convertView.setMinimumWidth((int)(UploadPicturesActivity.width/2));
+            convertView.setMinimumHeight((int)(UploadPicturesActivity.height/2));
             holder.imageview = (ImageView) convertView.findViewById(R.id.grid_item_image);
-            holder.delete = (Button) convertView.findViewById(R.id.delete);
+            holder.delete = (ImageButton) convertView.findViewById(R.id.delete);
             convertView.setTag(holder);
         }
         else {
@@ -268,7 +302,8 @@ class ImageAdapter extends BaseAdapter {
                 notifyDataSetChanged();
             }
         });
-        holder.imageview.setImageBitmap(Bitmap.createScaledBitmap(mThumbIds.get(position),200,200,false));
+//        holder.imageview.setImageBitmap(Bitmap.createScaledBitmap(mThumbIds.get(position),UploadPicturesActivity.width/2,UploadPicturesActivity.height/2,false));
+        holder.imageview.setImageBitmap(mThumbIds.get(position));
 
         return convertView;
     }
@@ -276,5 +311,5 @@ class ImageAdapter extends BaseAdapter {
 }
 class ViewHolder {
     ImageView imageview;
-    Button delete;
+    ImageButton delete;
 }
