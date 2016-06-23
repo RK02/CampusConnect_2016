@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,9 +33,11 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -56,6 +60,8 @@ public class UploadPicturesActivity extends AppCompatActivity {
     private  String pictureImagePath="";
     GridView gridView;
     ImageAdapter imageAdapter;
+    public static HashMap<Bitmap,String> images_paths;
+
 
     public static float width;
     public static float height;
@@ -66,6 +72,7 @@ public class UploadPicturesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_upload_pictures);
 
         ButterKnife.bind(this);
+        images_paths = new HashMap<>();
 
         final ViewTreeObserver observer= for_measure.getViewTreeObserver();
         observer.addOnGlobalLayoutListener(
@@ -175,6 +182,7 @@ public class UploadPicturesActivity extends AppCompatActivity {
         {
             if(resultCode==1) {
                 ImageAdapter.mThumbIds.clear();
+                images_paths.clear();
                 imageAdapter.notifyDataSetChanged();
             }
 
@@ -205,7 +213,9 @@ public class UploadPicturesActivity extends AppCompatActivity {
                 imageBitmap = rotateImage(imageBitmap, 270);
                 break;
         }
-        ImageAdapter.mThumbIds.add(Bitmap.createScaledBitmap(imageBitmap,400,400,false));
+        Bitmap temp = Bitmap.createScaledBitmap(imageBitmap,400,400,false);
+        ImageAdapter.mThumbIds.add(temp);
+        images_paths.put(temp,pictureImagePath);
         imageAdapter.notifyDataSetChanged();
 
     }
@@ -226,13 +236,16 @@ public class UploadPicturesActivity extends AppCompatActivity {
         Bitmap bm=null;
         if (data.getData() != null) {
             try {
-
+                Uri path =  data.getData();
                 bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
+                Bitmap temp = Bitmap.createScaledBitmap(bm,400,600,false);
+                ImageAdapter.mThumbIds.add(temp);
+                images_paths.put(temp,getPictureImagePath(path));
+                imageAdapter.notifyDataSetChanged();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            ImageAdapter.mThumbIds.add(Bitmap.createScaledBitmap(bm,400,600,false));
-            imageAdapter.notifyDataSetChanged();
+
 
         }
         else
@@ -243,18 +256,44 @@ public class UploadPicturesActivity extends AppCompatActivity {
             {
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), clipData.getItemAt(i).getUri());
-                    bitmaps.add(bitmap);
+                    Uri uripath = clipData.getItemAt(i).getUri();
+                    Bitmap temp = Bitmap.createScaledBitmap(bitmap,400,600,false);
+                    ImageAdapter.mThumbIds.add(temp);
+                    images_paths.put(temp,getPictureImagePath(uripath));
+                    imageAdapter.notifyDataSetChanged();
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }
-
-            for(Bitmap temp : bitmaps){
-                ImageAdapter.mThumbIds.add(Bitmap.createScaledBitmap(temp,400,600,false));
-                imageAdapter.notifyDataSetChanged();
-            }
         }
+    }
+    String getPictureImagePath(Uri uripath)
+    {
+        String wholeID = DocumentsContract.getDocumentId(uripath);
+
+// Split at colon, use second item in the array
+        String id = wholeID.split(":")[1];
+
+        String[] column = { MediaStore.Images.Media.DATA };
+
+// where id is equal to
+        String sel = MediaStore.Images.Media._ID + "=?";
+
+        Cursor cursor = getContentResolver().
+                query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        column, sel, new String[]{ id }, null);
+
+        String filePath = "";
+
+        int columnIndex = cursor.getColumnIndex(column[0]);
+
+        if (cursor.moveToFirst()) {
+            filePath = cursor.getString(columnIndex);
+        }
+
+        cursor.close();
+        return filePath;
     }
 }
 class ImageAdapter extends BaseAdapter {
