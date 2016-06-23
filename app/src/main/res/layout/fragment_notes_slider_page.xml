@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v4.view.ViewPager
+    <com.campusconnect.cc_reboot.auxiliary.ViewPagerDisable
         android:id="@+id/viewpager_images"
         android:layout_width="match_parent"
         android:clickable="true"
@@ -14,22 +14,10 @@
         android:layout_height="match_parent" />
 
     <View
-        android:layout_width="24dp"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:alpha="0.3"
-        android:background="#000000" />
-
-    <View
-        android:layout_width="24dp"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:alpha="0.3"
-        android:background="#000000" />
-
-    <View
         android:id="@+id/view_touch_handler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/transparent"/>
+
+
 </RelativeLayout>
