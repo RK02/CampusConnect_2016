@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:id="@+id/relativeLayout"
+    tools:context="com.alamkanak.weekview.sample.CreateNewEvent">
+    <Button android:layout_alignParentBottom="true" android:id="@+id/done" android:layout_width="match_parent" android:layout_height="wrap_content"  android:text="Done"/>
+
+    <ScrollView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_above="@+id/done">
+        <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:orientation="vertical" android:id="@+id/top">
+            <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:orientation="vertical"
+                android:id="@+id/linearLayout">
+
+                <LinearLayout
+                    android:layout_height="wrap_content" android:layout_width="match_parent" android:weightSum="7">
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_weight="5"
+                        >
+                        <EditText android:id="@+id/input_subject"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:hint="Subject"
+                            />
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_height="wrap_content" android:layout_width="match_parent" android:weightSum="7">  -->
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_weight="5"
+                        >
+                        <EditText android:id="@+id/input_abrv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:hint="Abbreviation"
+                            />
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+
+
+            <LinearLayout android:id="@+id/linearLayout2" android:layout_height="wrap_content" android:orientation="vertical" android:layout_width="match_parent" >
+
+                <LinearLayout
+                    android:layout_height="wrap_content" android:layout_width="match_parent" android:weightSum="7">
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_weight="5"
+                        >
+                        <EditText android:id="@+id/input_place"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:hint="Place"
+                            />
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_height="wrap_content" android:layout_width="match_parent" android:weightSum="7">
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_weight="5"
+                        >
+                        <EditText android:id="@+id/input_type"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:hint="Type"
+                            />
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_height="wrap_content" android:layout_width="match_parent" android:weightSum="7"
+                    >
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_weight="5"
+                        >
+                        <EditText android:id="@+id/input_teacher"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:hint="Teacher"
+                            />
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
+
+            </LinearLayout>
+            <LinearLayout android:orientation="horizontal" android:weightSum="6"  android:layout_height="wrap_content" android:layout_width="match_parent">
+
+                <ToggleButton
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="New ToggleButton"
+                    android:id="@+id/mon"
+                    android:checked="false"
+                    android:layout_weight="1"/>
+
+                <ToggleButton
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tue"
+                    android:checked="false" android:layout_weight="1"/>
+
+                <ToggleButton
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/wed"
+                    android:checked="false" android:layout_weight="1" />
+
+                <ToggleButton
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/thu"
+                    android:checked="false" android:layout_weight="1"/>
+                <ToggleButton
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/fri"
+                    android:checked="false" android:layout_weight="1"/>
+                <ToggleButton
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/sat"
+                    android:checked="false" android:layout_weight="1"/>
+
+            </LinearLayout>
+            <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:orientation="vertical" android:id="@+id/list_events">
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

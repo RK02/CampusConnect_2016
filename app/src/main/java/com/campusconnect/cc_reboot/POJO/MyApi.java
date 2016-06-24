@@ -2,6 +2,8 @@ package com.campusconnect.cc_reboot.POJO;
 
 import android.util.Log;
 
+import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -150,7 +152,54 @@ public interface MyApi {
         }
     }
 
+    @POST("addCourse")
+    Call<ModelAddCourse> addCourse(@Body addCourseRequest body);
+    class addCourseRequest{
+        private String profileId;
+        private String collegeId;
+        private String[] batchNames;
+        private String[] branchNames;
+        private String semester;
+        private String[] date;
+        private String startTime;
+        private String endTime;
+        private String professorName;
+        private String colour;
+        private String courseCode;
+        public addCourseRequest(String semester, String[] date, String startTime, String endTime, String professorName, String colour, String courseCode){
+            this.profileId = FragmentCourses.profileId;
+            this.collegeId = FragmentCourses.collegeId;
+           // this.batchNames = FragmentCourses.batchName;
+           // this.branchNames = FragmentCourses.branchname;
+            this.semester = "odd";
+            //this.
+
+
+        }
+
+
+    }
+
+    /*
+    courseName
+collegeId
+batchNames
+sectionNames
+branchNames
+semester
+date
+startTime
+endTime
+professorName
+colour
+courseCode
+profileId
+     */
+
+
+
 //upload issues  with retrofit, switching to asynctask
+    //switched to okhttp
 
 
 

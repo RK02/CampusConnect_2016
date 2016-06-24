@@ -47,6 +47,7 @@ public class AddEventActivity extends AppCompatActivity {
     Button submit;
     Button upload;
     String courseName;
+
     private ProgressDialog progressDialog;
 
     @Override

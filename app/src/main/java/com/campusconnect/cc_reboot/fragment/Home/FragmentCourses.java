@@ -44,6 +44,7 @@ public class FragmentCourses extends Fragment{
     public static final String BASE_URL = "https://uploadnotes-2016.appspot.com/_ah/api/notesapi/v1/";
     public static final String uploadURL = "https://uploadnotes-2016.appspot.com/img";
     public static String profileId = "ahJzfnVwbG9hZG5vdGVzLTIwMTZyFAsSB1Byb2ZpbGUYgICAgN6lhQsM";
+    public static final String collegeId = "";
 
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

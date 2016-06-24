@@ -33,6 +33,23 @@
         android:layout_below="@+id/noteName"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/desc"
+        android:hint="Description"
+        android:layout_below="@+id/noteDate"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/due"
+        android:hint="Due Date"
+        android:layout_below="@+id/desc"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 <LinearLayout android:layout_alignParentBottom="true" android:weightSum="2" android:layout_height="wrap_content" android:layout_width="match_parent" android:orientation="horizontal">
     <Button
         android:layout_width="match_parent"
