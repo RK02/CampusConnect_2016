@@ -292,14 +292,16 @@ public class FragmentAddCourse extends Fragment {
                 courseCode.getText().toString(),
                 courseProf.getText().toString(),
                 courseSem.getText().toString(),
-                batches.subList(0,batches.size()-1),
-                sections.subList(0,sections.size()-1),
-                branches.subList(0,branches.size()-1),
-                dates.subList(0,dates.size()-1),
-                startTimes.subList(0,startTimes.size()-1),
-                endTimes.subList(0,endTimes.size()-1),
+                batches.subList(0,batches.size()),
+                sections.subList(0,sections.size()),
+                branches.subList(0,branches.size()),
+                dates.subList(0,dates.size()),
+                startTimes.subList(0,startTimes.size()),
+                endTimes.subList(0,endTimes.size()),
                 "RED"
                 );
+
+
         Call<ModelAddCourse> call = myApi.addCourse(body);
         call.enqueue(new Callback<ModelAddCourse>() {
             @Override

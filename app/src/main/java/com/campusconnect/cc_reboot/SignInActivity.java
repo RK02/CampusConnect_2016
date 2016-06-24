@@ -112,7 +112,9 @@ public class SignInActivity extends AppCompatActivity implements
             Log.d(TAG, "Got cached sign-in");
             GoogleSignInResult result = opr.get();
             handleSignInResult(result);
-        } else {
+        } else
+
+        {
             // If the user has not previously signed in on this device or the sign-in has expired,
             // this asynchronous branch will attempt to sign in the user silently.  Cross-device
             // single sign-on will occur in this branch.
@@ -317,7 +319,7 @@ public class SignInActivity extends AppCompatActivity implements
                 Intent signUp = new Intent(SignInActivity.this,RegistrationPageActivity.class);
                 signUp.putExtra("personName",personName);
                 signUp.putExtra("personEmail",personEmail);
-                signUp.putExtra("personPhoto",personPhoto.toString());
+                if(personPhoto!=null) signUp.putExtra("personPhoto",personPhoto.toString());
                 signUp.putExtra("personId",personId);
                 startActivity(signUp);
             }
