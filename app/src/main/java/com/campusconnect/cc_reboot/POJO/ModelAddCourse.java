@@ -5,26 +5,28 @@ package com.campusconnect.cc_reboot.POJO;
  */
 public class ModelAddCourse {
 
-    private String description;
-    private String key;
     private String response;
+    private String key;
+    private String description;
+    private String kind;
+    private String etag;
 
     /**
      *
      * @return
-     * The description
+     * The response
      */
-    public String getDescription() {
-        return description;
+    public String getResponse() {
+        return response;
     }
 
     /**
      *
-     * @param description
-     * The description
+     * @param response
+     * The response
      */
-    public void setDescription(String description) {
-        this.description = description;
+    public void setResponse(String response) {
+        this.response = response;
     }
 
     /**
@@ -48,19 +50,55 @@ public class ModelAddCourse {
     /**
      *
      * @return
-     * The response
+     * The description
      */
-    public String getResponse() {
-        return response;
+    public String getDescription() {
+        return description;
     }
 
     /**
      *
-     * @param response
-     * The response
+     * @param description
+     * The description
      */
-    public void setResponse(String response) {
-        this.response = response;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     *
+     * @return
+     * The kind
+     */
+    public String getKind() {
+        return kind;
+    }
+
+    /**
+     *
+     * @param kind
+     * The kind
+     */
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
+
+    /**
+     *
+     * @return
+     * The etag
+     */
+    public String getEtag() {
+        return etag;
+    }
+
+    /**
+     *
+     * @param etag
+     * The etag
+     */
+    public void setEtag(String etag) {
+        this.etag = etag;
     }
 
 }

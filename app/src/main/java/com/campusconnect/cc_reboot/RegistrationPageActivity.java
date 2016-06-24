@@ -3,6 +3,7 @@ package com.campusconnect.cc_reboot;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -227,13 +228,19 @@ public class RegistrationPageActivity extends AppCompatActivity{
                 if(signUp!=null)
                 {
                     profileId = signUp.getKey();
-                    FragmentCourses.profileId = profileId;
                     new mobile_register().execute(personId,profileId);
-
+                    SharedPreferences sharedPreferences = getSharedPreferences("CC",MODE_PRIVATE);
+                    sharedPreferences
+                            .edit()
+                            .putString("profileId",profileId)
+                            .putString("collegeId",collegeId)
+                            .putString("batchName",batchName.getText().toString())
+                            .putString("branchName",branchName.getText().toString())
+                            .putString("sectionName",sectionName.getText().toString())
+                            .apply();
                     Intent intent_temp = new Intent(getApplicationContext(), SelectCourseActivity.class);
                     startActivity(intent_temp);
                 }
-                Log.i("sw32","null");
             }
 
             @Override
@@ -294,7 +301,7 @@ public class RegistrationPageActivity extends AppCompatActivity{
             String response;
 
             try {
-                url = new URL("http://10.75.133.109:8000/mobile_sign_up");
+                url = new URL("https://cryptic-savannah-44296.herokuapp.com/mobile_sign_up");
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("POST");
                 connection.setDoOutput(true);
@@ -306,6 +313,7 @@ public class RegistrationPageActivity extends AppCompatActivity{
                 jsonObject.put("profileName",personName);
                 jsonObject.put("imageUrl",personPhoto);
                 jsonObject.put("email",personEmail);
+                Log.i("sw32",params[0] +":"+params[1]+":"+personName );
                 os.write(jsonObject.toString().getBytes());
                 os.flush();
                 os.close();

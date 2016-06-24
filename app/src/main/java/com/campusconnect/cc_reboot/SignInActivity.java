@@ -155,7 +155,6 @@ public class SignInActivity extends AppCompatActivity implements
             updateUI(true);
             SharedPreferences sharedpreferences = getSharedPreferences("CC", Context.MODE_PRIVATE);
             if(sharedpreferences.contains("profileId")){
-                FragmentCourses.profileId = sharedpreferences.getString("profileId","");
                 Intent home = new Intent(SignInActivity.this,HomeActivity2.class);
                 startActivity(home);
                 finish();
@@ -278,7 +277,7 @@ public class SignInActivity extends AppCompatActivity implements
             String response;
 
             try {
-                url = new URL("http://10.75.133.109:8000/mobile_sign_in");
+                url = new URL("https://cryptic-savannah-44296.herokuapp.com/mobile_sign_in");
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("POST");
                 connection.setDoOutput(true);
@@ -329,7 +328,6 @@ public class SignInActivity extends AppCompatActivity implements
                         .edit()
                         .putString("profileId",s)
                         .apply();
-                FragmentCourses.profileId =s;
                 Intent home = new Intent(SignInActivity.this, HomeActivity2.class);
                 startActivity(home);
             }

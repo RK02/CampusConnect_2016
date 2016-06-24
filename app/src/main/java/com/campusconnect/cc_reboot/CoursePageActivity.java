@@ -1,6 +1,7 @@
 package com.campusconnect.cc_reboot;
 
 import android.app.Notification;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -112,7 +113,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                 .build();
         MyApi myapi = retrofit.create(MyApi.class);
 
-        MyApi.getCourseRequest getCourseRequest = new MyApi.getCourseRequest(FragmentCourses.profileId,courseId);
+        MyApi.getCourseRequest getCourseRequest = new MyApi.getCourseRequest(getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""),courseId);
 
         Call<ModelCoursePage> call = myapi.getCourse(getCourseRequest);
         call.enqueue(new Callback<ModelCoursePage>() {

@@ -7,6 +7,7 @@ import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -155,47 +156,52 @@ public interface MyApi {
     @POST("addCourse")
     Call<ModelAddCourse> addCourse(@Body addCourseRequest body);
     class addCourseRequest{
-        private String profileId;
-        private String collegeId;
-        private String[] batchNames;
-        private String[] branchNames;
-        private String semester;
-        private String[] date;
-        private String startTime;
-        private String endTime;
-        private String professorName;
-        private String colour;
-        private String courseCode;
-        public addCourseRequest(String semester, String[] date, String startTime, String endTime, String professorName, String colour, String courseCode){
-            this.profileId = FragmentCourses.profileId;
-            this.collegeId = FragmentCourses.collegeId;
-           // this.batchNames = FragmentCourses.batchName;
-           // this.branchNames = FragmentCourses.branchname;
-            this.semester = "odd";
-            //this.
 
+            private String collegeId;
+            private String courseName;
+            private List<String> batchNames;
+            private List<String> sectionNames;
+            private String profileId;
+            private String semester;
+            private List<String> date;
+            private List<String> startTime;
+            private List<String> endTime;
+            private String professorName;
+            private String colour;
+            private String courseCode;
+            private List<String> branchNames;
 
+            public addCourseRequest(String profileId,
+                                    String collegeId,
+                                    String courseName,
+                                    String courseCode,
+                                    String professorName,
+                                    String semester,
+                                    List<String> batchNames,
+                                    List<String> sectionNames,
+                                    List<String> branchNames,
+                                    List<String> date,
+                                    List<String> startTime,
+                                    List<String> endTime,
+                                    String colour
+                                    ){
+                this.profileId = profileId;
+                this.collegeId = collegeId;
+                this.semester = semester;
+                this.batchNames = batchNames;
+                this.branchNames = branchNames;
+                this.sectionNames = sectionNames;
+                this.courseCode = courseCode;
+                this.startTime = startTime;
+                this.endTime = endTime;
+                this.courseName = courseName;
+                this.professorName = professorName;
+                this.date = date;
+                this.colour = colour;
         }
 
 
     }
-
-    /*
-    courseName
-collegeId
-batchNames
-sectionNames
-branchNames
-semester
-date
-startTime
-endTime
-professorName
-colour
-courseCode
-profileId
-     */
-
 
 
 //upload issues  with retrofit, switching to asynctask

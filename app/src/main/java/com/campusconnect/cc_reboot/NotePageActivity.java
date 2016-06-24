@@ -1,5 +1,6 @@
 package com.campusconnect.cc_reboot;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -108,7 +109,7 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         MyApi myApi = retrofit.create(MyApi.class);
-        MyApi.getNoteBookRequest request = new MyApi.getNoteBookRequest(noteBookId, FragmentCourses.profileId);
+        MyApi.getNoteBookRequest request = new MyApi.getNoteBookRequest(noteBookId, getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""));
         Call<ModelNoteBook> call = myApi.getNoteBook(request);
         call.enqueue(new Callback<ModelNoteBook>() {
             @Override

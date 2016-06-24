@@ -1,5 +1,6 @@
 package com.campusconnect.cc_reboot;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -24,7 +25,6 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -71,7 +71,7 @@ public class SelectCourseActivity extends AppCompatActivity{
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         MyApi myApi = retrofit.create(MyApi.class);
-        MyApi.getCoursesRequest body = new MyApi.getCoursesRequest(FragmentCourses.profileId);
+        MyApi.getCoursesRequest body = new MyApi.getCoursesRequest(getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""));
         Call<ModelCourseSubscribe> call = myApi.getCourses(body);
         call.enqueue(new Callback<ModelCourseSubscribe>() {
             @Override
@@ -102,17 +102,14 @@ public class SelectCourseActivity extends AppCompatActivity{
                     i++;
                 }
                 Log.i("sw32",subbed.toString());
-                HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-                interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-                OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+
                 Retrofit retrofit = new Retrofit.
                         Builder()
                         .baseUrl(FragmentCourses.BASE_URL)
                         .addConverterFactory(GsonConverterFactory.create())
-                        .client(client)
                         .build();
                 MyApi myApi = retrofit.create(MyApi.class);
-                MyApi.subscribeCourseRequest body = new MyApi.subscribeCourseRequest(FragmentCourses.profileId,temp);
+                MyApi.subscribeCourseRequest body = new MyApi.subscribeCourseRequest(getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""),temp);
                 Call<ModelSubscribe> call = myApi.subscribeCourse(body);
                 call.enqueue(new Callback<ModelSubscribe>() {
                     @Override

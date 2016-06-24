@@ -50,7 +50,7 @@ public class CreateCourseActivity extends Activity{
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked)
                     {
-                        View view = getLayoutInflater().inflate(R.layout.day_event,events,false);
+                        View view = getLayoutInflater().inflate(R.layout.course_day,events,false);
                         ((TextView)view.findViewById(R.id.dayLabel)).setText(buttonView.getText());
                         final EditText startTime = (EditText) view.findViewById(R.id.startTime);
                         final EditText endTime = (EditText) view.findViewById(R.id.endTime);
