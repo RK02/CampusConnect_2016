@@ -71,7 +71,6 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
                 tempList.addAll(temp.getUrlList());
                 urls.add(tempList);
                 Titles.add("Class "+i);
-                Log.i("sw32slider","here");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -115,9 +114,7 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
                 fadeOut.setStartOffset(2000);
                 fadeOut.setDuration(500);
                 fadeOut.setFillAfter(true);
-
                 note_page_info.startAnimation(fadeOut);
-
                 break;
 
         }

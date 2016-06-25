@@ -73,6 +73,12 @@ public class CourseListAdapter extends
         return mCourses.size();
     }
 
+    public void clear()
+    {
+        mCourses.clear();
+        notifyDataSetChanged();
+    }
+
     @Override
     public void onBindViewHolder(CourseListViewHolder courseListViewHolder, int i) {
        SubscribedCourseList a =  mCourses.get(i);

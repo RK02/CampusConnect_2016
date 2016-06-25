@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import com.campusconnect.cc_reboot.NotesSliderActivity;
 import com.campusconnect.cc_reboot.R;
 import com.campusconnect.cc_reboot.fragment.NotesSliderPageFragment;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -45,6 +46,7 @@ public class CustomPagerAdapter extends PagerAdapter {
         ImageView notes_fullscreen = (ImageView) rootView.findViewById(R.id.iv_notes_fullscreen);
         Picasso.with(mContext).
                 load(NotesSliderActivity.urls.get(mlevel).get(position)).
+                fit().
                 error(R.mipmap.ic_pages_18).
                 into(notes_fullscreen);
         collection.addView(rootView);

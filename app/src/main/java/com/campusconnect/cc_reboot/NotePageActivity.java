@@ -126,6 +126,7 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
                 {
                     try {
                         jsonNoteList.put(a.getClassNumber(),a);
+                        Log.i("sw32page",a.getClassNumber());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

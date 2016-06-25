@@ -64,12 +64,17 @@ public class NotesSliderPageFragment extends Fragment implements View.OnTouchLis
         fragArgs = getArguments();
         pager_img = (ViewPager) rootView.findViewById(R.id.viewpager_images);
         pager_img.setPageTransformer(true, new DepthPageTransformer());
+        //class_no = fragArgs.getString("PageTitle");
+        page_pos = fragArgs.getInt("PagePos");
+        Log.i("sw32pagepos",page_pos+"");
 
         pager_img.setAdapter(new CustomPagerAdapter(getActivity(),urls.get(page_pos),page_pos));
 
-        class_no = fragArgs.getString("PageTitle");
+
+        Log.i("sw32",page_pos+" : "+class_no);
         total_pages = Integer.toString(pager_img.getAdapter().getCount());
         curr_page = Integer.toString(1);
+        notePageInfoToActivity.notePageInfo(class_no,curr_page,total_pages);
 
 
         pager_img.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -77,7 +82,8 @@ public class NotesSliderPageFragment extends Fragment implements View.OnTouchLis
             public void onPageSelected(int index) {
                 // TODO Auto-generated method stub
                 curr_page = index+1 +"";
-                notePageInfoToActivity.notePageInfo(page_pos+"",curr_page,total_pages);
+                Log.i("sw32page",class_no);
+                notePageInfoToActivity.notePageInfo(class_no,curr_page,total_pages);
             }
             @Override
             public void onPageScrolled(int arg0, float arg1, int arg2) {
@@ -91,7 +97,7 @@ public class NotesSliderPageFragment extends Fragment implements View.OnTouchLis
             }
         });
 
-        notePageInfoToActivity.notePageInfo(page_pos+"",curr_page,total_pages);
+
 
 
         touch_handling_view.setOnTouchListener(this);

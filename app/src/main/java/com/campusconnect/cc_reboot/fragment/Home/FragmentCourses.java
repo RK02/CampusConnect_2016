@@ -42,6 +42,13 @@ public class FragmentCourses extends Fragment{
     RecyclerView course_list;
     CourseListAdapter mCourseAdapter;
     LinearLayoutManager mLayoutManager;
+    Retrofit retrofit = new Retrofit.
+            Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
+    MyApi myApi = retrofit.create(MyApi.class);
+    Call<Example> call;
     public static final String BASE_URL = "https://uploadnotes-2016.appspot.com/_ah/api/notesapi/v1/";
     public static final String uploadURL = "https://uploadnotes-2016.appspot.com/img";
     public static final String django = "https://campusconnect-2016.herokuapp.com";
@@ -59,19 +66,15 @@ public class FragmentCourses extends Fragment{
         course_list.setLayoutManager(mLayoutManager);
         course_list.setItemAnimator(new DefaultItemAnimator());
         course_list.setAdapter(mCourseAdapter);
-        Retrofit retrofit = new Retrofit.
-                Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        MyApi myApi = retrofit.create(MyApi.class);
-        Call<Example> call = myApi.getFeed(getActivity().getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""));
+        call= myApi.getFeed(getActivity().getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""));
+
         call.enqueue(new Callback<Example>() {
             @Override
             public void onResponse(Call<Example> call, Response<Example> response) {
                 Log.i("sw32",""+response.code());
                 Example example = response.body();
                 if(example!=null) {
+                    mCourseAdapter.clear();
                     profileName = example.getProfileName();
                     profilePoints = example.getPoints();
                     List<AvailableCourseList> availableCourseList = example.getAvailableCourseList();
@@ -92,5 +95,35 @@ public class FragmentCourses extends Fragment{
         return v;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        call= myApi.getFeed(getActivity().getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""));
+        call.enqueue(new Callback<Example>() {
+            @Override
+            public void onResponse(Call<Example> call, Response<Example> response) {
+                Log.i("sw32",""+response.code());
+                Example example = response.body();
+                if(example!=null) {
+                    mCourseAdapter.clear();
+                    profileName = example.getProfileName();
+                    profilePoints = example.getPoints();
+                    List<AvailableCourseList> availableCourseList = example.getAvailableCourseList();
+                    List<SubscribedCourseList> subscribedCourseList = example.getSubscribedCourseList();
 
+                    for (SubscribedCourseList x : subscribedCourseList) {
+                        mCourseAdapter.add(x);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Example> call, Throwable t) {
+                Log.i("sw32","fail");
+
+            }
+        });
+
+
+    }
 }
