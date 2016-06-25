@@ -88,6 +88,8 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
     Retrofit retrofit;
     List<Note> noteList;
     public static JSONObject jsonNoteList;
+    public static ArrayList<String> descriptions;
+    public static ArrayList<String> dates;
     Intent intent;
 
     @Override
@@ -101,6 +103,9 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
         notes_container.setBackgroundColor(courseColor);
 
         noteBookId = getIntent().getStringExtra("noteBookId");
+
+        descriptions = new ArrayList<>();
+        dates = new ArrayList<>();
 
 
         retrofit = new Retrofit.
@@ -125,7 +130,15 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
                         e.printStackTrace();
                     }
                 }
+
+
                 List<String> urls = noteList.get(noteList.size()-1).getUrlList();
+                for(Note temp : noteList)
+                {
+                    descriptions.add(temp.getDescription());
+                    dates.add(temp.getDate());
+                }
+
                 String last = urls.get(urls.size()-1);
                 Picasso.with(NotePageActivity.this).load(last).into(notes_last_page);
                 courseName.setText(noteBook.getCourseName());

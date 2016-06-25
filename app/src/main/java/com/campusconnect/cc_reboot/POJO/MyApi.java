@@ -52,6 +52,26 @@ public interface MyApi {
             this.courseId = courseId;
         }
     }
+    @POST("notebookList")
+    Call<ModelNoteBookList> getBookmarked(@Body getBookmarkedRequest body);
+    class getBookmarkedRequest{
+        private String bpid;
+        public getBookmarkedRequest(String courseId)
+        {
+
+            this.bpid = courseId;
+        }
+    }
+    @POST("notebookList")
+    Call<ModelNoteBookList> getUploaded(@Body getUploadedRequest body);
+    class getUploadedRequest{
+        private String upid;
+        public getUploadedRequest(String courseId)
+        {
+
+            this.upid = courseId;
+        }
+    }
 
     @POST("getNoteBook")
     Call<ModelNoteBook> getNoteBook(@Body getNoteBookRequest body);
@@ -83,7 +103,7 @@ public interface MyApi {
                 this.profileId = profileId;
             }
         }
-    @POST("testList")
+    @POST("examList")
     Call<ModelTestList> getTestList(@Body getTestListRequest body);
         class getTestListRequest{
             private String courseId;
@@ -92,13 +112,13 @@ public interface MyApi {
             }
         }
 
-    @POST("getTest")
+    @POST("getExam")
     Call<ModelTest> getTest(@Body getTestRequest body);
     class getTestRequest{
-        private String testId;
+        private String examId;
         private String profileId;
         public getTestRequest(String testId, String profileId){
-            this.testId = testId;
+            this.examId = testId;
             this.profileId = profileId;
         }
     }

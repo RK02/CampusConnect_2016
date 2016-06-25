@@ -251,6 +251,7 @@ public class UploadPicturesActivity extends AppCompatActivity {
         else
         {
             ClipData clipData = data.getClipData();
+
             ArrayList<Bitmap> bitmaps = new ArrayList<>();
             for (int i=0; i<clipData.getItemCount();i++)
             {
@@ -293,6 +294,8 @@ public class UploadPicturesActivity extends AppCompatActivity {
         }
 
         cursor.close();
+        Log.i("sw32","filepath set");
+
         return filePath;
     }
 }

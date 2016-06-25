@@ -122,6 +122,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                 ModelCoursePage modelCoursePage = response.body();
                 if(modelCoursePage != null) {
                     course_title.setText(modelCoursePage.getCourseName());
+                    course_prof.setText(modelCoursePage.getProfessorName());
                     course_details.setText(modelCoursePage.getDescription());
                 }
             }
@@ -176,12 +177,13 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
     //Layout definition when FAB is expanded
     @Override
     public void onMenuExpanded() {
-        final String courseId = course_title.getText().toString();
+        final String courseTitle = course_title.getText().toString();
         fabMenu.findViewById(R.id.fab_event).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent exam = new Intent(CoursePageActivity.this,AddEventActivity.class);
                 exam.putExtra("Mode",1);
+                exam.putExtra("courseTitle",courseTitle);
                 exam.putExtra("courseId",courseId);
                 startActivity(exam);
                 fabMenu.collapse();
@@ -192,6 +194,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
             public void onClick(View v) {
                 Intent assignment = new Intent(CoursePageActivity.this,AddEventActivity.class);
                 assignment.putExtra("Mode",2);
+                assignment.putExtra("courseTitle",courseTitle);
                 assignment.putExtra("courseId",courseId);
                 startActivity(assignment);
                 fabMenu.collapse();
@@ -202,10 +205,9 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
             @Override
             public void onClick(View v) {
                 Intent notes = new Intent(CoursePageActivity.this,UploadPicturesActivity.class);
+                notes.putExtra("courseTitle",courseTitle);
                 notes.putExtra("courseId",courseId);
-
                 startActivity(notes);
-
                 fabMenu.collapse();
 
             }

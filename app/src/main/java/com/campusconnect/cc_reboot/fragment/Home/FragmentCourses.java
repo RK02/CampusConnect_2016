@@ -44,6 +44,9 @@ public class FragmentCourses extends Fragment{
     LinearLayoutManager mLayoutManager;
     public static final String BASE_URL = "https://uploadnotes-2016.appspot.com/_ah/api/notesapi/v1/";
     public static final String uploadURL = "https://uploadnotes-2016.appspot.com/img";
+    public static final String django = "https://campusconnect-2016.herokuapp.com";
+    public static  String profileName = "";
+    public static  String profilePoints = "";
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_courses, container, false);
@@ -69,6 +72,8 @@ public class FragmentCourses extends Fragment{
                 Log.i("sw32",""+response.code());
                 Example example = response.body();
                 if(example!=null) {
+                    profileName = example.getProfileName();
+                    profilePoints = example.getPoints();
                     List<AvailableCourseList> availableCourseList = example.getAvailableCourseList();
                     List<SubscribedCourseList> subscribedCourseList = example.getSubscribedCourseList();
 

@@ -43,10 +43,10 @@ public class AddEventActivity extends AppCompatActivity {
     EditText name;
     EditText description;
     EditText course;
-    String[] categories = {"Arts", "CA and CS", "Commerce", "eBooks", "Engg and tech", "IAS", "JEE"};
     Button submit;
     Button upload;
     String courseName;
+    String courseId;
 
     private ProgressDialog progressDialog;
 
@@ -58,7 +58,8 @@ public class AddEventActivity extends AppCompatActivity {
         course = (EditText) findViewById(R.id.course);
         if(getIntent().hasExtra("courseId"))
         {
-            courseName = getIntent().getStringExtra("courseId");
+            courseName = getIntent().getStringExtra("courseTitle");
+            courseId = getIntent().getStringExtra("courseId");
             course.setText(courseName);
             course.setEnabled(false);
         }
@@ -79,41 +80,22 @@ public class AddEventActivity extends AppCompatActivity {
             case 1: name.setHint("Exam name");submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new doStuff().execute();
+                    new doStuff().execute("exam");
                 }
             });break;
             case 2: name.setHint("Assignment name");submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new doStuff().execute();
+                    new doStuff().execute("assignment");
                 }
             });break;
             case 3: name.setHint("Note name");upload.setVisibility(View.GONE);submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new doStuff().execute();
+                    new doStuff().execute("notes");
                 }
             });break;
         }
-        course.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder alb = new AlertDialog.Builder(AddEventActivity.this);
-                alb.setTitle("Choose...").setSingleChoiceItems(categories, 0, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        EditText temp = (EditText) findViewById(R.id.course);
-                        temp.setText(categories[which]);
-                        dialog.dismiss();
-                    }
-                });
-                alb.create().show();
-
-            }
-        });
-
-
-
     }
 
     @Override
@@ -122,7 +104,6 @@ public class AddEventActivity extends AppCompatActivity {
         if(requestCode==1)
         {
             if(resultCode==0){
-                Log.i("sw32","here111");
                 finish();
             }
         }
@@ -141,33 +122,19 @@ public class AddEventActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
 
-            String path = "/storage/emulated/0/Download/test.jpg";
-            //uploadFile(FragmentCourses.uploadURL,new File(path));
+            String path;
             OkHttpClient client = new OkHttpClient();
-            File file = new File("path");
-
-
             RequestBody requestBody;
             MultipartBody.Builder body = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
                   //  .addFormDataPart("file","test.jpg",
                     //      RequestBody.create(MediaType.parse("image/*"), new File(path)))
-                    .addFormDataPart("profileId", "ahJzfnVwbG9hZG5vdGVzLTIwMTZyFAsSB1Byb2ZpbGUYgICAgN6lhQsM")
-                    .addFormDataPart("courseId","ahJzfnVwbG9hZG5vdGVzLTIwMTZyEwsSBkNvdXJzZRiAgICA3v7YCAw")
-                    .addFormDataPart("type","notes")
+                    .addFormDataPart("profileId", getSharedPreferences("CC",MODE_PRIVATE).getString("profileId",""))
+                    .addFormDataPart("courseId",courseId)
+                    .addFormDataPart("type",params[0])
                    .addFormDataPart("desc","This is a desc")
                     .addFormDataPart("value","this is a value?")
                     ;
-//            MultipartBuilder buildernew = new MultipartBuilder()
-//                    .type(MultipartBuilder.FORM)
-//                    .addFormDataPart("title", title);   //Here you can add the fix number of data.
-//
-//            for (int i = 0; i < AppConstants.arrImages.size(); i++) {  //loop to add dynamic number of files.
-//                File f = new File(FILE_PATH,TEMP_FILE_NAME + i + ".png");
-//                if (f.exists()) {
-//                    buildernew.addFormDataPart(TEMP_FILE_NAME + i, TEMP_FILE_NAME + i + FILE_EXTENSION, RequestBody.create(MEDIA_TYPE, f));
-//                }
-//            }
 
             for(Bitmap temp : UploadPicturesActivity.images_paths.keySet())
             {
@@ -177,35 +144,10 @@ public class AddEventActivity extends AppCompatActivity {
 
             }
             requestBody = body.build();
-
-
-
-
-//
-//            Request request = new Request.Builder()
-//                    .url("https://uploadnotes-2016.appspot.com/img")
-//                    .post(requestBody)
-//                    .build();
-//            Request request = new Request.Builder()
-//                    .url("https://uploadnotes-2016.appspot.com/imgandroid")
-//                    .post(requestBody)
-//                    .build();
-
-
-             String IMGUR_CLIENT_ID = "9199fdef135c122";
-//            RequestBody requestBody = new MultipartBody.Builder()
-//                    .setType(MultipartBody.FORM)
-//                    .addFormDataPart("title", "Square Logo")
-//                    .addFormDataPart("image", "test.jpg",
-//                            RequestBody.create(MediaType.parse("image/*"), new File(path)))
-//                    .build();
-
             Request request = new Request.Builder()
                     .url("https://uploadnotes-2016.appspot.com/img")
                     .post(requestBody)
                     .build();
-
-
             try {
                 client.newCall(request).execute();
             } catch (IOException e) {
@@ -224,11 +166,8 @@ public class AddEventActivity extends AppCompatActivity {
 //                }
 //            });
             Log.i("sw32","file");
-
             return null;
         }
-
-
             @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
@@ -237,46 +176,5 @@ public class AddEventActivity extends AppCompatActivity {
             finish();
         }
 
-    }
-    public static Boolean uploadFile(String serverURL, File file) {
-        try {
-
-            OkHttpClient client = new OkHttpClient();
-            RequestBody requestBody = new MultipartBody.Builder()
-                    .setType(MultipartBody.FORM)
-                    .addFormDataPart("file", file.getName(),
-                            RequestBody.create(MediaType.parse("image/*"), file))
-                    .addFormDataPart("profileId", "ahJzfnVwbG9hZG5vdGVzLTIwMTZyFAsSB1Byb2ZpbGUYgICAgN6lhQsM")
-                    .addFormDataPart("courseId","ahJzfnVwbG9hZG5vdGVzLTIwMTZyEwsSBkNvdXJzZRiAgICA3v7YCAw")
-                    .addFormDataPart("type","notes")
-                    .addFormDataPart("desc","This is a desc")
-                    .addFormDataPart("value","this is a value?")
-                    .build();
-
-            Request request = new Request.Builder()
-                    .url(serverURL)
-                    .post(requestBody)
-                    .build();
-
-            client.newCall(request).enqueue(new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    Log.i("sw32","here");
-                }
-
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    Log.i("sw32",response.message());
-                    Log.i("sw32",response.request()+"");
-
-                }
-            });
-
-            return true;
-        } catch (Exception ex) {
-            Log.i("sw32","catch");
-            // Handle the error
-        }
-        return false;
     }
 }

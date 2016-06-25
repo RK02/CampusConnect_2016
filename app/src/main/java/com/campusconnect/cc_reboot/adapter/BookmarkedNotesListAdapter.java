@@ -44,13 +44,13 @@ public class BookmarkedNotesListAdapter extends
 
     @Override
     public void onBindViewHolder(BookmarkedNotesListViewHolder notesListViewHolder, int i) {
-//        notesListViewHolder.note_name.setText(mNotes.get(i).getCourseName());
-//        notesListViewHolder.note_pages_count.setText(mNotes.get(i).getPages());
-//        notesListViewHolder.note_views.setText(mNotes.get(i).getViews());
-//        notesListViewHolder.note_description.setText(mNotes.get(i).getCourseName());
-//        notesListViewHolder.note_uploader.setText(mNotes.get(i).getUploaderName());
-//        notesListViewHolder.note_rating.setText(mNotes.get(i).getTotalRating());
-//        notesListViewHolder.note_posted_on.setText(mNotes.get(i).getLastUpdated());
+        notesListViewHolder.note_name.setText(mNotes.get(i).getCourseName());
+        notesListViewHolder.note_pages_count.setText(mNotes.get(i).getPages());
+        notesListViewHolder.note_views.setText(mNotes.get(i).getViews());
+        notesListViewHolder.note_description.setText(mNotes.get(i).getCourseName());
+        notesListViewHolder.note_uploader.setText(mNotes.get(i).getUploaderName());
+        notesListViewHolder.note_rating.setText(mNotes.get(i).getTotalRating());
+        notesListViewHolder.note_posted_on.setText(mNotes.get(i).getLastUpdated());
     }
 
     public String getNoteBookId(String noteBookName)

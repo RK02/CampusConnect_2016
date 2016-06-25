@@ -138,7 +138,6 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
             fadeOut.setStartOffset(2000);
             fadeOut.setDuration(500);
             fadeOut.setFillAfter(true);
-
             note_page_info.startAnimation(fadeOut);
             trial_button.startAnimation(fadeOut);
         }

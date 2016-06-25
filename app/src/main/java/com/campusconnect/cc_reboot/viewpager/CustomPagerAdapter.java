@@ -43,8 +43,6 @@ public class CustomPagerAdapter extends PagerAdapter {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View rootView = inflater.inflate(R.layout.notes_images, collection, false);
         ImageView notes_fullscreen = (ImageView) rootView.findViewById(R.id.iv_notes_fullscreen);
-        int index = collection.indexOfChild(rootView);
-        Log.i("sw3adapter",""+index+ ":"+ position);
         Picasso.with(mContext).
                 load(NotesSliderActivity.urls.get(mlevel).get(position)).
                 error(R.mipmap.ic_pages_18).
@@ -61,11 +59,6 @@ public class CustomPagerAdapter extends PagerAdapter {
     @Override
     public boolean isViewFromObject(View container, Object obj) {
         return container == obj;
-    }
-
-    public void setImages(ViewGroup view, int indexLevel1, int indexLevel2)
-    {
-
     }
 
 }

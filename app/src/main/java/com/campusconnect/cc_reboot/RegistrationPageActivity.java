@@ -228,7 +228,7 @@ public class RegistrationPageActivity extends AppCompatActivity{
                 if(signUp!=null)
                 {
                     profileId = signUp.getKey();
-                    new mobile_register().execute(personId,profileId);
+                    new mobile_register().execute(personId,profileId,batchName.getText().toString(),branchName.getText().toString(),sectionName.getText().toString());
                     SharedPreferences sharedPreferences = getSharedPreferences("CC",MODE_PRIVATE);
                     sharedPreferences
                             .edit()
@@ -237,6 +237,9 @@ public class RegistrationPageActivity extends AppCompatActivity{
                             .putString("batchName",batchName.getText().toString())
                             .putString("branchName",branchName.getText().toString())
                             .putString("sectionName",sectionName.getText().toString())
+                            .putString("profileName",personName)
+                            .putString("email",personEmail)
+                            .putString("photourl",personPhoto)
                             .apply();
                     Intent intent_temp = new Intent(getApplicationContext(), SelectCourseActivity.class);
                     startActivity(intent_temp);
@@ -301,7 +304,7 @@ public class RegistrationPageActivity extends AppCompatActivity{
             String response;
 
             try {
-                url = new URL("https://cryptic-savannah-44296.herokuapp.com/mobile_sign_up");
+                url = new URL(FragmentCourses.django+"/mobile_sign_up");
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("POST");
                 connection.setDoOutput(true);
@@ -311,6 +314,10 @@ public class RegistrationPageActivity extends AppCompatActivity{
                 jsonObject.put("gprofileId",params[0]);
                 jsonObject.put("profileId",params[1]);
                 jsonObject.put("profileName",personName);
+                jsonObject.put("collegeId",collegeId);
+                jsonObject.put("branchName",params[3]);
+                jsonObject.put("sectionName",params[4]);
+                jsonObject.put("batchName",params[2]);
                 jsonObject.put("imageUrl",personPhoto);
                 jsonObject.put("email",personEmail);
                 Log.i("sw32",params[0] +":"+params[1]+":"+personName );

@@ -53,6 +53,32 @@ public class FragmentUploadedNotes extends Fragment {
         uploaded_notes_list.setLayoutManager(mLayoutManager);
         uploaded_notes_list.setItemAnimator(new DefaultItemAnimator());
         uploaded_notes_list.setAdapter(mUploadedNotesAdapter);
+        Retrofit retrofit = new Retrofit.
+                Builder()
+                .baseUrl(MyApi.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        MyApi myApi = retrofit.create(MyApi.class);
+        MyApi.getUploadedRequest request = new MyApi.getUploadedRequest(CoursePageActivity.courseId);
+        Call<ModelNoteBookList> call = myApi.getUploaded(request);
+        call.enqueue(new Callback<ModelNoteBookList>() {
+            @Override
+            public void onResponse(Call<ModelNoteBookList> call, Response<ModelNoteBookList> response) {
+                ModelNoteBookList modelNoteBookList = response.body();
+                if(modelNoteBookList != null) {
+                    List<NoteBookList> noteBookLists = modelNoteBookList.getNoteBookList();
+                    for (NoteBookList x : noteBookLists) {
+                        mUploadedNotesAdapter.add(x);
+                        mUploadedNotesAdapter.notifyDataSetChanged();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ModelNoteBookList> call, Throwable t) {
+
+            }
+        });
 
         return v;
     }

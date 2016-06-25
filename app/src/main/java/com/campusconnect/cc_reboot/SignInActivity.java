@@ -25,6 +25,7 @@ package com.campusconnect.cc_reboot;
         import com.google.android.gms.common.api.OptionalPendingResult;
         import com.google.android.gms.common.api.ResultCallback;
         import com.google.android.gms.common.api.Status;
+        import com.google.gson.JsonNull;
 
         import org.json.JSONException;
         import org.json.JSONObject;
@@ -279,7 +280,7 @@ public class SignInActivity extends AppCompatActivity implements
             String response;
 
             try {
-                url = new URL("https://cryptic-savannah-44296.herokuapp.com/mobile_sign_in");
+                url = new URL(FragmentCourses.django+"/mobile_sign_in");
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("POST");
                 connection.setDoOutput(true);
@@ -325,11 +326,28 @@ public class SignInActivity extends AppCompatActivity implements
             }
             else
             {
+                JSONObject profileData = new JSONObject();
+                try {
+                    profileData = new JSONObject(s);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 SharedPreferences sharedPreferences = getSharedPreferences("CC",MODE_PRIVATE);
-                sharedPreferences
-                        .edit()
-                        .putString("profileId",s)
-                        .apply();
+                try {
+                    sharedPreferences
+                            .edit()
+                            .putString("profileId",profileData.getString("profileId"))
+                            .putString("collegeId",profileData.getString("collegeId"))
+                            .putString("batchName",profileData.getString("batchName"))
+                            .putString("branchName",profileData.getString("branchName"))
+                            .putString("sectionName",profileData.getString("sectionName"))
+                            .putString("profileName",profileData.getString("profileName"))
+                            .putString("email",profileData.getString("email"))
+                            .putString("photourl",profileData.getString("photourl"))
+                            .apply();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 Intent home = new Intent(SignInActivity.this, HomeActivity2.class);
                 startActivity(home);
             }

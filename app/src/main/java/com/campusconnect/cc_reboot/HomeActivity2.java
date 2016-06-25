@@ -2,6 +2,7 @@ package com.campusconnect.cc_reboot;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -21,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -36,8 +38,10 @@ import com.campusconnect.cc_reboot.fragment.Drawer.FragmentPointsInfo;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentRate;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentSettings;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentTerms;
+import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
 import com.campusconnect.cc_reboot.fragment.Home.FragmentTimetable;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -100,8 +104,14 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
         setSupportActionBar(toolbar);
 
         //Setting up Header View
-        View headerView = getLayoutInflater().inflate(R.layout.header, navigationView, false);
+        final View headerView = getLayoutInflater().inflate(R.layout.header, navigationView, false);
         navigationView.addHeaderView(headerView);
+        ImageView view = (ImageView) headerView.findViewById(R.id.profile_image);
+        Picasso.with(HomeActivity2.this).
+                load(getSharedPreferences("CC",MODE_PRIVATE).getString("photourl","fakedesu")).error(R.mipmap.ic_launcher).
+                into(view);
+        ((TextView)headerView.findViewById(R.id.tv_username)).setText(getSharedPreferences("CC",MODE_PRIVATE).getString("profileName","PLACEHOLDER"));
+        ((TextView)headerView.findViewById(R.id.tv_points)).setText(FragmentCourses.profilePoints);
 
         //Setting Home Fragment as default
         frag_title = "Home";
@@ -144,11 +154,13 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
+
             }
 
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
+
             }
 
             @Override
@@ -159,6 +171,8 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
                 fragment_frame.setTranslationX((drawerLayout.getWidth() * slideOffset) / 4);
             }
         };
+
+
 
         //Setting the actionbarToggle to drawer layout
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
@@ -177,6 +191,7 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
                 startActivity(intent_temp);
             }
         });
+
 
         //OnClickListeners
         menu_button.setOnClickListener(this);

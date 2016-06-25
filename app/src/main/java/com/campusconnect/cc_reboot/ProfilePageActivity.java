@@ -1,22 +1,33 @@
 package com.campusconnect.cc_reboot;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.campusconnect.cc_reboot.POJO.AvailableCourseList;
+import com.campusconnect.cc_reboot.POJO.Example;
 import com.campusconnect.cc_reboot.POJO.ModelCoursePage;
 import com.campusconnect.cc_reboot.POJO.MyApi;
+import com.campusconnect.cc_reboot.POJO.SubscribedCourseList;
 import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
 import com.campusconnect.cc_reboot.slidingtab.SlidingTabLayout_home;
 import com.campusconnect.cc_reboot.viewpager.ViewPagerAdapter_course;
 import com.campusconnect.cc_reboot.viewpager.ViewPagerAdapter_profile;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -34,6 +45,14 @@ public class ProfilePageActivity extends AppCompatActivity implements FloatingAc
     @Bind(R.id.pager_course)
     ViewPager profile_pager;
 
+    @Bind(R.id.profile_image)
+    ImageView profile_image;
+     @Bind(R.id.tv_username)
+    TextView profile_name;
+
+    @Bind(R.id.tv_points)
+    TextView profile_points;
+
     @Bind(R.id.tabs_course)
     SlidingTabLayout_home profile_tabs;
 
@@ -41,6 +60,8 @@ public class ProfilePageActivity extends AppCompatActivity implements FloatingAc
     ImageButton gifts_button;
     @Bind(R.id.ib_edit_profile)
     ImageButton edit_profile_button;
+
+
 
     @Bind(R.id.container_fab)
     FrameLayout fab_menu_container;
@@ -73,6 +94,34 @@ public class ProfilePageActivity extends AppCompatActivity implements FloatingAc
 
         //Listener to define layouts for FAB expanded and collapsed modes
         fabMenu.setOnFloatingActionsMenuUpdateListener(this);
+
+        Retrofit retrofit = new Retrofit.
+                Builder()
+                .baseUrl(MyApi.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        MyApi myApi = retrofit.create(MyApi.class);
+        Call<Example> call = myApi.getFeed(getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""));
+        call.enqueue(new Callback<Example>() {
+            @Override
+            public void onResponse(Call<Example> call, Response<Example> response) {
+
+                Log.i("sw32", "" + response.code());
+                Example example = response.body();
+                if (example != null) {
+                    Picasso.with(ProfilePageActivity.this).load(example.getPhotoUrl()).into(profile_image);
+                    profile_name.setText(example.getProfileName());
+                    profile_points.setText(example.getPoints());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Example> call, Throwable t) {
+
+            }
+        });
+
+
 
         //OnClickListeners
         gifts_button.setOnClickListener(this);
