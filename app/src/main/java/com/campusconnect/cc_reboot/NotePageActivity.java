@@ -22,7 +22,6 @@ import com.campusconnect.cc_reboot.POJO.ModelNoteBook;
 import com.campusconnect.cc_reboot.POJO.ModelNoteBookList;
 import com.campusconnect.cc_reboot.POJO.MyApi;
 
-import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -101,19 +100,10 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
 
         noteBookId = getIntent().getStringExtra("noteBookId");
 
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-// set your desired log level
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-// add your other interceptors …
-
-// add logging as last interceptor
-        httpClient.addInterceptor(logging);
         retrofit = new Retrofit.
                 Builder()
                 .baseUrl(MyApi.BASE_URL)
-                .client(httpClient.build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         MyApi myApi = retrofit.create(MyApi.class);

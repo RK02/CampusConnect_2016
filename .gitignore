@@ -15,3 +15,4 @@ build/generated/mockable-android-23.jar
 .gradle/2.10/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock
 .gradle/2.10/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock
 build/generated/mockable-android-23.jar
+.gradle/2.10/taskArtifacts/cache.properties.lock

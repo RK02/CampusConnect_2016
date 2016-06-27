@@ -3,6 +3,7 @@
     package="com.campusconnect.cc_reboot">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -22,7 +23,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".SplashActivity"
-            android:label="@string/app_name">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -96,9 +97,6 @@
             android:screenOrientation="portrait" />
         <activity android:name=".SignInActivity" />
         <activity android:name=".AddEventActivity" />
-        <activity
-            android:name=".UploadPicturesActivity"
-            android:screenOrientation="portrait" />
 
     </application>
 

@@ -64,14 +64,11 @@ public class SelectCourseActivity extends AppCompatActivity{
         select_course_list.setLayoutManager(mLayoutManager);
         select_course_list.setItemAnimator(new DefaultItemAnimator());
         select_course_list.setAdapter(mCourseSelectionAdapter);
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+
         Retrofit retrofit = new Retrofit.
                 Builder()
                 .baseUrl(FragmentCourses.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
                 .build();
         MyApi myApi = retrofit.create(MyApi.class);
         MyApi.getCoursesRequest body = new MyApi.getCoursesRequest(FragmentCourses.profileId);
