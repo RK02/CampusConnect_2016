@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-//    signingConfigs {
-//        config {
-//            keyAlias 'cckey'
-//            keyPassword 'password'
-//            storeFile file('/Users/sarthak/cckeystore.jks')
-//            storePassword 'password'
-//        }
-//    }
+    signingConfigs {
+        config {
+            keyAlias 'cckey'
+            keyPassword 'password'
+            storeFile file('/Users/sarthak/cckeystore.jks')
+            storePassword 'password'
+        }
+    }
     dexOptions {
         javaMaxHeapSize "4g"
     }
@@ -27,9 +27,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-//        debug {
-//            signingConfig signingConfigs.config
-//        }
+        debug {
+            signingConfig signingConfigs.config
+        }
     }
 }
 
