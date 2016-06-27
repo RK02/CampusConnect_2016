@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:background="@color/ColorRecyclerBackground"
+    android:layout_gravity="center_horizontal">
+
+    <TextView
+        android:id="@+id/tv_course_color_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Course color"
+        android:textColor="@color/ColorTextInfo"
+        android:padding="16dp"
+        android:textSize="18sp"/>
+
+    <View
+        android:id="@+id/divider_1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/tv_course_color_title"
+        android:background="@color/ColorTextInfo"
+        android:layout_marginBottom="4dp"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_course_colors"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/divider_1"
+        android:layout_centerHorizontal="true"
+        android:clipToPadding="false" />
+</RelativeLayout>

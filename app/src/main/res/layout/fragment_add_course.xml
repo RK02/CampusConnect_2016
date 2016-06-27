@@ -1,16 +1,723 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/ColorRecyclerBackground">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="ADD COURSE"
-        android:padding="8dp"
-        android:textColor="#383838"
-        android:background="#ffffff"
-        android:textSize="28sp"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:background="@color/ColorRecyclerBackground">
+
+        <RelativeLayout
+            android:id="@+id/container_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="64dp">
+
+            <LinearLayout
+                android:id="@+id/container_course_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:weightSum="1">
+
+                <EditText
+                    android:id="@+id/et_courseName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.9"
+                    android:background="@drawable/edittext_rounded_upload"
+                    android:gravity="center_vertical|left"
+                    android:hint="Course Name"
+                    android:paddingBottom="4dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="4dp"
+                    android:textColor="@color/ColorTextInfo"
+                    android:textColorHint="#A0A0A0"
+                    android:textSize="16sp" />
+
+                <View
+                    android:id="@+id/view_course_color_picker"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_marginLeft="8dp"
+                    android:background="@drawable/color_picker_r1" />
+            </LinearLayout>
+
+
+            <EditText
+                android:id="@+id/et_courseCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/container_course_name"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/edittext_rounded_upload"
+                android:hint="Course Code, for eg., CHE-402"
+                android:paddingBottom="4dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="4dp"
+                android:textColor="@color/ColorTextInfo"
+                android:textColorHint="#A0A0A0"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/et_courseProf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/et_courseCode"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/edittext_rounded_upload"
+                android:hint="Professor"
+                android:paddingBottom="4dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="4dp"
+                android:textColor="@color/ColorTextInfo"
+                android:textColorHint="#A0A0A0"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/et_courseSem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/et_courseProf"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/edittext_rounded_upload"
+                android:hint="Semester"
+                android:paddingBottom="4dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="4dp"
+                android:textColor="@color/ColorTextInfo"
+                android:textColorHint="#A0A0A0"
+                android:textSize="16sp" />
+
+            <CheckBox
+                android:id="@+id/chk_elective"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/et_courseSem"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:paddingBottom="4dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="16dp"
+                android:paddingTop="4dp"
+                android:text="Elective" />
+
+            <View
+                android:id="@+id/divider_1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/chk_elective"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/ColorKeyStatContainer" />
+
+            <EditText
+                android:id="@+id/et_courseBatch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/divider_1"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/edittext_rounded_upload"
+                android:hint="Batch"
+                android:paddingBottom="4dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="4dp"
+                android:textColor="@color/ColorTextInfo"
+                android:textColorHint="#A0A0A0"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/et_courseSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/et_courseBatch"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/edittext_rounded_upload"
+                android:hint="Section"
+                android:paddingBottom="4dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="4dp"
+                android:textColor="@color/ColorTextInfo"
+                android:textColorHint="#A0A0A0"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/et_courseBranch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/et_courseSection"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/edittext_rounded_upload"
+                android:hint="Branch, for eg., Mechanical Engineering"
+                android:paddingBottom="4dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="4dp"
+                android:textColor="@color/ColorTextInfo"
+                android:textColorHint="#A0A0A0"
+                android:textSize="16sp" />
+
+            <View
+                android:id="@+id/divider_2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/et_courseBranch"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/ColorKeyStatContainer" />
+
+            <TextView
+                android:id="@+id/tv_timetable_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/divider_2"
+                android:layout_marginTop="8dp"
+                android:paddingBottom="4dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="4dp"
+                android:text="Timetable"
+                android:textColor="@color/ColorTextInfo"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:id="@+id/container_week_toggle_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_timetable_title"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <ToggleButton
+                    android:id="@+id/tb_monday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/selector_subscribe"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
+                    android:padding="8dp"
+                    android:textColor="@color/ColorTextHeading"
+                    android:textOff="Mon"
+                    android:textOn="Mon"
+                    android:textSize="14sp" />
+
+                <ToggleButton
+                    android:id="@+id/tb_tuesday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:background="@drawable/selector_subscribe"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
+                    android:padding="8dp"
+                    android:textColor="@color/ColorTextHeading"
+                    android:textOff="Tue"
+                    android:textOn="Tue"
+                    android:textSize="14sp" />
+
+                <ToggleButton
+                    android:id="@+id/tb_wednesday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:background="@drawable/selector_subscribe"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
+                    android:padding="8dp"
+                    android:textColor="@color/ColorTextHeading"
+                    android:textOff="Wed"
+                    android:textOn="Wed"
+                    android:textSize="14sp" />
+
+                <ToggleButton
+                    android:id="@+id/tb_thursday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:background="@drawable/selector_subscribe"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
+                    android:padding="8dp"
+                    android:textColor="@color/ColorTextHeading"
+                    android:textOff="Thurs"
+                    android:textOn="Thurs"
+                    android:textSize="14sp" />
+
+                <ToggleButton
+                    android:id="@+id/tb_friday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:background="@drawable/selector_subscribe"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
+                    android:padding="8dp"
+                    android:textColor="@color/ColorTextHeading"
+                    android:textOff="Fri"
+                    android:textOn="Fri"
+                    android:textSize="14sp" />
+
+                <ToggleButton
+                    android:id="@+id/tb_saturday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:background="@drawable/selector_subscribe"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
+                    android:padding="8dp"
+                    android:textColor="@color/ColorTextHeading"
+                    android:textOff="Sat"
+                    android:textOn="Sat"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_timings_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/container_week_toggle_btn"
+                android:layout_marginTop="16dp"
+                android:paddingBottom="4dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="4dp"
+                android:text="Timings"
+                android:textColor="@color/ColorTextInfo"
+                android:textSize="15sp" />
+
+            <LinearLayout
+                android:id="@+id/container_timetable_timings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_timings_title"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="8dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/container_timetable_timings_mon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_monday_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="4dp"
+                        android:paddingTop="4dp"
+                        android:text="Mon:"
+                        android:textColor="@color/ColorTextInfo"
+                        android:textSize="14sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <EditText
+                            android:id="@+id/et_startDate_Mon"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/et_courseSection"
+                            android:layout_marginRight="4dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/edittext_rounded_upload"
+                            android:hint="Start Date"
+                            android:paddingBottom="4dp"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp"
+                            android:paddingTop="4dp"
+                            android:textColor="@color/ColorTextInfo"
+                            android:textColorHint="#A0A0A0"
+                            android:textSize="16sp" />
+
+                        <EditText
+                            android:id="@+id/et_endDate_Mon"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/et_courseSection"
+                            android:layout_marginLeft="4dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/edittext_rounded_upload"
+                            android:hint="End Date"
+                            android:paddingBottom="4dp"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp"
+                            android:paddingTop="4dp"
+                            android:textColor="@color/ColorTextInfo"
+                            android:textColorHint="#A0A0A0"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/container_timetable_timings_tue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_tuesday_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="4dp"
+                        android:paddingTop="4dp"
+                        android:text="Tue:"
+                        android:textColor="@color/ColorTextInfo"
+                        android:textSize="14sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <EditText
+                            android:id="@+id/et_startDate_Tue"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/et_courseSection"
+                            android:layout_marginRight="4dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/edittext_rounded_upload"
+                            android:hint="Start Date"
+                            android:paddingBottom="4dp"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp"
+                            android:paddingTop="4dp"
+                            android:textColor="@color/ColorTextInfo"
+                            android:textColorHint="#A0A0A0"
+                            android:textSize="16sp" />
+
+                        <EditText
+                            android:id="@+id/et_endDate_Tue"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/et_courseSection"
+                            android:layout_marginLeft="4dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/edittext_rounded_upload"
+                            android:hint="End Date"
+                            android:paddingBottom="4dp"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp"
+                            android:paddingTop="4dp"
+                            android:textColor="@color/ColorTextInfo"
+                            android:textColorHint="#A0A0A0"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/container_timetable_timings_wed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_wednesday_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="4dp"
+                        android:paddingTop="4dp"
+                        android:text="Wed:"
+                        android:textColor="@color/ColorTextInfo"
+                        android:textSize="14sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <EditText
+                            android:id="@+id/et_startDate_Wed"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/et_courseSection"
+                            android:layout_marginRight="4dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/edittext_rounded_upload"
+                            android:hint="Start Date"
+                            android:paddingBottom="4dp"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp"
+                            android:paddingTop="4dp"
+                            android:textColor="@color/ColorTextInfo"
+                            android:textColorHint="#A0A0A0"
+                            android:textSize="16sp" />
+
+                        <EditText
+                            android:id="@+id/et_endDate_Wed"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/et_courseSection"
+                            android:layout_marginLeft="4dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/edittext_rounded_upload"
+                            android:hint="End Date"
+                            android:paddingBottom="4dp"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp"
+                            android:paddingTop="4dp"
+                            android:textColor="@color/ColorTextInfo"
+                            android:textColorHint="#A0A0A0"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/container_timetable_timings_thurs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_thursday_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="4dp"
+                        android:paddingTop="4dp"
+                        android:text="Thurs:"
+                        android:textColor="@color/ColorTextInfo"
+                        android:textSize="14sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <EditText
+                            android:id="@+id/et_startDate_Thurs"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/et_courseSection"
+                            android:layout_marginRight="4dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/edittext_rounded_upload"
+                            android:hint="Start Date"
+                            android:paddingBottom="4dp"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp"
+                            android:paddingTop="4dp"
+                            android:textColor="@color/ColorTextInfo"
+                            android:textColorHint="#A0A0A0"
+                            android:textSize="16sp" />
+
+                        <EditText
+                            android:id="@+id/et_endDate_Thurs"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/et_courseSection"
+                            android:layout_marginLeft="4dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/edittext_rounded_upload"
+                            android:hint="End Date"
+                            android:paddingBottom="4dp"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp"
+                            android:paddingTop="4dp"
+                            android:textColor="@color/ColorTextInfo"
+                            android:textColorHint="#A0A0A0"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/container_timetable_timings_fri"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_friday_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="4dp"
+                        android:paddingTop="4dp"
+                        android:text="Fri:"
+                        android:textColor="@color/ColorTextInfo"
+                        android:textSize="14sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <EditText
+                            android:id="@+id/et_startDate_Fri"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/et_courseSection"
+                            android:layout_marginRight="4dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/edittext_rounded_upload"
+                            android:hint="Start Date"
+                            android:paddingBottom="4dp"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp"
+                            android:paddingTop="4dp"
+                            android:textColor="@color/ColorTextInfo"
+                            android:textColorHint="#A0A0A0"
+                            android:textSize="16sp" />
+
+                        <EditText
+                            android:id="@+id/et_endDate_Fri"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/et_courseSection"
+                            android:layout_marginLeft="4dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/edittext_rounded_upload"
+                            android:hint="End Date"
+                            android:paddingBottom="4dp"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp"
+                            android:paddingTop="4dp"
+                            android:textColor="@color/ColorTextInfo"
+                            android:textColorHint="#A0A0A0"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/container_timetable_timings_sat"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="4dp"
+                    android:layout_height="wrap_content"
+                    
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_saturday_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="4dp"
+                        android:paddingTop="4dp"
+                        android:text="Sat:"
+                        android:textColor="@color/ColorTextInfo"
+                        android:textSize="14sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <EditText
+                            android:id="@+id/et_startDate_Sat"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/et_courseSection"
+                            android:layout_marginRight="4dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/edittext_rounded_upload"
+                            android:hint="Start Date"
+                            android:paddingBottom="4dp"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp"
+                            android:paddingTop="4dp"
+                            android:textColor="@color/ColorTextInfo"
+                            android:textColorHint="#A0A0A0"
+                            android:textSize="16sp" />
+
+                        <EditText
+                            android:id="@+id/et_endDate_Sat"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/et_courseSection"
+                            android:layout_marginLeft="4dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/edittext_rounded_upload"
+                            android:hint="End Date"
+                            android:paddingBottom="4dp"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp"
+                            android:paddingTop="4dp"
+                            android:textColor="@color/ColorTextInfo"
+                            android:textColorHint="#A0A0A0"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/container_action_buttons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/container_timetable_timings"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@+id/b_cancel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/ColorPrimary"
+                    android:gravity="center"
+                    android:minHeight="0dp"
+                    android:paddingBottom="12dp"
+                    android:paddingTop="12dp"
+                    android:text="CANCEL"
+                    android:textColor="@color/ColorTextHeading"
+                    android:textSize="16sp" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/ColorTextHeading" />
+
+                <Button
+                    android:id="@+id/b_create"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/ColorPrimary"
+                    android:gravity="center"
+                    android:minHeight="0dp"
+                    android:paddingBottom="12dp"
+                    android:paddingTop="12dp"
+                    android:text="CREATE"
+                    android:textColor="@color/ColorTextHeading"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </ScrollView>
+
 </RelativeLayout>

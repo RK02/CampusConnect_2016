@@ -16,8 +16,7 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp">
+        android:paddingTop="16dp">
 
         <!--Notes card top container-->
         <RelativeLayout
@@ -104,28 +103,93 @@
                 </RelativeLayout>
             </LinearLayout>
         </RelativeLayout>
-
-        <TextView
-            android:id="@+id/tv_note_course_semester"
+        <LinearLayout
+            android:id="@+id/container_stats"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="Math, Semester 2"
+            android:background="@color/ColorKeyStatContainer"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="32dp"
             android:layout_below="@+id/top_part_card"
-            android:textColor="#000000"
-            android:textSize="16sp" />
+            android:weightSum="3">
+            <LinearLayout
+                android:id="@+id/container_stats_views"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.15"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <ImageButton
+                    android:id="@+id/ib_views"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:src="@mipmap/ic_views_18_black"/>
+                <TextView
+                    android:id="@+id/tv_views_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="8dp"
+                    android:textSize="16sp"
+                    android:text="34567"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textColor="@color/ColorTextInfo"/>
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-            android:layout_below="@+id/tv_note_course_semester"
-            android:textColor="#000000"
-            android:textSize="16sp" />
+            <LinearLayout
+                android:id="@+id/container_stats_rating"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <ImageButton
+                    android:id="@+id/ib_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:src="@mipmap/ic_views_18_black"/>
+                <TextView
+                    android:id="@+id/tv_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="8dp"
+                    android:textSize="16sp"
+                    android:text="4.3"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textColor="@color/ColorTextInfo"/>
+            </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/container_stats_pages"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.15"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <ImageButton
+                    android:id="@+id/ib_pages"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:src="@mipmap/ic_pages_18"/>
+                <TextView
+                    android:id="@+id/tv_pages_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="8dp"
+                    android:textSize="16sp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:text="7"
+                    android:textColor="@color/ColorTextInfo"/>
+            </LinearLayout>
+
+        </LinearLayout>
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>
