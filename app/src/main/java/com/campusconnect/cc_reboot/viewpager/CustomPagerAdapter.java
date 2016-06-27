@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import com.campusconnect.cc_reboot.NotesSliderActivity;
 import com.campusconnect.cc_reboot.R;
+import com.campusconnect.cc_reboot.auxiliary.PinchToZoom.GestureImageView;
 import com.campusconnect.cc_reboot.fragment.NotesSliderPageFragment;
 import com.squareup.picasso.Picasso;
 
@@ -42,7 +43,7 @@ public class CustomPagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup collection, int position) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View rootView = inflater.inflate(R.layout.notes_images, collection, false);
-        ImageView notes_fullscreen = (ImageView) rootView.findViewById(R.id.iv_notes_fullscreen);
+        GestureImageView notes_fullscreen = (GestureImageView) rootView.findViewById(R.id.iv_notes_fullscreen);
         int index = collection.indexOfChild(rootView);
         Log.i("sw3adapter",""+index+ ":"+ position);
         Picasso.with(mContext).

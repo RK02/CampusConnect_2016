@@ -78,16 +78,22 @@ public class AddEventActivity extends AppCompatActivity {
             case 1: name.setHint("Exam name");submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    upload.setText("UPLOAD PHOTO");
                     new doStuff().execute();
                 }
             });break;
             case 2: name.setHint("Assignment name");submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    upload.setText("UPLOAD PHOTO");
                     new doStuff().execute();
                 }
             });break;
-            case 3: name.setHint("Note name");upload.setVisibility(View.GONE);submit.setOnClickListener(new View.OnClickListener() {
+            case 3:
+                name.setHint("Note name");
+                upload.setText("UPLOAD MORE");
+                submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     new doStuff().execute();
