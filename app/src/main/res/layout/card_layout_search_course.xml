@@ -16,10 +16,8 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp">
+        android:paddingTop="16dp">
 
-        <!--Course card top container-->
         <RelativeLayout
             android:id="@+id/top_part_card"
             android:layout_width="wrap_content"
@@ -32,65 +30,148 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_toLeftOf="@+id/tv_date_course_created"
                 android:paddingRight="64dp"
                 android:text="MATH"
                 android:textColor="#000000"
                 android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/tv_date_course_created"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="2016"
-                android:textColor="#000000"
-                android:textSize="18sp" />
         </RelativeLayout>
 
-        <!--Course info container-->
-        <LinearLayout
-            android:id="@+id/container_course_info"
+        <RelativeLayout
+            android:id="@+id/container_course_info_all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/top_part_card"
-            android:orientation="vertical"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp">
+            android:padding="16dp">
 
-            <TextView
-                android:id="@+id/tv_prof_name"
+            <!--Course info container-->
+            <LinearLayout
+                android:id="@+id/container_course_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_toLeftOf="@+id/tv_date_course_created"
-                android:paddingRight="64dp"
-                android:text="Prof. XYZ"
-                android:textColor="#000000"
-                android:textSize="16sp" />
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_sem"
+                <TextView
+                    android:id="@+id/tv_prof_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@+id/tv_date_course_created"
+                    android:paddingRight="64dp"
+                    android:text="Prof. XYZ"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_sem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="Semester 2"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/container_course_info_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="Semester 2"
-                android:textColor="#000000"
-                android:textSize="16sp" />
+                android:layout_toRightOf="@+id/container_course_info"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_date_course_created"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/tv_section"
+                    android:layout_alignRight="@+id/tv_section"
+                    android:gravity="center_vertical|right"
+                    android:text="2016"
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_section"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_date_course_created"
+                    android:gravity="center_vertical|right"
+                    android:paddingLeft="16dp"
+                    android:text="Chemical Engg. Section"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
+
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/container_stats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/ColorKeyStatContainer"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:orientation="horizontal"
+            android:layout_below="@+id/container_course_info_all"
+            android:layout_marginTop="8dp"
+            android:weightSum="2">
+            <LinearLayout
+                android:id="@+id/container_stats_views"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <ImageButton
+                    android:id="@+id/ib_views"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:src="@mipmap/ic_total_pages_18_black"/>
+                <TextView
+                    android:id="@+id/tv_views_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="8dp"
+                    android:textSize="16sp"
+                    android:text="23864"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textColor="@color/ColorTextInfo"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/container_exam_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <ImageButton
+                    android:id="@+id/ib_exam_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:src="@mipmap/ic_suscribers_18_black"/>
+                <TextView
+                    android:id="@+id/tv_exam_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="8dp"
+                    android:textSize="16sp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:text="45"
+                    android:textColor="@color/ColorTextInfo"/>
+            </LinearLayout>
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/container_course_info"
-            android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
-            android:textColor="#000000"
-            android:paddingTop="16dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:textSize="16sp" />
+
 
     </RelativeLayout>
 
