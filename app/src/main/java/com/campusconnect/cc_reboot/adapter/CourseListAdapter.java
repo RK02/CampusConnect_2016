@@ -73,12 +73,35 @@ public class CourseListAdapter extends
         return mCourses.size();
     }
 
+    public void clear()
+    {
+        mCourses.clear();
+        notifyDataSetChanged();
+    }
+
     @Override
     public void onBindViewHolder(CourseListViewHolder courseListViewHolder, int i) {
-        courseListViewHolder.notes_unseen_count.setText(mCourses.get(i).getRecentNotes());
-        courseListViewHolder.exams_count.setText(mCourses.get(i).getDueTests());
-        courseListViewHolder.assignments_count.setText(mCourses.get(i).getDueAssignments());
-        courseListViewHolder.course_title.setText(mCourses.get(i).getCourseName());
+       SubscribedCourseList a =  mCourses.get(i);
+        courseListViewHolder.notes_unseen_count.setText(a.getRecentNotes());
+        courseListViewHolder.exams_count.setText(a.getDueExams());
+        courseListViewHolder.assignments_count.setText(a.getDueAssignments());
+        courseListViewHolder.course_title.setText(a.getCourseName());
+        courseListViewHolder.courseProfessor.setText(a.getProfessorName());
+        List<String> days = a.getDate();
+        String tt= "";
+        for(String temp : days)
+        {
+           switch (temp)
+           {
+               case "1":tt+="M ";break;
+               case "2":tt+="T ";break;
+               case "3":tt+="W ";break;
+               case "4":tt+="T ";break;
+               case "5":tt+="F ";break;
+               case "6":tt+="S ";break;
+           }
+        }
+        courseListViewHolder.timetableGlance.setText(tt);
 
         //If more than two cards are sent from the server, please change this ASAP.
       //  courseListViewHolder.course_card.setBackgroundColor(card_bk_color[i-1]);
@@ -112,6 +135,10 @@ public class CourseListAdapter extends
         TextView assignments_count;
         @Bind(R.id.tv_exams_count)
         TextView exams_count;
+        @Bind(R.id.tv_course_professor)
+        TextView courseProfessor;
+        @Bind(R.id.tv_timetable_glance)
+        TextView timetableGlance;
 
         public CourseListViewHolder(View v) {
             super(v);

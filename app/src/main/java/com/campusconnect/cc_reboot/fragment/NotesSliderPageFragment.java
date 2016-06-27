@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.campusconnect.cc_reboot.AssignmentPageActivity;
+import com.campusconnect.cc_reboot.NotePageActivity;
 import com.campusconnect.cc_reboot.NotesSliderActivity;
 import com.campusconnect.cc_reboot.R;
 import com.campusconnect.cc_reboot.auxiliary.DepthPageTransformer;
@@ -45,20 +46,11 @@ public class NotesSliderPageFragment extends Fragment implements View.OnTouchLis
     String class_no, total_pages, curr_page;
 
     ArrayList<ArrayList<String>> urls = NotesSliderActivity.urls;
-    ArrayList<Integer> pages;
     int page_pos;
     int totalPages=0;
     ViewPagerDisable pager_img;
     Bundle fragArgs;
 
-    int img_1[] = { R.mipmap.ic_due_18,
-            R.mipmap.ic_launcher,
-            R.mipmap.ic_share_24_black,
-            R.mipmap.ic_sort_24 };
-
-    int img_2[] = { R.mipmap.ic_notifications_24,
-            R.mipmap.ic_notifications_none_24,
-            R.mipmap.ic_pages_18 };
 
     public interface NotePageInfoToActivity{
         public void notePageInfo(String class_no, String curr_page, String total_pages);
@@ -88,14 +80,14 @@ public class NotesSliderPageFragment extends Fragment implements View.OnTouchLis
         }
 
         pager_img.setPageTransformer(true, new DepthPageTransformer());
-
-        //String temp = urls.get(urls.size()-1).toString();
-        //temp = temp.substring(1,temp.length()-1);
-        //String[] urls = temp.split(",");
+        //class_no = fragArgs.getString("PageTitle");
+        page_pos = fragArgs.getInt("PagePos");
+        Log.i("sw32pagepos",page_pos+"");
 
         pager_img.setAdapter(new CustomPagerAdapter(getActivity(),urls.get(page_pos),page_pos));
 
-        class_no = fragArgs.getString("PageTitle");
+
+        Log.i("sw32",page_pos+" : "+class_no);
         total_pages = Integer.toString(pager_img.getAdapter().getCount());
         curr_page = Integer.toString(1);
         notePageInfoToActivity.notePageInfo(class_no,curr_page,total_pages);
@@ -104,6 +96,8 @@ public class NotesSliderPageFragment extends Fragment implements View.OnTouchLis
             @Override
             public void onPageSelected(int index) {
                 // TODO Auto-generated method stub
+                curr_page = index+1 +"";
+                Log.i("sw32page",class_no);
                 curr_page = Integer.toString(index+1);
                 notePageInfoToActivity.notePageInfo(class_no,curr_page,total_pages);
             }
@@ -118,7 +112,6 @@ public class NotesSliderPageFragment extends Fragment implements View.OnTouchLis
 
             }
         });
-
 
         touch_handling_view.setOnTouchListener(this);
 

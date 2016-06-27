@@ -10,13 +10,14 @@ import java.util.Map;
 
 public class SubscribedCourseList {
 
-    private String dueTests;
+    private String dueExams;
     private String courseName;
     private String recentNotes;
     private String courseId;
     private List<String> startTime = new ArrayList<String>();
     private List<String> date = new ArrayList<String>();
     private String dueAssignments;
+    private  String professorName;
     private List<String> endTime = new ArrayList<String>();
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -25,18 +26,7 @@ public class SubscribedCourseList {
      * @return
      * The dueTests
      */
-    public String getDueTests() {
-        return dueTests;
-    }
 
-    /**
-     *
-     * @param dueTests
-     * The dueTests
-     */
-    public void setDueTests(String dueTests) {
-        this.dueTests = dueTests;
-    }
 
     /**
      *
@@ -162,4 +152,19 @@ public class SubscribedCourseList {
         this.additionalProperties.put(name, value);
     }
 
+    public String getProfessorName() {
+        return professorName;
+    }
+
+    public void setProfessorName(String professorName) {
+        this.professorName = professorName;
+    }
+
+    public String getDueExams() {
+        return dueExams;
+    }
+
+    public void setDueExams(String dueExams) {
+        this.dueExams = dueExams;
+    }
 }

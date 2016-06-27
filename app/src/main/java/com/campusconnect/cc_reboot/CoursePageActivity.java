@@ -1,8 +1,10 @@
 package com.campusconnect.cc_reboot;
 
 import android.app.Notification;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -27,6 +29,13 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import okhttp3.OkHttpClient;
@@ -36,6 +45,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.POST;
 
 /**
  * Created by RK on 04/06/2016.
@@ -79,6 +89,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
     int Numboftabs = 3;
 
     static public String courseId;
+    static public String courseTitle;
     int courseColor;
     int defaultTabPosition=0;
 
@@ -105,6 +116,8 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
         course_tabs.setDistributeEvenly(true);
         course_tabs.setViewPager(course_pager);
 
+
+
         Retrofit retrofit = new Retrofit.
                 Builder()
                 .baseUrl(MyApi.BASE_URL)
@@ -112,7 +125,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                 .build();
         MyApi myapi = retrofit.create(MyApi.class);
 
-        MyApi.getCourseRequest getCourseRequest = new MyApi.getCourseRequest(FragmentCourses.profileId,courseId);
+        MyApi.getCourseRequest getCourseRequest = new MyApi.getCourseRequest(getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""),courseId);
 
         Call<ModelCoursePage> call = myapi.getCourse(getCourseRequest);
         call.enqueue(new Callback<ModelCoursePage>() {
@@ -121,7 +134,10 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                 ModelCoursePage modelCoursePage = response.body();
                 if(modelCoursePage != null) {
                     course_title.setText(modelCoursePage.getCourseName());
+                    courseTitle = course_title.getText().toString();
+                    course_prof.setText(modelCoursePage.getProfessorName());
                     course_details.setText(modelCoursePage.getDescription());
+                    if(modelCoursePage.getIsSubscribed().equals("1")) subscribe_button.setChecked(true);
                 }
             }
 
@@ -163,6 +179,36 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                 break;
 
             case R.id.tb_subscribe:
+                if(subscribe_button.isChecked())
+                {
+                    Retrofit retrofit = new Retrofit.
+                            Builder()
+                            .baseUrl(MyApi.BASE_URL)
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+                    MyApi myApi = retrofit.create(MyApi.class);
+                    MyApi.subscribeCourseRequest body = new MyApi.subscribeCourseRequest(getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""),new String[]{courseId});
+                    Call<ModelSubscribe> call = myApi.subscribeCourse(body);
+                    call.enqueue(new Callback<ModelSubscribe>() {
+                        @Override
+                        public void onResponse(Call<ModelSubscribe> call, Response<ModelSubscribe> response) {
+
+                            Intent intent_temp = new Intent(getApplicationContext(), HomeActivity2.class);
+                            startActivity(intent_temp);
+                        }
+
+                        @Override
+                        public void onFailure(Call<ModelSubscribe> call, Throwable t) {
+
+                        }
+                    });
+                }
+                else
+                {
+
+                    new unsub().execute();
+
+                }
 
                 break;
 
@@ -171,16 +217,46 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
         }
 
     }
+    class unsub extends AsyncTask<String,String,String>{
+        @Override
+        protected String doInBackground(String... params) {
+            HttpURLConnection connection;
+            try {
+                URL url = new URL(MyApi.BASE_URL+"unsubscribeCourse");
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+                connection.setDoOutput(true);
+                connection.setRequestProperty("Content-Type", "application/json");
+                connection.connect();
+                DataOutputStream os = new DataOutputStream(connection.getOutputStream());
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("profileId",getSharedPreferences("CC",MODE_PRIVATE).getString("profileId",""));
+                jsonObject.put("courseId",courseId);
+                os.write(jsonObject.toString().getBytes());
+                os.flush();
+                os.close();
+                Log.i("sw32",connection.getResponseMessage() +":" +connection.getResponseCode());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
 
     //Layout definition when FAB is expanded
     @Override
     public void onMenuExpanded() {
-        final String courseId = course_title.getText().toString();
+        final String courseTitle = course_title.getText().toString();
         fabMenu.findViewById(R.id.fab_event).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent exam = new Intent(CoursePageActivity.this,AddEventActivity.class);
                 exam.putExtra("Mode",1);
+                exam.putExtra("courseTitle",courseTitle);
                 exam.putExtra("courseId",courseId);
                 startActivity(exam);
                 fabMenu.collapse();
@@ -191,6 +267,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
             public void onClick(View v) {
                 Intent assignment = new Intent(CoursePageActivity.this,AddEventActivity.class);
                 assignment.putExtra("Mode",2);
+                assignment.putExtra("courseTitle",courseTitle);
                 assignment.putExtra("courseId",courseId);
                 startActivity(assignment);
                 fabMenu.collapse();
@@ -201,10 +278,9 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
             @Override
             public void onClick(View v) {
                 Intent notes = new Intent(CoursePageActivity.this,UploadPicturesActivity.class);
+                notes.putExtra("courseTitle",courseTitle);
                 notes.putExtra("courseId",courseId);
-
                 startActivity(notes);
-
                 fabMenu.collapse();
 
             }

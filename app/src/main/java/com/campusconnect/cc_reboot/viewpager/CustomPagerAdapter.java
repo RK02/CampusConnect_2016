@@ -13,6 +13,7 @@ import com.campusconnect.cc_reboot.NotesSliderActivity;
 import com.campusconnect.cc_reboot.R;
 import com.campusconnect.cc_reboot.auxiliary.PinchToZoom.GestureImageView;
 import com.campusconnect.cc_reboot.fragment.NotesSliderPageFragment;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -48,6 +49,7 @@ public class CustomPagerAdapter extends PagerAdapter {
         Log.i("sw3adapter",""+index+ ":"+ position);
         Picasso.with(mContext).
                 load(NotesSliderActivity.urls.get(mlevel).get(position)).
+                fit().
                 error(R.mipmap.ic_pages_18).
                 into(notes_fullscreen);
         collection.addView(rootView);
@@ -62,11 +64,6 @@ public class CustomPagerAdapter extends PagerAdapter {
     @Override
     public boolean isViewFromObject(View container, Object obj) {
         return container == obj;
-    }
-
-    public void setImages(ViewGroup view, int indexLevel1, int indexLevel2)
-    {
-
     }
 
 }

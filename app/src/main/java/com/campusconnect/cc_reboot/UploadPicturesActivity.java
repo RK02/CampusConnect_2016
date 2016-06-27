@@ -124,6 +124,7 @@ public class UploadPicturesActivity extends AppCompatActivity {
                     Intent description = new Intent(UploadPicturesActivity.this, AddEventActivity.class);
                     description.putExtra("Mode",3);
                     description.putExtra("courseId",CoursePageActivity.courseId);
+                    description.putExtra("courseTitle",CoursePageActivity.courseTitle);
                     startActivityForResult(description,1);
 
                 }
@@ -251,6 +252,7 @@ public class UploadPicturesActivity extends AppCompatActivity {
         else
         {
             ClipData clipData = data.getClipData();
+
             ArrayList<Bitmap> bitmaps = new ArrayList<>();
             for (int i=0; i<clipData.getItemCount();i++)
             {
@@ -293,6 +295,8 @@ public class UploadPicturesActivity extends AppCompatActivity {
         }
 
         cursor.close();
+        Log.i("sw32","filepath set");
+
         return filePath;
     }
 }

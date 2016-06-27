@@ -1,6 +1,5 @@
 package com.campusconnect.cc_reboot.fragment.CoursePage;
 
-import android.graphics.AvoidXfermode;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;

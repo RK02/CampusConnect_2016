@@ -2,9 +2,12 @@ package com.campusconnect.cc_reboot.POJO;
 
 import android.util.Log;
 
+import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,6 +52,25 @@ public interface MyApi {
             this.courseId = courseId;
         }
     }
+    @POST("notebookList")
+    Call<ModelNoteBookList> getBookmarked(@Body getBookmarkedRequest body);
+    class getBookmarkedRequest{
+        private String bpid;
+        public getBookmarkedRequest(String profileId)
+        {
+            this.bpid = profileId;
+        }
+    }
+    @POST("notebookList")
+    Call<ModelNoteBookList> getUploaded(@Body getUploadedRequest body);
+    class getUploadedRequest{
+        private String upid;
+        public getUploadedRequest(String profileId)
+        {
+
+            this.upid = profileId;
+        }
+    }
 
     @POST("getNoteBook")
     Call<ModelNoteBook> getNoteBook(@Body getNoteBookRequest body);
@@ -80,7 +102,7 @@ public interface MyApi {
                 this.profileId = profileId;
             }
         }
-    @POST("testList")
+    @POST("examList")
     Call<ModelTestList> getTestList(@Body getTestListRequest body);
         class getTestListRequest{
             private String courseId;
@@ -89,13 +111,13 @@ public interface MyApi {
             }
         }
 
-    @POST("getTest")
+    @POST("getExam")
     Call<ModelTest> getTest(@Body getTestRequest body);
     class getTestRequest{
-        private String testId;
+        private String examId;
         private String profileId;
         public getTestRequest(String testId, String profileId){
-            this.testId = testId;
+            this.examId = testId;
             this.profileId = profileId;
         }
     }
@@ -150,7 +172,61 @@ public interface MyApi {
         }
     }
 
+
+
+    @POST("addCourse")
+    Call<ModelAddCourse> addCourse(@Body addCourseRequest body);
+    class addCourseRequest{
+
+            private String collegeId;
+            private String courseName;
+            private List<String> batchNames;
+            private List<String> sectionNames;
+            private String profileId;
+            private String semester;
+            private List<String> date;
+            private List<String> startTime;
+            private List<String> endTime;
+            private String professorName;
+            private String colour;
+            private String courseCode;
+            private List<String> branchNames;
+
+            public addCourseRequest(String profileId,
+                                    String collegeId,
+                                    String courseName,
+                                    String courseCode,
+                                    String professorName,
+                                    String semester,
+                                    List<String> batchNames,
+                                    List<String> sectionNames,
+                                    List<String> branchNames,
+                                    List<String> date,
+                                    List<String> startTime,
+                                    List<String> endTime,
+                                    String colour
+                                    ){
+                this.profileId = profileId;
+                this.collegeId = collegeId;
+                this.semester = semester;
+                this.batchNames = batchNames;
+                this.branchNames = branchNames;
+                this.sectionNames = sectionNames;
+                this.courseCode = courseCode;
+                this.startTime = startTime;
+                this.endTime = endTime;
+                this.courseName = courseName;
+                this.professorName = professorName;
+                this.date = date;
+                this.colour = colour;
+        }
+
+
+    }
+
+
 //upload issues  with retrofit, switching to asynctask
+    //switched to okhttp
 
 
 
