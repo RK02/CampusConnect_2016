@@ -11,7 +11,7 @@ import com.campusconnect.cc_reboot.viewpager.ViewPagerAdapter_home;
 /**
  * Created by RK on 04/06/2016.
  */
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends HomeActivity2 {
 
     ViewPagerAdapter_home home_adapter;
     ViewPager home_pager;
@@ -22,7 +22,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_home_true);
         home_pager = (ViewPager) findViewById(R.id.pager_home);
         home_tabs = (SlidingTabLayout_home) findViewById(R.id.tabs_home);
         home_adapter = new ViewPagerAdapter_home(getSupportFragmentManager(), Titles, Numboftabs, this);
@@ -30,6 +30,8 @@ public class HomeActivity extends AppCompatActivity {
         home_pager.setCurrentItem(0);
         home_tabs.setDistributeEvenly(true);
         home_tabs.setViewPager(home_pager);
+
+
     }
 }
 

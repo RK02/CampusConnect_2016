@@ -3,14 +3,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.campusconnect.cc_reboot.auxiliary.ViewPagerDisable
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <View
+        android:layout_width="24dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:alpha="0.3"
+        android:layout_above="@+id/container_note_page_info"
+        android:background="#000000" />
+
+    <View
+        android:layout_width="24dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:alpha="0.3"
+        android:layout_above="@+id/container_note_page_info"
+        android:background="#000000" />
+
     <RelativeLayout
         android:id="@+id/container_note_page_info"
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -77,7 +92,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/tv_note_page_description"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="15dp"
         android:background="@android:color/transparent"
-        android:src="@mipmap/ic_edit_24_white" />
+        android:src="@mipmap/ic_info_36_black" />
 </RelativeLayout>

@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.campusconnect.cc_reboot.POJO.Note;
 import com.campusconnect.cc_reboot.auxiliary.DepthPageTransformer;
+import com.campusconnect.cc_reboot.auxiliary.ViewPagerDisable;
 import com.campusconnect.cc_reboot.auxiliary.ZoomOutPageTransformer;
 import com.campusconnect.cc_reboot.fragment.NotesSliderPageFragment;
 import com.campusconnect.cc_reboot.viewpager.ScreenSlidePagerAdapter;
@@ -47,7 +48,7 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
     @Bind(R.id.ib_trial)
     ImageButton trial_button;
 
-    private ViewPager mNotesPager;
+    private ViewPagerDisable mNotesPager;
     private PagerAdapter mNotesPagerAdapter;
     ArrayList<String> Titles;
     int NumPages;
@@ -80,10 +81,20 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
 
 
         // Instantiate a ViewPager and a PagerAdapter.
-        mNotesPager = (ViewPager) findViewById(R.id.pager);
+        mNotesPager = (ViewPagerDisable) findViewById(R.id.pager);
         mNotesPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(),Titles,urls,NumPages,this);
         mNotesPager.setAdapter(mNotesPagerAdapter);
         mNotesPager.setPageTransformer(true, new ZoomOutPageTransformer());
+
+        //Hiding the notepage info
+        Animation fadeOut = new AlphaAnimation(1, 0.4f);
+        fadeOut.setInterpolator(new AccelerateInterpolator()); //and this
+        fadeOut.setStartOffset(1200);
+        fadeOut.setDuration(500);
+        fadeOut.setFillAfter(true);
+
+        note_page_info.startAnimation(fadeOut);
+        trial_button.startAnimation(fadeOut);
 
         //OnClickListeners
         trial_button.setOnClickListener(this);
@@ -105,18 +116,31 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
 
             case R.id.ib_trial:
 
-                if(page_description.getVisibility()==View.GONE)
+                if(page_description.getVisibility()==View.GONE) {
                     page_description.setVisibility(View.VISIBLE);
-                else
+                    trial_button.setImageResource(R.mipmap.ic_close_36_black);
+
+                    Animation fadeIn = new AlphaAnimation(0.4f, 1);
+                    fadeIn.setInterpolator(new AccelerateInterpolator()); //and this
+                    fadeIn.setDuration(500);
+                    fadeIn.setFillAfter(true);
+
+                    note_page_info.startAnimation(fadeIn);
+                    trial_button.startAnimation(fadeIn);
+                }
+                else {
                     page_description.setVisibility(View.GONE);
+                    trial_button.setImageResource(R.mipmap.ic_info_36_black);
 
-                Animation fadeOut = new AlphaAnimation(1, 0.2f);
-                fadeOut.setInterpolator(new AccelerateInterpolator()); //and this
-                fadeOut.setStartOffset(2000);
-                fadeOut.setDuration(500);
-                fadeOut.setFillAfter(true);
+                    Animation fadeOut = new AlphaAnimation(1, 0.4f);
+                    fadeOut.setInterpolator(new AccelerateInterpolator()); //and this
+                    fadeOut.setStartOffset(1200);
+                    fadeOut.setDuration(500);
+                    fadeOut.setFillAfter(true);
 
-                note_page_info.startAnimation(fadeOut);
+                    note_page_info.startAnimation(fadeOut);
+                    trial_button.startAnimation(fadeOut);
+                }
 
                 break;
 
@@ -133,9 +157,9 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
     @Override
     public void pageInfoVisibility(boolean flag) {
         if(flag==true){
-            Animation fadeOut = new AlphaAnimation(1, 0.2f);
+            Animation fadeOut = new AlphaAnimation(1, 0.4f);
             fadeOut.setInterpolator(new AccelerateInterpolator()); //and this
-            fadeOut.setStartOffset(2000);
+            fadeOut.setStartOffset(1200);
             fadeOut.setDuration(500);
             fadeOut.setFillAfter(true);
 

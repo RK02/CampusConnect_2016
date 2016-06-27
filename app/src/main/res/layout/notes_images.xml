@@ -5,9 +5,7 @@
     android:background="#d9d9d9"
     android:orientation="vertical">
 
-
-
-    <ImageView
+    <com.campusconnect.cc_reboot.auxiliary.PinchToZoom.GestureImageView
         android:id="@+id/iv_notes_fullscreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>.
