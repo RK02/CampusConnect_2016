@@ -151,7 +151,8 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
                 }
 
                 String last = urls.get(urls.size()-1);
-                Picasso.with(NotePageActivity.this).load(last).into(notes_last_page);
+                Log.i("sw32",last + " : r it?");
+                Picasso.with(NotePageActivity.this).load(last).error(R.mipmap.ic_launcher).into(notes_last_page);
                 courseName.setText(noteBook.getCourseName());
                 views.setText(noteBook.getViews());
                 rating.setText(noteBook.getTotalRating());
