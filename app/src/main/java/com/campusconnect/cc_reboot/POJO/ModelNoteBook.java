@@ -15,16 +15,16 @@ public class ModelNoteBook {
     private String description;
     private String views;
     private String courseName;
-    private List<Note> notes = new ArrayList<>();
+    private List<Note> notes = new ArrayList<Note>();
     private String uploaderName;
     private String lastUpdated;
     private String response;
+    private String bookmarkStatus;
     private String frequency;
     private String totalRating;
     private String pages;
     private String kind;
     private String etag;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
      *
@@ -191,6 +191,24 @@ public class ModelNoteBook {
     /**
      *
      * @return
+     * The bookmarkStatus
+     */
+    public String getBookmarkStatus() {
+        return bookmarkStatus;
+    }
+
+    /**
+     *
+     * @param bookmarkStatus
+     * The bookmarkStatus
+     */
+    public void setBookmarkStatus(String bookmarkStatus) {
+        this.bookmarkStatus = bookmarkStatus;
+    }
+
+    /**
+     *
+     * @return
      * The frequency
      */
     public String getFrequency() {
@@ -276,14 +294,6 @@ public class ModelNoteBook {
      */
     public void setEtag(String etag) {
         this.etag = etag;
-    }
-
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
     }
 
 }

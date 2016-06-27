@@ -115,6 +115,7 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
         dates = new ArrayList<>();
 
 
+
         retrofit = new Retrofit.
                 Builder()
                 .baseUrl(MyApi.BASE_URL)
@@ -128,6 +129,8 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
             public void onResponse(Call<ModelNoteBook> call, Response<ModelNoteBook> response) {
                 ModelNoteBook noteBook = response.body();
                 noteList = noteBook.getNotes();
+                if(noteBook.getBookmarkStatus().equals("1"))
+                    bookmark_note_button.setText("Bookmarked");
                 jsonNoteList = new JSONObject();
                 for(Note a : noteList)
                 {

@@ -52,6 +52,7 @@ public class AddEventActivity extends AppCompatActivity {
     String courseName;
     String courseId;
 
+
     private ProgressDialog progressDialog;
 
     @Override
@@ -60,7 +61,7 @@ public class AddEventActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_event);
         int mode = getIntent().getIntExtra("Mode",3);
         course = (EditText) findViewById(R.id.course);
-        date = (EditText) findViewById(R.id.noteDate);
+        date = (EditText) findViewById(R.id.due);
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         String formattedDate = df.format(c.getTime());
@@ -71,6 +72,7 @@ public class AddEventActivity extends AppCompatActivity {
             courseName = getIntent().getStringExtra("courseTitle");
             courseId = getIntent().getStringExtra("courseId");
             course.setText(courseName);
+            date.setVisibility(View.GONE);
         }
         progressDialog = new ProgressDialog(this);
         name = (EditText) findViewById(R.id.noteName);
@@ -146,12 +148,10 @@ public class AddEventActivity extends AppCompatActivity {
                     .addFormDataPart("value","this is a value?")
                     ;
 
-            for(Bitmap temp : UploadPicturesActivity.images_paths.keySet())
+            for(String temp : UploadPicturesActivity.urls)
             {
-               path =  UploadPicturesActivity.images_paths.get(temp);
-                Log.i("sw32path",path);
-                body.addFormDataPart("file", "test.jpg", RequestBody.create(MediaType.parse("image/*"),new File(path)));
-
+                Log.i("sw23upload",temp+" ");
+                body.addFormDataPart("file", "test.jpg", RequestBody.create(MediaType.parse("image/*"),new File(temp)));
             }
             requestBody = body.build();
             Request request = new Request.Builder()
@@ -163,18 +163,6 @@ public class AddEventActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-//            client.newCall(request).enqueue(new Callback() {
-//                @Override
-//                public void onFailure(Call call, IOException e) {
-//                }
-//
-//                @Override
-//                public void onResponse(Call call, Response response) throws IOException {
-//                    Log.i("sw32",response.message());
-//                    Log.i("sw32",response.request()+"");
-//
-//                }
-//            });
             Log.i("sw32","file");
             return null;
         }

@@ -21,13 +21,10 @@ import com.campusconnect.cc_reboot.NotesSliderActivity;
 import com.campusconnect.cc_reboot.R;
 import com.campusconnect.cc_reboot.auxiliary.DepthPageTransformer;
 import com.campusconnect.cc_reboot.viewpager.CustomPagerAdapter;
-import com.campusconnect.cc_reboot.viewpager.ScreenSlidePagerAdapter;
-import com.campusconnect.cc_reboot.NotesSliderActivity;
-import com.squareup.picasso.Picasso;
+
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
