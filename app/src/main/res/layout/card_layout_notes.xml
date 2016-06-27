@@ -7,7 +7,7 @@
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
     android:layout_marginTop="8dp"
-    android:background="#ffffff"
+    android:background="#FFFFFF"
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
     android:orientation="vertical"
@@ -24,50 +24,54 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="16dp"
-            android:paddingRight="16dp">
+            android:paddingRight="16dp"
+            android:paddingBottom="56dp">
             <!--Title and Author container-->
             <LinearLayout
                 android:id="@+id/container_title_author"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
                 android:layout_toLeftOf="@+id/container_date_posted"
-                android:orientation="vertical"
-                android:paddingRight="64dp">
+                android:layout_alignParentLeft="true"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/tv_note_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="LOGARITHMS"
-                    android:textColor="#000000"
+                    android:textColor="@color/ColorTextInfo"
                     android:textSize="18sp" />
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:paddingTop="2dp"
+                    android:paddingLeft="2dp">
 
                     <View
                         android:layout_width="4dp"
                         android:layout_height="match_parent"
                         android:layout_alignBottom="@+id/tv_uploader"
                         android:layout_alignTop="@+id/tv_uploader"
-                        android:background="#383838" />
+                        android:background="#000000" />
 
                     <TextView
                         android:id="@+id/tv_uploader"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="10dp"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"
                         android:text="by Blah456"
-                        android:textColor="#383838"
+                        android:textColor="@color/ColorTextInfo"
                         android:textSize="14sp" />
                 </RelativeLayout>
 
             </LinearLayout>
 
-            <!--Date Posted container-->
-            <LinearLayout
+            <!--Last Updated container-->
+            <RelativeLayout
                 android:id="@+id/container_date_posted"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -75,54 +79,59 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tv_last_updated_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Posted on"
-                    android:textColor="#000000"
+                    android:text="Last updated"
+                    android:paddingLeft="36dp"
+                    android:gravity="center_vertical|right"
+                    android:textColor="@color/ColorTextInfo"
                     android:textSize="18sp" />
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <View
-                        android:layout_width="4dp"
-                        android:layout_height="match_parent"
-                        android:layout_alignBottom="@+id/tv_date_posted"
-                        android:layout_alignTop="@+id/tv_date_posted"
-                        android:background="#383838" />
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_last_updated_title"
+                    android:layout_alignLeft="@+id/tv_last_updated_title"
+                    android:layout_alignRight="@+id/tv_last_updated_title"
+                    android:gravity="right"
+                    android:paddingRight="2dp"
+                    android:paddingTop="2dp">
 
                     <TextView
-                        android:id="@+id/tv_date_posted"
+                        android:id="@+id/tv_last_updated"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="10dp"
-                        android:text="21 May, 2016"
-                        android:textColor="#383838"
+                        android:paddingRight="10dp"
+                        android:text="21 April, 2016"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"
+                        android:textColor="@color/ColorTextInfo"
                         android:textSize="14sp" />
+
+                    <View
+                        android:id="@+id/marker_last_updated"
+                        android:layout_width="4dp"
+                        android:layout_toRightOf="@+id/tv_last_updated"
+                        android:layout_height="match_parent"
+                        android:layout_alignBottom="@+id/tv_last_updated"
+                        android:layout_alignTop="@+id/tv_last_updated"
+                        android:background="#000000" />
+
                 </RelativeLayout>
-            </LinearLayout>
+            </RelativeLayout>
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/tv_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-            android:layout_below="@+id/top_part_card"
-            android:textColor="#000000"
-            android:textSize="16sp" />
 
         <LinearLayout
             android:id="@+id/container_stats"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#eaebec"
+            android:background="@color/ColorKeyStatContainer"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
             android:orientation="horizontal"
-            android:layout_below="@+id/tv_description"
+            android:layout_below="@+id/top_part_card"
             android:weightSum="3">
             <LinearLayout
                 android:id="@+id/container_stats_views"
@@ -136,7 +145,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    android:src="@mipmap/ic_views_18"/>
+                    android:src="@mipmap/ic_views_18_black"/>
                 <TextView
                     android:id="@+id/tv_views_count"
                     android:layout_width="wrap_content"
@@ -146,7 +155,7 @@
                     android:text="34567"
                     android:maxLines="1"
                     android:ellipsize="end"
-                    android:textColor="#383838"/>
+                    android:textColor="@color/ColorTextInfo"/>
             </LinearLayout>
 
             <LinearLayout
@@ -161,7 +170,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    android:src="@mipmap/ic_rating_18"/>
+                    android:src="@mipmap/ic_views_18_black"/>
                 <TextView
                     android:id="@+id/tv_rating"
                     android:layout_width="wrap_content"
@@ -171,7 +180,7 @@
                     android:text="4.3"
                     android:maxLines="1"
                     android:ellipsize="end"
-                    android:textColor="#383838"/>
+                    android:textColor="@color/ColorTextInfo"/>
             </LinearLayout>
 
             <LinearLayout
@@ -196,7 +205,7 @@
                     android:maxLines="1"
                     android:ellipsize="end"
                     android:text="7"
-                    android:textColor="#383838"/>
+                    android:textColor="@color/ColorTextInfo"/>
             </LinearLayout>
 
         </LinearLayout>

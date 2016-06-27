@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -14,7 +15,7 @@
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appBarLayout_acb"
             android:layout_width="match_parent"
-            android:background="@color/ColorPrimaryDark"
+            android:background="#E0E0E0"
             android:layout_height="wrap_content">
 
             <!-- ViewPagerAdapter_home Toolbar   -->
@@ -30,29 +31,50 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:elevation="5dp"
-                android:background="@color/ColorPrimaryDark"
                 app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
 
                 <!--Course Info-->
                 <RelativeLayout
-                    android:id="@+id/course_info"
+                    android:id="@+id/container_course_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                    android:background="@color/ColorPrimaryDark"
-                    android:paddingBottom="16dp"
+                    android:paddingBottom="24dp"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"
                     app:layout_collapseParallaxMultiplier="0"
                     app:layout_collapseMode="parallax">
+
+                    <ToggleButton
+                        android:id="@+id/tb_subscribe"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="SUBSCRIBE"
+                        android:textColor="@color/ColorTextHeading"
+                        android:layout_marginTop="16dp"
+                        android:layout_alignParentRight="true"
+                        android:minHeight="0dp"
+                        android:minWidth="0dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:elevation="4dp"
+                        android:textOff="SUBSCRIBE"
+                        android:textOn="SUBSCRIBED"
+                        android:background="@drawable/selector_subscribe"/>
 
                     <TextView
                         android:id="@+id/tv_course_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:layout_below="@+id/tb_subscribe"
                         android:text="COURSE 1"
-                        android:textColor="#000000"
+                        android:layout_marginTop="12dp"
+                        android:textStyle="bold"
+                        android:textAllCaps="true"
+                        android:textColor="@color/ColorTextInfo"
                         android:textSize="18sp" />
 
                     <!--Full course details container-->
@@ -63,7 +85,7 @@
                         android:orientation="horizontal"
                         android:paddingLeft="16dp"
                         android:paddingRight="16dp"
-                        android:paddingTop="16dp"
+                        android:paddingTop="24dp"
                         android:weightSum="2">
 
                         <!--Course details and Timetable container-->
@@ -76,24 +98,27 @@
                             android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/tv_course_details"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:ellipsize="end"
-                                android:gravity="left"
-                                android:maxLines="1"
-                                android:text="Details"
-                                android:textSize="16sp" />
-
-                            <TextView
                                 android:id="@+id/tv_timetable"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:ellipsize="end"
                                 android:gravity="left"
                                 android:maxLines="1"
-                                android:paddingTop="16dp"
-                                android:text="TimeTable"
+                                android:textColor="@color/ColorTextInfo"
+                                android:text="Timetable"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/tv_course_details"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:gravity="left"
+                                android:textStyle="bold"
+                                android:maxLines="1"
+                                android:textColor="@color/ColorTextInfo"
+                                android:paddingTop="24dp"
+                                android:text="Details"
                                 android:textSize="16sp" />
                         </LinearLayout>
 
@@ -117,6 +142,7 @@
                                     android:layout_below="@+id/tv_course_title"
                                     android:ellipsize="end"
                                     android:gravity="left"
+                                    android:textColor="@color/ColorTextInfo"
                                     android:maxLines="1"
                                     android:paddingRight="2dp"
                                     android:text="Professor XYZXMNOPQ"
@@ -129,7 +155,9 @@
                                     android:ellipsize="end"
                                     android:gravity="left"
                                     android:maxLines="1"
-                                    android:paddingTop="16dp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/ColorTextInfo"
+                                    android:paddingTop="24dp"
                                     android:text="Students"
                                     android:textSize="16sp" />
                             </LinearLayout>
@@ -143,7 +171,7 @@
                 android:id="@+id/tabs_course"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/ColorPrimaryDark"
+                android:background="@color/ColorPrimary"
                 android:elevation="4dp" />
 
         </android.support.design.widget.AppBarLayout>
@@ -158,5 +186,57 @@
 
     </android.support.design.widget.CoordinatorLayout>
 
+    <FrameLayout
+        android:id="@+id/container_fab"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F3F3F3">
 
-</LinearLayout>
+        <com.getbase.floatingactionbutton.FloatingActionsMenu
+            android:id="@+id/fab_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="@dimen/fab_margin"
+            fab:fab_addButtonColorNormal="@color/ColorPrimary"
+            fab:fab_addButtonColorPressed="@color/ColorPrimaryDark"
+            fab:fab_addButtonPlusIconColor="#FFFFFF"
+            fab:fab_addButtonStrokeVisible="false"
+            fab:fab_labelStyle="@style/menu_labels_style"
+            fab:fab_labelsPosition="left">
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_event"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_colorNormal="@color/ColorPrimary"
+                fab:fab_colorPressed="@color/ColorPrimaryDark"
+                fab:fab_icon="@mipmap/ic_create_exam_18_white"
+                fab:fab_size="mini"
+                fab:fab_title="Exam" />
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_colorNormal="@color/ColorPrimary"
+                fab:fab_colorPressed="@color/ColorPrimaryDark"
+                fab:fab_icon="@mipmap/ic_create_assignment_18_white"
+                fab:fab_size="mini"
+                fab:fab_title="Assignment" />
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_others"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_colorNormal="@color/ColorPrimary"
+                fab:fab_colorPressed="@color/ColorPrimaryDark"
+                fab:fab_icon="@mipmap/ic_create_note_18_white"
+                fab:fab_size="mini"
+                fab:fab_title="Note" />
+
+        </com.getbase.floatingactionbutton.FloatingActionsMenu>
+    </FrameLayout>
+
+
+</FrameLayout>

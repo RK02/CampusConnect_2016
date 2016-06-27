@@ -3,15 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
     android:layout_gravity="right"
-    android:background="@color/ColorPrimaryDark"
+    android:background="@color/ColorPrimary"
     android:elevation="4dp"
     android:gravity="center_vertical"
-    android:padding="@dimen/activity_vertical_margin">
+    android:paddingLeft="@dimen/activity_vertical_margin"
+    android:paddingRight="@dimen/activity_vertical_margin">
 
     <ImageButton
         android:id="@+id/ib_menu"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@android:color/transparent"
         android:src="@mipmap/ic_menu_24" />
 
@@ -23,30 +24,41 @@
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@android:color/transparent"
             android:text="Note"
+            android:layout_marginTop="-2dp"
+            android:gravity="center"
+            android:textColor="@color/ColorTextHeading"
             android:textSize="22sp" />
 
-
+        <ImageButton
+            android:id="@+id/ib_edit_note"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical|right"
+            android:layout_toLeftOf="@+id/ib_fullscreen"
+            android:background="@android:color/transparent"
+            android:paddingRight="@dimen/activity_vertical_margin"
+            android:src="@mipmap/ic_edit_24_white" />
 
         <ImageButton
-            android:id="@+id/ib_edit"
+            android:id="@+id/ib_fullscreen"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical|right"
             android:layout_toLeftOf="@+id/ib_share"
             android:background="@android:color/transparent"
             android:paddingRight="@dimen/activity_vertical_margin"
-            android:src="@mipmap/ic_edit_24" />
+            android:src="@mipmap/ic_fullscreen_24_white" />
 
         <ImageButton
             android:id="@+id/ib_share"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:background="@android:color/transparent"
-            android:src="@mipmap/ic_share_24" />
+            android:src="@mipmap/ic_share_24_white" />
     </RelativeLayout>
 
 </LinearLayout>

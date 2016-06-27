@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+         <!--AppBar Layout   -->
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appBarLayout_acb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- ViewPagerAdapter_home Toolbar   -->
+            <include
+                android:id="@+id/include_acb_profile"
+                layout="@layout/actionbar_profile"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:layout_scrollFlags="scroll|enterAlways"></include>
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="5dp"
+                android:background="#424242"
+                app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
+
+                <!--Course Info-->
+                <RelativeLayout
+                    android:id="@+id/course_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                    android:paddingBottom="16dp"
+                    android:paddingLeft="40dp"
+                    android:paddingRight="40dp"
+                    app:layout_collapseParallaxMultiplier="0"
+                    app:layout_collapseMode="parallax">
+
+                    <com.campusconnect.cc_reboot.auxiliary.CircularImageView
+                        android:id="@+id/profile_image"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="16dp"
+                        android:src="@drawable/ic_profile_48"
+                        android:layout_centerHorizontal="true"
+                        app:border_color="#55000000"
+                        app:border_overlay="false"
+                        app:border_width="2dp"/>
+                    <TextView
+                        android:id="@+id/tv_username"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/profile_image"
+                        android:text="Guest_"
+                        android:paddingTop="16dp"
+                        android:layout_centerHorizontal="true"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/ColorTextHeading"/>
+                    <TextView
+                        android:id="@+id/tv_points"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_username"
+                        android:layout_centerHorizontal="true"
+                        android:text="Points"
+                        android:textSize="18sp"
+                        android:textColor="@color/ColorTextHeading"/>
+                    <TextView
+                        android:id="@+id/tv_rank"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_points"
+                        android:layout_centerHorizontal="true"
+                        android:text="Rank"
+                        android:textSize="18sp"
+                        android:textColor="@color/ColorTextHeading"/>
+
+                    <LinearLayout
+                        android:id="@+id/container_stats_views"
+                        android:layout_below="@+id/tv_rank"
+                        android:layout_width="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+                        <ImageButton
+                            android:id="@+id/ib_views"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:src="@mipmap/ic_views_18_white"/>
+                        <TextView
+                            android:id="@+id/tv_views_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="8dp"
+                            android:textSize="16sp"
+                            android:text="345"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:textColor="@color/ColorTextHeading"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/container_stats_rating"
+                        android:layout_width="wrap_content"
+                        android:layout_below="@+id/tv_rank"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_marginTop="16dp"
+                        android:layout_alignParentRight="true"
+                        android:orientation="horizontal">
+                        <ImageButton
+                            android:id="@+id/ib_rating"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:src="@mipmap/ic_rating_18_white"/>
+                        <TextView
+                            android:id="@+id/tv_rating"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="8dp"
+                            android:textSize="16sp"
+                            android:text="4.3"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:textColor="@color/ColorTextHeading"/>
+                    </LinearLayout>
+
+
+                </RelativeLayout>
+
+            </android.support.design.widget.CollapsingToolbarLayout>
+
+            <com.campusconnect.cc_reboot.slidingtab.SlidingTabLayout_home
+                android:id="@+id/tabs_course"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/ColorPrimary"
+                android:elevation="4dp" />
+
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager_course"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#ffffff"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    </android.support.design.widget.CoordinatorLayout>
+
+    <FrameLayout
+        android:id="@+id/container_fab"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F3F3F3">
+
+        <com.getbase.floatingactionbutton.FloatingActionsMenu
+            android:id="@+id/fab_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="@dimen/fab_margin"
+            fab:fab_addButtonColorNormal="@color/ColorPrimary"
+            fab:fab_addButtonColorPressed="@color/ColorPrimaryDark"
+            fab:fab_addButtonPlusIconColor="#FFFFFF"
+            fab:fab_addButtonStrokeVisible="false"
+            fab:fab_labelStyle="@style/menu_labels_style"
+            fab:fab_labelsPosition="left">
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_event"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_colorNormal="@color/ColorPrimary"
+                fab:fab_colorPressed="@color/ColorPrimaryDark"
+                fab:fab_icon="@mipmap/ic_create_exam_18_white"
+                fab:fab_size="mini"
+                fab:fab_title="Exam" />
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_colorNormal="@color/ColorPrimary"
+                fab:fab_colorPressed="@color/ColorPrimaryDark"
+                fab:fab_icon="@mipmap/ic_create_assignment_18_white"
+                fab:fab_size="mini"
+                fab:fab_title="Assignment" />
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_others"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_colorNormal="@color/ColorPrimary"
+                fab:fab_colorPressed="@color/ColorPrimaryDark"
+                fab:fab_icon="@mipmap/ic_create_note_18_white"
+                fab:fab_size="mini"
+                fab:fab_title="Note" />
+
+        </com.getbase.floatingactionbutton.FloatingActionsMenu>
+    </FrameLayout>
+
+
+
+</FrameLayout>

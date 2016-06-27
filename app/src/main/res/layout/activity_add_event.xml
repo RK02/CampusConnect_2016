@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ColorRecyclerBackground"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/acb_add_event"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/ColorPrimary"
+        android:textSize="22sp"
+        android:textColor="@color/ColorTextHeading"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:text="Add a Description"/>
+
+    <EditText
+        android:id="@+id/noteName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/edittext_rounded_upload"
+        android:gravity="center_vertical|left"
+        android:hint="Note name"
+        android:layout_below="@+id/acb_add_event"
+        android:paddingBottom="4dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="4dp"
+        android:textColor="@color/ColorTextInfo"
+        android:textColorHint="#A0A0A0"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/course"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/noteName"
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/edittext_rounded_upload"
+        android:hint="Pick Course"
+        android:paddingBottom="4dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="4dp"
+        android:textColor="@color/ColorTextInfo"
+        android:textColorHint="#A0A0A0"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/noteDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/course"
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/edittext_rounded_upload"
+        android:hint="Date"
+        android:paddingBottom="4dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="4dp"
+        android:textColor="@color/ColorTextInfo"
+        android:textColorHint="#A0A0A0"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/noteDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/noteDate"
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/edittext_rounded_upload"
+        android:hint="Give a description"
+        android:paddingBottom="4dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="4dp"
+        android:lines="10"
+        android:gravity="top"
+        android:textColor="@color/ColorTextInfo"
+        android:textColorHint="#A0A0A0"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:id="@+id/container_action_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/uploadPhotos"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/ColorPrimary"
+            android:gravity="center"
+            android:minHeight="0dp"
+            android:paddingBottom="12dp"
+            android:paddingTop="12dp"
+            android:text="UPLOAD PHOTOS"
+            android:textColor="@color/ColorTextHeading"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/ColorTextHeading" />
+
+        <Button
+            android:id="@+id/submit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/ColorPrimary"
+            android:gravity="center"
+            android:minHeight="0dp"
+            android:paddingBottom="12dp"
+            android:paddingTop="12dp"
+            android:text="SUBMIT"
+            android:textColor="@color/ColorTextHeading"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

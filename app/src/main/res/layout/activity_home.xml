@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
@@ -16,20 +16,12 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
 
-            <!-- ViewPagerAdapter_home Toolbar   -->
-            <include
-                android:id="@+id/include_acb_home"
-                layout="@layout/actionbar_home"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_scrollFlags="scroll"></include>
-
             <com.campusconnect.cc_reboot.slidingtab.SlidingTabLayout_home
                 android:id="@+id/tabs_home"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:elevation="4dp"
-                android:background="@color/ColorPrimaryDark" />
+                android:background="@color/ColorPrimary"
+                android:elevation="4dp" />
 
         </android.support.design.widget.AppBarLayout>
 
@@ -39,9 +31,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="#ffffff"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     </android.support.design.widget.CoordinatorLayout>
 
-
-</LinearLayout>
+</FrameLayout>

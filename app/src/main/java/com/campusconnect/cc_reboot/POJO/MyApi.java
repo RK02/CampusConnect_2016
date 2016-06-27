@@ -1,10 +1,18 @@
 package com.campusconnect.cc_reboot.POJO;
 
-import butterknife.Bind;
+import android.util.Log;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 /**
@@ -82,7 +90,7 @@ public interface MyApi {
         }
 
     @POST("getTest")
-    Call<Test> getTest(@Body getTestRequest body);
+    Call<ModelTest> getTest(@Body getTestRequest body);
     class getTestRequest{
         private String testId;
         private String profileId;
@@ -91,5 +99,59 @@ public interface MyApi {
             this.profileId = profileId;
         }
     }
+
+    @GET("collegeList")
+    Call<ModelCollegeList> getCollegeList();
+
+    @POST("createProfile")
+    Call<ModelSignUp> getProfileId(@Body getProfileIdRequest body);
+    class getProfileIdRequest{
+        private String profileName;
+        private String collegeId;
+        private String batchName;
+        private String branchName;
+        private String sectionName;
+        private String photoUrl;
+        private String email;
+        public getProfileIdRequest(String profileName,String collegeId,String batchName, String branchName, String sectionName,String photoUrl,String email)
+        {
+            this.profileName = profileName;
+            this.collegeId = collegeId;
+            if(batchName==null) this.batchName = "";
+            else this.batchName = batchName;
+            if(branchName==null) this.branchName ="";
+            else this.branchName = branchName;
+            if(sectionName==null) this.sectionName="";
+            else this.sectionName = sectionName;
+            this.photoUrl = photoUrl;
+            this.email = email;
+        }
+    }
+
+    @POST("courseList/1")
+    Call<ModelCourseSubscribe> getCourses(@Body getCoursesRequest body);
+    class getCoursesRequest{
+        private String pageNumber="1";
+        private String profileId;
+        public getCoursesRequest(String profileId)
+        {
+            this.profileId = profileId;
+        }
+    }
+
+    @POST("subscribeCourse")
+    Call<ModelSubscribe> subscribeCourse(@Body subscribeCourseRequest body);
+    class subscribeCourseRequest{
+        private String profileId;
+        private String[] courseIds;
+        public subscribeCourseRequest(String profileId, String[] courseIds){
+            this.profileId = profileId;
+            this.courseIds = courseIds;
+        }
+    }
+
+//upload issues  with retrofit, switching to asynctask
+
+
 
 }

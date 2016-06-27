@@ -42,7 +42,8 @@ public class FragmentCourses extends Fragment{
     CourseListAdapter mCourseAdapter;
     LinearLayoutManager mLayoutManager;
     public static final String BASE_URL = "https://uploadnotes-2016.appspot.com/_ah/api/notesapi/v1/";
-    public static String profileId = "ahJzfnVwbG9hZG5vdGVzLTIwMTZyFAsSB1Byb2ZpbGUYgICAgLyhggoM";
+    public static final String uploadURL = "https://uploadnotes-2016.appspot.com/img";
+    public static String profileId = "ahJzfnVwbG9hZG5vdGVzLTIwMTZyFAsSB1Byb2ZpbGUYgICAgN6lhQsM";
 
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -68,12 +69,13 @@ public class FragmentCourses extends Fragment{
             public void onResponse(Call<Example> call, Response<Example> response) {
                 Log.i("sw32",""+response.code());
                 Example example = response.body();
-                List<AvailableCourseList> availableCourseList = example.getAvailableCourseList();
-                List<SubscribedCourseList> subscribedCourseList = example.getSubscribedCourseList();
+                if(example!=null) {
+                    List<AvailableCourseList> availableCourseList = example.getAvailableCourseList();
+                    List<SubscribedCourseList> subscribedCourseList = example.getSubscribedCourseList();
 
-                for(SubscribedCourseList x : subscribedCourseList)
-                {
-                   mCourseAdapter.add(x);
+                    for (SubscribedCourseList x : subscribedCourseList) {
+                        mCourseAdapter.add(x);
+                    }
                 }
             }
 

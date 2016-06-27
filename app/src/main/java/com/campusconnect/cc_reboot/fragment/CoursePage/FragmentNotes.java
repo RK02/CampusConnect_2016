@@ -40,10 +40,13 @@ public class FragmentNotes extends Fragment {
     NotesListAdapter mNotesAdapter;
     LinearLayoutManager mLayoutManager;
     ArrayList<NoteBookList> mNotes;
+    Bundle fragArgs;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_notes, container, false);
+
+        fragArgs = getArguments();
 
         notes_list = (RecyclerView) v.findViewById (R.id.rv_notes);
         mNotes = new ArrayList<>();
@@ -51,24 +54,14 @@ public class FragmentNotes extends Fragment {
         //Setting the recyclerView
         mLayoutManager = new LinearLayoutManager(getActivity());
 
-        mNotesAdapter = new NotesListAdapter(v.getContext(),mNotes);
+        mNotesAdapter = new NotesListAdapter(v.getContext(),mNotes, fragArgs.getInt("CourseColor"));
         notes_list.setLayoutManager(mLayoutManager);
         notes_list.setItemAnimator(new DefaultItemAnimator());
         notes_list.setAdapter(mNotesAdapter);
 
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-// set your desired log level
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-// add your other interceptors …
-
-// add logging as last interceptor
-        httpClient.addInterceptor(logging);
         Retrofit retrofit = new Retrofit.
                 Builder()
                 .baseUrl(MyApi.BASE_URL)
-                .client(httpClient.build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         MyApi myApi = retrofit.create(MyApi.class);
@@ -78,11 +71,12 @@ public class FragmentNotes extends Fragment {
             @Override
             public void onResponse(Call<ModelNoteBookList> call, Response<ModelNoteBookList> response) {
                 ModelNoteBookList modelNoteBookList = response.body();
-                List<NoteBookList> noteBookLists = modelNoteBookList.getNoteBookList();
-                for(NoteBookList x : noteBookLists)
-                {
-                    mNotesAdapter.add(x);
-                    mNotesAdapter.notifyDataSetChanged();
+                if(modelNoteBookList != null) {
+                    List<NoteBookList> noteBookLists = modelNoteBookList.getNoteBookList();
+                    for (NoteBookList x : noteBookLists) {
+                        mNotesAdapter.add(x);
+                        mNotesAdapter.notifyDataSetChanged();
+                    }
                 }
             }
 
