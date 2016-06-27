@@ -1,5 +1,6 @@
 package com.campusconnect.cc_reboot.fragment.Profile;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -59,7 +60,7 @@ public class FragmentUploadedNotes extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         MyApi myApi = retrofit.create(MyApi.class);
-        MyApi.getUploadedRequest request = new MyApi.getUploadedRequest(CoursePageActivity.courseId);
+        MyApi.getUploadedRequest request = new MyApi.getUploadedRequest(getActivity().getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId","fake"));
         Call<ModelNoteBookList> call = myApi.getUploaded(request);
         call.enqueue(new Callback<ModelNoteBookList>() {
             @Override

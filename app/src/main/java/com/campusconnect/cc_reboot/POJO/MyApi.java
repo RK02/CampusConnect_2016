@@ -56,20 +56,19 @@ public interface MyApi {
     Call<ModelNoteBookList> getBookmarked(@Body getBookmarkedRequest body);
     class getBookmarkedRequest{
         private String bpid;
-        public getBookmarkedRequest(String courseId)
+        public getBookmarkedRequest(String profileId)
         {
-
-            this.bpid = courseId;
+            this.bpid = profileId;
         }
     }
     @POST("notebookList")
     Call<ModelNoteBookList> getUploaded(@Body getUploadedRequest body);
     class getUploadedRequest{
         private String upid;
-        public getUploadedRequest(String courseId)
+        public getUploadedRequest(String profileId)
         {
 
-            this.upid = courseId;
+            this.upid = profileId;
         }
     }
 

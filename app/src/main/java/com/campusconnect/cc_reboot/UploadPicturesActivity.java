@@ -124,6 +124,7 @@ public class UploadPicturesActivity extends AppCompatActivity {
                     Intent description = new Intent(UploadPicturesActivity.this, AddEventActivity.class);
                     description.putExtra("Mode",3);
                     description.putExtra("courseId",CoursePageActivity.courseId);
+                    description.putExtra("courseTitle",CoursePageActivity.courseTitle);
                     startActivityForResult(description,1);
 
                 }

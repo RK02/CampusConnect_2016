@@ -1,8 +1,10 @@
 package com.campusconnect.cc_reboot;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -39,6 +41,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -192,7 +199,7 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
                 break;
 
             case R.id.tb_bookmark:
-                
+                new bookmarkNote().execute();
                 break;
 
             case R.id.b_rent:
@@ -206,5 +213,52 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
+    class bookmarkNote extends AsyncTask<String,String,String>{
+
+        ProgressDialog progressDialog;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(NotePageActivity.this);
+            progressDialog.setTitle("Please wait...");
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            HttpURLConnection connection;
+            URL url;
+            JSONObject body = new JSONObject();
+            try{
+                url = new URL(FragmentCourses.BASE_URL+"bookmarkNoteBook");
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setDoOutput(true);
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("Content-Type","application/json");
+                connection.connect();
+                DataOutputStream os = new DataOutputStream(connection.getOutputStream());
+                body.put("profileId",getSharedPreferences("CC",MODE_PRIVATE).getString("profileId",""));
+                body.put("noteBookId",noteBookId);
+                os.write(body.toString().getBytes());
+                os.flush();
+                os.close();
+                int a = connection.getResponseCode();
+                Log.i("sw32bookmark",a+"");
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            progressDialog.dismiss();
+        }
+    }
 }
 

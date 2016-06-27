@@ -61,14 +61,14 @@ public class FragmentBookmarkedNotes extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         MyApi myApi = retrofit.create(MyApi.class);
-        MyApi.getBookmarkedRequest request = new MyApi.getBookmarkedRequest(CoursePageActivity.courseId);
+        MyApi.getBookmarkedRequest request = new MyApi.getBookmarkedRequest(getActivity().getSharedPreferences("CC",Context.MODE_PRIVATE).getString("profileId","fake"));
         Call<ModelNoteBookList> call = myApi.getBookmarked(request);
         call.enqueue(new Callback<ModelNoteBookList>() {
             @Override
             public void onResponse(Call<ModelNoteBookList> call, Response<ModelNoteBookList> response) {
                 ModelNoteBookList modelNoteBookList = response.body();
                 Log.i("sw32","bookhere");
-                Log.i("sw32",""+response.code());
+                Log.i("sw32bookmark",""+response.code());
                 if(modelNoteBookList != null) {
                     List<NoteBookList> noteBookLists = modelNoteBookList.getNoteBookList();
                     for (NoteBookList x : noteBookLists) {

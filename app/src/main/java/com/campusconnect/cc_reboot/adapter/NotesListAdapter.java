@@ -108,7 +108,9 @@ public class NotesListAdapter extends
                 @Override
                 public void onClick(View v) {
                     Intent intent_temp = new Intent(v.getContext(), NotePageActivity.class);
-                    intent_temp.putExtra("noteBookId",getNoteBookId(note_name.getText().toString()));
+                    ViewGroup group = (ViewGroup) v.getParent();
+                    int index = group.indexOfChild(v);
+                    intent_temp.putExtra("noteBookId",mNotes.get(index).getNoteBookId());
                     intent_temp.putExtra("CourseColor",courseColor);
                     context.startActivity(intent_temp);
                 }

@@ -27,6 +27,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -43,6 +46,7 @@ public class AddEventActivity extends AppCompatActivity {
     EditText name;
     EditText description;
     EditText course;
+    EditText date;
     Button submit;
     Button upload;
     String courseName;
@@ -56,16 +60,22 @@ public class AddEventActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_event);
         int mode = getIntent().getIntExtra("Mode",3);
         course = (EditText) findViewById(R.id.course);
+        date = (EditText) findViewById(R.id.noteDate);
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        String formattedDate = df.format(c.getTime());
+        date.setText(formattedDate);
+        date.setFocusable(false);
         if(getIntent().hasExtra("courseId"))
         {
             courseName = getIntent().getStringExtra("courseTitle");
             courseId = getIntent().getStringExtra("courseId");
             course.setText(courseName);
-            course.setEnabled(false);
         }
         progressDialog = new ProgressDialog(this);
         name = (EditText) findViewById(R.id.noteName);
         description = (EditText) findViewById(R.id.noteDate);
+        course.setText(courseName);
         course.setFocusable(false);
         upload = (Button) findViewById(R.id.uploadPhotos);
         submit = (Button) findViewById(R.id.submit);

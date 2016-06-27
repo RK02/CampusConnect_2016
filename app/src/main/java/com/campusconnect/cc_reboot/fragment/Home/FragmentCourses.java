@@ -66,33 +66,7 @@ public class FragmentCourses extends Fragment{
         course_list.setLayoutManager(mLayoutManager);
         course_list.setItemAnimator(new DefaultItemAnimator());
         course_list.setAdapter(mCourseAdapter);
-        call= myApi.getFeed(getActivity().getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""));
-
-        call.enqueue(new Callback<Example>() {
-            @Override
-            public void onResponse(Call<Example> call, Response<Example> response) {
-                Log.i("sw32",""+response.code());
-                Example example = response.body();
-                if(example!=null) {
-                    mCourseAdapter.clear();
-                    profileName = example.getProfileName();
-                    profilePoints = example.getPoints();
-                    List<AvailableCourseList> availableCourseList = example.getAvailableCourseList();
-                    List<SubscribedCourseList> subscribedCourseList = example.getSubscribedCourseList();
-
-                    for (SubscribedCourseList x : subscribedCourseList) {
-                        mCourseAdapter.add(x);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Example> call, Throwable t) {
-                Log.i("sw32","fail");
-
-            }
-        });
-        return v;
+                return v;
     }
 
     @Override

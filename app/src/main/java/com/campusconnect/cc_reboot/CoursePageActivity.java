@@ -89,6 +89,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
     int Numboftabs = 3;
 
     static public String courseId;
+    static public String courseTitle;
     int courseColor;
     int defaultTabPosition=0;
 
@@ -133,6 +134,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                 ModelCoursePage modelCoursePage = response.body();
                 if(modelCoursePage != null) {
                     course_title.setText(modelCoursePage.getCourseName());
+                    courseTitle = course_title.getText().toString();
                     course_prof.setText(modelCoursePage.getProfessorName());
                     course_details.setText(modelCoursePage.getDescription());
                     if(modelCoursePage.getIsSubscribed().equals("1")) subscribe_button.setChecked(true);
