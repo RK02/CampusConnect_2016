@@ -1,5 +1,7 @@
 package com.campusconnect.cc_reboot.fragment.Drawer;
 
+import android.support.v4.app.Fragment;
+
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -8,7 +10,18 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -19,6 +32,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ToggleButton;
 
 import com.campusconnect.cc_reboot.CoursePageActivity;
@@ -26,6 +44,10 @@ import com.campusconnect.cc_reboot.HomeActivity2;
 import com.campusconnect.cc_reboot.POJO.ModelAddCourse;
 import com.campusconnect.cc_reboot.POJO.MyApi;
 import com.campusconnect.cc_reboot.R;
+import com.campusconnect.cc_reboot.adapter.CourseColorsListAdapter;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,7 +64,56 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by RK on 15/06/2016.
  */
-public class FragmentAddCourse extends Fragment {
+public class FragmentAddCourse extends Fragment implements View.OnClickListener{
+
+    @Bind(R.id.et_startDate_Mon)
+    EditText startDateMon;
+    @Bind(R.id.et_endDate_Mon)
+    EditText endDateMon;
+
+    @Bind(R.id.et_startDate_Tue)
+    EditText startDateTue;
+    @Bind(R.id.et_endDate_Tue)
+    EditText endDateTue;
+
+    @Bind(R.id.et_startDate_Wed)
+    EditText startDateWed;
+    @Bind(R.id.et_endDate_Wed)
+    EditText endDateWed;
+
+    @Bind(R.id.et_startDate_Thurs)
+    EditText startDateThurs;
+    @Bind(R.id.et_endDate_Thurs)
+    EditText endDateThurs;
+
+    @Bind(R.id.et_startDate_Fri)
+    EditText startDateFri;
+    @Bind(R.id.et_endDate_Fri)
+    EditText endDateFri;
+
+    @Bind(R.id.et_startDate_Sat)
+    EditText startDateSat;
+    @Bind(R.id.et_endDate_Sat)
+    EditText endDateSat;
+
+    @Bind(R.id.container_timetable_timings_mon)
+    LinearLayout MonTimingsContainer;
+    @Bind(R.id.container_timetable_timings_tue)
+    LinearLayout TueTimingsContainer;
+    @Bind(R.id.container_timetable_timings_wed)
+    LinearLayout WedTimingsContainer;
+    @Bind(R.id.container_timetable_timings_thurs)
+    LinearLayout ThursTimingsContainer;
+    @Bind(R.id.container_timetable_timings_fri)
+    LinearLayout FriTimingsContainer;
+    @Bind(R.id.container_timetable_timings_sat)
+    LinearLayout SatTimingsContainer;
+
+    @Bind(R.id.view_course_color_picker)
+    View courseColorPicker;
+
+    Context context;
+    ColorPickerDialog colorPickerDialog;
 
     @Bind(R.id.et_courseName)
     EditText courseName;
@@ -123,8 +194,6 @@ public class FragmentAddCourse extends Fragment {
     LinearLayout events;
 
 
-
-
     @Bind(R.id.b_cancel)
     Button cancel;
 
@@ -137,14 +206,15 @@ public class FragmentAddCourse extends Fragment {
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_add_course,container,false);
-        ButterKnife.bind(this,v);
+        View v = inflater.inflate(R.layout.fragment_add_course, container, false);
+        ButterKnife.bind(this, v);
+
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("CC", Context.MODE_PRIVATE);
-        String branchName = sharedPreferences.getString("branchName","");
-        String batchName = sharedPreferences.getString("batchName","");
-        String sectionName = sharedPreferences.getString("sectionName","");
-         profileId = sharedPreferences.getString("profileId","");
-         collegeId = sharedPreferences.getString("collegeId","");
+        String branchName = sharedPreferences.getString("branchName", "");
+        String batchName = sharedPreferences.getString("batchName", "");
+        String sectionName = sharedPreferences.getString("sectionName", "");
+        profileId = sharedPreferences.getString("profileId", "");
+        collegeId = sharedPreferences.getString("collegeId", "");
         courseBranch.setText(branchName);
         courseBatch.setText(batchName);
         courseSection.setText(sectionName);
@@ -165,13 +235,13 @@ public class FragmentAddCourse extends Fragment {
             temp.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked)
-                    {
-                        View view = inflater.inflate(R.layout.course_day,events,false);
-                        ((TextView)view.findViewById(R.id.tv_day_title)).setText(buttonView.getText());
+                    if (isChecked) {
+                        View view = inflater.inflate(R.layout.course_day, events, false);
+                        ((TextView) view.findViewById(R.id.tv_day_title)).setText(buttonView.getText());
                         final EditText startTime = (EditText) view.findViewById(R.id.et_startTime);
                         final EditText endTime = (EditText) view.findViewById(R.id.et_endTime);
-                        startTime.setFocusable(false);endTime.setFocusable(false);
+                        startTime.setFocusable(false);
+                        endTime.setFocusable(false);
                         final TimePickerDialog startTimePickerDialog = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -184,22 +254,20 @@ public class FragmentAddCourse extends Fragment {
 
 
                             }
-                        },8,00,false);
+                        }, 8, 00, false);
                         final TimePickerDialog endTimePickerDialog = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                if(hourOfDay>Integer.parseInt(startTime.getText().toString().split(":")[0])) {
+                                if (hourOfDay > Integer.parseInt(startTime.getText().toString().split(":")[0])) {
                                     if (minute < 10) endTime.setText(hourOfDay + ":0" + minute);
                                     else {
                                         endTime.setText(hourOfDay + ":" + minute);
                                     }
-                                }
-                                else
-                                {
-                                    Toast.makeText(getActivity(),"Please Select a Valid Time",Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(getActivity(), "Please Select a Valid Time", Toast.LENGTH_SHORT).show();
                                 }
                             }
-                        },8,00,false);
+                        }, 8, 00, false);
                         startTime.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -213,29 +281,20 @@ public class FragmentAddCourse extends Fragment {
                             }
                         });
                         events.addView(view);
-                        days_selected.put(buttonView.getText().toString(),view);
-                    }
-                    else
-                    {
+                        days_selected.put(buttonView.getText().toString(), view);
+                    } else {
                         events.removeView(days_selected.get(buttonView.getText().toString()));
                         days_selected.remove(buttonView.getText().toString());
                     }
                 }
             });
         }
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
 
-            }
-        });
-        create.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                create();
-            }
-        });
+        //OnClickListeners
+        courseColorPicker.setOnClickListener(this);
+        cancel.setOnClickListener(this);
+        create.setOnClickListener(this);
+
         return v;
     }
     void finish()
@@ -320,6 +379,67 @@ public class FragmentAddCourse extends Fragment {
                 Log.i("sw32","addCourseFail");
             }
         });
+
+    }
+
+
+    @Override
+    public void onClick(View view) {
+
+        switch (view.getId()){
+            case R.id.view_course_color_picker:
+
+                colorPickerDialog = new ColorPickerDialog((Activity) context);
+
+                colorPickerDialog.show();
+
+                Window window = colorPickerDialog.getWindow();
+                window.setLayout(900, GridLayoutManager.LayoutParams.WRAP_CONTENT);
+                window.setGravity(Gravity.CENTER_HORIZONTAL);
+
+                break;
+
+            case R.id.b_cancel:
+                finish();
+                break;
+
+            case R.id.b_create:
+                create();
+                break;
+        }
+
+    }
+
+    public class ColorPickerDialog extends Dialog{
+
+        public Activity c;
+        public Dialog d;
+
+        RecyclerView course_colors_list;
+        CourseColorsListAdapter mCourseColorsAdapter;
+        GridLayoutManager mLayoutManager;
+
+        public ColorPickerDialog(Activity a) {
+            super(a);
+            // TODO Auto-generated constructor stub
+            this.c = a;
+        }
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
+            setContentView(R.layout.color_picker_dialog);
+
+            course_colors_list = (RecyclerView) findViewById (R.id.rv_course_colors);
+            mLayoutManager = new GridLayoutManager(c,3);
+
+            mCourseColorsAdapter = new CourseColorsListAdapter(c,courseColorPicker);
+            course_colors_list.setLayoutManager(mLayoutManager);
+            course_colors_list.setItemAnimator(new DefaultItemAnimator());
+            course_colors_list.setAdapter(mCourseColorsAdapter);
+
+        }
 
     }
 }

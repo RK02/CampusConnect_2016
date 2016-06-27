@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -20,6 +22,7 @@ import com.campusconnect.cc_reboot.NotePageActivity;
 import com.campusconnect.cc_reboot.NotesSliderActivity;
 import com.campusconnect.cc_reboot.R;
 import com.campusconnect.cc_reboot.auxiliary.DepthPageTransformer;
+import com.campusconnect.cc_reboot.auxiliary.ViewPagerDisable;
 import com.campusconnect.cc_reboot.viewpager.CustomPagerAdapter;
 import com.campusconnect.cc_reboot.viewpager.ScreenSlidePagerAdapter;
 import com.campusconnect.cc_reboot.NotesSliderActivity;
@@ -44,7 +47,8 @@ public class NotesSliderPageFragment extends Fragment implements View.OnTouchLis
 
     ArrayList<ArrayList<String>> urls = NotesSliderActivity.urls;
     int page_pos;
-    ViewPager pager_img;
+    int totalPages=0;
+    ViewPagerDisable pager_img;
     Bundle fragArgs;
 
 
@@ -54,6 +58,11 @@ public class NotesSliderPageFragment extends Fragment implements View.OnTouchLis
     }
     NotePageInfoToActivity notePageInfoToActivity;
 
+    //Variables to handle single tap and double tap
+    long lastPressTime;
+    static final int DOUBLE_PRESS_INTERVAL = 200;
+    boolean mHasDoubleClicked = false;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -62,7 +71,14 @@ public class NotesSliderPageFragment extends Fragment implements View.OnTouchLis
         ButterKnife.bind(this,rootView);
 
         fragArgs = getArguments();
-        pager_img = (ViewPager) rootView.findViewById(R.id.viewpager_images);
+        pager_img = (ViewPagerDisable) rootView.findViewById(R.id.viewpager_images);
+
+        page_pos = fragArgs.getInt("PagePos");
+        for(ArrayList<String> a : urls)
+        {
+            totalPages+=a.size();
+        }
+
         pager_img.setPageTransformer(true, new DepthPageTransformer());
         //class_no = fragArgs.getString("PageTitle");
         page_pos = fragArgs.getInt("PagePos");
@@ -76,13 +92,13 @@ public class NotesSliderPageFragment extends Fragment implements View.OnTouchLis
         curr_page = Integer.toString(1);
         notePageInfoToActivity.notePageInfo(class_no,curr_page,total_pages);
 
-
         pager_img.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageSelected(int index) {
                 // TODO Auto-generated method stub
                 curr_page = index+1 +"";
                 Log.i("sw32page",class_no);
+                curr_page = Integer.toString(index+1);
                 notePageInfoToActivity.notePageInfo(class_no,curr_page,total_pages);
             }
             @Override
@@ -97,9 +113,6 @@ public class NotesSliderPageFragment extends Fragment implements View.OnTouchLis
             }
         });
 
-
-
-
         touch_handling_view.setOnTouchListener(this);
 
         return rootView;
@@ -108,24 +121,27 @@ public class NotesSliderPageFragment extends Fragment implements View.OnTouchLis
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
 
-        switch (motionEvent.getAction()){
+        long pressTime = System.currentTimeMillis();
 
-            case MotionEvent.ACTION_UP:
-
-                break;
-
-            case MotionEvent.ACTION_DOWN:
-
-                notePageInfoToActivity.pageInfoVisibility(true);
-
-                break;
-
-            case MotionEvent.ACTION_MOVE:
-
-                break;
-
+        //Double Tap
+        if (pressTime - lastPressTime <= DOUBLE_PRESS_INTERVAL) {
+            mHasDoubleClicked = true;
         }
+        else {     // Single Tap/Swipe
+            mHasDoubleClicked = false;
+            Handler myHandler = new Handler() {
+                public void handleMessage(Message m) {
 
+                    if (!mHasDoubleClicked && ViewPagerDisable.getZoomState())
+                        notePageInfoToActivity.pageInfoVisibility(true);
+
+                }
+            };
+            Message m = new Message();
+            myHandler.sendMessageDelayed(m,DOUBLE_PRESS_INTERVAL);
+        }
+        // record the last time the view was pressed.
+        lastPressTime = pressTime;
         return false;
     }
 

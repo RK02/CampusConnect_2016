@@ -100,6 +100,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".CreateCourseActivity"></activity>
+
     </application>
 
 </manifest>
