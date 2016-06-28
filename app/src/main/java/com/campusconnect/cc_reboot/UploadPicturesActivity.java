@@ -2,9 +2,11 @@ package com.campusconnect.cc_reboot;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -16,6 +18,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -107,10 +110,28 @@ public class UploadPicturesActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setResult(0);
-                uris.clear();
-                urls.clear();
-                imageAdapter.notifyDataSetChanged();
-                finish();
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(UploadPicturesActivity.this);
+                alertDialog.setMessage("Are you sure?");
+                alertDialog.setCancelable(false);
+                alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        uris.clear();
+                        urls.clear();
+                        imageAdapter.notifyDataSetChanged();
+                        finish();                    }
+                });
+                alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                alertDialog.show();
+
+
+
             }
         });
         camera.setOnClickListener(new View.OnClickListener() {
