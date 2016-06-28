@@ -55,6 +55,7 @@ public class AddEventActivity extends AppCompatActivity {
     EditText description;
     AutoCompleteTextView course;
     EditText date;
+    EditText dueDate;
     Button submit;
     Button upload;
     String courseName;
@@ -66,20 +67,36 @@ public class AddEventActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
-        int mode = getIntent().getIntExtra("Mode",3);
+        final int mode = getIntent().getIntExtra("Mode",3);
         course = (AutoCompleteTextView) findViewById(R.id.course);
         date = (EditText) findViewById(R.id.noteDate);
+        dueDate = (EditText) findViewById(R.id.noteDueDate);
+        description = (EditText) findViewById(R.id.noteDescription);
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         String formattedDate = df.format(c.getTime());
+        //c.add(Calendar.DAY_OF_MONTH,7);
+        //String due = df.format(c.getTime());
+        //dueDate.setText(due);
         date.setText(formattedDate);
         date.setFocusable(false);
+        if(getIntent().hasExtra("courseName"))
+        {
+            courseName = getIntent().getStringExtra("courseName");
+            course.setText(courseName);
+            course.setFocusable(false);
+            description.setText(getIntent().getStringExtra("description")+"");
+
+        }
         if(getIntent().hasExtra("courseId"))
         {
             courseName = getIntent().getStringExtra("courseTitle");
             courseId = getIntent().getStringExtra("courseId");
-            course.setText(courseName);
-            course.setFocusable(false);
+            if(!courseName.equals("")) {
+                course.setText(courseName + "");
+                course.setFocusable(false);
+            }
+
         }
         else
         {
@@ -96,39 +113,49 @@ public class AddEventActivity extends AppCompatActivity {
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(new Intent(AddEventActivity.this,UploadPicturesActivity.class),1);
+                if(mode!=3)
+                {
+                    startActivityForResult(new Intent(AddEventActivity.this,UploadPicturesActivity.class),1);
+                }
+                else
+                {
+                    Intent temp = new Intent();
+                    temp.putExtra("description",description.getText().toString()+"");
+                    temp.putExtra("courseName",courseName+"");
+                    setResult(2,temp);
+                    finish();
+                }
             }
         });
         switch (mode)
         {
             case 1: name.setText("Exam");
                 upload.setText("UPLOAD PHOTO");
-                date.setHint("Due date");
                 submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     courseId = FragmentCourses.courseIds.get(FragmentCourses.courseNames.indexOf(course.getText().toString()));
-                    new doStuff().execute("exam",description.getText().toString());
+                    new doStuff().execute("exam",description.getText().toString(),date.getText().toString(),dueDate.getText().toString());
                 }
             });break;
             case 2: name.setText("Assignment");
                 upload.setText("UPLOAD PHOTO");
-                date.setHint("Due date");
                 submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     courseId = FragmentCourses.courseIds.get(FragmentCourses.courseNames.indexOf(course.getText().toString()));
-                    new doStuff().execute("assignment",description.getText().toString());
+                    new doStuff().execute("assignment",description.getText().toString(),date.getText().toString(),dueDate.getText().toString());
                 }
             });break;
             case 3:
                 name.setText("Note");
                 upload.setText("UPLOAD MORE");
+                dueDate.setVisibility(View.GONE);
                 submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     courseId = FragmentCourses.courseIds.get(FragmentCourses.courseNames.indexOf(course.getText().toString()));
-                    new doStuff().execute("notes",description.getText().toString());
+                    new doStuff().execute("notes",description.getText().toString(),date.getText().toString(),"");
                 }
             });break;
         }
@@ -166,11 +193,14 @@ public class AddEventActivity extends AppCompatActivity {
                     .addFormDataPart("profileId", getSharedPreferences("CC",MODE_PRIVATE).getString("profileId",""))
                     .addFormDataPart("courseId",courseId)
                     .addFormDataPart("type",params[0])
-                    .addFormDataPart("desc",params[1])
-                    .addFormDataPart("value","this is a value?");
-
+                    .addFormDataPart("desc",params[1]+"")
+                    .addFormDataPart("date",params[2]);
             File file;
             int i=1;
+            if(!params[3].equals(""))
+            {
+                body.addFormDataPart("dueDate",params[3]);
+            }
             for(String temp : UploadPicturesActivity.urls)
             {
                 Log.i("sw32","test : " + temp );
@@ -181,7 +211,7 @@ public class AddEventActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                file = new File(getFilesDir()+"/temp"+ i + ".jpeg");
+                file = new File(getFilesDir()+"/temp"+i+".jpeg");
                 i++;
                 FileOutputStream out = null;
                 try {
@@ -189,7 +219,12 @@ public class AddEventActivity extends AppCompatActivity {
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-                original.compress(Bitmap.CompressFormat.JPEG, 30, out);
+                int size = original.getRowBytes() * original.getHeight();
+                Log.i("sw32size",size+"");
+                if(size > 10000000)
+                    original.compress(Bitmap.CompressFormat.JPEG, 20, out);
+                else
+                    original.compress(Bitmap.CompressFormat.JPEG, 50, out);
                 body.addFormDataPart("file", "test.jpg", RequestBody.create(MediaType.parse("image/*"),file));
             }
             requestBody = body.build();

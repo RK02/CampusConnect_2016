@@ -198,6 +198,21 @@ public class UploadPicturesActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
+            else if(resultCode==2)
+            {
+                final String cname = data.getStringExtra("courseName")+"";
+                final String desc = data.getStringExtra("description")+"";
+                next.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(UploadPicturesActivity.this,AddEventActivity.class);
+                        intent.putExtra("courseName",cname+"");
+                        intent.putExtra("description",desc+"");
+                        startActivity(intent);
+                    }
+                });
+
+            }
         }
     }
     private void onCaptureImageResult(Intent data) {
