@@ -33,10 +33,7 @@ public class CourseListAdapter extends
         RecyclerView.Adapter<CourseListAdapter.CourseListViewHolder> {
 
     Context context;
-    int card_bk_color[] = {
-            Color.rgb(156,204,101),
-            Color.rgb(229,115,115)
-    };
+
     private ArrayList<SubscribedCourseList> mCourses;
 
 
@@ -102,9 +99,8 @@ public class CourseListAdapter extends
            }
         }
         courseListViewHolder.timetableGlance.setText(tt);
-
-        //If more than two cards are sent from the server, please change this ASAP.
-      //  courseListViewHolder.course_card.setBackgroundColor(card_bk_color[i-1]);
+        int color = Color.parseColor(a.getColour());
+        courseListViewHolder.course_card.setBackgroundColor(color);
 
     }
 
@@ -149,9 +145,11 @@ public class CourseListAdapter extends
                 public void onClick(View v) {
                     Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
                     ViewGroup viewGroup = (ViewGroup) course_card.getParent();
-                    String id = mCourses.get(viewGroup.indexOfChild(course_card)).getCourseId();
+                    int index = viewGroup.indexOfChild(course_card);
+                    String id = mCourses.get(index).getCourseId();
                     intent_temp.putExtra("courseId",id);
-                    intent_temp.putExtra("courseColor",card_bk_color[0]);
+                    intent_temp.putExtra("courseColor",mCourses.get(index).getColour());
+                    context.startActivity(intent_temp);
 
 
                     context.startActivity(intent_temp);
@@ -163,9 +161,11 @@ public class CourseListAdapter extends
                     Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
                     intent_temp.putExtra("TAB",0);
                     ViewGroup viewGroup = (ViewGroup) course_card.getParent();
-                    String id = mCourses.get(viewGroup.indexOfChild(course_card)).getCourseId();
+                    int index = viewGroup.indexOfChild(course_card);
+                    String id = mCourses.get(index).getCourseId();
                     intent_temp.putExtra("courseId",id);
-                    intent_temp.putExtra("courseColor",card_bk_color[0]);
+                    intent_temp.putExtra("courseColor",mCourses.get(index).getColour());
+                    context.startActivity(intent_temp);
 
                     context.startActivity(intent_temp);
                 }
@@ -176,9 +176,11 @@ public class CourseListAdapter extends
                     Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
                     intent_temp.putExtra("TAB",1);
                     ViewGroup viewGroup = (ViewGroup) course_card.getParent();
-                    String id = mCourses.get(viewGroup.indexOfChild(course_card)).getCourseId();
+                    int index = viewGroup.indexOfChild(course_card);
+                    String id = mCourses.get(index).getCourseId();
                     intent_temp.putExtra("courseId",id);
-                    intent_temp.putExtra("courseColor",card_bk_color[0]);
+                    intent_temp.putExtra("courseColor",mCourses.get(index).getColour());
+                    context.startActivity(intent_temp);
 
                     context.startActivity(intent_temp);
                 }
@@ -189,11 +191,7 @@ public class CourseListAdapter extends
                     Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
                     intent_temp.putExtra("TAB",2);
                     ViewGroup viewGroup = (ViewGroup) course_card.getParent();
-                    String id = mCourses.get(viewGroup.indexOfChild(course_card)).getCourseId();
-                    intent_temp.putExtra("courseId",id);
-                    intent_temp.putExtra("courseColor",card_bk_color[0]);
 
-                    context.startActivity(intent_temp);
                 }
             });
 
