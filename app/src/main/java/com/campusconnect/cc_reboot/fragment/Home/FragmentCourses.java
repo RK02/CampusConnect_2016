@@ -54,6 +54,7 @@ public class FragmentCourses extends Fragment{
     public static final String django = "https://campusconnect-2016.herokuapp.com";
     public static  String profileName = "";
     public static  String profilePoints = "";
+    public static ArrayList<SubscribedCourseList> sCourseList;
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_courses, container, false);
@@ -72,6 +73,7 @@ public class FragmentCourses extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
+        sCourseList = new ArrayList<>();
         call= myApi.getFeed(getActivity().getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""));
         call.enqueue(new Callback<Example>() {
             @Override
@@ -83,9 +85,10 @@ public class FragmentCourses extends Fragment{
                     profileName = example.getProfileName();
                     profilePoints = example.getPoints();
                     List<AvailableCourseList> availableCourseList = example.getAvailableCourseList();
-                    List<SubscribedCourseList> subscribedCourseList = example.getSubscribedCourseList();
+                     List<SubscribedCourseList> subscribedCourseList = example.getSubscribedCourseList();
 
                     for (SubscribedCourseList x : subscribedCourseList) {
+                        sCourseList.add(x);
                         mCourseAdapter.add(x);
                     }
                 }
