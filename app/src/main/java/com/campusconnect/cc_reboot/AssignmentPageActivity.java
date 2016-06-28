@@ -1,5 +1,6 @@
 package com.campusconnect.cc_reboot;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -81,7 +82,7 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         MyApi myApi = retrofit.create(MyApi.class);
-        MyApi.getAssignmentRequest body = new MyApi.getAssignmentRequest(assignmentId, FragmentCourses.profileId);
+        MyApi.getAssignmentRequest body = new MyApi.getAssignmentRequest(assignmentId, getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""));
         Call<ModelAssignment> call  = myApi.getAssignment(body);
         call.enqueue(new Callback<ModelAssignment>() {
             @Override

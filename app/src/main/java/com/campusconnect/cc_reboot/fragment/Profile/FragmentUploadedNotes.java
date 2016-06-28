@@ -1,5 +1,6 @@
 package com.campusconnect.cc_reboot.fragment.Profile;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -53,6 +54,32 @@ public class FragmentUploadedNotes extends Fragment {
         uploaded_notes_list.setLayoutManager(mLayoutManager);
         uploaded_notes_list.setItemAnimator(new DefaultItemAnimator());
         uploaded_notes_list.setAdapter(mUploadedNotesAdapter);
+        Retrofit retrofit = new Retrofit.
+                Builder()
+                .baseUrl(MyApi.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        MyApi myApi = retrofit.create(MyApi.class);
+        MyApi.getUploadedRequest request = new MyApi.getUploadedRequest(getActivity().getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId","fake"));
+        Call<ModelNoteBookList> call = myApi.getUploaded(request);
+        call.enqueue(new Callback<ModelNoteBookList>() {
+            @Override
+            public void onResponse(Call<ModelNoteBookList> call, Response<ModelNoteBookList> response) {
+                ModelNoteBookList modelNoteBookList = response.body();
+                if(modelNoteBookList != null) {
+                    List<NoteBookList> noteBookLists = modelNoteBookList.getNoteBookList();
+                    for (NoteBookList x : noteBookLists) {
+                        mUploadedNotesAdapter.add(x);
+                        mUploadedNotesAdapter.notifyDataSetChanged();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ModelNoteBookList> call, Throwable t) {
+
+            }
+        });
 
         return v;
     }

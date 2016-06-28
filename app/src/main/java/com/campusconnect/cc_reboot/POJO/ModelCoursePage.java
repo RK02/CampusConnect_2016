@@ -23,6 +23,7 @@ public class ModelCoursePage {
     private String response;
     private String notesCount;
     private String studentCount;
+    private String professorName;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
@@ -231,4 +232,11 @@ public class ModelCoursePage {
         this.additionalProperties.put(name, value);
     }
 
+    public String getProfessorName() {
+        return professorName;
+    }
+
+    public void setProfessorName(String professorName) {
+        this.professorName = professorName;
+    }
 }

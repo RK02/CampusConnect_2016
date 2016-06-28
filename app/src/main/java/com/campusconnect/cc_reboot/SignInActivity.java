@@ -25,6 +25,7 @@ package com.campusconnect.cc_reboot;
         import com.google.android.gms.common.api.OptionalPendingResult;
         import com.google.android.gms.common.api.ResultCallback;
         import com.google.android.gms.common.api.Status;
+        import com.google.gson.JsonNull;
 
         import org.json.JSONException;
         import org.json.JSONObject;
@@ -112,7 +113,9 @@ public class SignInActivity extends AppCompatActivity implements
             Log.d(TAG, "Got cached sign-in");
             GoogleSignInResult result = opr.get();
             handleSignInResult(result);
-        } else {
+        } else
+
+        {
             // If the user has not previously signed in on this device or the sign-in has expired,
             // this asynchronous branch will attempt to sign in the user silently.  Cross-device
             // single sign-on will occur in this branch.
@@ -155,7 +158,6 @@ public class SignInActivity extends AppCompatActivity implements
             updateUI(true);
             SharedPreferences sharedpreferences = getSharedPreferences("CC", Context.MODE_PRIVATE);
             if(sharedpreferences.contains("profileId")){
-                FragmentCourses.profileId = sharedpreferences.getString("profileId","");
                 Intent home = new Intent(SignInActivity.this,HomeActivity2.class);
                 startActivity(home);
                 finish();
@@ -278,7 +280,7 @@ public class SignInActivity extends AppCompatActivity implements
             String response;
 
             try {
-                url = new URL("http://10.75.133.109:8000/mobile_sign_in");
+                url = new URL(FragmentCourses.django+"/mobile_sign_in");
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("POST");
                 connection.setDoOutput(true);
@@ -318,18 +320,34 @@ public class SignInActivity extends AppCompatActivity implements
                 Intent signUp = new Intent(SignInActivity.this,RegistrationPageActivity.class);
                 signUp.putExtra("personName",personName);
                 signUp.putExtra("personEmail",personEmail);
-                signUp.putExtra("personPhoto",personPhoto.toString());
+                if(personPhoto!=null) signUp.putExtra("personPhoto",personPhoto.toString());
                 signUp.putExtra("personId",personId);
                 startActivity(signUp);
             }
             else
             {
+                JSONObject profileData = new JSONObject();
+                try {
+                    profileData = new JSONObject(s);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 SharedPreferences sharedPreferences = getSharedPreferences("CC",MODE_PRIVATE);
-                sharedPreferences
-                        .edit()
-                        .putString("profileId",s)
-                        .apply();
-                FragmentCourses.profileId =s;
+                try {
+                    sharedPreferences
+                            .edit()
+                            .putString("profileId",profileData.getString("profileId"))
+                            .putString("collegeId",profileData.getString("collegeId"))
+                            .putString("batchName",profileData.getString("batchName"))
+                            .putString("branchName",profileData.getString("branchName"))
+                            .putString("sectionName",profileData.getString("sectionName"))
+                            .putString("profileName",profileData.getString("profileName"))
+                            .putString("email",profileData.getString("email"))
+                            .putString("photourl",profileData.getString("photourl"))
+                            .apply();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 Intent home = new Intent(SignInActivity.this, HomeActivity2.class);
                 startActivity(home);
             }

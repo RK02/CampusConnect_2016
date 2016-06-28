@@ -252,8 +252,8 @@
                     android:minWidth="0dp"
                     android:padding="8dp"
                     android:textColor="@color/ColorTextHeading"
-                    android:textOff="Thurs"
-                    android:textOn="Thurs"
+                    android:textOff="Thu"
+                    android:textOn="Thu"
                     android:textSize="14sp" />
 
                 <ToggleButton
@@ -672,6 +672,7 @@
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
+>>>>>>> refs/remotes/origin/master
 
             <LinearLayout
                 android:id="@+id/container_action_buttons"

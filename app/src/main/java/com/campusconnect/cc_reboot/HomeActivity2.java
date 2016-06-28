@@ -1,6 +1,7 @@
 package com.campusconnect.cc_reboot;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -34,8 +36,11 @@ import com.campusconnect.cc_reboot.fragment.Drawer.FragmentPointsInfo;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentRate;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentSettings;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentTerms;
+import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
 import com.campusconnect.cc_reboot.fragment.Home.FragmentTimetable;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.squareup.picasso.Picasso;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 /**
@@ -77,9 +82,19 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
         fab_menu_container.getBackground().setAlpha(0);
         toolbar = (Toolbar) findViewById (R.id.toolbar);
         setSupportActionBar(toolbar);
-//Setting up Header View
-        View headerView = getLayoutInflater().inflate(R.layout.header, navigationView, false);
+
+        //Setting up Header View
+        final View headerView = getLayoutInflater().inflate(R.layout.header, navigationView, false);
         navigationView.addHeaderView(headerView);
+        ImageView view = (ImageView) headerView.findViewById(R.id.profile_image);
+        Picasso.with(HomeActivity2.this).
+                load(getSharedPreferences("CC",MODE_PRIVATE).getString("photourl","fakedesu")).error(R.mipmap.ic_launcher).
+                into(view);
+        ((TextView)headerView.findViewById(R.id.tv_username)).setText(getSharedPreferences("CC",MODE_PRIVATE).getString("profileName","PLACEHOLDER"));
+        ((TextView)headerView.findViewById(R.id.tv_points)).setText(FragmentCourses.profilePoints);
+
+        //Setting Home Fragment as default
+
 //Setting Home Fragment as default
         frag_title = "Home";
         home_title.setText(frag_title);
@@ -112,10 +127,12 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
+
             }
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
+
             }
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
@@ -125,13 +142,14 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
                 fragment_frame.setTranslationX((drawerLayout.getWidth() * slideOffset) / 4);
             }
         };
-//Setting the actionbarToggle to drawer layout
+
+        //Setting the actionbarToggle to drawer layout
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
-//calling sync state is necessary or else the hamburger icon won't show up
+        //calling sync state is necessary or else the hamburger icon won't show up
         actionBarDrawerToggle.syncState();
-//Listener to define layouts for FAB expanded and collapsed modes
+        //Listener to define layouts for FAB expanded and collapsed modes
         fabMenu.setOnFloatingActionsMenuUpdateListener(this);
-//OnClickListener Header View
+        //OnClickListener Header View
         headerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,7 +157,8 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
                 startActivity(intent_temp);
             }
         });
-//OnClickListeners
+
+        //OnClickListeners
         menu_button.setOnClickListener(this);
         search_button.setOnClickListener(this);
         notification_button.setOnClickListener(this);

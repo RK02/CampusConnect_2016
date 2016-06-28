@@ -1,7 +1,10 @@
 package com.campusconnect.cc_reboot;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -37,6 +40,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,6 +94,8 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
     Retrofit retrofit;
     List<Note> noteList;
     public static JSONObject jsonNoteList;
+    public static ArrayList<String> descriptions;
+    public static ArrayList<String> dates;
     Intent intent;
 
     @Override
@@ -100,6 +110,9 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
 
         noteBookId = getIntent().getStringExtra("noteBookId");
 
+        descriptions = new ArrayList<>();
+        dates = new ArrayList<>();
+
 
         retrofit = new Retrofit.
                 Builder()
@@ -107,7 +120,7 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         MyApi myApi = retrofit.create(MyApi.class);
-        MyApi.getNoteBookRequest request = new MyApi.getNoteBookRequest(noteBookId, FragmentCourses.profileId);
+        MyApi.getNoteBookRequest request = new MyApi.getNoteBookRequest(noteBookId, getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""));
         Call<ModelNoteBook> call = myApi.getNoteBook(request);
         call.enqueue(new Callback<ModelNoteBook>() {
             @Override
@@ -119,11 +132,20 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
                 {
                     try {
                         jsonNoteList.put(a.getClassNumber(),a);
+                        Log.i("sw32page",a.getClassNumber());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
+
+
                 List<String> urls = noteList.get(noteList.size()-1).getUrlList();
+                for(Note temp : noteList)
+                {
+                    descriptions.add(temp.getDescription());
+                    dates.add(temp.getDate());
+                }
+
                 String last = urls.get(urls.size()-1);
                 Picasso.with(NotePageActivity.this).load(last).into(notes_last_page);
                 courseName.setText(noteBook.getCourseName());
@@ -176,7 +198,7 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
                 break;
 
             case R.id.tb_bookmark:
-                
+                new bookmarkNote().execute();
                 break;
 
             case R.id.b_rent:
@@ -190,5 +212,52 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
+    class bookmarkNote extends AsyncTask<String,String,String>{
+
+        ProgressDialog progressDialog;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(NotePageActivity.this);
+            progressDialog.setTitle("Please wait...");
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            HttpURLConnection connection;
+            URL url;
+            JSONObject body = new JSONObject();
+            try{
+                url = new URL(FragmentCourses.BASE_URL+"bookmarkNoteBook");
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setDoOutput(true);
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("Content-Type","application/json");
+                connection.connect();
+                DataOutputStream os = new DataOutputStream(connection.getOutputStream());
+                body.put("profileId",getSharedPreferences("CC",MODE_PRIVATE).getString("profileId",""));
+                body.put("noteBookId",noteBookId);
+                os.write(body.toString().getBytes());
+                os.flush();
+                os.close();
+                int a = connection.getResponseCode();
+                Log.i("sw32bookmark",a+"");
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            progressDialog.dismiss();
+        }
+    }
 }
 

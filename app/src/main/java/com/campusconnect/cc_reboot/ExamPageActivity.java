@@ -1,5 +1,6 @@
 package com.campusconnect.cc_reboot;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -80,7 +81,7 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         MyApi myApi = retrofit.create(MyApi.class);
-        MyApi.getTestRequest body = new MyApi.getTestRequest(testId, FragmentCourses.profileId);
+        MyApi.getTestRequest body = new MyApi.getTestRequest(testId, getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""));
         Call<ModelTest> call = myApi.getTest(body);
         call.enqueue(new Callback<ModelTest>() {
             @Override
