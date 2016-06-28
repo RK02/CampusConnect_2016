@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -39,6 +40,10 @@ import com.campusconnect.cc_reboot.fragment.Drawer.FragmentTerms;
 import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
 import com.campusconnect.cc_reboot.fragment.Home.FragmentTimetable;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
@@ -73,6 +78,8 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
     private Toolbar toolbar;
     private LinearLayout acb_home;
     private Fragment fragment = null;
+    GoogleApiClient mGoogleApiClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +90,7 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
         toolbar = (Toolbar) findViewById (R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         //Setting up Header View
         final View headerView = getLayoutInflater().inflate(R.layout.header, navigationView, false);
         navigationView.addHeaderView(headerView);
@@ -91,7 +99,7 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
                 load(getSharedPreferences("CC",MODE_PRIVATE).getString("photourl","fakedesu")).error(R.mipmap.ic_launcher).
                 into(view);
         ((TextView)headerView.findViewById(R.id.tv_username)).setText(getSharedPreferences("CC",MODE_PRIVATE).getString("profileName","PLACEHOLDER"));
-        ((TextView)headerView.findViewById(R.id.tv_points)).setText(FragmentCourses.profilePoints);
+
 
         //Setting Home Fragment as default
 
@@ -162,6 +170,20 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
         menu_button.setOnClickListener(this);
         search_button.setOnClickListener(this);
         notification_button.setOnClickListener(this);
+        ((TextView)headerView.findViewById(R.id.tv_points)).setText(FragmentCourses.profilePoints);
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+                    }
+                } /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+        mGoogleApiClient.connect();
     }
     @Override
     public void onClick(View view) {
@@ -262,6 +284,11 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
                 break;
             case R.id.item_logout:
                 at_home=true;
+
+                Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+                Intent intent = new Intent(HomeActivity2.this,SignInActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 break;
             case R.id.item_t_and_c:
                 fragment = new FragmentTerms();

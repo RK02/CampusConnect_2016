@@ -11,6 +11,7 @@ package com.campusconnect.cc_reboot;
         import android.support.v7.app.AppCompatActivity;
         import android.util.Log;
         import android.view.View;
+        import android.widget.Button;
         import android.widget.ProgressBar;
         import android.widget.TextView;
 
@@ -352,6 +353,7 @@ public class SignInActivity extends AppCompatActivity implements
                 startActivity(home);
             }
             progressBar.dismiss();
+            mProgressDialog.dismiss();
         }
     }
 }
