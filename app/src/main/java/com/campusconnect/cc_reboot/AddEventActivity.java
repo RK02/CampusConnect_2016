@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,6 +20,8 @@ import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
 
 import org.json.JSONObject;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -79,13 +82,13 @@ public class AddEventActivity extends AppCompatActivity {
         else
         {
             ArrayList<String> temp = FragmentCourses.courseNames;
-            ArrayAdapter<String> courseNames = new ArrayAdapter<String>(AddEventActivity.this,android.R.layout.simple_list_item_1,temp);
+            Log.i("sw32",""+FragmentCourses.courseNames.size() + ":" + FragmentCourses.courseIds.size());
+            ArrayAdapter<String> courseNames = new ArrayAdapter<>(AddEventActivity.this,android.R.layout.simple_list_item_1,FragmentCourses.courseNames);
             course.setAdapter(courseNames);
         }
         progressDialog = new ProgressDialog(this);
         name = (EditText) findViewById(R.id.noteName);
-        description = (EditText) findViewById(R.id.noteDate);
-
+        description = (EditText) findViewById(R.id.noteDescription);
         upload = (Button) findViewById(R.id.uploadPhotos);
         submit = (Button) findViewById(R.id.submit);
         upload.setOnClickListener(new View.OnClickListener() {
@@ -96,34 +99,34 @@ public class AddEventActivity extends AppCompatActivity {
         });
         switch (mode)
         {
-            case 1: name.setHint("Exam name");
+            case 1: name.setText("Exam");
                 upload.setText("UPLOAD PHOTO");
                 date.setHint("Due date");
                 submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     courseId = FragmentCourses.courseIds.get(FragmentCourses.courseNames.indexOf(course.getText().toString()));
-                    new doStuff().execute("exam");
+                    new doStuff().execute("exam",description.getText().toString());
                 }
             });break;
-            case 2: name.setHint("Assignment name");
+            case 2: name.setText("Assignment");
                 upload.setText("UPLOAD PHOTO");
                 date.setHint("Due date");
                 submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     courseId = FragmentCourses.courseIds.get(FragmentCourses.courseNames.indexOf(course.getText().toString()));
-                    new doStuff().execute("assignment");
+                    new doStuff().execute("assignment",description.getText().toString());
                 }
             });break;
             case 3:
-                name.setHint("Note name");
+                name.setText("Note");
                 upload.setText("UPLOAD MORE");
                 submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     courseId = FragmentCourses.courseIds.get(FragmentCourses.courseNames.indexOf(course.getText().toString()));
-                    new doStuff().execute("notes");
+                    new doStuff().execute("notes",description.getText().toString());
                 }
             });break;
         }
@@ -161,14 +164,24 @@ public class AddEventActivity extends AppCompatActivity {
                     .addFormDataPart("profileId", getSharedPreferences("CC",MODE_PRIVATE).getString("profileId",""))
                     .addFormDataPart("courseId",courseId)
                     .addFormDataPart("type",params[0])
-                    .addFormDataPart("desc","This is a desc")
+                    .addFormDataPart("desc",params[1])
                     .addFormDataPart("value","this is a value?");
 
-            for(Bitmap temp : UploadPicturesActivity.images_paths.keySet())
+
+            for(String temp : UploadPicturesActivity.urls)
             {
-                path =  UploadPicturesActivity.images_paths.get(temp);
-                Log.i("sw32path",path);
-                body.addFormDataPart("file", "test.jpg", RequestBody.create(MediaType.parse("image/*"),new File(path)));
+                Bitmap original = null;
+                try {
+                    original = BitmapFactory.decodeStream(getAssets().open(temp));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                original.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                Bitmap decoded = BitmapFactory.decodeStream(new ByteArrayInputStream(out.toByteArray()));
+
+                //TODO: Compression
+                body.addFormDataPart("file", "test.jpg", RequestBody.create(MediaType.parse("image/*"),new File(temp)));
             }
             requestBody = body.build();
             Request request = new Request.Builder()

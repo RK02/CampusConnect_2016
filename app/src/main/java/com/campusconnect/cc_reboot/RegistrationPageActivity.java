@@ -102,6 +102,7 @@ public class RegistrationPageActivity extends AppCompatActivity{
         profileName.setFocusable(false);
         Picasso.with(RegistrationPageActivity.this)
                 .load(personPhoto)
+                .fit()
                 .into(profilePicture);
         //profilePicture.setFocusable(false);
 
