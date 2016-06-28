@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -28,6 +30,7 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -45,7 +48,7 @@ public class AddEventActivity extends AppCompatActivity {
 
     EditText name;
     EditText description;
-    EditText course;
+    AutoCompleteTextView course;
     EditText date;
     Button submit;
     Button upload;
@@ -59,7 +62,7 @@ public class AddEventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
         int mode = getIntent().getIntExtra("Mode",3);
-        course = (EditText) findViewById(R.id.course);
+        course = (AutoCompleteTextView) findViewById(R.id.course);
         date = (EditText) findViewById(R.id.noteDate);
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
@@ -71,12 +74,18 @@ public class AddEventActivity extends AppCompatActivity {
             courseName = getIntent().getStringExtra("courseTitle");
             courseId = getIntent().getStringExtra("courseId");
             course.setText(courseName);
+            course.setFocusable(false);
+        }
+        else
+        {
+            ArrayList<String> temp = FragmentCourses.courseNames;
+            ArrayAdapter<String> courseNames = new ArrayAdapter<String>(AddEventActivity.this,android.R.layout.simple_list_item_1,temp);
+            course.setAdapter(courseNames);
         }
         progressDialog = new ProgressDialog(this);
         name = (EditText) findViewById(R.id.noteName);
         description = (EditText) findViewById(R.id.noteDate);
-        course.setText(courseName);
-        course.setFocusable(false);
+
         upload = (Button) findViewById(R.id.uploadPhotos);
         submit = (Button) findViewById(R.id.submit);
         upload.setOnClickListener(new View.OnClickListener() {
@@ -87,22 +96,24 @@ public class AddEventActivity extends AppCompatActivity {
         });
         switch (mode)
         {
-            case 1: name.setHint("Exam name");submit.setOnClickListener(new View.OnClickListener() {
+            case 1: name.setHint("Exam name");
+                upload.setText("UPLOAD PHOTO");
+                date.setHint("Due date");
+                submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    courseId = FragmentCourses.courseIds.get(FragmentCourses.courseNames.indexOf(course.getText().toString()));
                     new doStuff().execute("exam");
-                    upload.setText("UPLOAD PHOTO");
-                    date.setHint("Due date");
-                    new doStuff().execute();
                 }
             });break;
-            case 2: name.setHint("Assignment name");submit.setOnClickListener(new View.OnClickListener() {
+            case 2: name.setHint("Assignment name");
+                upload.setText("UPLOAD PHOTO");
+                date.setHint("Due date");
+                submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    courseId = FragmentCourses.courseIds.get(FragmentCourses.courseNames.indexOf(course.getText().toString()));
                     new doStuff().execute("assignment");
-                    upload.setText("UPLOAD PHOTO");
-                    date.setHint("Due date");
-                    new doStuff().execute();
                 }
             });break;
             case 3:
@@ -111,6 +122,7 @@ public class AddEventActivity extends AppCompatActivity {
                 submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    courseId = FragmentCourses.courseIds.get(FragmentCourses.courseNames.indexOf(course.getText().toString()));
                     new doStuff().execute("notes");
                 }
             });break;
@@ -146,21 +158,17 @@ public class AddEventActivity extends AppCompatActivity {
             RequestBody requestBody;
             MultipartBody.Builder body = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
-                  //  .addFormDataPart("file","test.jpg",
-                    //      RequestBody.create(MediaType.parse("image/*"), new File(path)))
                     .addFormDataPart("profileId", getSharedPreferences("CC",MODE_PRIVATE).getString("profileId",""))
                     .addFormDataPart("courseId",courseId)
                     .addFormDataPart("type",params[0])
-                   .addFormDataPart("desc","This is a desc")
-                    .addFormDataPart("value","this is a value?")
-                    ;
+                    .addFormDataPart("desc","This is a desc")
+                    .addFormDataPart("value","this is a value?");
 
             for(Bitmap temp : UploadPicturesActivity.images_paths.keySet())
             {
-               path =  UploadPicturesActivity.images_paths.get(temp);
+                path =  UploadPicturesActivity.images_paths.get(temp);
                 Log.i("sw32path",path);
                 body.addFormDataPart("file", "test.jpg", RequestBody.create(MediaType.parse("image/*"),new File(path)));
-
             }
             requestBody = body.build();
             Request request = new Request.Builder()
@@ -172,19 +180,6 @@ public class AddEventActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-//            client.newCall(request).enqueue(new Callback() {
-//                @Override
-//                public void onFailure(Call call, IOException e) {
-//                }
-//
-//                @Override
-//                public void onResponse(Call call, Response response) throws IOException {
-//                    Log.i("sw32",response.message());
-//                    Log.i("sw32",response.request()+"");
-//
-//                }
-//            });
-            Log.i("sw32","file");
             return null;
         }
             @Override
