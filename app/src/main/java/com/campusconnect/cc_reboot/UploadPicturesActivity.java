@@ -80,6 +80,8 @@ public class UploadPicturesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_upload_pictures);
 
         ButterKnife.bind(this);
+        urls = new ArrayList<>();
+        uris = new ArrayList<>();
 
         final ViewTreeObserver observer= for_measure.getViewTreeObserver();
         observer.addOnGlobalLayoutListener(
@@ -347,6 +349,7 @@ class ImageAdapter extends BaseAdapter {
                 .load(UploadPicturesActivity.uris.get(position))
                 .memoryPolicy(MemoryPolicy.NO_CACHE,MemoryPolicy.NO_STORE)
                 .error(R.mipmap.ic_pages_18)
+                .fit()
                 .into(holder.imageview);
         return convertView;
     }

@@ -26,6 +26,7 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -36,6 +37,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.zip.ZipInputStream;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -167,21 +169,32 @@ public class AddEventActivity extends AppCompatActivity {
                     .addFormDataPart("desc",params[1])
                     .addFormDataPart("value","this is a value?");
 
-
+            File file;
+            int i=1;
             for(String temp : UploadPicturesActivity.urls)
             {
+                Log.i("sw32","test : " + temp );
+
                 Bitmap original = null;
                 try {
-                    original = BitmapFactory.decodeStream(getAssets().open(temp));
+                    original = BitmapFactory.decodeStream(new FileInputStream(temp));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                ByteArrayOutputStream out = new ByteArrayOutputStream();
-                original.compress(Bitmap.CompressFormat.JPEG, 100, out);
-                Bitmap decoded = BitmapFactory.decodeStream(new ByteArrayInputStream(out.toByteArray()));
+                file = new File(getFilesDir()+"/temp"+ i + ".jpeg");
+                i++;
+                FileOutputStream out = null;
+                try {
+                    out = new FileOutputStream(file);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                original.compress(Bitmap.CompressFormat.JPEG, 30, out);
+               // ZipInputStream zis = new ZipInputStream( new ByteArrayInputStream( out.toByteArray() ) );
+                //Bitmap decoded = BitmapFactory.decodeStream(new ByteArrayInputStream(out.toByteArray()));
 
                 //TODO: Compression
-                body.addFormDataPart("file", "test.jpg", RequestBody.create(MediaType.parse("image/*"),new File(temp)));
+                body.addFormDataPart("file", "test.jpg", RequestBody.create(MediaType.parse("image/*"),file));
             }
             requestBody = body.build();
             Request request = new Request.Builder()
