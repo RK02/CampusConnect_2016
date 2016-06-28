@@ -188,14 +188,16 @@ public class UploadPicturesActivity extends AppCompatActivity {
                 onSelectFromGalleryResult(data);
             else if (requestCode == REQUEST_CAMERA)
                 onCaptureImageResult(data);
-        }else if(requestCode==1)
-        {
-            if(resultCode==1) {
+        }else if(requestCode==1) {
+            if (resultCode == 1) {
                 urls.clear();
                 uris.clear();
                 imageAdapter.notifyDataSetChanged();
+                Intent intent = new Intent(UploadPicturesActivity.this, CoursePageActivity.class);
+                intent.putExtra("courseId", data.getStringExtra("courseId"));
+                startActivity(intent);
+                finish();
             }
-
         }
     }
     private void onCaptureImageResult(Intent data) {

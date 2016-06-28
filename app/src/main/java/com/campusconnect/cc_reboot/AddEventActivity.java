@@ -190,10 +190,6 @@ public class AddEventActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 original.compress(Bitmap.CompressFormat.JPEG, 30, out);
-               // ZipInputStream zis = new ZipInputStream( new ByteArrayInputStream( out.toByteArray() ) );
-                //Bitmap decoded = BitmapFactory.decodeStream(new ByteArrayInputStream(out.toByteArray()));
-
-                //TODO: Compression
                 body.addFormDataPart("file", "test.jpg", RequestBody.create(MediaType.parse("image/*"),file));
             }
             requestBody = body.build();
@@ -212,7 +208,9 @@ public class AddEventActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             progressDialog.dismiss();
-            setResult(1);
+                Intent intent = new Intent();
+                intent.putExtra("courseId",courseId);
+            setResult(1,intent);
             finish();
         }
 

@@ -33,6 +33,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import com.campusconnect.cc_reboot.POJO.*;
 import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -147,22 +148,22 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
                 }
 
                 String last = urls.get(urls.size()-1);
-                Picasso.with(NotePageActivity.this).load(last).into(notes_last_page);
+                Picasso.with(NotePageActivity.this)
+                        .load(last)
+                        .fit()
+                        .memoryPolicy(MemoryPolicy.NO_CACHE,MemoryPolicy.NO_STORE)
+                        .into(notes_last_page);
                 courseName.setText(noteBook.getCourseName());
                 views.setText(noteBook.getViews());
                 rating.setText(noteBook.getTotalRating());
                 pages.setText(noteBook.getPages());
                 uploader.setText(noteBook.getUploaderName());
                 lastPosted.setText(noteBook.getLastUpdated().substring(0,10));
-
             }
-
             @Override
             public void onFailure(Call<ModelNoteBook> call, Throwable t) {
-
             }
         });
-
         //OnClickListeners
         edit_note_button.setOnClickListener(this);
         fullscreen_button.setOnClickListener(this);
