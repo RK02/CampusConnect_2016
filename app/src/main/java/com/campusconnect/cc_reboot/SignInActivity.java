@@ -114,6 +114,7 @@ public class SignInActivity extends AppCompatActivity implements
             Log.d(TAG, "Got cached sign-in");
             GoogleSignInResult result = opr.get();
             handleSignInResult(result);
+            hideProgressDialog();
         } else
 
         {
@@ -160,8 +161,8 @@ public class SignInActivity extends AppCompatActivity implements
             SharedPreferences sharedpreferences = getSharedPreferences("CC", Context.MODE_PRIVATE);
             if(sharedpreferences.contains("profileId")){
                 Intent home = new Intent(SignInActivity.this,HomeActivity2.class);
+                home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(home);
-                finish();
             }
             else
             {
@@ -169,9 +170,11 @@ public class SignInActivity extends AppCompatActivity implements
             }
 
         } else {
+
             // Signed out, show unauthenticated UI.
             updateUI(false);
         }
+        hideProgressDialog();
     }
     // [END handleSignInResult]
 
@@ -353,7 +356,7 @@ public class SignInActivity extends AppCompatActivity implements
                 startActivity(home);
             }
             progressBar.dismiss();
-            mProgressDialog.dismiss();
+            hideProgressDialog();
         }
     }
 }
