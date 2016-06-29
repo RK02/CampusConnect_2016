@@ -99,8 +99,8 @@ public class CourseListAdapter extends
            }
         }
         courseListViewHolder.timetableGlance.setText(tt);
-        int color = Color.parseColor(a.getColour());
-        courseListViewHolder.course_card.setBackgroundColor(color);
+        //int color = Color.parseColor(a.getColour());
+        //courseListViewHolder.course_card.setBackgroundColor(color);
 
     }
 

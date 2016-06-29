@@ -33,8 +33,8 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.10/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" afterPath="$PROJECT_DIR$/.gradle/2.10/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/GoogleSignInActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/GoogleSignInActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/RegistrationPageActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/RegistrationPageActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/SelectCourseActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/SelectCourseActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/HomeActivity2.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/HomeActivity2.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/adapter/CourseListAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/adapter/CourseListAdapter.java" />
     </list>
     <ignored path="CampusConnect_2016.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -62,67 +62,15 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="GoogleSignInActivity.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="GoogleSignInActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/GoogleSignInActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-10.148149">
-              <caret line="175" column="29" selection-start-line="175" selection-start-column="29" selection-end-line="175" selection-end-column="29" />
+            <state vertical-scroll-proportion="0.60913706">
+              <caret line="93" column="9" selection-start-line="93" selection-start-column="9" selection-end-line="93" selection-end-column="9" />
               <folding>
                 <element signature="e#0#612#0" expanded="true" />
                 <element signature="imports" expanded="true" />
-                <element signature="e#4237#4877#0" expanded="true" />
-                <element signature="e#4876#4877#0" expanded="true" />
-                <element signature="e#6318#6374#0" expanded="true" />
-                <element signature="e#7596#8595#0" expanded="true" />
-                <element signature="e#8594#8595#0" expanded="true" />
-                <element signature="e#9057#9264#0" expanded="true" />
-                <element signature="e#9263#9264#0" expanded="true" />
-                <element signature="e#9490#9697#0" expanded="true" />
-                <element signature="e#9696#9697#0" expanded="true" />
-                <element signature="e#9848#9902#0" expanded="true" />
-                <element signature="e#9941#9995#0" expanded="true" />
-                <element signature="e#10208#10227#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CourseListAdapter.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/adapter/CourseListAdapter.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="107" column="0" selection-start-line="107" selection-start-column="0" selection-end-line="107" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SelectCourseActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/SelectCourseActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="120" column="21" selection-start-line="120" selection-start-column="21" selection-end-line="120" selection-end-column="21" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RentNoteActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/RentNoteActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RegistrationPageActivity.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/RegistrationPageActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4467005">
-              <caret line="242" column="62" selection-start-line="242" selection-start-column="62" selection-end-line="242" selection-end-column="62" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -140,8 +88,18 @@
       <file leaf-file-name="HomeActivity2.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/HomeActivity2.java">
           <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-7.0740743">
+              <caret line="298" column="64" selection-start-line="298" selection-start-column="64" selection-end-line="298" selection-end-column="64" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CourseListAdapter.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/adapter/CourseListAdapter.java">
+          <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="67" column="36" selection-start-line="67" selection-start-column="36" selection-end-line="67" selection-end-column="36" />
+              <caret line="110" column="50" selection-start-line="110" selection-start-column="50" selection-end-line="110" selection-end-column="50" />
               <folding />
             </state>
           </provider>
@@ -2139,7 +2097,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/fragment/Home/FragmentCourses.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/POJO/AvailableCourseList.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/POJO/SubscribedCourseList.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/adapter/CourseListAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/card_layout_course.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/adapter/NotesListAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/adapter/UploadedNotesListAdapter.java" />
@@ -2159,16 +2116,17 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/fragment/CoursePage/FragmentNotes.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/fragment/Profile/FragmentUploadedNotes.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/NotePageActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/HomeActivity2.java" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/FireBase/something.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/FireBase/a.java" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/FireBase/MyFirebaseMessagingService.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/MyFirebaseMessagingService.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/GoogleSignInActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/SelectCourseActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/RegistrationPageActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/adapter/CourseListAdapter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/HomeActivity2.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/GoogleSignInActivity.java" />
       </list>
     </option>
   </component>
@@ -2257,6 +2215,28 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="cc_reboot" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="CampusConnect_2016" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="cc_reboot" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="adapter" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -2595,7 +2575,7 @@
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36402267" sideWeight="0.50646204" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.36402267" sideWeight="0.49353796" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.36402267" sideWeight="0.49353796" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3286119" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -2972,14 +2952,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/HomeActivity2.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="67" column="36" selection-start-line="67" selection-start-column="36" selection-end-line="67" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -2992,14 +2964,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.28503564">
           <caret line="26" column="22" selection-start-line="26" selection-start-column="22" selection-end-line="26" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-15.291667">
-          <caret line="37" column="43" selection-start-line="37" selection-start-column="43" selection-end-line="37" selection-end-column="43" />
           <folding />
         </state>
       </provider>
@@ -3026,37 +2990,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/GoogleSignInActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.148149">
-          <caret line="175" column="29" selection-start-line="175" selection-start-column="29" selection-end-line="175" selection-end-column="29" />
-          <folding>
-            <element signature="e#0#612#0" expanded="true" />
-            <element signature="imports" expanded="true" />
-            <element signature="e#4237#4877#0" expanded="true" />
-            <element signature="e#4876#4877#0" expanded="true" />
-            <element signature="e#6318#6374#0" expanded="true" />
-            <element signature="e#7596#8595#0" expanded="true" />
-            <element signature="e#8594#8595#0" expanded="true" />
-            <element signature="e#9057#9264#0" expanded="true" />
-            <element signature="e#9263#9264#0" expanded="true" />
-            <element signature="e#9490#9697#0" expanded="true" />
-            <element signature="e#9696#9697#0" expanded="true" />
-            <element signature="e#9848#9902#0" expanded="true" />
-            <element signature="e#9941#9995#0" expanded="true" />
-            <element signature="e#10208#10227#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/adapter/CourseListAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="107" column="0" selection-start-line="107" selection-start-column="0" selection-end-line="107" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/SelectCourseActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -3076,8 +3009,43 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/RegistrationPageActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.4467005">
-          <caret line="242" column="62" selection-start-line="242" selection-start-column="62" selection-end-line="242" selection-end-column="62" />
+          <caret line="163" column="26" selection-start-line="163" selection-start-column="26" selection-end-line="163" selection-end-column="26" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-15.291667">
+          <caret line="37" column="43" selection-start-line="37" selection-start-column="43" selection-end-line="37" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/adapter/CourseListAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="110" column="50" selection-start-line="110" selection-start-column="50" selection-end-line="110" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/HomeActivity2.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-7.0740743">
+          <caret line="298" column="64" selection-start-line="298" selection-start-column="64" selection-end-line="298" selection-end-column="64" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/GoogleSignInActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.60913706">
+          <caret line="93" column="9" selection-start-line="93" selection-start-column="9" selection-end-line="93" selection-end-column="9" />
+          <folding>
+            <element signature="e#0#612#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

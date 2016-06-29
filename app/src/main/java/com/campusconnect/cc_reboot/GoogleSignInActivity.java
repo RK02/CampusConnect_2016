@@ -86,6 +86,13 @@ public class GoogleSignInActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_google);
 
+        if(!getIntent().hasExtra("logout")){
+        if(getSharedPreferences("CC",MODE_PRIVATE).contains("profileId")){
+            Intent home = new Intent(GoogleSignInActivity.this,HomeActivity2.class);
+            home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(home);
+        }
+        }
         // Views
         mStatusTextView = (TextView) findViewById(R.id.status);
         mDetailTextView = (TextView) findViewById(R.id.detail);
@@ -173,7 +180,6 @@ public class GoogleSignInActivity extends BaseActivity implements
                     Intent home = new Intent(GoogleSignInActivity.this,HomeActivity2.class);
                     home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(home);
-                    finish();
                 }
                 else
                 {

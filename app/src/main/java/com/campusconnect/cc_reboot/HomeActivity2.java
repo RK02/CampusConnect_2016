@@ -45,6 +45,7 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
@@ -293,6 +294,8 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
 
                 Auth.GoogleSignInApi.signOut(mGoogleApiClient);
                 Intent intent = new Intent(HomeActivity2.this,GoogleSignInActivity.class);
+                intent.putExtra("logout","temp");
+                FirebaseAuth.getInstance().signOut();
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
