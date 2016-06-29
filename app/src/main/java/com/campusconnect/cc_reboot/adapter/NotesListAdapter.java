@@ -59,7 +59,6 @@ public class NotesListAdapter extends
         notesListViewHolder.note_name.setText(mNotes.get(i).getCourseName());
         notesListViewHolder.note_pages_count.setText(mNotes.get(i).getPages());
         notesListViewHolder.note_views.setText(mNotes.get(i).getViews());
-//        notesListViewHolder.note_description.setText(mNotes.get(i).getCourseName());
         notesListViewHolder.note_uploader.setText(mNotes.get(i).getUploaderName());
         notesListViewHolder.note_rating.setText(mNotes.get(i).getTotalRating());
         String time = mNotes.get(i).getLastUpdated();
@@ -77,37 +76,15 @@ public class NotesListAdapter extends
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        time.split(" ");
-        if(days==0)
-        {
-            if(hours==0)
-            {
-                if(minutes==0)
-                {
-                    if(seconds==0)
-                    {
-                        notesListViewHolder.last_updated.setText("Just now");
-                    }
-                    else
-                    {
-                        notesListViewHolder.last_updated.setText(seconds + " seconds ago");
-                    }
-                }
-                else
-                {
-                    notesListViewHolder.last_updated.setText(minutes + " minutes ago");
-                }
-            }
-            else
-            {
-                notesListViewHolder.last_updated.setText(hours + " hours ago");
-            }
-        }
-        else
-        {
-            notesListViewHolder.last_updated.setText(days + " days ago");
-        }
-
+        if(days==0) {if(hours==0) {if(minutes==0) {if(seconds==0) {notesListViewHolder.last_updated.setText("Just now");}
+                    else {if(seconds==1) notesListViewHolder.last_updated.setText(seconds + " second ago");
+                        else notesListViewHolder.last_updated.setText(seconds + " seconds ago");}}
+                else {if(minutes==1) notesListViewHolder.last_updated.setText(minutes + " minute ago");
+                    notesListViewHolder.last_updated.setText(minutes + " minutes ago");}}
+            else {if(hours==1)notesListViewHolder.last_updated.setText(hours + " hour ago");
+            else notesListViewHolder.last_updated.setText(hours + " hours ago");}}
+        else {if(days==1)notesListViewHolder.last_updated.setText(days + " day ago");
+            else notesListViewHolder.last_updated.setText(days + " days ago");}
     }
 
     public String getNoteBookId(String noteBookName)
