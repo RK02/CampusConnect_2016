@@ -25,7 +25,6 @@ import com.campusconnect.cc_reboot.POJO.ModelNoteBook;
 import com.campusconnect.cc_reboot.POJO.ModelNoteBookList;
 import com.campusconnect.cc_reboot.POJO.MyApi;
 
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

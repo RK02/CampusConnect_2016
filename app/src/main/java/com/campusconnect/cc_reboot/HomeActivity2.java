@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.multidex.MultiDex;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -80,6 +81,11 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
     private Fragment fragment = null;
     GoogleApiClient mGoogleApiClient;
 
+    @Override
+    protected void attachBaseContext(Context context) {
+        super.attachBaseContext(context);
+        MultiDex.install(this);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -286,7 +292,7 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
                 at_home=true;
 
                 Auth.GoogleSignInApi.signOut(mGoogleApiClient);
-                Intent intent = new Intent(HomeActivity2.this,SignInActivity.class);
+                Intent intent = new Intent(HomeActivity2.this,GoogleSignInActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;

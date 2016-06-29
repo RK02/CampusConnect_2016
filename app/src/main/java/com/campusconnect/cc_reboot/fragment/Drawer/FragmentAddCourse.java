@@ -1,5 +1,6 @@
 package com.campusconnect.cc_reboot.fragment.Drawer;
 
+import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 
 import android.app.TimePickerDialog;
@@ -312,6 +313,7 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
                 colorPickerDialog = new ColorPickerDialog(getActivity());
 
                 colorPickerDialog.show();
+
 
                 Window window = colorPickerDialog.getWindow();
                 window.setLayout(900, GridLayoutManager.LayoutParams.WRAP_CONTENT);

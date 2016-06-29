@@ -86,7 +86,7 @@
             android:name=".RentNoteActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
-        <activity android:name=".SignInActivity" />
+        <activity android:name=".GoogleSignInActivity" />
         <activity android:name=".AddEventActivity" />
         <activity
             android:name=".SplashActivity"

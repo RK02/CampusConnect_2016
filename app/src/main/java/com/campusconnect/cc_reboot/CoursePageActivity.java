@@ -39,7 +39,6 @@ import java.net.URL;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

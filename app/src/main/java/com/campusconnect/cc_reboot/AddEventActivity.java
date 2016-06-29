@@ -75,9 +75,6 @@ public class AddEventActivity extends AppCompatActivity {
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         String formattedDate = df.format(c.getTime());
-        //c.add(Calendar.DAY_OF_MONTH,7);
-        //String due = df.format(c.getTime());
-        //dueDate.setText(due);
         date.setText(formattedDate);
         date.setFocusable(false);
         if(getIntent().hasExtra("courseName"))
