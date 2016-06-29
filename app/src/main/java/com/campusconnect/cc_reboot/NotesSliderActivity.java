@@ -164,6 +164,5 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
             trial_button.startAnimation(fadeOut);
         }
     }
-
 }
 

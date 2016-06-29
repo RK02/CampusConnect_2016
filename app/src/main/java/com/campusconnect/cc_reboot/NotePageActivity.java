@@ -25,7 +25,6 @@ import com.campusconnect.cc_reboot.POJO.ModelNoteBook;
 import com.campusconnect.cc_reboot.POJO.ModelNoteBookList;
 import com.campusconnect.cc_reboot.POJO.MyApi;
 
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,6 +32,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import com.campusconnect.cc_reboot.POJO.*;
 import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -45,7 +45,10 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -147,22 +150,46 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
                 }
 
                 String last = urls.get(urls.size()-1);
-                Picasso.with(NotePageActivity.this).load(last).into(notes_last_page);
+                Picasso.with(NotePageActivity.this)
+                        .load(last)
+                        .fit()
+                        .memoryPolicy(MemoryPolicy.NO_CACHE,MemoryPolicy.NO_STORE)
+                        .into(notes_last_page);
                 courseName.setText(noteBook.getCourseName());
                 views.setText(noteBook.getViews());
                 rating.setText(noteBook.getTotalRating());
                 pages.setText(noteBook.getPages());
                 uploader.setText(noteBook.getUploaderName());
-                lastPosted.setText(noteBook.getLastUpdated().substring(0,10));
 
+                String time = noteBook.getLastUpdated();
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+                int days = 0,hours=0,minutes=0,seconds=0;
+                try {
+                    Calendar a = Calendar.getInstance();
+                    Calendar b = Calendar.getInstance();
+                    b.setTime(df.parse(time));
+                    long difference = a.getTimeInMillis() - b.getTimeInMillis();
+                    days = (int) (difference/ (1000*60*60*24));
+                    hours = (int) (difference/ (1000*60*60));
+                    minutes = (int) (difference/ (1000*60));
+                    seconds = (int) (difference/1000);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                if(days==0) {if(hours==0) {if(minutes==0) {if(seconds==0) {lastPosted.setText("Just now");}
+                else {if(seconds==1) lastPosted.setText(seconds + " second ago");
+                else lastPosted.setText(seconds + " seconds ago");}}
+                else {if(minutes==1) lastPosted.setText(minutes + " minute ago");
+                    lastPosted.setText(minutes + " minutes ago");}}
+                else {if(hours==1)lastPosted.setText(hours + " hour ago");
+                else lastPosted.setText(hours + " hours ago");}}
+                else {if(days==1)lastPosted.setText(days + " day ago");
+                else lastPosted.setText(days + " days ago");}
             }
-
             @Override
             public void onFailure(Call<ModelNoteBook> call, Throwable t) {
-
             }
         });
-
         //OnClickListeners
         edit_note_button.setOnClickListener(this);
         fullscreen_button.setOnClickListener(this);

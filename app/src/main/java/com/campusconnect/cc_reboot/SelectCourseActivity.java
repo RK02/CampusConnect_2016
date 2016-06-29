@@ -116,6 +116,7 @@ public class SelectCourseActivity extends AppCompatActivity{
                     public void onResponse(Call<ModelSubscribe> call, Response<ModelSubscribe> response) {
 
                         Intent intent_temp = new Intent(getApplicationContext(), HomeActivity2.class);
+                        intent_temp.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent_temp);
                     }
 

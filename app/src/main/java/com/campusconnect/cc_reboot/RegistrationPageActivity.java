@@ -102,6 +102,7 @@ public class RegistrationPageActivity extends AppCompatActivity{
         profileName.setFocusable(false);
         Picasso.with(RegistrationPageActivity.this)
                 .load(personPhoto)
+                .fit()
                 .into(profilePicture);
         //profilePicture.setFocusable(false);
 
@@ -242,6 +243,7 @@ public class RegistrationPageActivity extends AppCompatActivity{
                             .putString("photourl",personPhoto)
                             .apply();
                     Intent intent_temp = new Intent(getApplicationContext(), SelectCourseActivity.class);
+                    intent_temp.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent_temp);
                 }
             }

@@ -1,5 +1,6 @@
 package com.campusconnect.cc_reboot.fragment.Drawer;
 
+import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 
 import android.app.TimePickerDialog;
@@ -66,53 +67,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class FragmentAddCourse extends Fragment implements View.OnClickListener{
 
-    @Bind(R.id.et_startDate_Mon)
-    EditText startDateMon;
-    @Bind(R.id.et_endDate_Mon)
-    EditText endDateMon;
-
-    @Bind(R.id.et_startDate_Tue)
-    EditText startDateTue;
-    @Bind(R.id.et_endDate_Tue)
-    EditText endDateTue;
-
-    @Bind(R.id.et_startDate_Wed)
-    EditText startDateWed;
-    @Bind(R.id.et_endDate_Wed)
-    EditText endDateWed;
-
-    @Bind(R.id.et_startDate_Thurs)
-    EditText startDateThurs;
-    @Bind(R.id.et_endDate_Thurs)
-    EditText endDateThurs;
-
-    @Bind(R.id.et_startDate_Fri)
-    EditText startDateFri;
-    @Bind(R.id.et_endDate_Fri)
-    EditText endDateFri;
-
-    @Bind(R.id.et_startDate_Sat)
-    EditText startDateSat;
-    @Bind(R.id.et_endDate_Sat)
-    EditText endDateSat;
-
-    @Bind(R.id.container_timetable_timings_mon)
-    LinearLayout MonTimingsContainer;
-    @Bind(R.id.container_timetable_timings_tue)
-    LinearLayout TueTimingsContainer;
-    @Bind(R.id.container_timetable_timings_wed)
-    LinearLayout WedTimingsContainer;
-    @Bind(R.id.container_timetable_timings_thurs)
-    LinearLayout ThursTimingsContainer;
-    @Bind(R.id.container_timetable_timings_fri)
-    LinearLayout FriTimingsContainer;
-    @Bind(R.id.container_timetable_timings_sat)
-    LinearLayout SatTimingsContainer;
 
     @Bind(R.id.view_course_color_picker)
     View courseColorPicker;
-
-    Context context;
     ColorPickerDialog colorPickerDialog;
 
     @Bind(R.id.et_courseName)
@@ -129,36 +86,6 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
     EditText courseSection;
     @Bind(R.id.et_courseBranch)
     EditText courseBranch;
-//
-//    @Bind(R.id.et_startDate_Mon)
-//    EditText startDateMon;
-//    @Bind(R.id.et_endDate_Mon)
-//    EditText endDateMon;
-//
-//    @Bind(R.id.et_startDate_Tue)
-//    EditText startDateTue;
-//    @Bind(R.id.et_endDate_Tue)
-//    EditText endDateTue;
-//
-//    @Bind(R.id.et_startDate_Wed)
-//    EditText startDateWed;
-//    @Bind(R.id.et_endDate_Wed)
-//    EditText endDateWed;
-//
-//    @Bind(R.id.et_startDate_Thurs)
-//    EditText startDateThurs;
-//    @Bind(R.id.et_endDate_Thurs)
-//    EditText endDateThurs;
-//
-//    @Bind(R.id.et_startDate_Fri)
-//    EditText startDateFri;
-//    @Bind(R.id.et_endDate_Fri)
-//    EditText endDateFri;
-//
-//    @Bind(R.id.et_startDate_Sat)
-//    EditText startDateSat;
-//    @Bind(R.id.et_endDate_Sat)
-//    EditText endDateSat;
 
     @Bind(R.id.tb_monday)
     ToggleButton tbMonday;
@@ -172,22 +99,12 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
     ToggleButton tbFriday;
     @Bind(R.id.tb_saturday)
     ToggleButton tbSaturday;
+    @Bind(R.id.tv_timings_title)
+    TextView timings_title;
 
     @Bind(R.id.chk_elective)
     CheckBox elective;
 
-//    @Bind(R.id.container_timetable_timings_mon)
-//    LinearLayout MonTimingsContainer;
-//    @Bind(R.id.container_timetable_timings_tue)
-//    LinearLayout TueTimingsContainer;
-//    @Bind(R.id.container_timetable_timings_wed)
-//    LinearLayout WedTimingsContainer;
-//    @Bind(R.id.container_timetable_timings_thurs)
-//    LinearLayout ThursTimingsContainer;
-//    @Bind(R.id.container_timetable_timings_fri)
-//    LinearLayout FriTimingsContainer;
-//    @Bind(R.id.container_timetable_timings_sat)
-//    LinearLayout SatTimingsContainer;
     ArrayList<ToggleButton> days = new ArrayList<>();
     String[] daysOfTheWeek = {"Mon","Tue","Wed","Thu","Fri","Sat"};
     HashMap<String, View> days_selected = new HashMap<>();
@@ -218,12 +135,12 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
         courseBranch.setText(branchName);
         courseBatch.setText(batchName);
         courseSection.setText(sectionName);
-        days.add((ToggleButton) v.findViewById(R.id.tb_monday));
-        days.add((ToggleButton) v.findViewById(R.id.tb_tuesday));
-        days.add((ToggleButton) v.findViewById(R.id.tb_wednesday));
-        days.add((ToggleButton) v.findViewById(R.id.tb_thursday));
-        days.add((ToggleButton) v.findViewById(R.id.tb_friday));
-        days.add((ToggleButton) v.findViewById(R.id.tb_saturday));
+        days.add(tbMonday);
+        days.add(tbTuesday);
+        days.add(tbWednesday);
+        days.add(tbThursday);
+        days.add(tbFriday);
+        days.add(tbSaturday);
         events = (LinearLayout) v.findViewById(R.id.container_timetable_timings);
         int i = 0;
         for (String day : daysOfTheWeek) {
@@ -280,17 +197,22 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
                                 endTimePickerDialog.show();
                             }
                         });
+                        if(events.getChildCount() == 0)
+                        {
+                            timings_title.setVisibility(View.VISIBLE);
+                        }
                         events.addView(view);
                         days_selected.put(buttonView.getText().toString(), view);
                     } else {
                         events.removeView(days_selected.get(buttonView.getText().toString()));
+                        if (events.getChildCount()==0)
+                        {timings_title.setVisibility(View.GONE);}
                         days_selected.remove(buttonView.getText().toString());
                     }
                 }
             });
         }
 
-        //OnClickListeners
         courseColorPicker.setOnClickListener(this);
         cancel.setOnClickListener(this);
         create.setOnClickListener(this);
@@ -360,7 +282,6 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
                 "RED"
                 );
 
-
         Call<ModelAddCourse> call = myApi.addCourse(body);
         call.enqueue(new Callback<ModelAddCourse>() {
             @Override
@@ -389,9 +310,10 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
         switch (view.getId()){
             case R.id.view_course_color_picker:
 
-                colorPickerDialog = new ColorPickerDialog((Activity) context);
+                colorPickerDialog = new ColorPickerDialog(getActivity());
 
                 colorPickerDialog.show();
+
 
                 Window window = colorPickerDialog.getWindow();
                 window.setLayout(900, GridLayoutManager.LayoutParams.WRAP_CONTENT);
@@ -430,10 +352,8 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
             super.onCreate(savedInstanceState);
             requestWindowFeature(Window.FEATURE_NO_TITLE);
             setContentView(R.layout.color_picker_dialog);
-
             course_colors_list = (RecyclerView) findViewById (R.id.rv_course_colors);
             mLayoutManager = new GridLayoutManager(c,3);
-
             mCourseColorsAdapter = new CourseColorsListAdapter(c,courseColorPicker);
             course_colors_list.setLayoutManager(mLayoutManager);
             course_colors_list.setItemAnimator(new DefaultItemAnimator());

@@ -14,6 +14,7 @@ public class SubscribedCourseList {
     private String courseName;
     private String recentNotes;
     private String courseId;
+    private String colour;
     private List<String> startTime = new ArrayList<String>();
     private List<String> date = new ArrayList<String>();
     private String dueAssignments;
@@ -166,5 +167,14 @@ public class SubscribedCourseList {
 
     public void setDueExams(String dueExams) {
         this.dueExams = dueExams;
+    }
+
+
+    public String getColour() {
+        return colour;
+    }
+
+    public void setColour(String colour) {
+        this.colour = colour;
     }
 }

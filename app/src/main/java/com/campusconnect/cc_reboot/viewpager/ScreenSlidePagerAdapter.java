@@ -32,7 +32,7 @@ public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         NotesSliderPageFragment page_fragment = new NotesSliderPageFragment();
         Bundle fragBundle = new Bundle();
-       // fragBundle.putString("PageTitle",Titles.get(position).toString());
+        fragBundle.putString("PageTitle",Titles.get(position).toString());
         fragBundle.putInt("PagePos",position);
         page_fragment.setArguments(fragBundle);
         return page_fragment;
