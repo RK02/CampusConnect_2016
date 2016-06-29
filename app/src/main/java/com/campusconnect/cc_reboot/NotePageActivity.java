@@ -46,7 +46,10 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -158,7 +161,31 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
                 rating.setText(noteBook.getTotalRating());
                 pages.setText(noteBook.getPages());
                 uploader.setText(noteBook.getUploaderName());
-                lastPosted.setText(noteBook.getLastUpdated().substring(0,10));
+
+                String time = noteBook.getLastUpdated();
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+                int days = 0,hours=0,minutes=0,seconds=0;
+                try {
+                    Calendar a = Calendar.getInstance();
+                    Calendar b = Calendar.getInstance();
+                    b.setTime(df.parse(time));
+                    long difference = a.getTimeInMillis() - b.getTimeInMillis();
+                    days = (int) (difference/ (1000*60*60*24));
+                    hours = (int) (difference/ (1000*60*60));
+                    minutes = (int) (difference/ (1000*60));
+                    seconds = (int) (difference/1000);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                if(days==0) {if(hours==0) {if(minutes==0) {if(seconds==0) {lastPosted.setText("Just now");}
+                else {if(seconds==1) lastPosted.setText(seconds + " second ago");
+                else lastPosted.setText(seconds + " seconds ago");}}
+                else {if(minutes==1) lastPosted.setText(minutes + " minute ago");
+                    lastPosted.setText(minutes + " minutes ago");}}
+                else {if(hours==1)lastPosted.setText(hours + " hour ago");
+                else lastPosted.setText(hours + " hours ago");}}
+                else {if(days==1)lastPosted.setText(days + " day ago");
+                else lastPosted.setText(days + " days ago");}
             }
             @Override
             public void onFailure(Call<ModelNoteBook> call, Throwable t) {
