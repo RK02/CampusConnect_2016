@@ -1,8 +1,12 @@
 package com.campusconnect.cc_reboot;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ClipData;
+import android.content.ContentUris;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -10,9 +14,11 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -23,6 +29,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
@@ -31,9 +38,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.Picasso;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -60,8 +71,8 @@ public class UploadPicturesActivity extends AppCompatActivity {
     private  String pictureImagePath="";
     GridView gridView;
     ImageAdapter imageAdapter;
-    public static HashMap<Bitmap,String> images_paths;
-
+    public static ArrayList<String> urls;
+    public static ArrayList<String> uris;
 
     public static float width;
     public static float height;
@@ -72,7 +83,8 @@ public class UploadPicturesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_upload_pictures);
 
         ButterKnife.bind(this);
-        images_paths = new HashMap<>();
+        urls = new ArrayList<>();
+        uris = new ArrayList<>();
 
         final ViewTreeObserver observer= for_measure.getViewTreeObserver();
         observer.addOnGlobalLayoutListener(
@@ -98,9 +110,28 @@ public class UploadPicturesActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setResult(0);
-                ImageAdapter.mThumbIds.clear();
-                imageAdapter.notifyDataSetChanged();
-                finish();
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(UploadPicturesActivity.this);
+                alertDialog.setMessage("Are you sure?");
+                alertDialog.setCancelable(false);
+                alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        uris.clear();
+                        urls.clear();
+                        imageAdapter.notifyDataSetChanged();
+                        finish();                    }
+                });
+                alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                alertDialog.show();
+
+
+
             }
         });
         camera.setOnClickListener(new View.OnClickListener() {
@@ -117,16 +148,17 @@ public class UploadPicturesActivity extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(ImageAdapter.mThumbIds.isEmpty()){
+                if(uris.isEmpty()){
                     Toast.makeText(UploadPicturesActivity.this,"Please Select pictures and then press Next",Toast.LENGTH_LONG).show();
                 }
                 else {
                     Intent description = new Intent(UploadPicturesActivity.this, AddEventActivity.class);
                     description.putExtra("Mode",3);
-                    description.putExtra("courseId",CoursePageActivity.courseId);
-                    description.putExtra("courseTitle",CoursePageActivity.courseTitle);
+                    if(CoursePageActivity.courseId!=null) {
+                        description.putExtra("courseId", CoursePageActivity.courseId);
+                        description.putExtra("courseTitle", CoursePageActivity.courseTitle);
+                    }
                     startActivityForResult(description,1);
-
                 }
             }
         });
@@ -138,8 +170,6 @@ public class UploadPicturesActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             }
         });
-
-
     }
 
 
@@ -179,71 +209,51 @@ public class UploadPicturesActivity extends AppCompatActivity {
                 onSelectFromGalleryResult(data);
             else if (requestCode == REQUEST_CAMERA)
                 onCaptureImageResult(data);
-        }else if(requestCode==1)
-        {
-            if(resultCode==1) {
-                ImageAdapter.mThumbIds.clear();
-                images_paths.clear();
+        }else if(requestCode==1) {
+            if (resultCode == 1) {
+                urls.clear();
+                uris.clear();
                 imageAdapter.notifyDataSetChanged();
+                Intent intent = new Intent(UploadPicturesActivity.this, CoursePageActivity.class);
+                intent.putExtra("courseId", data.getStringExtra("courseId"));
+                startActivity(intent);
+                finish();
             }
+            else if(resultCode==2)
+            {
+                final String cname = data.getStringExtra("courseName")+"";
+                final String desc = data.getStringExtra("description")+"";
+                next.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(UploadPicturesActivity.this,AddEventActivity.class);
+                        intent.putExtra("courseName",cname+"");
+                        intent.putExtra("description",desc+"");
+                        startActivity(intent);
+                    }
+                });
 
+            }
         }
     }
-
     private void onCaptureImageResult(Intent data) {
         File imgFile = new File(pictureImagePath);
-        Bitmap imageBitmap;
-        imageBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-        ExifInterface ei = null;
-        try {
-            ei = new ExifInterface(imgFile.getAbsolutePath());
-        }
-        catch(Exception e){}
-        int orientation = 0;
-        if (ei != null) {
-            orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
-        }
-        switch(orientation) {
-            case ExifInterface.ORIENTATION_ROTATE_90:
-                imageBitmap = rotateImage(imageBitmap, 90);
-                break;
-            case ExifInterface.ORIENTATION_ROTATE_180:
-                imageBitmap = rotateImage(imageBitmap, 180);
-                break;
-            case ExifInterface.ORIENTATION_ROTATE_270:
-                imageBitmap = rotateImage(imageBitmap, 270);
-                break;
-        }
-        Bitmap temp = Bitmap.createScaledBitmap(imageBitmap,400,400,false);
-        ImageAdapter.mThumbIds.add(temp);
-        images_paths.put(temp,pictureImagePath);
+        urls.add(pictureImagePath);
+        uris.add(imgFile.toURI().toString());
         imageAdapter.notifyDataSetChanged();
 
     }
-    public static Bitmap rotateImage(Bitmap source, float angle) {
-        Bitmap retVal;
 
 
-        Matrix matrix = new Matrix();
-        matrix.postRotate(angle);
-        retVal = Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
-
-        return retVal;
-    }
-
-    @SuppressWarnings("deprecation")
     private void onSelectFromGalleryResult(Intent data) {
 
-        Bitmap bm=null;
         if (data.getData() != null) {
             try {
                 Uri path =  data.getData();
-                bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
-                Bitmap temp = Bitmap.createScaledBitmap(bm,400,600,false);
-                ImageAdapter.mThumbIds.add(temp);
-                images_paths.put(temp,getPictureImagePath(path));
+                urls.add(getFilePath(UploadPicturesActivity.this,path));
+                uris.add(uris.toString());
                 imageAdapter.notifyDataSetChanged();
-            } catch (IOException e) {
+            } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
 
@@ -252,52 +262,80 @@ public class UploadPicturesActivity extends AppCompatActivity {
         else
         {
             ClipData clipData = data.getClipData();
-
-            ArrayList<Bitmap> bitmaps = new ArrayList<>();
             for (int i=0; i<clipData.getItemCount();i++)
             {
                 try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), clipData.getItemAt(i).getUri());
                     Uri uripath = clipData.getItemAt(i).getUri();
-                    Bitmap temp = Bitmap.createScaledBitmap(bitmap,400,600,false);
-                    ImageAdapter.mThumbIds.add(temp);
-                    images_paths.put(temp,getPictureImagePath(uripath));
+                    uris.add(uripath.toString());
+                    urls.add(getFilePath(UploadPicturesActivity.this,uripath));
                     imageAdapter.notifyDataSetChanged();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
+                }  catch (URISyntaxException e) {
                     e.printStackTrace();
                 }
             }
         }
     }
-    String getPictureImagePath(Uri uripath)
-    {
-        String wholeID = DocumentsContract.getDocumentId(uripath);
-
-// Split at colon, use second item in the array
-        String id = wholeID.split(":")[1];
-
-        String[] column = { MediaStore.Images.Media.DATA };
-
-// where id is equal to
-        String sel = MediaStore.Images.Media._ID + "=?";
-
-        Cursor cursor = getContentResolver().
-                query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                        column, sel, new String[]{ id }, null);
-
-        String filePath = "";
-
-        int columnIndex = cursor.getColumnIndex(column[0]);
-
-        if (cursor.moveToFirst()) {
-            filePath = cursor.getString(columnIndex);
+    @SuppressLint("NewApi")
+    public static String getFilePath(Context context, Uri uri) throws URISyntaxException {
+        String selection = null;
+        String[] selectionArgs = null;
+        // Uri is different in versions after KITKAT (Android 4.4), we need to
+        if (Build.VERSION.SDK_INT >= 19 && DocumentsContract.isDocumentUri(context.getApplicationContext(), uri)) {
+            if (isExternalStorageDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                return Environment.getExternalStorageDirectory() + "/" + split[1];
+            } else if (isDownloadsDocument(uri)) {
+                final String id = DocumentsContract.getDocumentId(uri);
+                uri = ContentUris.withAppendedId(
+                        Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+            } else if (isMediaDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+                if ("image".equals(type)) {
+                    uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                } else if ("video".equals(type)) {
+                    uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+                } else if ("audio".equals(type)) {
+                    uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                }
+                selection = "_id=?";
+                selectionArgs = new String[]{
+                        split[1]
+                };
+            }
         }
+        if ("content".equalsIgnoreCase(uri.getScheme())) {
+            String[] projection = {
+                    MediaStore.Images.Media.DATA
+            };
+            Cursor cursor = null;
+            try {
+                cursor = context.getContentResolver()
+                        .query(uri, projection, selection, selectionArgs, null);
+                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                if (cursor.moveToFirst()) {
+                    return cursor.getString(column_index);
+                }
+            } catch (Exception e) {
+            }
+        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            return uri.getPath();
+        }
+        return null;
+    }
 
-        cursor.close();
-        Log.i("sw32","filepath set");
+    public static boolean isExternalStorageDocument(Uri uri) {
+        return "com.android.externalstorage.documents".equals(uri.getAuthority());
+    }
 
-        return filePath;
+    public static boolean isDownloadsDocument(Uri uri) {
+        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
+    }
+
+    public static boolean isMediaDocument(Uri uri) {
+        return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
 }
 class ImageAdapter extends BaseAdapter {
@@ -311,11 +349,11 @@ class ImageAdapter extends BaseAdapter {
     }
 
     public int getCount() {
-        return mThumbIds.size();
+        return UploadPicturesActivity.uris.size();
     }
 
     public Object getItem(int position) {
-        return mThumbIds.get(position);
+        return UploadPicturesActivity.uris.get(position);
     }
 
     public long getItemId(int position) {
@@ -337,20 +375,22 @@ class ImageAdapter extends BaseAdapter {
         else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.imageview.setId(position);
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mThumbIds.remove(position);
+                UploadPicturesActivity.uris.remove(position);
+                UploadPicturesActivity.urls.remove(position);
                 notifyDataSetChanged();
             }
         });
-//        holder.imageview.setImageBitmap(Bitmap.createScaledBitmap(mThumbIds.get(position),UploadPicturesActivity.width/2,UploadPicturesActivity.height/2,false));
-        holder.imageview.setImageBitmap(mThumbIds.get(position));
-
+        Picasso.with(mContext)
+                .load(UploadPicturesActivity.uris.get(position))
+                .memoryPolicy(MemoryPolicy.NO_CACHE,MemoryPolicy.NO_STORE)
+                .error(R.mipmap.ic_pages_18)
+                .fit()
+                .into(holder.imageview);
         return convertView;
     }
-    static ArrayList<Bitmap> mThumbIds = new ArrayList<>();
 }
 class ViewHolder {
     ImageView imageview;

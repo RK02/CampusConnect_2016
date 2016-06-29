@@ -80,7 +80,7 @@ public class NotesSliderPageFragment extends Fragment implements View.OnTouchLis
         }
 
         pager_img.setPageTransformer(true, new DepthPageTransformer());
-        //class_no = fragArgs.getString("PageTitle");
+        class_no = fragArgs.getString("PageTitle");
         page_pos = fragArgs.getInt("PagePos");
         Log.i("sw32pagepos",page_pos+"");
 

@@ -24,6 +24,7 @@ import com.campusconnect.cc_reboot.adapter.CourseListAdapter;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
@@ -54,6 +55,8 @@ public class FragmentCourses extends Fragment{
     public static final String django = "https://campusconnect-2016.herokuapp.com";
     public static  String profileName = "";
     public static  String profilePoints = "";
+    public static ArrayList<String> courseNames;
+    public static ArrayList<String> courseIds;
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_courses, container, false);
@@ -66,12 +69,14 @@ public class FragmentCourses extends Fragment{
         course_list.setLayoutManager(mLayoutManager);
         course_list.setItemAnimator(new DefaultItemAnimator());
         course_list.setAdapter(mCourseAdapter);
-                return v;
+        return v;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        courseNames = new ArrayList<>();
+        courseIds = new ArrayList<>();
         call= myApi.getFeed(getActivity().getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""));
         call.enqueue(new Callback<Example>() {
             @Override
@@ -83,21 +88,18 @@ public class FragmentCourses extends Fragment{
                     profileName = example.getProfileName();
                     profilePoints = example.getPoints();
                     List<AvailableCourseList> availableCourseList = example.getAvailableCourseList();
-                    List<SubscribedCourseList> subscribedCourseList = example.getSubscribedCourseList();
+                     List<SubscribedCourseList> subscribedCourseList = example.getSubscribedCourseList();
 
                     for (SubscribedCourseList x : subscribedCourseList) {
+                        courseNames.add(x.getCourseName());
+                        courseIds.add(x.getCourseId());
                         mCourseAdapter.add(x);
                     }
                 }
             }
-
             @Override
             public void onFailure(Call<Example> call, Throwable t) {
-                Log.i("sw32","fail");
-
             }
         });
-
-
     }
 }

@@ -1,33 +1,35 @@
 {
   "project_info": {
-    "project_number": "195077393179",
-    "project_id": "djangoconnect"
+    "project_number": "572228729971",
+    "firebase_url": "https://uploadnotes-2016.firebaseio.com",
+    "project_id": "uploadnotes-2016",
+    "storage_bucket": "uploadnotes-2016.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:195077393179:android:726d359e260ba541",
+        "mobilesdk_app_id": "1:572228729971:android:726d359e260ba541",
         "android_client_info": {
           "package_name": "com.campusconnect.cc_reboot"
         }
       },
       "oauth_client": [
         {
-          "client_id": "195077393179-blg3osd3j5pb1hrjnm4atlj0vng92tuf.apps.googleusercontent.com",
+          "client_id": "572228729971-q4rt3050eppcp7n15bjnd77nkp8dfib2.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.campusconnect.cc_reboot",
-            "certificate_hash": "95C50C32AC2709D0D5DE5705FB73A11DD227142A"
+            "certificate_hash": "3BE0F628B34D1F619F58CD16E6B8CBD86B539BCD"
           }
         },
         {
-          "client_id": "195077393179-4ucp5rq0osi2975f9h1vo41ifm4crr2o.apps.googleusercontent.com",
+          "client_id": "572228729971-n4f32jg70vgj14vree4mfm7eph8pi41k.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBu4j8oEkcBX_jO1p3MXbQY6n9AT-ihoGo"
+          "current_key": "AIzaSyALoxY3yWSJjkaqajiq0hcS1jDqBQAX-0I"
         }
       ],
       "services": {
@@ -35,11 +37,16 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "572228729971-n4f32jg70vgj14vree4mfm7eph8pi41k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
-          "status": 1
+          "status": 2
         }
       }
     }
