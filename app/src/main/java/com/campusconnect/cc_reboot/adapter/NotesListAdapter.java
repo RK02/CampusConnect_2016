@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,10 @@ import com.campusconnect.cc_reboot.POJO.SubscribedCourseList;
 import com.campusconnect.cc_reboot.R;
 
 import java.lang.reflect.Array;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -58,7 +62,52 @@ public class NotesListAdapter extends
 //        notesListViewHolder.note_description.setText(mNotes.get(i).getCourseName());
         notesListViewHolder.note_uploader.setText(mNotes.get(i).getUploaderName());
         notesListViewHolder.note_rating.setText(mNotes.get(i).getTotalRating());
-        notesListViewHolder.last_updated.setText(mNotes.get(i).getLastUpdated().substring(0,10));
+        String time = mNotes.get(i).getLastUpdated();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        int days = 0,hours=0,minutes=0,seconds=0;
+        try {
+            Calendar a = Calendar.getInstance();
+            Calendar b = Calendar.getInstance();
+            b.setTime(df.parse(time));
+            long difference = a.getTimeInMillis() - b.getTimeInMillis();
+            days = (int) (difference/ (1000*60*60*24));
+            hours = (int) (difference/ (1000*60*60));
+            minutes = (int) (difference/ (1000*60));
+            seconds = (int) (difference/1000);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        time.split(" ");
+        if(days==0)
+        {
+            if(hours==0)
+            {
+                if(minutes==0)
+                {
+                    if(seconds==0)
+                    {
+                        notesListViewHolder.last_updated.setText("Just now");
+                    }
+                    else
+                    {
+                        notesListViewHolder.last_updated.setText(seconds + " seconds ago");
+                    }
+                }
+                else
+                {
+                    notesListViewHolder.last_updated.setText(minutes + " minutes ago");
+                }
+            }
+            else
+            {
+                notesListViewHolder.last_updated.setText(hours + " hours ago");
+            }
+        }
+        else
+        {
+            notesListViewHolder.last_updated.setText(days + " days ago");
+        }
+
     }
 
     public String getNoteBookId(String noteBookName)

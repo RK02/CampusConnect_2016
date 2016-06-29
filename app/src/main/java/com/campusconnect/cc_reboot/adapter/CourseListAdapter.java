@@ -117,6 +117,8 @@ public class CourseListAdapter extends
 
         @Bind(R.id.course_card)
         CardView course_card;
+        @Bind(R.id.container_course_title)
+        RelativeLayout container_title;
         @Bind(R.id.container_notes_count)
         RelativeLayout notes_count_container;
         @Bind(R.id.container_assignments_count)
@@ -164,9 +166,8 @@ public class CourseListAdapter extends
                     int index = viewGroup.indexOfChild(course_card);
                     String id = mCourses.get(index).getCourseId();
                     intent_temp.putExtra("courseId",id);
-                    intent_temp.putExtra("courseColor",mCourses.get(index).getColour());
-                    context.startActivity(intent_temp);
-
+                    int c = Color.parseColor(mCourses.get(index).getColour());
+                    intent_temp.putExtra("courseColor",c);
                     context.startActivity(intent_temp);
                 }
             });
@@ -179,9 +180,8 @@ public class CourseListAdapter extends
                     int index = viewGroup.indexOfChild(course_card);
                     String id = mCourses.get(index).getCourseId();
                     intent_temp.putExtra("courseId",id);
-                    intent_temp.putExtra("courseColor",mCourses.get(index).getColour());
-                    context.startActivity(intent_temp);
-
+                    int c = Color.parseColor(mCourses.get(index).getColour());
+                    intent_temp.putExtra("courseColor",c);
                     context.startActivity(intent_temp);
                 }
             });
@@ -191,6 +191,12 @@ public class CourseListAdapter extends
                     Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
                     intent_temp.putExtra("TAB",2);
                     ViewGroup viewGroup = (ViewGroup) course_card.getParent();
+                    int index = viewGroup.indexOfChild(course_card);
+                    String id = mCourses.get(index).getCourseId();
+                    intent_temp.putExtra("courseId",id);
+                    int c = Color.parseColor(mCourses.get(index).getColour());
+                    intent_temp.putExtra("courseColor",c);
+                    context.startActivity(intent_temp);
 
                 }
             });
