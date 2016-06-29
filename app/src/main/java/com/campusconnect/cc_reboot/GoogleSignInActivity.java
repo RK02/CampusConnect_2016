@@ -17,7 +17,11 @@
 package com.campusconnect.cc_reboot;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -25,6 +29,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -40,6 +45,18 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Demonstrate Firebase Authentication using a Google ID Token.
@@ -62,6 +79,7 @@ public class GoogleSignInActivity extends BaseActivity implements
     private GoogleApiClient mGoogleApiClient;
     private TextView mStatusTextView;
     private TextView mDetailTextView;
+    String personName,personEmail,personId,personPhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,8 +160,25 @@ public class GoogleSignInActivity extends BaseActivity implements
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
                 // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = result.getSignInAccount();
-                firebaseAuthWithGoogle(account);
+                GoogleSignInAccount acct = result.getSignInAccount();
+                firebaseAuthWithGoogle(acct);
+                personName = acct.getDisplayName();
+                personEmail = acct.getEmail();
+                personId = acct.getId();
+                Log.i("sw32",personId + ": here");
+                personPhoto = acct.getPhotoUrl().toString();
+                mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
+                SharedPreferences sharedpreferences = getSharedPreferences("CC", Context.MODE_PRIVATE);
+                if(sharedpreferences.contains("profileId")){
+                    Intent home = new Intent(GoogleSignInActivity.this,HomeActivity2.class);
+                    home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(home);
+                    finish();
+                }
+                else
+                {
+                    new register_mobile().execute(personId);
+                }
             } else {
                 // Google Sign In failed, update UI appropriately
                 // [START_EXCLUDE]
@@ -175,7 +210,11 @@ public class GoogleSignInActivity extends BaseActivity implements
                             Log.w(TAG, "signInWithCredential", task.getException());
                             Toast.makeText(GoogleSignInActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
+
+
                         }
+
+
                         // [START_EXCLUDE]
                         hideProgressDialog();
                         // [END_EXCLUDE]
@@ -256,6 +295,104 @@ public class GoogleSignInActivity extends BaseActivity implements
             case R.id.disconnect_button:
                 revokeAccess();
                 break;
+        }
+    }
+    class register_mobile extends AsyncTask<String,String,String> {
+
+        ProgressDialog progressBar;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressBar = new ProgressDialog(GoogleSignInActivity.this);
+            progressBar.setTitle("Please Wait...");
+            progressBar.setCancelable(false);
+            progressBar.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            HttpURLConnection connection;
+            URL url;
+            JSONObject jsonObject = new JSONObject();
+            String response;
+
+            try {
+                url = new URL(FragmentCourses.django+"/mobile_sign_in");
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+                connection.setDoOutput(true);
+                connection.setRequestProperty("Content-Type", "application/json");
+                connection.connect();
+                DataOutputStream os = new DataOutputStream(connection.getOutputStream());
+                jsonObject.put("gprofileId",params[0]);
+                os.write(jsonObject.toString().getBytes());
+                os.flush();
+                os.close();
+                int status = connection.getResponseCode();
+                InputStream is = connection.getInputStream();
+                BufferedReader br = new BufferedReader(new InputStreamReader(is));
+                StringBuilder sb = new StringBuilder();
+                String line = "";
+                while ((line = br.readLine()) != null) {
+                    sb.append(line);
+                }
+                response = sb.toString();
+                br.close();
+                is.close();
+                return response;
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            if(s.equals("0"))
+            {
+                Intent signUp = new Intent(GoogleSignInActivity.this,RegistrationPageActivity.class);
+                signUp.putExtra("personName",personName);
+                signUp.putExtra("personEmail",personEmail);
+                if(personPhoto!=null) signUp.putExtra("personPhoto",personPhoto.toString());
+                signUp.putExtra("personId",personId);
+                startActivity(signUp);
+            }
+            else
+            {
+                JSONObject profileData = new JSONObject();
+                try {
+                    profileData = new JSONObject(s);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                SharedPreferences sharedPreferences = getSharedPreferences("CC",MODE_PRIVATE);
+                try {
+                    sharedPreferences
+                            .edit()
+                            .putString("profileId",profileData.getString("profileId"))
+                            .putString("collegeId",profileData.getString("collegeId"))
+                            .putString("batchName",profileData.getString("batchName"))
+                            .putString("branchName",profileData.getString("branchName"))
+                            .putString("sectionName",profileData.getString("sectionName"))
+                            .putString("profileName",profileData.getString("profileName"))
+                            .putString("email",profileData.getString("email"))
+                            .putString("photourl",profileData.getString("photourl"))
+                            .apply();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Intent home = new Intent(GoogleSignInActivity.this, HomeActivity2.class);
+                home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(home);
+            }
+            progressBar.dismiss();
         }
     }
 }

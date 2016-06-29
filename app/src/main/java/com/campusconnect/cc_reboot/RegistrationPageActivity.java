@@ -243,6 +243,7 @@ public class RegistrationPageActivity extends AppCompatActivity{
                             .putString("photourl",personPhoto)
                             .apply();
                     Intent intent_temp = new Intent(getApplicationContext(), SelectCourseActivity.class);
+                    intent_temp.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent_temp);
                 }
             }
