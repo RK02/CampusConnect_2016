@@ -11,7 +11,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.campusconnect.cc_reboot.CoursePageActivity;
+import com.campusconnect.cc_reboot.POJO.CourseList;
+import com.campusconnect.cc_reboot.POJO.SubscribedCourseList;
 import com.campusconnect.cc_reboot.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -23,19 +28,27 @@ public class SearchCourseListAdapter extends
         RecyclerView.Adapter<SearchCourseListAdapter.SearchNotesListViewHolder> {
 
     Context context;
+    ArrayList<CourseList> courseLists;
 
-    public SearchCourseListAdapter(Context context) {
+    public SearchCourseListAdapter(Context context,ArrayList<CourseList> courseLists) {
         this.context = context;
-
+        this.courseLists = courseLists;
     }
 
     @Override
     public int getItemCount() {
-        return 8;
+        return courseLists.size();
     }
 
     @Override
-    public void onBindViewHolder(SearchNotesListViewHolder SearchNotesListViewHolder, int i) {
+    public void onBindViewHolder(SearchNotesListViewHolder searchNotesListViewHolder, int i) {
+        CourseList a =  courseLists.get(i);
+        searchNotesListViewHolder.notebooks.setText(a.getNotesCount());
+        searchNotesListViewHolder.semester.setText(a.getSemester());
+        searchNotesListViewHolder.students.setText(a.getStudentCount());
+        searchNotesListViewHolder.course_title.setText(a.getCourseName());
+        searchNotesListViewHolder.professor.setText(a.getProfessorName());
+        searchNotesListViewHolder.section.setText(a.getSectionNames().get(0));
     }
 
     @Override
@@ -46,10 +59,33 @@ public class SearchCourseListAdapter extends
         return new SearchNotesListViewHolder(itemView);
     }
 
+    public void clear()
+    {
+        courseLists.clear();
+        notifyDataSetChanged();
+    }
+
     public class SearchNotesListViewHolder extends RecyclerView.ViewHolder {
 
         @Bind(R.id.search_course_card)
         CardView search_course_card;
+
+        @Bind(R.id.tv_course_title)
+        TextView course_title;
+        @Bind(R.id.tv_prof_name)
+        TextView professor;
+        @Bind(R.id.tv_sem)
+        TextView semester;
+        @Bind(R.id.tv_date_course_created)
+        TextView date;
+        @Bind(R.id.tv_section)
+        TextView section;
+
+        @Bind(R.id.tv_views_count)
+        TextView notebooks;
+        @Bind(R.id.tv_exam_date)
+        TextView students;
+
 
         public SearchNotesListViewHolder(View v) {
             super(v);
@@ -58,8 +94,13 @@ public class SearchCourseListAdapter extends
             search_course_card.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
-                    //context.startActivity(intent_temp);
+                    Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
+                    ViewGroup viewGroup = (ViewGroup) search_course_card.getParent();
+                    int index = viewGroup.indexOfChild(search_course_card);
+                    String id = courseLists.get(index).getCourseId();
+                    intent_temp.putExtra("courseId",id);
+                    //intent_temp.putExtra("courseColor",courseLists.get(index).getColour());
+                    context.startActivity(intent_temp);
                 }
             });
 

@@ -15,6 +15,7 @@ public class CourseList {
     private String notesCount;
     private String professorName;
     private List<String> sectionNames = new ArrayList<String>();
+    private String semester;
     private String studentCount;
 
     /**
@@ -161,4 +162,11 @@ public class CourseList {
         this.studentCount = studentCount;
     }
 
+    public String getSemester() {
+        return semester;
+    }
+
+    public void setSemester(String semester) {
+        this.semester = semester;
+    }
 }

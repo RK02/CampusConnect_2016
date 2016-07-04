@@ -229,5 +229,24 @@ public interface MyApi {
     //switched to okhttp
 
 
+    @POST("searchNotes")
+    Call<ModelNotesSearch> searchNotes(@Body notesSearch notesSearch);
+    class notesSearch{
+        private String searchString;
+        public notesSearch(String searchString)
+        {
+            this.searchString = searchString;
+        }
+    }
+    @POST("searchCourse")
+    Call<ModelCourseSearch> searchCourse(@Body courseSearch courseSearch);
+    class courseSearch{
+        private String searchString;
+        public courseSearch(String searchString)
+        {
+            this.searchString = searchString;
+        }
+    }
+
 
 }

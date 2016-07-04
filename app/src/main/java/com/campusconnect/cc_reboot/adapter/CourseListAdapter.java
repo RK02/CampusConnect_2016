@@ -47,15 +47,7 @@ public class CourseListAdapter extends
         mCourses.add(v);
         notifyDataSetChanged();
     }
-    public String getCourseId(String courseName)
-    {
-        for(SubscribedCourseList s : mCourses)
-        {
-            if(s.getCourseName().equalsIgnoreCase(courseName))
-                return s.getCourseId();
-        }
-        return null;
-    }
+
     public SubscribedCourseList getItem(int position)
     {
         return mCourses.get(position);
@@ -99,8 +91,8 @@ public class CourseListAdapter extends
            }
         }
         courseListViewHolder.timetableGlance.setText(tt);
-        int color = Color.parseColor(a.getColour());
-        courseListViewHolder.course_card.setBackgroundColor(color);
+       // int color = Color.parseColor(a.getColour());
+       // courseListViewHolder.course_card.setBackgroundColor(color);
 
     }
 
@@ -151,9 +143,6 @@ public class CourseListAdapter extends
                     String id = mCourses.get(index).getCourseId();
                     intent_temp.putExtra("courseId",id);
                     intent_temp.putExtra("courseColor",mCourses.get(index).getColour());
-                    context.startActivity(intent_temp);
-
-
                     context.startActivity(intent_temp);
                 }
             });

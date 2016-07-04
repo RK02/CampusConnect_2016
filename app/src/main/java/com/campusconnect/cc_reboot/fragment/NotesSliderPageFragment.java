@@ -1,8 +1,7 @@
 package com.campusconnect.cc_reboot.fragment;
 
 import android.content.Context;
-import android.content.Intent;
-import android.media.Image;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,25 +12,14 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.campusconnect.cc_reboot.AssignmentPageActivity;
-import com.campusconnect.cc_reboot.NotePageActivity;
 import com.campusconnect.cc_reboot.NotesSliderActivity;
 import com.campusconnect.cc_reboot.R;
 import com.campusconnect.cc_reboot.auxiliary.DepthPageTransformer;
 import com.campusconnect.cc_reboot.auxiliary.ViewPagerDisable;
 import com.campusconnect.cc_reboot.viewpager.CustomPagerAdapter;
-import com.campusconnect.cc_reboot.viewpager.ScreenSlidePagerAdapter;
-import com.campusconnect.cc_reboot.NotesSliderActivity;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -82,12 +70,7 @@ public class NotesSliderPageFragment extends Fragment implements View.OnTouchLis
         pager_img.setPageTransformer(true, new DepthPageTransformer());
         class_no = fragArgs.getString("PageTitle");
         page_pos = fragArgs.getInt("PagePos");
-        Log.i("sw32pagepos",page_pos+"");
-
         pager_img.setAdapter(new CustomPagerAdapter(getActivity(),urls.get(page_pos),page_pos));
-
-
-        Log.i("sw32",page_pos+" : "+class_no);
         total_pages = Integer.toString(pager_img.getAdapter().getCount());
         curr_page = Integer.toString(1);
         notePageInfoToActivity.notePageInfo(class_no,curr_page,total_pages);
@@ -96,8 +79,6 @@ public class NotesSliderPageFragment extends Fragment implements View.OnTouchLis
             @Override
             public void onPageSelected(int index) {
                 // TODO Auto-generated method stub
-                curr_page = index+1 +"";
-                Log.i("sw32page",class_no);
                 curr_page = Integer.toString(index+1);
                 notePageInfoToActivity.notePageInfo(class_no,curr_page,total_pages);
             }

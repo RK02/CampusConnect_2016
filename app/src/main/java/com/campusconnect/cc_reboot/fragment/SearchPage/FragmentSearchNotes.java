@@ -10,9 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.campusconnect.cc_reboot.POJO.CourseList;
+import com.campusconnect.cc_reboot.POJO.NoteBookList;
+import com.campusconnect.cc_reboot.POJO.SubscribedCourseList;
 import com.campusconnect.cc_reboot.R;
 import com.campusconnect.cc_reboot.adapter.SearchCourseListAdapter;
 import com.campusconnect.cc_reboot.adapter.SearchNotesListAdapter;
+
+import java.util.ArrayList;
 
 /**
  * Created by RK on 05/06/2016.
@@ -20,8 +25,9 @@ import com.campusconnect.cc_reboot.adapter.SearchNotesListAdapter;
 public class FragmentSearchNotes extends Fragment {
 
     RecyclerView course_list;
-    SearchNotesListAdapter mSearchNotesAdapter;
+    public static SearchNotesListAdapter mSearchNotesAdapter;
     LinearLayoutManager mLayoutManager;
+    public static ArrayList<NoteBookList> noteBookLists = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -30,8 +36,9 @@ public class FragmentSearchNotes extends Fragment {
         course_list = (RecyclerView) v.findViewById (R.id.rv_courses);
 
         //Setting the recyclerView
+        noteBookLists = new ArrayList<>();
         mLayoutManager = new LinearLayoutManager(v.getContext());
-        mSearchNotesAdapter = new SearchNotesListAdapter(v.getContext());
+        mSearchNotesAdapter = new SearchNotesListAdapter(v.getContext(),noteBookLists);
         course_list.setLayoutManager(mLayoutManager);
         course_list.setItemAnimator(new DefaultItemAnimator());
         course_list.setAdapter(mSearchNotesAdapter);
