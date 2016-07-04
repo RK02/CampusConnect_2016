@@ -16,6 +16,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -93,6 +94,12 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
         setContentView(R.layout.activity_home_true);
         ButterKnife.bind(this);
 //Setting FAB container's background to be fully transparent by default
+
+        if(getIntent().getExtras()!=null){
+            String type = getIntent().getExtras().getString("type");
+            String id = getIntent().getExtras().getString("id");
+            Log.i("sw32notif", type + "::" +id);
+        }
         fab_menu_container.getBackground().setAlpha(0);
         toolbar = (Toolbar) findViewById (R.id.toolbar);
         setSupportActionBar(toolbar);

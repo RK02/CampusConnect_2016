@@ -88,7 +88,7 @@ public class SearchActivity extends AppCompatActivity {
                     // Perform action on key press
                     hideKeyboard(SearchActivity.this);
                     String searchString = searchBar.getText().toString();
-                    searchapi(searchString,search_pager.getCurrentItem());
+                    searchapi(searchString);
                     return true;
                 }
                 return false;
@@ -125,13 +125,7 @@ public class SearchActivity extends AppCompatActivity {
                         FragmentSearchCourse.courseNames.add(x.getCourseName());
                         FragmentSearchCourse.courseIds.add(x.getCourseId());
                         FragmentSearchCourse.mCourseAdapter.notifyDataSetChanged();
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
                     }
-                    searchNotes(searchString);
                 }
 
             }
@@ -156,11 +150,6 @@ public class SearchActivity extends AppCompatActivity {
                     for(NoteBookList x : noteBookLists){
                         FragmentSearchNotes.noteBookLists.add(x);
                         FragmentSearchNotes.mSearchNotesAdapter.notifyDataSetChanged();
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
                     }
                 }
             }
@@ -172,12 +161,10 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
 
-    void searchapi(String searchString, int mode)
+    void searchapi(String searchString)
     {
-        switch (mode){
-            case 0:searchCourse(searchString);break;
-            case 1:searchNotes(searchString);break;
-        }
+        searchCourse(searchString);
+        searchNotes(searchString);
     }
 }
 

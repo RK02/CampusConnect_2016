@@ -285,7 +285,8 @@
             android:textOff="BOOKMARK"
             android:textOn="BOOKMARKED"
             android:textColor="@color/ColorTextHeading"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:checked="false" />
 
         <View
             android:layout_width="1dp"

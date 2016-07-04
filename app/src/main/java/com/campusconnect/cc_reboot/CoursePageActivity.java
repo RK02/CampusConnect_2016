@@ -25,6 +25,7 @@ import com.campusconnect.cc_reboot.slidingtab.SlidingTabLayout_home;
 import com.campusconnect.cc_reboot.viewpager.ViewPagerAdapter_course;
 import com.campusconnect.cc_reboot.POJO.*;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -193,6 +194,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                         public void onResponse(Call<ModelSubscribe> call, Response<ModelSubscribe> response) {
 
                             Intent intent_temp = new Intent(getApplicationContext(), HomeActivity2.class);
+                            FirebaseMessaging.getInstance().subscribeToTopic(courseId);
                             startActivity(intent_temp);
                         }
 
@@ -206,6 +208,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                 {
 
                     new unsub().execute();
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic(courseId);
 
                 }
 

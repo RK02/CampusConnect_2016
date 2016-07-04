@@ -20,6 +20,7 @@ import com.campusconnect.cc_reboot.POJO.*;
 
 import com.campusconnect.cc_reboot.R;
 import com.campusconnect.cc_reboot.adapter.CourseListAdapter;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.w3c.dom.Text;
 
@@ -60,7 +61,8 @@ public class FragmentCourses extends Fragment{
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_courses, container, false);
-
+        courseNames = new ArrayList<>();
+        courseIds = new ArrayList<>();
         course_list = (RecyclerView) v.findViewById (R.id.rv_courses);
         final ArrayList<SubscribedCourseList> courses = new ArrayList<>();
         //Setting the recyclerView
@@ -75,8 +77,9 @@ public class FragmentCourses extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
-        courseNames = new ArrayList<>();
-        courseIds = new ArrayList<>();
+        courseNames.clear();
+        courseIds.clear();
+        mCourseAdapter.clear();
         call= myApi.getFeed(getActivity().getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""));
         call.enqueue(new Callback<Example>() {
             @Override
@@ -88,12 +91,12 @@ public class FragmentCourses extends Fragment{
                     profileName = example.getProfileName();
                     profilePoints = example.getPoints();
                     List<AvailableCourseList> availableCourseList = example.getAvailableCourseList();
-                     List<SubscribedCourseList> subscribedCourseList = example.getSubscribedCourseList();
-
+                    List<SubscribedCourseList> subscribedCourseList = example.getSubscribedCourseList();
                     for (SubscribedCourseList x : subscribedCourseList) {
                         courseNames.add(x.getCourseName());
                         courseIds.add(x.getCourseId());
                         mCourseAdapter.add(x);
+                        FirebaseMessaging.getInstance().subscribeToTopic(x.getCourseId());
                     }
                 }
             }

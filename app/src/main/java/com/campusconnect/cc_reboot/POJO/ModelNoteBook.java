@@ -24,6 +24,7 @@ public class ModelNoteBook {
     private String pages;
     private String kind;
     private String etag;
+    private String bookmarkStatus;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
@@ -286,4 +287,11 @@ public class ModelNoteBook {
         this.additionalProperties.put(name, value);
     }
 
+    public String getBookmarkStatus() {
+        return bookmarkStatus;
+    }
+
+    public void setBookmarkStatus(String bookmarkStatus) {
+        this.bookmarkStatus = bookmarkStatus;
+    }
 }

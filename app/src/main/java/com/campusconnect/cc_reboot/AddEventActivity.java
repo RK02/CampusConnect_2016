@@ -174,7 +174,7 @@ public class AddEventActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog.setMessage("Uploading notes...");
+            progressDialog.setMessage("Uploading...");
             progressDialog.setCancelable(false);
             progressDialog.show();
         }
@@ -197,32 +197,38 @@ public class AddEventActivity extends AppCompatActivity {
             if(!params[3].equals(""))
             {
                 body.addFormDataPart("dueDate",params[3]);
+                body.addFormDataPart("dueTime","08:00:00");
             }
-            for(String temp : UploadPicturesActivity.urls)
-            {
-                Log.i("sw32","test : " + temp );
+            if(UploadPicturesActivity.urls!=null) {
+                for (String temp : UploadPicturesActivity.urls) {
+                    Log.i("sw32", "test : " + temp);
 
-                Bitmap original = null;
-                try {
-                    original = BitmapFactory.decodeStream(new FileInputStream(temp));
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    Bitmap original = null;
+                    try {
+                        original = BitmapFactory.decodeStream(new FileInputStream(temp));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    file = new File(getFilesDir() + "/temp" + i + ".jpeg");
+                    i++;
+                    FileOutputStream out = null;
+                    try {
+                        out = new FileOutputStream(file);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    int size = original.getRowBytes() * original.getHeight();
+                    Log.i("sw32size", size + "");
+                    if (size > 10000000)
+                        original.compress(Bitmap.CompressFormat.JPEG, 20, out);
+                    else
+                        original.compress(Bitmap.CompressFormat.JPEG, 50, out);
+                    body.addFormDataPart("file", "test.jpg", RequestBody.create(MediaType.parse("image/*"), file));
                 }
-                file = new File(getFilesDir()+"/temp"+i+".jpeg");
-                i++;
-                FileOutputStream out = null;
-                try {
-                    out = new FileOutputStream(file);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                int size = original.getRowBytes() * original.getHeight();
-                Log.i("sw32size",size+"");
-                if(size > 10000000)
-                    original.compress(Bitmap.CompressFormat.JPEG, 20, out);
-                else
-                    original.compress(Bitmap.CompressFormat.JPEG, 50, out);
-                body.addFormDataPart("file", "test.jpg", RequestBody.create(MediaType.parse("image/*"),file));
+            }
+            else
+            {
+                //body.addFormDataPart("file", "test.jpg", RequestBody.create(MediaType.parse("image/*"), new File("http://www.epirusportal.gr/wp-content/uploads/default-no-image.png")));
             }
             requestBody = body.build();
             Request request = new Request.Builder()

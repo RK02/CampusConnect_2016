@@ -95,8 +95,8 @@ public class SearchCourseListAdapter extends
                 @Override
                 public void onClick(View v) {
                     Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
-                    ViewGroup viewGroup = (ViewGroup) search_course_card.getParent();
-                    int index = viewGroup.indexOfChild(search_course_card);
+                    ViewGroup viewGroup = (ViewGroup) v.getParent();
+                    int index = viewGroup.indexOfChild(v);
                     String id = courseLists.get(index).getCourseId();
                     intent_temp.putExtra("courseId",id);
                     //intent_temp.putExtra("courseColor",courseLists.get(index).getColour());
