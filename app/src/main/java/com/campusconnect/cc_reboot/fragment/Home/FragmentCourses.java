@@ -64,6 +64,7 @@ public class FragmentCourses extends Fragment{
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_courses, container, false);
         swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swiperefresh);
+        swipeRefreshLayout.offsetTopAndBottom(100);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -97,7 +98,6 @@ public class FragmentCourses extends Fragment{
                     List<AvailableCourseList> availableCourseList = example.getAvailableCourseList();
                     List<SubscribedCourseList> subscribedCourseList = example.getSubscribedCourseList();
                     for (SubscribedCourseList x : subscribedCourseList) {
-
                         courseNames.add(x.getCourseName());
                         courseIds.add(x.getCourseId());
                         mCourseAdapter.add(x);
@@ -120,8 +120,9 @@ public class FragmentCourses extends Fragment{
     public void onResume() {
         super.onResume();
         List<SubscribedCourseList> aa = SubscribedCourseList.listAll(SubscribedCourseList.class);
-        if(aa.size() != courseIds.size())
+        if(aa.size() > courseIds.size())
         {
+            swipeRefreshLayout.setRefreshing(true);
             courseNames.clear();
             courseIds.clear();
             mCourseAdapter.clear();
@@ -134,7 +135,9 @@ public class FragmentCourses extends Fragment{
                 x.save();
                 FirebaseMessaging.getInstance().subscribeToTopic(x.getCourseId());
             }
+            swipeRefreshLayout.setRefreshing(false);
         }
+        else if (aa.size() < courseIds.size()){swipeRefreshLayout.setRefreshing(true);refreshPage();}
 
 
     }

@@ -24,6 +24,9 @@ import com.campusconnect.cc_reboot.POJO.ModelCollegeList;
 import com.campusconnect.cc_reboot.POJO.ModelSignUp;
 import com.campusconnect.cc_reboot.POJO.MyApi;
 import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -220,7 +223,7 @@ public class RegistrationPageActivity extends AppCompatActivity{
         MyApi myApi = retrofit.create(MyApi.class);
 
         MyApi.getProfileIdRequest request;
-        request= new MyApi.getProfileIdRequest(profileName.getText().toString(),collegeId,batchName.getText().toString(),branchName.getText().toString(),sectionName.getText().toString(),personPhoto,personEmail);
+        request= new MyApi.getProfileIdRequest(profileName.getText().toString(),collegeId,batchName.getText().toString(),branchName.getText().toString(),sectionName.getText().toString(),personPhoto,personEmail,FirebaseInstanceId.getInstance().getToken());
         Call<ModelSignUp> call = myApi.getProfileId(request);
         call.enqueue(new Callback<ModelSignUp>() {
             @Override
@@ -322,6 +325,7 @@ public class RegistrationPageActivity extends AppCompatActivity{
                 jsonObject.put("batchName",params[2]);
                 jsonObject.put("imageUrl",personPhoto);
                 jsonObject.put("email",personEmail);
+                jsonObject.put("gcmId", FirebaseInstanceId.getInstance().getToken());
                 Log.i("sw32",params[0] +":"+params[1]+":"+personName );
                 os.write(jsonObject.toString().getBytes());
                 os.flush();

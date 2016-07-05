@@ -45,6 +45,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -332,6 +333,7 @@ public class GoogleSignInActivity extends BaseActivity implements
                 connection.connect();
                 DataOutputStream os = new DataOutputStream(connection.getOutputStream());
                 jsonObject.put("gprofileId",params[0]);
+                jsonObject.put("gcmId",FirebaseInstanceId.getInstance().getId());
                 os.write(jsonObject.toString().getBytes());
                 os.flush();
                 os.close();

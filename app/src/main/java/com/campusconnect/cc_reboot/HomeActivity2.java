@@ -262,9 +262,7 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
     public void displayView(int viewId){
         switch (viewId) {
             case R.id.item_timetable:
-                fragment = new FragmentHome();
-                frag_title = "Timetable";
-                at_home=false;
+                at_home=true;
                 break;
             case R.id.item_add_course:
                 fragment = new FragmentAddCourse();

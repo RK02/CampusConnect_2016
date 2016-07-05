@@ -135,10 +135,12 @@ public interface MyApi {
         private String sectionName;
         private String photoUrl;
         private String email;
-        public getProfileIdRequest(String profileName,String collegeId,String batchName, String branchName, String sectionName,String photoUrl,String email)
+        private String gcmId;
+        public getProfileIdRequest(String profileName,String collegeId,String batchName, String branchName, String sectionName,String photoUrl,String email,String gcmId)
         {
             this.profileName = profileName;
             this.collegeId = collegeId;
+            this.gcmId = gcmId;
             if(batchName==null) this.batchName = "";
             else this.batchName = batchName;
             if(branchName==null) this.branchName ="";

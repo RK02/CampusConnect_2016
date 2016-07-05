@@ -102,7 +102,6 @@ public class SelectCourseActivity extends AppCompatActivity{
                     i++;
                 }
                 Log.i("sw32",subbed.toString());
-
                 Retrofit retrofit = new Retrofit.
                         Builder()
                         .baseUrl(FragmentCourses.BASE_URL)
