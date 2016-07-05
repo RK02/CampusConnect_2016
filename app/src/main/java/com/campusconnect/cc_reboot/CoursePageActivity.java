@@ -36,6 +36,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.StringTokenizer;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -192,10 +193,8 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                     call.enqueue(new Callback<ModelSubscribe>() {
                         @Override
                         public void onResponse(Call<ModelSubscribe> call, Response<ModelSubscribe> response) {
-
-                            Intent intent_temp = new Intent(getApplicationContext(), HomeActivity2.class);
+                            finish();
                             FirebaseMessaging.getInstance().subscribeToTopic(courseId);
-                            startActivity(intent_temp);
                         }
 
                         @Override
@@ -234,6 +233,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("profileId",getSharedPreferences("CC",MODE_PRIVATE).getString("profileId",""));
                 jsonObject.put("courseId",courseId);
+                SubscribedCourseList.find(SubscribedCourseList.class,"course_id = ?",courseId).get(0).delete();
                 os.write(jsonObject.toString().getBytes());
                 os.flush();
                 os.close();
@@ -246,6 +246,12 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                 e.printStackTrace();
             }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            finish();
         }
     }
 

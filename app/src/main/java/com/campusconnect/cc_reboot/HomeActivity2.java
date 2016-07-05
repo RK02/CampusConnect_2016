@@ -84,11 +84,6 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
     GoogleApiClient mGoogleApiClient;
 
     @Override
-    protected void attachBaseContext(Context context) {
-        super.attachBaseContext(context);
-        MultiDex.install(this);
-    }
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_true);

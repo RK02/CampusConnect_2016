@@ -76,21 +76,21 @@ public class CourseListAdapter extends
         courseListViewHolder.assignments_count.setText(a.getDueAssignments());
         courseListViewHolder.course_title.setText(a.getCourseName());
         courseListViewHolder.courseProfessor.setText(a.getProfessorName());
-        List<String> days = a.getDate();
-        String tt= "";
-        for(String temp : days)
-        {
-           switch (temp)
-           {
-               case "1":tt+="M ";break;
-               case "2":tt+="T ";break;
-               case "3":tt+="W ";break;
-               case "4":tt+="T ";break;
-               case "5":tt+="F ";break;
-               case "6":tt+="S ";break;
-           }
-        }
-        courseListViewHolder.timetableGlance.setText(tt);
+//        List<String> days = a.getDate();
+//        String tt= "";
+//        for(String temp : days)
+//        {
+//           switch (temp)
+//           {
+//               case "1":tt+="M ";break;
+//               case "2":tt+="T ";break;
+//               case "3":tt+="W ";break;
+//               case "4":tt+="T ";break;
+//               case "5":tt+="F ";break;
+//               case "6":tt+="S ";break;
+//           }
+//        }
+//        courseListViewHolder.timetableGlance.setText(tt);
         int color = Color.parseColor(a.getColour());
         courseListViewHolder.course_card.setCardBackgroundColor(color);
 
