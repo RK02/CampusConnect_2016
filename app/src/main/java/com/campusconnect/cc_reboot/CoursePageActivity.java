@@ -193,8 +193,8 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                     call.enqueue(new Callback<ModelSubscribe>() {
                         @Override
                         public void onResponse(Call<ModelSubscribe> call, Response<ModelSubscribe> response) {
-                            finish();
                             FirebaseMessaging.getInstance().subscribeToTopic(courseId);
+                            finish();
                         }
 
                         @Override
@@ -208,7 +208,8 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
 
                     new unsub().execute();
                     FirebaseMessaging.getInstance().unsubscribeFromTopic(courseId);
-
+                    SubscribedCourseList.find(SubscribedCourseList.class,"course_id = ?",courseId).get(0).delete();
+                    finish();
                 }
 
                 break;
@@ -233,7 +234,6 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("profileId",getSharedPreferences("CC",MODE_PRIVATE).getString("profileId",""));
                 jsonObject.put("courseId",courseId);
-                SubscribedCourseList.find(SubscribedCourseList.class,"course_id = ?",courseId).get(0).delete();
                 os.write(jsonObject.toString().getBytes());
                 os.flush();
                 os.close();
@@ -251,7 +251,6 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            finish();
         }
     }
 

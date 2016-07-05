@@ -9,17 +9,17 @@ import java.util.Map;
 public class ModelTest {
 
     private String isAuthor;
+    private String examDesc;
     private String views;
     private String courseName;
-    private String pages;
+    private String colour;
     private String uploaderName;
     private String lastUpdated;
-    private String testDesc;
-    private String testId;
-    private String testTitle;
+    private String pages;
+    private String examTitle;
+    private String examId;
     private String dueDate;
     private String dueTime;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
      *
@@ -37,6 +37,24 @@ public class ModelTest {
      */
     public void setIsAuthor(String isAuthor) {
         this.isAuthor = isAuthor;
+    }
+
+    /**
+     *
+     * @return
+     * The examDesc
+     */
+    public String getExamDesc() {
+        return examDesc;
+    }
+
+    /**
+     *
+     * @param examDesc
+     * The examDesc
+     */
+    public void setExamDesc(String examDesc) {
+        this.examDesc = examDesc;
     }
 
     /**
@@ -78,19 +96,19 @@ public class ModelTest {
     /**
      *
      * @return
-     * The pages
+     * The colour
      */
-    public String getPages() {
-        return pages;
+    public String getColour() {
+        return colour;
     }
 
     /**
      *
-     * @param pages
-     * The pages
+     * @param colour
+     * The colour
      */
-    public void setPages(String pages) {
-        this.pages = pages;
+    public void setColour(String colour) {
+        this.colour = colour;
     }
 
     /**
@@ -132,55 +150,55 @@ public class ModelTest {
     /**
      *
      * @return
-     * The testDesc
+     * The pages
      */
-    public String getTestDesc() {
-        return testDesc;
+    public String getPages() {
+        return pages;
     }
 
     /**
      *
-     * @param testDesc
-     * The testDesc
+     * @param pages
+     * The pages
      */
-    public void setTestDesc(String testDesc) {
-        this.testDesc = testDesc;
-    }
-
-    /**
-     *
-     * @return
-     * The testId
-     */
-    public String getTestId() {
-        return testId;
-    }
-
-    /**
-     *
-     * @param testId
-     * The testId
-     */
-    public void setTestId(String testId) {
-        this.testId = testId;
+    public void setPages(String pages) {
+        this.pages = pages;
     }
 
     /**
      *
      * @return
-     * The testTitle
+     * The examTitle
      */
-    public String getTestTitle() {
-        return testTitle;
+    public String getExamTitle() {
+        return examTitle;
     }
 
     /**
      *
-     * @param testTitle
-     * The testTitle
+     * @param examTitle
+     * The examTitle
      */
-    public void setTestTitle(String testTitle) {
-        this.testTitle = testTitle;
+    public void setExamTitle(String examTitle) {
+        this.examTitle = examTitle;
+    }
+
+    /**
+     *
+     * @return
+     * The examId
+     */
+    public String getExamId() {
+        return examId;
+    }
+
+    /**
+     *
+     * @param examId
+     * The examId
+     */
+    public void setExamId(String examId) {
+        this.examId = examId;
     }
 
     /**
@@ -217,14 +235,6 @@ public class ModelTest {
      */
     public void setDueTime(String dueTime) {
         this.dueTime = dueTime;
-    }
-
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
     }
 
 }
