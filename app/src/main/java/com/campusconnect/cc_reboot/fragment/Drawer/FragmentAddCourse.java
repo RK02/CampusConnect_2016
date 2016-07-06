@@ -70,7 +70,7 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
 
     @Bind(R.id.view_course_color_picker)
     View courseColorPicker;
-    ColorPickerDialog colorPickerDialog;
+    public static ColorPickerDialog colorPickerDialog;
 
     @Bind(R.id.et_courseName)
     EditText courseName;
@@ -279,7 +279,7 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
                 dates.subList(0,dates.size()),
                 startTimes.subList(0,startTimes.size()),
                 endTimes.subList(0,endTimes.size()),
-                "RED"
+                courseColorPicker.getSolidColor()+""
                 );
 
         Call<ModelAddCourse> call = myApi.addCourse(body);

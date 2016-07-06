@@ -95,7 +95,6 @@ public class AssignmentsListAdapter extends
                 public void onClick(View v) {
                     Intent intent_temp = new Intent(v.getContext(), AssignmentPageActivity.class);
                     ViewGroup viewGroup = (ViewGroup) assignment_card.getParent();
-                    intent_temp.putExtra("CourseColor",courseColor);
                     intent_temp.putExtra("assignmentId",mAssignments.get(viewGroup.indexOfChild(v)).getAssignmentId());
                     context.startActivity(intent_temp);
                 }
