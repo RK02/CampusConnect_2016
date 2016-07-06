@@ -333,7 +333,7 @@ public class GoogleSignInActivity extends BaseActivity implements
                 connection.connect();
                 DataOutputStream os = new DataOutputStream(connection.getOutputStream());
                 jsonObject.put("gprofileId",params[0]);
-                jsonObject.put("gcmId",FirebaseInstanceId.getInstance().getId());
+                jsonObject.put("gcmId",FirebaseInstanceId.getInstance().getToken());
                 os.write(jsonObject.toString().getBytes());
                 os.flush();
                 os.close();
