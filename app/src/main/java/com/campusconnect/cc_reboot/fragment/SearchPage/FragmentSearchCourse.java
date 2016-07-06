@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.campusconnect.cc_reboot.POJO.CourseList;
 import com.campusconnect.cc_reboot.POJO.SubscribedCourseList;
 import com.campusconnect.cc_reboot.R;
+import com.campusconnect.cc_reboot.SearchActivity;
 import com.campusconnect.cc_reboot.adapter.CourseListAdapter;
 import com.campusconnect.cc_reboot.adapter.SearchCourseListAdapter;
 
@@ -33,9 +34,7 @@ public class FragmentSearchCourse extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_courses, container, false);
-
         course_list = (RecyclerView) v.findViewById (R.id.rv_courses);
-
         //Setting the recyclerView
         courseNames = new ArrayList<>();
         courseIds = new ArrayList<>();
@@ -45,7 +44,7 @@ public class FragmentSearchCourse extends Fragment {
         course_list.setLayoutManager(mLayoutManager);
         course_list.setItemAnimator(new DefaultItemAnimator());
         course_list.setAdapter(mCourseAdapter);
-
         return v;
     }
+
 }

@@ -52,8 +52,7 @@ public class SearchActivity extends AppCompatActivity {
     public static SlidingTabLayout_home search_tabs;
     CharSequence Titles[] = {"Courses", "Notes"};
     int Numboftabs = 2;
-    @Bind(R.id.et_search)
-    EditText searchBar;
+    public static EditText searchBar;
     Retrofit retrofit;
     MyApi myApi;
     Call<ModelCourseSearch> callCourse;
@@ -65,17 +64,39 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
+        searchBar = (EditText) findViewById(R.id.et_search);
         retrofit = new Retrofit.
                 Builder()
                 .baseUrl(MyApi.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         myApi = retrofit.create(MyApi.class);
+        searchBar.setHint("Search Courses");
         search_pager = (ViewPager) findViewById(R.id.pager_home);
         search_tabs = (SlidingTabLayout_home) findViewById(R.id.tabs_home);
         search_adapter = new ViewPagerAdapter_search(getSupportFragmentManager(), Titles, Numboftabs, this);
         search_pager.setAdapter(search_adapter);
         search_pager.setCurrentItem(0);
+        search_pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Log.i("sw32pager",position+"");
+                switch (position){
+                    case 0:searchBar.setHint("Search Courses");break;
+                    case 1:searchBar.setHint("Search Notes");break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         search_tabs.setDistributeEvenly(true);
         search_tabs.setViewPager(search_pager);
         searchBar.setImeActionLabel(">", KeyEvent.KEYCODE_ENTER);

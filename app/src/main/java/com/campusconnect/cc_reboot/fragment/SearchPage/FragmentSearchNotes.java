@@ -14,6 +14,7 @@ import com.campusconnect.cc_reboot.POJO.CourseList;
 import com.campusconnect.cc_reboot.POJO.NoteBookList;
 import com.campusconnect.cc_reboot.POJO.SubscribedCourseList;
 import com.campusconnect.cc_reboot.R;
+import com.campusconnect.cc_reboot.SearchActivity;
 import com.campusconnect.cc_reboot.adapter.SearchCourseListAdapter;
 import com.campusconnect.cc_reboot.adapter.SearchNotesListAdapter;
 
@@ -33,6 +34,8 @@ public class FragmentSearchNotes extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_courses, container, false);
 
+
+
         course_list = (RecyclerView) v.findViewById (R.id.rv_courses);
 
         //Setting the recyclerView
@@ -42,7 +45,10 @@ public class FragmentSearchNotes extends Fragment {
         course_list.setLayoutManager(mLayoutManager);
         course_list.setItemAnimator(new DefaultItemAnimator());
         course_list.setAdapter(mSearchNotesAdapter);
-
         return v;
     }
+
+
+
+
 }
