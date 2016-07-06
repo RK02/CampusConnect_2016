@@ -122,7 +122,6 @@ public class FragmentCourses extends Fragment{
         List<SubscribedCourseList> aa = SubscribedCourseList.listAll(SubscribedCourseList.class);
         if(aa.size() > courseIds.size())
         {
-            swipeRefreshLayout.setRefreshing(true);
             courseNames.clear();
             courseIds.clear();
             mCourseAdapter.clear();
@@ -135,7 +134,6 @@ public class FragmentCourses extends Fragment{
                 x.save();
                 FirebaseMessaging.getInstance().subscribeToTopic(x.getCourseId());
             }
-            swipeRefreshLayout.setRefreshing(false);
         }
         else if (aa.size() < courseIds.size()){swipeRefreshLayout.setRefreshing(true);refreshPage();}
 

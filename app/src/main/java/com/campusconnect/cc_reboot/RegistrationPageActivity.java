@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -108,7 +109,7 @@ public class RegistrationPageActivity extends AppCompatActivity{
                 .fit()
                 .into(profilePicture);
         //profilePicture.setFocusable(false);
-
+        collegeName.setHintTextColor(Color.BLACK);
         Retrofit retrofit = new Retrofit.
                 Builder()
                 .baseUrl(FragmentCourses.BASE_URL)
@@ -198,6 +199,7 @@ public class RegistrationPageActivity extends AppCompatActivity{
                                                     if (hasFocus) {
                                                         String temp = collegeName.getText().toString();
                                                         int index = collegeNames.indexOf(temp);
+                                                        if(index < 0 ) {collegeName.setError("Select a valid college name");collegeName.requestFocus(); return;}
                                                         branchName.setAdapter(new ArrayAdapter<String>(RegistrationPageActivity.this, android.R.layout.simple_list_item_1, colleges.get(index).getBranchNames()));
                                                     }
                                                 }
@@ -208,6 +210,7 @@ public class RegistrationPageActivity extends AppCompatActivity{
             public void onClick(View v) {
                 String temp = collegeName.getText().toString();
                 int index = collegeNames.indexOf(temp);
+                if(index < 0 ){collegeName.setError("Select a valid college name");collegeName.requestFocus();return; }
                 collegeId = collegeIds.get(index);
                 new sign_up().execute();
             }

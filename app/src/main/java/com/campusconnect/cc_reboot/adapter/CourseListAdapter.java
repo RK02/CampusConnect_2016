@@ -76,22 +76,35 @@ public class CourseListAdapter extends
         courseListViewHolder.assignments_count.setText(a.getDueAssignments());
         courseListViewHolder.course_title.setText(a.getCourseName());
         courseListViewHolder.courseProfessor.setText(a.getProfessorName());
-//        List<String> days = a.getDate();
-//        String tt= "";
-//        for(String temp : days)
-//        {
-//           switch (temp)
-//           {
-//               case "1":tt+="M ";break;
-//               case "2":tt+="T ";break;
-//               case "3":tt+="W ";break;
-//               case "4":tt+="T ";break;
-//               case "5":tt+="F ";break;
-//               case "6":tt+="S ";break;
-//           }
-//        }
-//        courseListViewHolder.timetableGlance.setText(tt);
-        int color = Color.parseColor(a.getColour());
+        List<String> days = a.getDate();
+        if(days!=null) {
+            String tt = "";
+            for (String temp : days) {
+                switch (temp) {
+                    case "1":
+                        tt += "M ";
+                        break;
+                    case "2":
+                        tt += "T ";
+                        break;
+                    case "3":
+                        tt += "W ";
+                        break;
+                    case "4":
+                        tt += "T ";
+                        break;
+                    case "5":
+                        tt += "F ";
+                        break;
+                    case "6":
+                        tt += "S ";
+                        break;
+                }
+            }
+            a.setTimetable(tt);
+        }
+        courseListViewHolder.timetableGlance.setText(a.getTimetable());
+        final int color = Color.parseColor(a.getColour());
         courseListViewHolder.course_card.setCardBackgroundColor(color);
 
         courseListViewHolder.course_card.setOnClickListener(new View.OnClickListener() {
@@ -100,7 +113,7 @@ public class CourseListAdapter extends
                 Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
                 String id = mCourses.get(i).getCourseId();
                 intent_temp.putExtra("courseId",id);
-                intent_temp.putExtra("courseColor",mCourses.get(i).getColour());
+                intent_temp.putExtra("courseColor",color);
                 context.startActivity(intent_temp);
             }
         });
@@ -111,8 +124,7 @@ public class CourseListAdapter extends
                 intent_temp.putExtra("TAB",0);
                 String id = mCourses.get(i).getCourseId();
                 intent_temp.putExtra("courseId",id);
-                int c = Color.parseColor(mCourses.get(i).getColour());
-                intent_temp.putExtra("courseColor",c);
+                intent_temp.putExtra("courseColor",color);
                 context.startActivity(intent_temp);
             }
         });
@@ -123,8 +135,7 @@ public class CourseListAdapter extends
                 intent_temp.putExtra("TAB",1);
                 String id = mCourses.get(i).getCourseId();
                 intent_temp.putExtra("courseId",id);
-                int c = Color.parseColor(mCourses.get(i).getColour());
-                intent_temp.putExtra("courseColor",c);
+                intent_temp.putExtra("courseColor",color);
                 context.startActivity(intent_temp);
             }
         });
@@ -135,8 +146,7 @@ public class CourseListAdapter extends
                 intent_temp.putExtra("TAB",2);
                 String id = mCourses.get(i).getCourseId();
                 intent_temp.putExtra("courseId",id);
-                int c = Color.parseColor(mCourses.get(i).getColour());
-                intent_temp.putExtra("courseColor",c);
+                intent_temp.putExtra("courseColor",color);
                 context.startActivity(intent_temp);
 
             }

@@ -17,6 +17,7 @@ public class SubscribedCourseList extends SugarRecord {
     private String dueExams;
     private String courseName;
     private String recentNotes;
+    private String timetable;
 
     @Unique
     private String courseId;
@@ -238,5 +239,13 @@ public class SubscribedCourseList extends SugarRecord {
 
     public void setColour(String colour) {
         this.colour = colour;
+    }
+
+    public String getTimetable() {
+        return timetable;
+    }
+
+    public void setTimetable(String timetable) {
+        this.timetable = timetable;
     }
 }
