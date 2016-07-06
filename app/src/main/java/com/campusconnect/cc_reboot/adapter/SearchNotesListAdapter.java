@@ -41,7 +41,7 @@ public class SearchNotesListAdapter extends
     }
 
     @Override
-    public void onBindViewHolder(SearchCourseListViewHolder searchCourseListViewHolder, int i) {
+    public void onBindViewHolder(SearchCourseListViewHolder searchCourseListViewHolder, final int i) {
         searchCourseListViewHolder.note_name.setText(mNotes.get(i).getCourseName());
         searchCourseListViewHolder.note_pages_count.setText(mNotes.get(i).getPages());
         searchCourseListViewHolder.note_views.setText(mNotes.get(i).getViews());
@@ -71,6 +71,18 @@ public class SearchNotesListAdapter extends
         else searchCourseListViewHolder.last_updated.setText(hours + " hours ago");}}
         else {if(days==1)searchCourseListViewHolder.last_updated.setText(days + " day ago");
         else searchCourseListViewHolder.last_updated.setText(days + " days ago");}
+
+
+        searchCourseListViewHolder.search_notes_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent_temp = new Intent(v.getContext(), NotePageActivity.class);
+                intent_temp.putExtra("noteBookId",mNotes.get(i).getNoteBookId());
+                context.startActivity(intent_temp);
+            }
+        });
+
+
     }
 
     @Override
@@ -108,16 +120,7 @@ public class SearchNotesListAdapter extends
             super(v);
             ButterKnife.bind(this, v);
 
-            search_notes_card.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent_temp = new Intent(v.getContext(), NotePageActivity.class);
-                    ViewGroup group = (ViewGroup) v.getParent();
-                    int index = group.indexOfChild(v);
-                    intent_temp.putExtra("noteBookId",mNotes.get(index).getNoteBookId());
-                    context.startActivity(intent_temp);
-                }
-            });
+
 
         }
     }

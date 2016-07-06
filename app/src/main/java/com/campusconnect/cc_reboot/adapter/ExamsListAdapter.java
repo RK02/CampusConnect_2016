@@ -41,17 +41,25 @@ public class ExamsListAdapter extends
     }
 
     @Override
-    public void onBindViewHolder(ExamsListViewHolder examsListViewHolder, int i) {
+    public void onBindViewHolder(ExamsListViewHolder examsListViewHolder, final int i) {
 
-        ModelTest temp = mModelTests.get(i);
-        Log.i("sw32bindexam",temp.getExamTitle() + "\t" + temp.getExamDesc()+"1");
+        final ModelTest temp = mModelTests.get(i);
         examsListViewHolder.exam_date.setText(temp.getDueDate());
         examsListViewHolder.exam_description.setText(temp.getExamDesc());
         examsListViewHolder.exam_posted_on.setText(temp.getLastUpdated().substring(0,10));
         examsListViewHolder.exam_uploader.setText(temp.getUploaderName());
         examsListViewHolder.exam_views.setText(temp.getViews());
         examsListViewHolder.exam_name.setText(temp.getCourseName());
-        Log.i("sw32bindexam",temp.getExamTitle() + "\t" + temp.getExamDesc()+"2");
+
+        examsListViewHolder.exam_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent_temp = new Intent(v.getContext(), ExamPageActivity.class);
+                intent_temp.putExtra("testId",mModelTests.get(i).getExamId());
+                intent_temp.putExtra("CourseColor",courseColor);
+                context.startActivity(intent_temp);
+            }
+        });
     }
 
     @Override
@@ -88,17 +96,7 @@ public class ExamsListAdapter extends
             super(v);
             ButterKnife.bind(this,v);
 
-            exam_card.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent_temp = new Intent(v.getContext(), ExamPageActivity.class);
-                    ViewGroup temp = (ViewGroup) v.getParent();
-                    String testId = mModelTests.get(temp.indexOfChild(v)).getExamId();
-                    intent_temp.putExtra("testId",testId);
-                    intent_temp.putExtra("CourseColor",courseColor);
-                    context.startActivity(intent_temp);
-                }
-            });
+
 
         }
     }

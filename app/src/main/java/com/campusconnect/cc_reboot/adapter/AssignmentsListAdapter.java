@@ -48,14 +48,22 @@ public class AssignmentsListAdapter extends
     }
 
     @Override
-    public void onBindViewHolder(AssignmentsListViewHolder assignmentsListViewHolder, int i) {
-        AssList a = mAssignments.get(i);
+    public void onBindViewHolder(AssignmentsListViewHolder assignmentsListViewHolder,int i) {
+        final AssList a = mAssignments.get(i);
         assignmentsListViewHolder.assignment_name.setText(a.getCourseName());
         assignmentsListViewHolder.assignment_description.setText(a.getAssignmentDesc());
         assignmentsListViewHolder.assignment_due_date.setText(a.getDueDate());
         assignmentsListViewHolder.assignment_posted_on.setText(a.getLastUpdated().substring(0,10));
         assignmentsListViewHolder.assignment_views.setText(a.getViews());
         assignmentsListViewHolder.assignment_uploader.setText(a.getUploaderName());
+        assignmentsListViewHolder.assignment_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent_temp = new Intent(v.getContext(), AssignmentPageActivity.class);
+                intent_temp.putExtra("assignmentId",a.getAssignmentId());
+                context.startActivity(intent_temp);
+            }
+        });
     }
     //public void getAssignmentId(String )
 
@@ -90,15 +98,7 @@ public class AssignmentsListAdapter extends
             ButterKnife.bind(this,v);
 
 
-            assignment_card.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent_temp = new Intent(v.getContext(), AssignmentPageActivity.class);
-                    ViewGroup viewGroup = (ViewGroup) assignment_card.getParent();
-                    intent_temp.putExtra("assignmentId",mAssignments.get(viewGroup.indexOfChild(v)).getAssignmentId());
-                    context.startActivity(intent_temp);
-                }
-            });
+
 
         }
     }
