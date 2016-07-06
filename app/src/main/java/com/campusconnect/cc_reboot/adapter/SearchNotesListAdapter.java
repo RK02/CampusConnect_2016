@@ -115,7 +115,6 @@ public class SearchNotesListAdapter extends
                     ViewGroup group = (ViewGroup) v.getParent();
                     int index = group.indexOfChild(v);
                     intent_temp.putExtra("noteBookId",mNotes.get(index).getNoteBookId());
-                    //intent_temp.putExtra("CourseColor",courseColor);
                     context.startActivity(intent_temp);
                 }
             });

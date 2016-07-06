@@ -17,6 +17,7 @@ public class CourseList {
     private List<String> sectionNames = new ArrayList<String>();
     private String semester;
     private String studentCount;
+    private String colour;
 
     /**
      *
@@ -168,5 +169,13 @@ public class CourseList {
 
     public void setSemester(String semester) {
         this.semester = semester;
+    }
+
+    public String getColour() {
+        return colour;
+    }
+
+    public void setColour(String colour) {
+        this.colour = colour;
     }
 }
