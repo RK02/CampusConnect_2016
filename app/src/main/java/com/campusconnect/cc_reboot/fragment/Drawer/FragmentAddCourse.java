@@ -27,6 +27,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -44,10 +46,13 @@ import android.widget.ToggleButton;
 
 import com.campusconnect.cc_reboot.CoursePageActivity;
 import com.campusconnect.cc_reboot.HomeActivity2;
+import com.campusconnect.cc_reboot.POJO.Example;
 import com.campusconnect.cc_reboot.POJO.ModelAddCourse;
+import com.campusconnect.cc_reboot.POJO.ModelBranchList;
 import com.campusconnect.cc_reboot.POJO.MyApi;
 import com.campusconnect.cc_reboot.R;
 import com.campusconnect.cc_reboot.adapter.CourseColorsListAdapter;
+import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -87,7 +92,7 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
     @Bind(R.id.et_courseSection)
     EditText courseSection;
     @Bind(R.id.et_courseBranch)
-    EditText courseBranch;
+    AutoCompleteTextView courseBranch;
 
     @Bind(R.id.tb_monday)
     ToggleButton tbMonday;
@@ -106,6 +111,8 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
 
     @Bind(R.id.chk_elective)
     CheckBox elective;
+    @Bind(R.id.chk_branches)
+    CheckBox branches;
 
     ArrayList<ToggleButton> days = new ArrayList<>();
     String[] daysOfTheWeek = {"Mon","Tue","Wed","Thu","Fri","Sat"};
@@ -128,6 +135,13 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
         View v = inflater.inflate(R.layout.fragment_add_course, container, false);
         ButterKnife.bind(this, v);
 
+        Retrofit retrofit = new Retrofit.
+                Builder()
+                .baseUrl(MyApi.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        MyApi myApi = retrofit.create(MyApi.class);
+        Call<ModelBranchList> call;
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("CC", Context.MODE_PRIVATE);
         String branchName = sharedPreferences.getString("branchName", "");
@@ -135,6 +149,38 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
         String sectionName = sharedPreferences.getString("sectionName", "");
         profileId = sharedPreferences.getString("profileId", "");
         collegeId = sharedPreferences.getString("collegeId", "");
+        call = myApi.getBranches(collegeId);
+        call.enqueue(new Callback<ModelBranchList>() {
+            @Override
+            public void onResponse(Call<ModelBranchList> call, Response<ModelBranchList> response) {
+                final ModelBranchList modelBranchList = response.body();
+                courseBranch.setAdapter(new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1, modelBranchList.getBranchList()));
+                branches.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if(isChecked)
+                        {
+                            String temp="";
+                            for(String branch: modelBranchList.getBranchList())
+                            {
+                                temp += branch+",";
+                            }
+                            temp = temp.substring(0,temp.lastIndexOf(","));
+                            courseBranch.setText(temp);
+                        }
+                        else
+                        {
+                          courseBranch.setText("");
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Call<ModelBranchList> call, Throwable t) {
+
+            }
+        });
         courseBranch.setText(branchName);
         courseBatch.setText(batchName);
         courseSection.setText(sectionName);
