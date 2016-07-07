@@ -28,6 +28,9 @@ public interface MyApi {
     @GET("feed/ahJzfnVwbG9hZG5vdGVzLTIwMTZyFAsSB1Byb2ZpbGUYgICAgLyhggoM/")
     Call<Example> getFeed(@Query("profileId") String profileId);
 
+    @GET("branchList")
+    Call<ModelBranchList> getBranches(@Query("collegeId") String collegeId);
+
     @POST("coursePage")
     Call<ModelCoursePage> getCourse(@Body getCourseRequest body);
     class getCourseRequest{
@@ -193,6 +196,7 @@ public interface MyApi {
             private String colour;
             private String courseCode;
             private List<String> branchNames;
+        private String elective;
 
             public addCourseRequest(String profileId,
                                     String collegeId,
@@ -206,7 +210,8 @@ public interface MyApi {
                                     List<String> date,
                                     List<String> startTime,
                                     List<String> endTime,
-                                    String colour
+                                    String colour,
+                                    String elective
                                     ){
                 this.profileId = profileId;
                 this.collegeId = collegeId;

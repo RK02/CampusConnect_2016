@@ -128,6 +128,7 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
         View v = inflater.inflate(R.layout.fragment_add_course, container, false);
         ButterKnife.bind(this, v);
 
+
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("CC", Context.MODE_PRIVATE);
         String branchName = sharedPreferences.getString("branchName", "");
         String batchName = sharedPreferences.getString("batchName", "");
@@ -234,14 +235,13 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
 
     void create()
     {
-        if(courseName.getText().toString()==null){courseName.setError("Enter Course Name");return;}
-        if(courseCode.getText().toString()==null){courseCode.setError("Enter Course Code");return;}
-        if(courseProf.getText().toString()==null){courseProf.setError("Enter Course Professor");return;}
-        if(courseSem.getText().toString()==null){courseSem.setError("Enter Semester");return;}
-        if(courseBatch.getText().toString()==null){courseBatch.setError("Enter Batch");return;}
-        if(courseBranch.getText().toString()==null){courseBranch.setError("Enter Branch");return;}
+        if(courseName.getText().toString().equals("")){courseName.setError("Enter Course Name");courseName.requestFocus();return;}
+        if(courseCode.getText().toString().equals("")){courseCode.setError("Enter Course Code");courseCode.requestFocus();return;}
+        if(courseProf.getText().toString().equals("")){courseProf.setError("Enter Course Professor");courseProf.requestFocus();return;}
+        if(courseSem.getText().toString().equals("")){courseSem.setError("Enter Semester");courseSem.requestFocus();return;}
+        if(courseBatch.getText().toString().equals("")){courseBatch.setError("Enter Batch");courseBatch.requestFocus();return;}
+        if(courseBranch.getText().toString().equals("")){courseBranch.setError("Enter Branch");courseBranch.requestFocus();return;}
         if(days_selected.size()==0){Toast.makeText(getActivity(),"Select appropriate times for this course",Toast.LENGTH_SHORT).show();return;}
-
         Retrofit retrofit = new Retrofit.
                 Builder()
                 .baseUrl(MyApi.BASE_URL)
@@ -283,6 +283,9 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
             endTimes.add(((EditText)days_selected.get(temp1).findViewById(R.id.et_endTime)).getText().toString());
         }
         MyApi myApi = retrofit.create(MyApi.class);
+        int e;
+        if(elective.isChecked()) e=1;
+        else e=0;
         MyApi.addCourseRequest body = new MyApi.addCourseRequest(
                 profileId, collegeId,
                 courseName.getText().toString(),
@@ -295,7 +298,8 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
                 dates.subList(0,dates.size()),
                 startTimes.subList(0,startTimes.size()),
                 endTimes.subList(0,endTimes.size()),
-                courseColorPicker.getSolidColor()+""
+                courseColorPicker.getSolidColor()+"",
+                e+""
                 );
 
         Call<ModelAddCourse> call = myApi.addCourse(body);
