@@ -1,8 +1,6 @@
 package com.campusconnect.cc_reboot;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,36 +16,24 @@ import android.widget.EditText;
 
 import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
 
-import org.json.JSONObject;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.zip.ZipInputStream;
 
-import okhttp3.Call;
-import okhttp3.Callback;
+
+
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.Response;
-import retrofit2.http.Multipart;
+
 
 public class AddEventActivity extends AppCompatActivity {
 
@@ -76,6 +62,7 @@ public class AddEventActivity extends AppCompatActivity {
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         String formattedDate = df.format(c.getTime());
         date.setText(formattedDate);
+        dueDate.setText(formattedDate);
         date.setFocusable(false);
         if(getIntent().hasExtra("courseName"))
         {
@@ -174,6 +161,12 @@ public class AddEventActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            if(course.getText().toString().equals("")){course.setError("Select course");course.requestFocus();return;}
+            if(name.getText().toString().equals("")){name.setError("Pick Type");name.requestFocus();return;}
+            if(dueDate.getVisibility()==View.VISIBLE){
+                if (dueDate.getText().toString().equals("")) {
+                dueDate.setError("Enter due date");dueDate.requestFocus();return;}
+                }
             progressDialog.setMessage("Uploading...");
             progressDialog.setCancelable(false);
             progressDialog.show();
