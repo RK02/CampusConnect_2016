@@ -19,7 +19,11 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:name="android.support.multidex.MultiDexApplication">
+        android:name=".MyApp">
+        <meta-data android:name="DATABASE" android:value="cc.db" />
+        <meta-data android:name="VERSION" android:value="1" />
+        <meta-data android:name="QUERY_LOG" android:value="true" />
+        <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="com.campusconnect.cc_reboot.POJO" />
         <!-- [START firebase_service] -->
         <service
             android:name=".MyFirebaseMessagingService">
@@ -116,5 +120,4 @@
         <activity android:name=".CreateCourseActivity"></activity>
 
     </application>
-
 </manifest>

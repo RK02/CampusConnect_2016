@@ -1,4 +1,5 @@
 package com.campusconnect.cc_reboot;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
@@ -16,6 +17,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -67,8 +69,7 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
     ImageButton search_button;
     @Bind(R.id.ib_notification)
     ImageButton notification_button;
-    @Bind(R.id.tv_title)
-    TextView home_title;
+    public static TextView home_title;
     @Bind(R.id.container_fab)
     FrameLayout fab_menu_container;
     @Bind(R.id.fab_menu)
@@ -81,23 +82,33 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
     private LinearLayout acb_home;
     private Fragment fragment = null;
     GoogleApiClient mGoogleApiClient;
-
-    @Override
-    protected void attachBaseContext(Context context) {
-        super.attachBaseContext(context);
-        MultiDex.install(this);
-    }
+    Fragment homefrag;
+    Fragment addCourse;
+    Fragment gifts;
+    Fragment howTo;
+    Fragment invite;
+    Fragment settings;
+    Fragment tnc;
+    Fragment rate;
+    Fragment feedback;
+    Fragment about;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_true);
         ButterKnife.bind(this);
 //Setting FAB container's background to be fully transparent by default
+        home_title = (TextView) findViewById(R.id.tv_title);
+        if(getIntent().getExtras()!=null){
+            String type = getIntent().getExtras().getString("type");
+            String id = getIntent().getExtras().getString("id");
+            Log.i("sw32notif", type + "::" +id);
+        }
         fab_menu_container.getBackground().setAlpha(0);
         toolbar = (Toolbar) findViewById (R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        homefrag = new FragmentHome();
         //Setting up Header View
         final View headerView = getLayoutInflater().inflate(R.layout.header, navigationView, false);
         navigationView.addHeaderView(headerView);
@@ -114,7 +125,7 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
         frag_title = "Home";
         home_title.setText(frag_title);
         final android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.frame, new FragmentHome());
+        fragmentTransaction.replace(R.id.frame, homefrag);
         fragmentTransaction.commit();
 //Unchecking all the drawer menu items before going back to home in case the app crashes
         int size = navigationView.getMenu().size();
@@ -260,9 +271,9 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
     public void displayView(int viewId){
         switch (viewId) {
             case R.id.item_timetable:
-                fragment = new FragmentHome();
-                frag_title = "Timetable";
-                at_home=false;
+                at_home=true;
+                fragment = homefrag;
+                frag_title = "Home";
                 break;
             case R.id.item_add_course:
                 fragment = new FragmentAddCourse();
@@ -291,7 +302,6 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
                 break;
             case R.id.item_logout:
                 at_home=true;
-
                 Auth.GoogleSignInApi.signOut(mGoogleApiClient);
                 Intent intent = new Intent(HomeActivity2.this,GoogleSignInActivity.class);
                 intent.putExtra("logout","temp");
@@ -328,10 +338,32 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
                 fabMenu.setVisibility(View.GONE);
             else
                 fabMenu.setVisibility(View.VISIBLE);
+
             home_title.setText(frag_title);
             android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.frame, fragment);
-            fragmentTransaction.commit();
+            //fragmentTransaction.remove(getSupportFragmentManager().findFragmentById(R.id.frame));
+            Fragment temp  = getSupportFragmentManager().findFragmentById(R.id.frame);
+
+            if(temp==homefrag) {
+                if(!at_home) {
+                    fragmentTransaction.add(R.id.frame, fragment);
+                    fragmentTransaction.commit();
+                }
+            }
+            else
+            {
+                if(!at_home) {
+                    fragmentTransaction.remove(temp);
+                    fragmentTransaction.add(R.id.frame, fragment);
+                    fragmentTransaction.commit();
+                }
+                else
+                {
+                    fragmentTransaction.remove(temp);
+                    fragmentTransaction.commit();
+                }
+            }
+
         }
     }
     @Override
@@ -348,7 +380,8 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
             frag_title="Home";
             home_title.setText(frag_title);
             android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.frame, new FragmentHome());
+
+            fragmentTransaction.remove(getSupportFragmentManager().findFragmentById(R.id.frame));
             fragmentTransaction.commit();
             at_home = true;
         }else if(at_home==true && !drawerLayout.isDrawerOpen(GravityCompat.START)){

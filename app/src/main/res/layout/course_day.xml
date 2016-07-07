@@ -40,7 +40,7 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:paddingTop="4dp"
-                android:text="8:30"
+                android:text="08:30"
                 android:textColor="@color/ColorTextInfo"
                 android:textColorHint="#A0A0A0"
                 android:textSize="16sp" />
@@ -54,7 +54,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/edittext_rounded_upload"
                 android:hint="End Date"
-                android:text="9:30"
+                android:text="09:30"
                 android:paddingBottom="4dp"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"

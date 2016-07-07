@@ -17,6 +17,7 @@ public class NoteBookList {
     private String pages;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
+
     /**
      *
      * @return

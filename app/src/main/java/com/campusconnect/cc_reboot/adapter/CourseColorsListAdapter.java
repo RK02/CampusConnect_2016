@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.campusconnect.cc_reboot.NotePageActivity;
 import com.campusconnect.cc_reboot.POJO.NoteBookList;
 import com.campusconnect.cc_reboot.R;
+import com.campusconnect.cc_reboot.fragment.Drawer.FragmentAddCourse;
 
 import java.util.ArrayList;
 
@@ -55,7 +56,6 @@ public class CourseColorsListAdapter extends
         } else {
             CourseColorsListViewHolder.course_color_blob.setBackground(context.getResources().getDrawable(color_drawables[i]));
         }
-
     }
 
 
@@ -72,7 +72,7 @@ public class CourseColorsListAdapter extends
         @Bind(R.id.b_color_blob)
         Button course_color_blob;
 
-        public CourseColorsListViewHolder(View v) {
+        public CourseColorsListViewHolder(final View v) {
             super(v);
             ButterKnife.bind(this,v);
 
@@ -84,6 +84,7 @@ public class CourseColorsListAdapter extends
                     } else {
                         colorPicker.setBackground(context.getResources().getDrawable(color_drawables[getAdapterPosition()]));
                     }
+                    FragmentAddCourse.colorPickerDialog.dismiss();
                 }
             });
 

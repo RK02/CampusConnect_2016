@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -24,6 +25,9 @@ import com.campusconnect.cc_reboot.POJO.ModelCollegeList;
 import com.campusconnect.cc_reboot.POJO.ModelSignUp;
 import com.campusconnect.cc_reboot.POJO.MyApi;
 import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -105,7 +109,7 @@ public class RegistrationPageActivity extends AppCompatActivity{
                 .fit()
                 .into(profilePicture);
         //profilePicture.setFocusable(false);
-
+        collegeName.setHintTextColor(Color.BLACK);
         Retrofit retrofit = new Retrofit.
                 Builder()
                 .baseUrl(FragmentCourses.BASE_URL)
@@ -195,6 +199,7 @@ public class RegistrationPageActivity extends AppCompatActivity{
                                                     if (hasFocus) {
                                                         String temp = collegeName.getText().toString();
                                                         int index = collegeNames.indexOf(temp);
+                                                        if(index < 0 ) {collegeName.setError("Select a valid college name");collegeName.requestFocus(); return;}
                                                         branchName.setAdapter(new ArrayAdapter<String>(RegistrationPageActivity.this, android.R.layout.simple_list_item_1, colleges.get(index).getBranchNames()));
                                                     }
                                                 }
@@ -205,6 +210,7 @@ public class RegistrationPageActivity extends AppCompatActivity{
             public void onClick(View v) {
                 String temp = collegeName.getText().toString();
                 int index = collegeNames.indexOf(temp);
+                if(index < 0 ){collegeName.setError("Select a valid college name");collegeName.requestFocus();return; }
                 collegeId = collegeIds.get(index);
                 new sign_up().execute();
             }
@@ -220,7 +226,7 @@ public class RegistrationPageActivity extends AppCompatActivity{
         MyApi myApi = retrofit.create(MyApi.class);
 
         MyApi.getProfileIdRequest request;
-        request= new MyApi.getProfileIdRequest(profileName.getText().toString(),collegeId,batchName.getText().toString(),branchName.getText().toString(),sectionName.getText().toString(),personPhoto,personEmail);
+        request= new MyApi.getProfileIdRequest(profileName.getText().toString(),collegeId,batchName.getText().toString(),branchName.getText().toString(),sectionName.getText().toString(),personPhoto,personEmail,FirebaseInstanceId.getInstance().getToken());
         Call<ModelSignUp> call = myApi.getProfileId(request);
         call.enqueue(new Callback<ModelSignUp>() {
             @Override
@@ -289,7 +295,10 @@ public class RegistrationPageActivity extends AppCompatActivity{
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
+            if(profileName.getText().toString().equals("")){profileName.setError("Enter Name");profileName.requestFocus();return;}
+            if(collegeName.getText().toString().equals("")){collegeName.setError("Enter College Name");collegeName.requestFocus();return;}
+            if(batchName.getText().toString().equals("")){batchName.setError("Enter Batch Name");batchName.requestFocus();return;}
+            if(branchName.getText().toString().equals("")){branchName.setError("Enter Branch Name");branchName.requestFocus();return;}
             progressDialog = new ProgressDialog(RegistrationPageActivity.this);
             progressDialog.show();
         }
@@ -322,6 +331,7 @@ public class RegistrationPageActivity extends AppCompatActivity{
                 jsonObject.put("batchName",params[2]);
                 jsonObject.put("imageUrl",personPhoto);
                 jsonObject.put("email",personEmail);
+                jsonObject.put("gcmId", FirebaseInstanceId.getInstance().getToken());
                 Log.i("sw32",params[0] +":"+params[1]+":"+personName );
                 os.write(jsonObject.toString().getBytes());
                 os.flush();

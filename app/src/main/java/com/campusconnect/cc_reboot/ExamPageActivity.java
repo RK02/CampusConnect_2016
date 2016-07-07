@@ -49,14 +49,13 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
     @Bind(R.id.tv_due_date)
     TextView due;
 
-    @Bind(R.id.ib_edit_note)
+    @Bind(R.id.ib_edit)
     ImageButton edit_note_button;
-    @Bind(R.id.ib_fullscreen)
-    ImageButton fullscreen_button;
+
     @Bind(R.id.ib_share)
     ImageButton share_note_button;
 
-    @Bind(R.id.tb_remind_me)
+    @Bind(R.id.exam_remind)
     Button remind_button;
 
     private String testId;
@@ -87,8 +86,8 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onResponse(Call<ModelTest> call, Response<ModelTest> response) {
                 ModelTest modelTest = response.body();
-                testName.setText(modelTest.getTestTitle());
-                desc.setText(modelTest.getTestDesc());
+                testName.setText(modelTest.getExamTitle());
+                desc.setText(modelTest.getExamDesc());
                 uploader.setText(modelTest.getUploaderName());
                 date.setText(modelTest.getLastUpdated());
                 due.setText(modelTest.getDueDate());
@@ -103,7 +102,6 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
 
         //OnClickListeners
         edit_note_button.setOnClickListener(this);
-        fullscreen_button.setOnClickListener(this);
         share_note_button.setOnClickListener(this);
         exam_last_page.setOnClickListener(this);
         remind_button.setOnClickListener(this);
@@ -120,10 +118,6 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
                 startActivity(intent);
                 break;
 
-            case R.id.ib_fullscreen:
-//                intent = new Intent(getApplicationContext(), NotesSliderActivity.class);
-//                startActivity(intent);
-                break;
 
             case R.id.ib_share:
 

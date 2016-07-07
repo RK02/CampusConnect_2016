@@ -1,6 +1,7 @@
 package com.campusconnect.cc_reboot.fragment.Drawer;
 
 import android.content.DialogInterface;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.Fragment;
 
 import android.app.TimePickerDialog;
@@ -10,6 +11,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.app.Activity;
 import android.app.Dialog;
@@ -25,6 +28,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -42,10 +47,13 @@ import android.widget.ToggleButton;
 
 import com.campusconnect.cc_reboot.CoursePageActivity;
 import com.campusconnect.cc_reboot.HomeActivity2;
+import com.campusconnect.cc_reboot.POJO.Example;
 import com.campusconnect.cc_reboot.POJO.ModelAddCourse;
+import com.campusconnect.cc_reboot.POJO.ModelBranchList;
 import com.campusconnect.cc_reboot.POJO.MyApi;
 import com.campusconnect.cc_reboot.R;
 import com.campusconnect.cc_reboot.adapter.CourseColorsListAdapter;
+import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -70,7 +78,7 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
 
     @Bind(R.id.view_course_color_picker)
     View courseColorPicker;
-    ColorPickerDialog colorPickerDialog;
+    public static ColorPickerDialog colorPickerDialog;
 
     @Bind(R.id.et_courseName)
     EditText courseName;
@@ -85,7 +93,7 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
     @Bind(R.id.et_courseSection)
     EditText courseSection;
     @Bind(R.id.et_courseBranch)
-    EditText courseBranch;
+    AutoCompleteTextView courseBranch;
 
     @Bind(R.id.tb_monday)
     ToggleButton tbMonday;
@@ -104,6 +112,8 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
 
     @Bind(R.id.chk_elective)
     CheckBox elective;
+    @Bind(R.id.chk_branches)
+    CheckBox branches;
 
     ArrayList<ToggleButton> days = new ArrayList<>();
     String[] daysOfTheWeek = {"Mon","Tue","Wed","Thu","Fri","Sat"};
@@ -126,12 +136,51 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
         View v = inflater.inflate(R.layout.fragment_add_course, container, false);
         ButterKnife.bind(this, v);
 
+        Retrofit retrofit = new Retrofit.
+                Builder()
+                .baseUrl(MyApi.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        MyApi myApi = retrofit.create(MyApi.class);
+        Call<ModelBranchList> call;
+
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("CC", Context.MODE_PRIVATE);
         String branchName = sharedPreferences.getString("branchName", "");
         String batchName = sharedPreferences.getString("batchName", "");
         String sectionName = sharedPreferences.getString("sectionName", "");
         profileId = sharedPreferences.getString("profileId", "");
         collegeId = sharedPreferences.getString("collegeId", "");
+        call = myApi.getBranches(collegeId);
+        call.enqueue(new Callback<ModelBranchList>() {
+            @Override
+            public void onResponse(Call<ModelBranchList> call, Response<ModelBranchList> response) {
+                final ModelBranchList modelBranchList = response.body();
+                if (modelBranchList != null) {
+                    courseBranch.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, modelBranchList.getBranchList()));
+                    branches.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            if (isChecked) {
+                                String temp = "";
+                                for (String branch : modelBranchList.getBranchList()) {
+                                    temp += branch + ",";
+                                }
+                                temp = temp.substring(0, temp.lastIndexOf(","));
+                                courseBranch.setText(temp);
+                            } else {
+                                courseBranch.setText("");
+                            }
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ModelBranchList> call, Throwable t) {
+
+            }
+
+        });
         courseBranch.setText(branchName);
         courseBatch.setText(batchName);
         courseSection.setText(sectionName);
@@ -168,6 +217,7 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
                                 } else {
                                     startTime.setText(hourOfDay + ":" + minute);
                                 }
+                                if(hourOfDay <12) startTime.setText("0"+startTime.getText().toString());
 
 
                             }
@@ -177,6 +227,7 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                                 if (hourOfDay > Integer.parseInt(startTime.getText().toString().split(":")[0])) {
                                     if (minute < 10) endTime.setText(hourOfDay + ":0" + minute);
+                                    if(hourOfDay <12) endTime.setText("0"+endTime.getText().toString());
                                     else {
                                         endTime.setText(hourOfDay + ":" + minute);
                                     }
@@ -184,7 +235,7 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
                                     Toast.makeText(getActivity(), "Please Select a Valid Time", Toast.LENGTH_SHORT).show();
                                 }
                             }
-                        }, 8, 00, false);
+                        }, 9, 00, false);
                         startTime.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -219,13 +270,26 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
 
         return v;
     }
+
     void finish()
     {
-        getActivity().onBackPressed();
+        FragmentManager manager = getFragmentManager();
+        FragmentTransaction trans = manager.beginTransaction();
+        trans.remove(FragmentAddCourse.this).commit();
+        HomeActivity2.home_title.setText("Home");
     }
+
+
 
     void create()
     {
+        if(courseName.getText().toString().equals("")){courseName.setError("Enter Course Name");courseName.requestFocus();return;}
+        if(courseCode.getText().toString().equals("")){courseCode.setError("Enter Course Code");courseCode.requestFocus();return;}
+        if(courseProf.getText().toString().equals("")){courseProf.setError("Enter Course Professor");courseProf.requestFocus();return;}
+        if(courseSem.getText().toString().equals("")){courseSem.setError("Enter Semester");courseSem.requestFocus();return;}
+        if(courseBatch.getText().toString().equals("")){courseBatch.setError("Enter Batch");courseBatch.requestFocus();return;}
+        if(courseBranch.getText().toString().equals("")){courseBranch.setError("Enter Branch");courseBranch.requestFocus();return;}
+        if(days_selected.size()==0){Toast.makeText(getActivity(),"Select appropriate times for this course",Toast.LENGTH_SHORT).show();return;}
         Retrofit retrofit = new Retrofit.
                 Builder()
                 .baseUrl(MyApi.BASE_URL)
@@ -267,6 +331,9 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
             endTimes.add(((EditText)days_selected.get(temp1).findViewById(R.id.et_endTime)).getText().toString());
         }
         MyApi myApi = retrofit.create(MyApi.class);
+        int e;
+        if(elective.isChecked()) e=1;
+        else e=0;
         MyApi.addCourseRequest body = new MyApi.addCourseRequest(
                 profileId, collegeId,
                 courseName.getText().toString(),
@@ -279,7 +346,8 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
                 dates.subList(0,dates.size()),
                 startTimes.subList(0,startTimes.size()),
                 endTimes.subList(0,endTimes.size()),
-                "RED"
+                ((ColorDrawable)courseColorPicker.getBackground()).getColor()+"",
+                e+""
                 );
 
         Call<ModelAddCourse> call = myApi.addCourse(body);
@@ -292,6 +360,7 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
                 finish();
                 Intent intent = new Intent(getActivity(), CoursePageActivity.class);
                 intent.putExtra("courseId",courseId);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
 

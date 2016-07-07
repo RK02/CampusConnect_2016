@@ -47,7 +47,7 @@ public class BookmarkedNotesListAdapter extends
     }
 
     @Override
-    public void onBindViewHolder(BookmarkedNotesListViewHolder notesListViewHolder, int i) {
+    public void onBindViewHolder(BookmarkedNotesListViewHolder notesListViewHolder, final int i) {
         notesListViewHolder.note_name.setText(mNotes.get(i).getCourseName());
         notesListViewHolder.note_pages_count.setText(mNotes.get(i).getPages());
         notesListViewHolder.note_views.setText(mNotes.get(i).getViews());
@@ -78,16 +78,19 @@ public class BookmarkedNotesListAdapter extends
         else notesListViewHolder.note_posted_on.setText(hours + " hours ago");}}
         else {if(days==1)notesListViewHolder.note_posted_on.setText(days + " day ago");
         else notesListViewHolder.note_posted_on.setText(days + " days ago");}
-    }
 
-    public String getNoteBookId(String noteBookName)
-    {
-        for(NoteBookList s : mNotes)
-        {
-            if(s.getCourseName().equalsIgnoreCase(noteBookName))
-                return s.getNoteBookId();
-        }
-        return null;
+
+
+        notesListViewHolder.notes_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent_temp = new Intent(v.getContext(), NotePageActivity.class);
+                intent_temp.putExtra("noteBookId",mNotes.get(i).getNoteBookId());
+                context.startActivity(intent_temp);
+            }
+        });
+
+
     }
 
     @Override
@@ -129,16 +132,7 @@ public class BookmarkedNotesListAdapter extends
             super(v);
             ButterKnife.bind(this,v);
 
-            notes_card.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent_temp = new Intent(v.getContext(), NotePageActivity.class);
-                    ViewGroup group = (ViewGroup) v.getParent();
-                    int index = group.indexOfChild(v);
-                    intent_temp.putExtra("noteBookId",mNotes.get(index).getNoteBookId());
-                    context.startActivity(intent_temp);
-                }
-            });
+
 
         }
     }
