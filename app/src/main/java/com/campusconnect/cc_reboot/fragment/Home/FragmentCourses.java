@@ -1,6 +1,8 @@
 package com.campusconnect.cc_reboot.fragment.Home;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.campusconnect.cc_reboot.HomeActivity;
 import com.campusconnect.cc_reboot.POJO.*;
@@ -51,8 +54,11 @@ public class FragmentCourses extends Fragment{
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build();
-    MyApi myApi = retrofit.create(MyApi.class);
+    MyApi myApi;
     Call<Example> call;
+    ConnectivityManager cm;
+    NetworkInfo activeNetwork;
+    boolean isConnected;
     public static final String BASE_URL = "https://uploadnotes-2016.appspot.com/_ah/api/notesapi/v1/";
     public static final String uploadURL = "https://uploadnotes-2016.appspot.com/img";
     public static final String django = "https://campusconnect-2016.herokuapp.com";
@@ -63,6 +69,9 @@ public class FragmentCourses extends Fragment{
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_courses, container, false);
+        SubscribedCourseList a = new SubscribedCourseList();
+        a.save();a.delete();
+        myApi = retrofit.create(MyApi.class);
         swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swiperefresh);
         swipeRefreshLayout.offsetTopAndBottom(100);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -83,35 +92,42 @@ public class FragmentCourses extends Fragment{
         course_list.setLayoutManager(mLayoutManager);
         course_list.setItemAnimator(new DefaultItemAnimator());
         course_list.setAdapter(mCourseAdapter);
-
-
         call= myApi.getFeed(getActivity().getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""));
-        call.enqueue(new Callback<Example>() {
-            @Override
-            public void onResponse(Call<Example> call, Response<Example> response) {
-                Log.i("sw32",""+response.code());
-                Example example = response.body();
-                if(example!=null) {
-                    mCourseAdapter.clear();
-                    profileName = example.getProfileName();
-                    profilePoints = example.getPoints();
-                    List<AvailableCourseList> availableCourseList = example.getAvailableCourseList();
-                    List<SubscribedCourseList> subscribedCourseList = example.getSubscribedCourseList();
-                    for (SubscribedCourseList x : subscribedCourseList) {
-                        courseNames.add(x.getCourseName());
-                        courseIds.add(x.getCourseId());
-                        mCourseAdapter.add(x);
-                        x.save();
-                        FirebaseMessaging.getInstance().subscribeToTopic(x.getCourseId());
+        cm = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        activeNetwork =  cm.getActiveNetworkInfo();
+        isConnected= activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        if(isConnected) {
+            call.enqueue(new Callback<Example>() {
+                @Override
+                public void onResponse(Call<Example> call, Response<Example> response) {
+                    Log.i("sw32", "" + response.code());
+                    Example example = response.body();
+                    if (example != null) {
+                        mCourseAdapter.clear();
+                        profileName = example.getProfileName();
+                        profilePoints = example.getPoints();
+                        Log.i("sw32","calloncreate");
+                        List<AvailableCourseList> availableCourseList = example.getAvailableCourseList();
+                        List<SubscribedCourseList> subscribedCourseList = example.getSubscribedCourseList();
+                        for (SubscribedCourseList x : subscribedCourseList) {
+                            courseNames.add(x.getCourseName());
+                            courseIds.add(x.getCourseId());
+                            mCourseAdapter.add(x);
+                            x.save();
+                            FirebaseMessaging.getInstance().subscribeToTopic(x.getCourseId());
+                        }
+                        swipeRefreshLayout.setRefreshing(false);
                     }
-                    swipeRefreshLayout.setRefreshing(false);
+
                 }
 
-            }
-            @Override
-            public void onFailure(Call<Example> call, Throwable t) {
-            }
-        });
+                @Override
+                public void onFailure(Call<Example> call, Throwable t) {
+                }
+            });
+        }else{
+            Toast.makeText(getActivity(),"Check your connection and try again",Toast.LENGTH_SHORT).show();
+        }
 
         return v;
     }
@@ -119,6 +135,10 @@ public class FragmentCourses extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
+        cm = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        activeNetwork = cm.getActiveNetworkInfo();
+        isConnected= activeNetwork != null && activeNetwork.isConnected();
+
         List<SubscribedCourseList> aa = SubscribedCourseList.listAll(SubscribedCourseList.class);
         if(aa.size() > courseIds.size())
         {
@@ -141,6 +161,11 @@ public class FragmentCourses extends Fragment{
     }
 
     void refreshPage(){
+        cm = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        activeNetwork = cm.getActiveNetworkInfo();
+        isConnected= activeNetwork != null && activeNetwork.isConnected();
+        Log.i("sw32","callonrefresh");
+        if(isConnected){
         courseNames.clear();
         courseIds.clear();
         mCourseAdapter.clear();
@@ -173,5 +198,10 @@ public class FragmentCourses extends Fragment{
             }
         });
 
+    }else
+        {
+            Toast.makeText(getActivity(),"Check your connection and try again",Toast.LENGTH_SHORT).show();
+            swipeRefreshLayout.setRefreshing(false);
+        }
     }
 }

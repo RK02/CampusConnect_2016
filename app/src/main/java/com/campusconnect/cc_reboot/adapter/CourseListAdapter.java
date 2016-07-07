@@ -3,6 +3,8 @@ package com.campusconnect.cc_reboot.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.campusconnect.cc_reboot.CoursePageActivity;
 import com.campusconnect.cc_reboot.POJO.SubscribedCourseList;
@@ -33,6 +36,9 @@ public class CourseListAdapter extends
         RecyclerView.Adapter<CourseListAdapter.CourseListViewHolder> {
 
     Context context;
+    ConnectivityManager cm;
+    NetworkInfo activeNetwork;
+    boolean isConnected;
 
     private ArrayList<SubscribedCourseList> mCourses;
 
@@ -110,44 +116,77 @@ public class CourseListAdapter extends
         courseListViewHolder.course_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
-                String id = mCourses.get(i).getCourseId();
-                intent_temp.putExtra("courseId",id);
-                intent_temp.putExtra("courseColor",color);
-                context.startActivity(intent_temp);
+                cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                activeNetwork =  cm.getActiveNetworkInfo();
+                isConnected= activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+                if(isConnected) {
+                    Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
+                    String id = mCourses.get(i).getCourseId();
+                    intent_temp.putExtra("courseId", id);
+                    intent_temp.putExtra("courseColor", color);
+                    context.startActivity(intent_temp);
+                }
+                else
+                {
+                    Toast.makeText(context,"Check your connection",Toast.LENGTH_SHORT).show();
+                }
             }
         });
         courseListViewHolder.notes_count_container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
-                intent_temp.putExtra("TAB",0);
-                String id = mCourses.get(i).getCourseId();
-                intent_temp.putExtra("courseId",id);
-                intent_temp.putExtra("courseColor",color);
-                context.startActivity(intent_temp);
+                cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                activeNetwork =  cm.getActiveNetworkInfo();
+                isConnected= activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+                if(isConnected) {
+                    Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
+                    intent_temp.putExtra("TAB", 0);
+                    String id = mCourses.get(i).getCourseId();
+                    intent_temp.putExtra("courseId", id);
+                    intent_temp.putExtra("courseColor", color);
+                    context.startActivity(intent_temp);
+                } else
+                {
+                    Toast.makeText(context,"Check your connection",Toast.LENGTH_SHORT).show();
+                }
             }
         });
         courseListViewHolder.assignments_count_container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
-                intent_temp.putExtra("TAB",1);
-                String id = mCourses.get(i).getCourseId();
-                intent_temp.putExtra("courseId",id);
-                intent_temp.putExtra("courseColor",color);
-                context.startActivity(intent_temp);
+                cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                activeNetwork =  cm.getActiveNetworkInfo();
+                isConnected= activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+                if(isConnected) {
+                    Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
+                    intent_temp.putExtra("TAB", 1);
+                    String id = mCourses.get(i).getCourseId();
+                    intent_temp.putExtra("courseId", id);
+                    intent_temp.putExtra("courseColor", color);
+                    context.startActivity(intent_temp);
+                } else
+                {
+                    Toast.makeText(context,"Check your connection",Toast.LENGTH_SHORT).show();
+                }
             }
         });
         courseListViewHolder.exams_count_container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
-                intent_temp.putExtra("TAB",2);
-                String id = mCourses.get(i).getCourseId();
-                intent_temp.putExtra("courseId",id);
-                intent_temp.putExtra("courseColor",color);
-                context.startActivity(intent_temp);
+                cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                activeNetwork =  cm.getActiveNetworkInfo();
+                isConnected= activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+                if(isConnected) {
+                    Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
+                    intent_temp.putExtra("TAB", 2);
+                    String id = mCourses.get(i).getCourseId();
+                    intent_temp.putExtra("courseId", id);
+                    intent_temp.putExtra("courseColor", color);
+                    context.startActivity(intent_temp);
+                } else
+                {
+                    Toast.makeText(context,"Check your connection",Toast.LENGTH_SHORT).show();
+                }
 
             }
         });

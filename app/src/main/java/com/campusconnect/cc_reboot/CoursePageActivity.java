@@ -109,6 +109,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
 
         course_info_container.setBackgroundColor(courseColor);
 
+
         course_pager = (ViewPager) findViewById(R.id.pager_course);
         course_tabs = (SlidingTabLayout_home) findViewById(R.id.tabs_course);
         course_adapter = new ViewPagerAdapter_course(getSupportFragmentManager(), Titles, Numboftabs, courseColor, this);

@@ -10,6 +10,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.app.Activity;
 import android.app.Dialog;
@@ -219,10 +221,16 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
 
         return v;
     }
+
     void finish()
     {
-        getActivity().onBackPressed();
+        FragmentManager manager = getFragmentManager();
+        FragmentTransaction trans = manager.beginTransaction();
+        trans.remove(FragmentAddCourse.this).commit();
+        HomeActivity2.home_title.setText("Home");
     }
+
+
 
     void create()
     {
