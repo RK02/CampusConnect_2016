@@ -154,32 +154,31 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
             @Override
             public void onResponse(Call<ModelBranchList> call, Response<ModelBranchList> response) {
                 final ModelBranchList modelBranchList = response.body();
-                courseBranch.setAdapter(new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1, modelBranchList.getBranchList()));
-                branches.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if(isChecked)
-                        {
-                            String temp="";
-                            for(String branch: modelBranchList.getBranchList())
-                            {
-                                temp += branch+",";
+                if (modelBranchList != null) {
+                    courseBranch.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, modelBranchList.getBranchList()));
+                    branches.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            if (isChecked) {
+                                String temp = "";
+                                for (String branch : modelBranchList.getBranchList()) {
+                                    temp += branch + ",";
+                                }
+                                temp = temp.substring(0, temp.lastIndexOf(","));
+                                courseBranch.setText(temp);
+                            } else {
+                                courseBranch.setText("");
                             }
-                            temp = temp.substring(0,temp.lastIndexOf(","));
-                            courseBranch.setText(temp);
                         }
-                        else
-                        {
-                          courseBranch.setText("");
-                        }
-                    }
-                });
+                    });
+                }
             }
 
             @Override
             public void onFailure(Call<ModelBranchList> call, Throwable t) {
 
             }
+
         });
         courseBranch.setText(branchName);
         courseBatch.setText(batchName);
@@ -217,6 +216,7 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
                                 } else {
                                     startTime.setText(hourOfDay + ":" + minute);
                                 }
+                                if(hourOfDay <12) startTime.setText("0"+startTime.getText().toString());
 
 
                             }
@@ -226,6 +226,7 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                                 if (hourOfDay > Integer.parseInt(startTime.getText().toString().split(":")[0])) {
                                     if (minute < 10) endTime.setText(hourOfDay + ":0" + minute);
+                                    if(hourOfDay <12) endTime.setText("0"+endTime.getText().toString());
                                     else {
                                         endTime.setText(hourOfDay + ":" + minute);
                                     }

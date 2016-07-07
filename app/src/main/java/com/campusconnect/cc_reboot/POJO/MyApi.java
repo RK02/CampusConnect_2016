@@ -28,7 +28,7 @@ public interface MyApi {
     @GET("feed/ahJzfnVwbG9hZG5vdGVzLTIwMTZyFAsSB1Byb2ZpbGUYgICAgLyhggoM/")
     Call<Example> getFeed(@Query("profileId") String profileId);
 
-    @GET("branchList")
+    @GET("branchList/ahJzfnVwbG9hZG5vdGVzLTIwMTZyFAsSB0NvbGxlZ2UYgICAgKKqkQoM")
     Call<ModelBranchList> getBranches(@Query("collegeId") String collegeId);
 
     @POST("coursePage")
