@@ -226,6 +226,7 @@ public interface MyApi {
                 this.professorName = professorName;
                 this.date = date;
                 this.colour = colour;
+                this.elective = elective;
         }
 
 

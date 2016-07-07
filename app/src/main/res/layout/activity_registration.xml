@@ -35,21 +35,23 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <android.support.design.widget.TextInputLayout
+                <TextView
+                    android:id="@+id/tv_placeholder_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp">
+                    android:text="Hi! What's your name?"
+                    android:textColor="@color/ColorTextInfo"
+                    android:textSize="14sp" />
+
                 <EditText
                     android:id="@+id/et_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:background="@drawable/edittext_rounded"
-                    android:paddingTop="10dp"
+                    android:padding="4dp"
                     android:textColor="@color/ColorTextInfo"
-                    android:textSize="18sp"
-                    android:hint="Hi! What's your name?"/>
-                </android.support.design.widget.TextInputLayout>
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -83,23 +85,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/container_et_profile_picture"
+                android:layout_marginTop="16dp"
                 android:orientation="vertical">
-                <android.support.design.widget.TextInputLayout
+
+                <TextView
+                    android:id="@+id/tv_placeholder_college_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:paddingTop="10dp">
+                    android:text="Which college do you go to?"
+                    android:textColor="@color/ColorTextInfo"
+                    android:textSize="14sp" />
+
+
+
                 <AutoCompleteTextView
                     android:id="@+id/et_college_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:background="@drawable/edittext_rounded"
-                    android:paddingTop="10dp"
+                    android:padding="4dp"
                     android:textColor="@color/ColorTextInfo"
-                    android:hint="Which college do you go to?"
-                    android:textSize="16sp" />
-                </android.support.design.widget.TextInputLayout>
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -110,25 +117,23 @@
                 android:layout_marginTop="16dp"
                 android:orientation="vertical">
 
-
-                <android.support.design.widget.TextInputLayout
+                <TextView
+                    android:id="@+id/tv_placeholder_batch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:paddingTop="10dp">
+                    android:text="Which batch are you part of?"
+                    android:textColor="@color/ColorTextInfo"
+                    android:textSize="14sp" />
+
                 <EditText
                     android:id="@+id/et_batch"
-                    android:hint="Which batch are you part of?"
-                    android:textColorHint="@color/ColorTextInfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:background="@drawable/edittext_rounded"
-                    android:paddingTop="10dp"
+                    android:padding="4dp"
                     android:textColor="@color/ColorTextInfo"
-                    android:textSize="16sp"
-                    android:inputType="numberDecimal" />
-                </android.support.design.widget.TextInputLayout>
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -189,6 +194,7 @@
         </RelativeLayout>
 
     </ScrollView>
+
     <Button
         android:id="@+id/b_continue_to_course_selection"
         android:layout_width="match_parent"
@@ -202,7 +208,6 @@
         android:text="CONTINUE"
         android:textColor="@color/ColorTextHeading"
         android:textSize="18sp" />
-
 
 
 </RelativeLayout>

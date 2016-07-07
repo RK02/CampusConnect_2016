@@ -295,7 +295,10 @@ public class RegistrationPageActivity extends AppCompatActivity{
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
+            if(profileName.getText().toString().equals("")){profileName.setError("Enter Name");profileName.requestFocus();return;}
+            if(collegeName.getText().toString().equals("")){collegeName.setError("Enter College Name");collegeName.requestFocus();return;}
+            if(batchName.getText().toString().equals("")){batchName.setError("Enter Batch Name");batchName.requestFocus();return;}
+            if(branchName.getText().toString().equals("")){branchName.setError("Enter Branch Name");branchName.requestFocus();return;}
             progressDialog = new ProgressDialog(RegistrationPageActivity.this);
             progressDialog.show();
         }
