@@ -1,6 +1,7 @@
 package com.campusconnect.cc_reboot.fragment.Home;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -49,6 +50,7 @@ public class FragmentCourses extends Fragment{
     CourseListAdapter mCourseAdapter;
     LinearLayoutManager mLayoutManager;
     SwipeRefreshLayout swipeRefreshLayout;
+    LinearLayout cell_container;
     Retrofit retrofit = new Retrofit.
             Builder()
             .baseUrl(BASE_URL)
@@ -66,6 +68,7 @@ public class FragmentCourses extends Fragment{
     public static  String profilePoints = "";
     public static ArrayList<String> courseNames;
     public static ArrayList<String> courseIds;
+
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_courses, container, false);
@@ -114,6 +117,16 @@ public class FragmentCourses extends Fragment{
                             courseIds.add(x.getCourseId());
                             mCourseAdapter.add(x);
                             x.save();
+                            int i = x.getDate().size()-1;
+                            while(i>=0) {
+                                View cell = LayoutInflater.from(getContext()).inflate(R.layout.timetable_cell_layout, cell_container, false);
+                                cell_container = (LinearLayout) FragmentTimetable.v.findViewById(Integer.parseInt(x.getDate().get(i) + "" + (Integer.parseInt(x.getStartTime().get(i).substring(0, 2)) - 6)));
+                                cell_container.setBackgroundColor(Color.parseColor(x.getColour()));
+                                ((TextView)cell.findViewById(R.id.cellText)).setText(x.getCourseName());
+                                cell_container.removeAllViews();
+                                cell_container.addView(cell);
+                                i--;
+                            }
                             FirebaseMessaging.getInstance().subscribeToTopic(x.getCourseId());
                         }
                         swipeRefreshLayout.setRefreshing(false);
@@ -146,7 +159,6 @@ public class FragmentCourses extends Fragment{
             courseIds.clear();
             mCourseAdapter.clear();
             for (SubscribedCourseList x : aa) {
-
                 courseNames.add(x.getCourseName());
                 courseIds.add(x.getCourseId());
                 mCourseAdapter.add(x);
@@ -164,6 +176,7 @@ public class FragmentCourses extends Fragment{
         cm = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         activeNetwork = cm.getActiveNetworkInfo();
         isConnected= activeNetwork != null && activeNetwork.isConnected();
+        //clearTimetable();
         Log.i("sw32","callonrefresh");
         if(isConnected){
         courseNames.clear();
@@ -182,11 +195,20 @@ public class FragmentCourses extends Fragment{
                     List<AvailableCourseList> availableCourseList = example.getAvailableCourseList();
                     List<SubscribedCourseList> subscribedCourseList = example.getSubscribedCourseList();
                     for (SubscribedCourseList x : subscribedCourseList) {
-
                         courseNames.add(x.getCourseName());
                         courseIds.add(x.getCourseId());
                         mCourseAdapter.add(x);
                         x.save();
+                        int i = x.getDate().size()-1;
+                        while(i>=0) {
+                            View cell = LayoutInflater.from(getContext()).inflate(R.layout.timetable_cell_layout, cell_container, false);
+                            cell_container = (LinearLayout) FragmentTimetable.v.findViewById(Integer.parseInt(x.getDate().get(i) + "" + (Integer.parseInt(x.getStartTime().get(i).substring(0, 2)) - 6)));
+                            cell_container.setBackgroundColor(Color.parseColor(x.getColour()));
+                            ((TextView)cell.findViewById(R.id.cellText)).setText(x.getCourseName());
+                            cell_container.removeAllViews();
+                            cell_container.addView(cell);
+                            i--;
+                        }
                         FirebaseMessaging.getInstance().subscribeToTopic(x.getCourseId());
                     }
                     swipeRefreshLayout.setRefreshing(false);
@@ -203,5 +225,10 @@ public class FragmentCourses extends Fragment{
             Toast.makeText(getActivity(),"Check your connection and try again",Toast.LENGTH_SHORT).show();
             swipeRefreshLayout.setRefreshing(false);
         }
+    }
+
+    void clearTimetable()
+    {
+        ((ViewGroup)FragmentTimetable.v).removeAllViews();
     }
 }

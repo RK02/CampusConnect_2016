@@ -234,6 +234,14 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
 
     void create()
     {
+        if(courseName.getText().toString()==null){courseName.setError("Enter Course Name");return;}
+        if(courseCode.getText().toString()==null){courseCode.setError("Enter Course Code");return;}
+        if(courseProf.getText().toString()==null){courseProf.setError("Enter Course Professor");return;}
+        if(courseSem.getText().toString()==null){courseSem.setError("Enter Semester");return;}
+        if(courseBatch.getText().toString()==null){courseBatch.setError("Enter Batch");return;}
+        if(courseBranch.getText().toString()==null){courseBranch.setError("Enter Branch");return;}
+        if(days_selected.size()==0){Toast.makeText(getActivity(),"Select appropriate times for this course",Toast.LENGTH_SHORT).show();return;}
+
         Retrofit retrofit = new Retrofit.
                 Builder()
                 .baseUrl(MyApi.BASE_URL)
@@ -300,6 +308,7 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
                 finish();
                 Intent intent = new Intent(getActivity(), CoursePageActivity.class);
                 intent.putExtra("courseId",courseId);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
 
