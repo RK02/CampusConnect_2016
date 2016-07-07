@@ -1,6 +1,7 @@
 package com.campusconnect.cc_reboot.fragment.Drawer;
 
 import android.content.DialogInterface;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.Fragment;
 
 import android.app.TimePickerDialog;
@@ -234,7 +235,7 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
                                     Toast.makeText(getActivity(), "Please Select a Valid Time", Toast.LENGTH_SHORT).show();
                                 }
                             }
-                        }, 8, 00, false);
+                        }, 9, 00, false);
                         startTime.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -345,7 +346,7 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
                 dates.subList(0,dates.size()),
                 startTimes.subList(0,startTimes.size()),
                 endTimes.subList(0,endTimes.size()),
-                courseColorPicker.getSolidColor()+"",
+                ((ColorDrawable)courseColorPicker.getBackground()).getColor()+"",
                 e+""
                 );
 
