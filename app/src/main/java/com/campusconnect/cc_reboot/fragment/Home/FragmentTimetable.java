@@ -105,12 +105,6 @@ public class FragmentTimetable extends Fragment implements ScrollViewListener{
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-
-    }
-
     public void setUpTable(){
         for(int i=1;i<=6;i++)
             for(int j=1;j<=11;j++){

@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.campusconnect.cc_reboot.HomeActivity;
+import com.campusconnect.cc_reboot.HomeActivity2;
 import com.campusconnect.cc_reboot.POJO.*;
 
 import com.campusconnect.cc_reboot.R;
@@ -70,7 +71,7 @@ public class FragmentCourses extends Fragment{
     public static ArrayList<String> courseIds;
 
     @Override
-    public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_courses, container, false);
         SubscribedCourseList a = new SubscribedCourseList();
         a.save();a.delete();
@@ -121,6 +122,7 @@ public class FragmentCourses extends Fragment{
                             mCourseAdapter.add(x);
                             x.save();
                             int i = x.getDate().size()-1;
+                            //new FragmentTimetable();
                             while(i>=0) {
                                 View cell = LayoutInflater.from(getContext()).inflate(R.layout.timetable_cell_layout, cell_container, false);
                                 cell_container = (LinearLayout) FragmentTimetable.v.findViewById(Integer.parseInt(x.getDate().get(i) + "" + (Integer.parseInt(x.getStartTime().get(i).substring(0, 2)) - 6)));

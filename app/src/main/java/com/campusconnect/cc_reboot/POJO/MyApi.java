@@ -49,17 +49,15 @@ public interface MyApi {
     class editProfileRequest{
         private String profileId;
         private String profileName;
-        private String collegeId;
         private String batchName;
         private String branchName;
         private String sectionName;
         private String photoUrl;
-        public editProfileRequest(String profileId, String profileName, String collegeId, String batchName, String branchName, String sectionName, String photoUrl)
+        public editProfileRequest(String profileId, String profileName,String batchName, String branchName, String sectionName, String photoUrl)
         {
 
             this.profileId = profileId;
             this.profileName = profileName;
-            this.collegeId = collegeId;
             this.batchName = batchName;
             this.branchName = branchName;
             this.sectionName = sectionName;

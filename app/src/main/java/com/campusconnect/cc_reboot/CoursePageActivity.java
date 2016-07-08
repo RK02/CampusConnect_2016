@@ -16,11 +16,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
 import com.campusconnect.cc_reboot.slidingtab.SlidingTabLayout_home;
 import com.campusconnect.cc_reboot.viewpager.ViewPagerAdapter_course;
 import com.campusconnect.cc_reboot.POJO.*;
@@ -157,6 +157,12 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
         search_button.setOnClickListener(this);
         notification_button.setOnClickListener(this);
         subscribe_button.setOnClickListener(this);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
     }
 

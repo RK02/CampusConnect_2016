@@ -98,8 +98,9 @@ public class EditProfileActivity extends AppCompatActivity {
         branchName.setText(getSharedPreferences("CC",MODE_PRIVATE).getString("branchName",""));
         batchName.setText(getSharedPreferences("CC",MODE_PRIVATE).getString("batchName",""));
         sectionName.setText(getSharedPreferences("CC",MODE_PRIVATE).getString("sectionName",""));
-
+        collegeName.setFocusable(false);
         profileName.setText(personName);
+        profileName.setFocusable(false);
         Picasso.with(EditProfileActivity.this)
                 .load(personPhoto)
                 .fit()
@@ -158,6 +159,7 @@ public class EditProfileActivity extends AppCompatActivity {
     }
     public void SignUp()
     {
+
         Retrofit retrofit = new Retrofit.
                 Builder()
                 .baseUrl(FragmentCourses.BASE_URL)
@@ -166,17 +168,29 @@ public class EditProfileActivity extends AppCompatActivity {
         MyApi myApi = retrofit.create(MyApi.class);
 
         MyApi.editProfileRequest request;
-        request= new MyApi.editProfileRequest(profileId,profileName.getText().toString(),collegeId,batchName.getText().toString(),branchName.getText().toString(),sectionName.getText().toString(),personPhoto);
+        request= new MyApi.editProfileRequest(getSharedPreferences("CC",MODE_PRIVATE).getString("profileId",""),
+                profileName.getText().toString(),
+                batchName.getText().toString(),
+                branchName.getText().toString(),
+                sectionName.getText().toString(),
+                personPhoto);
+
+
+
         Call<ModelEditProfile> call = myApi.editProfile(request);
         call.enqueue(new Callback<ModelEditProfile>() {
             @Override
             public void onResponse(Call<ModelEditProfile> call, Response<ModelEditProfile> response) {
-                new mobile_register().execute(personId,profileId,batchName.getText().toString(),branchName.getText().toString(),sectionName.getText().toString(),collegeName.getText().toString());
+//                new mobile_register().execute(personId,
+//                        profileId,
+//                        batchName.getText().toString(),
+//                        branchName.getText().toString(),
+//                        sectionName.getText().toString(),
+//                        collegeName.getText().toString());
                 Toast.makeText(EditProfileActivity.this,"Success!",Toast.LENGTH_SHORT).show();
                 SharedPreferences sharedPreferences = getSharedPreferences("CC",MODE_PRIVATE);
                 sharedPreferences
                         .edit()
-                        .putString("profileId",profileId)
                         .putString("collegeId",collegeId)
                         .putString("personId",personId)
                         .putString("collegeName",collegeName.getText().toString())

@@ -346,7 +346,7 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
                 dates.subList(0,dates.size()),
                 startTimes.subList(0,startTimes.size()),
                 endTimes.subList(0,endTimes.size()),
-                ((ColorDrawable)courseColorPicker.getBackground()).getColor()+"",
+                String.format("#%06X", (0xFFFFFF & courseColorPicker.getSolidColor())),
                 e+""
                 );
 
