@@ -68,7 +68,6 @@ public class GoogleSignInActivity extends BaseActivity implements
 
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
-    int signInResult;
 
     // [START declare_auth]
     private FirebaseAuth mAuth;
@@ -171,7 +170,7 @@ public class GoogleSignInActivity extends BaseActivity implements
 
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount acct = result.getSignInAccount();
-                if (firebaseAuthWithGoogle(acct) == 1) {
+                firebaseAuthWithGoogle(acct);
                     personName = acct.getDisplayName();
                     personEmail = acct.getEmail();
                     personId = acct.getId();
@@ -186,7 +185,7 @@ public class GoogleSignInActivity extends BaseActivity implements
                     } else {
                         new register_mobile().execute(personId);
                     }
-                }
+
             }else {
                 // Google Sign In failed, update UI appropriately
                 // [START_EXCLUDE]
@@ -198,7 +197,7 @@ public class GoogleSignInActivity extends BaseActivity implements
     // [END onactivityresult]
 
     // [START auth_with_google]
-    private int firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
         // [START_EXCLUDE silent]
         showProgressDialog();
@@ -219,11 +218,8 @@ public class GoogleSignInActivity extends BaseActivity implements
                             Log.w(TAG, "signInWithCredential", task.getException());
                             Toast.makeText(GoogleSignInActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            signInResult=0;
                         }
-                        else {
-                            signInResult=1;
-                        }
+
 
 
 
@@ -232,7 +228,6 @@ public class GoogleSignInActivity extends BaseActivity implements
                         // [END_EXCLUDE]
                     }
                 });
-        return signInResult;
     }
     // [END auth_with_google]
 

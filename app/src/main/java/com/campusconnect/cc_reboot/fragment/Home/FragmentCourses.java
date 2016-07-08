@@ -90,6 +90,7 @@ public class FragmentCourses extends Fragment{
         course_list = (RecyclerView) v.findViewById (R.id.rv_courses);
         final ArrayList<SubscribedCourseList> courses = new ArrayList<>();
         //Setting the recyclerView
+
         mLayoutManager = new LinearLayoutManager(v.getContext());
         mCourseAdapter = new CourseListAdapter(v.getContext(),courses);
         course_list.setLayoutManager(mLayoutManager);

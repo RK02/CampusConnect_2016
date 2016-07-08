@@ -1,5 +1,7 @@
 package com.campusconnect.cc_reboot;
 
+import android.*;
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -8,6 +10,7 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,7 +21,9 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -76,6 +81,8 @@ public class UploadPicturesActivity extends AppCompatActivity {
 
     public static float width;
     public static float height;
+    final int READ_EXTERNAL=69;
+    final int WRITE_EXTERNAL=70;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +92,39 @@ public class UploadPicturesActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         urls = new ArrayList<>();
         uris = new ArrayList<>();
+        if (Build.VERSION.SDK_INT >= 23) {
+            //do your check here
+            if (ContextCompat.checkSelfPermission(this,Manifest.permission.READ_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                Log.v("sw32perm","Permission is granted");
+            }
+            else
+            {
+                Log.i("sw32perm","not granted");
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                } else {
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            READ_EXTERNAL);
+                }
+            }
+            if (ContextCompat.checkSelfPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                Log.v("sw32perm","Permission is granted");
+            }
+            else
+            {
+                Log.i("sw32perm","not granted");
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                } else {
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            WRITE_EXTERNAL);
+                }
+            }
+        }
 
         final ViewTreeObserver observer= for_measure.getViewTreeObserver();
         observer.addOnGlobalLayoutListener(
@@ -200,6 +240,44 @@ public class UploadPicturesActivity extends AppCompatActivity {
             startActivityForResult(takePictureIntent, REQUEST_CAMERA,data);
         }
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case READ_EXTERNAL: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+            case WRITE_EXTERNAL:{
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -239,7 +317,7 @@ public class UploadPicturesActivity extends AppCompatActivity {
     private void onCaptureImageResult(Intent data) {
         File imgFile = new File(pictureImagePath);
         urls.add(pictureImagePath);
-        uris.add(imgFile.toURI().toString());
+        uris.add(Uri.fromFile(imgFile).toString());
         imageAdapter.notifyDataSetChanged();
 
     }
@@ -251,7 +329,7 @@ public class UploadPicturesActivity extends AppCompatActivity {
             try {
                 Uri path =  data.getData();
                 urls.add(getFilePath(UploadPicturesActivity.this,path));
-                uris.add(uris.toString());
+                uris.add(path.toString());
                 imageAdapter.notifyDataSetChanged();
             } catch (URISyntaxException e) {
                 e.printStackTrace();
@@ -383,6 +461,8 @@ class ImageAdapter extends BaseAdapter {
                 notifyDataSetChanged();
             }
         });
+        Log.i("sw32urls",UploadPicturesActivity.uris.get(position) + " ::" +UploadPicturesActivity.urls.get(position));
+
         Picasso.with(mContext)
                 .load(UploadPicturesActivity.uris.get(position))
                 .memoryPolicy(MemoryPolicy.NO_CACHE,MemoryPolicy.NO_STORE)

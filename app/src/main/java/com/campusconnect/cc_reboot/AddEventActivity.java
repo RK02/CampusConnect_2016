@@ -184,6 +184,7 @@ public class AddEventActivity extends AppCompatActivity {
                     .addFormDataPart("courseId",courseId)
                     .addFormDataPart("type",params[0])
                     .addFormDataPart("desc",params[1]+"")
+                    .addFormDataPart("Title",courseName)
                     .addFormDataPart("date",params[2]);
             File file;
             int i=1;
