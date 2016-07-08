@@ -84,6 +84,7 @@ public class FragmentCourses extends Fragment{
                 refreshPage();
             }
         });
+        swipeRefreshLayout.setRefreshing(true);
 
 
         courseNames = new ArrayList<>();
@@ -101,7 +102,6 @@ public class FragmentCourses extends Fragment{
         cm = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         activeNetwork =  cm.getActiveNetworkInfo();
         isConnected= activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-        swipeRefreshLayout.setRefreshing(true);
         if(isConnected) {
             call.enqueue(new Callback<Example>() {
                 @Override
@@ -132,10 +132,9 @@ public class FragmentCourses extends Fragment{
                             }
                             FirebaseMessaging.getInstance().subscribeToTopic(x.getCourseId());
                         }
-                        swipeRefreshLayout.setRefreshing(false);
+
                     }
-
-
+                    swipeRefreshLayout.setRefreshing(false);
                 }
 
                 @Override
@@ -232,10 +231,5 @@ public class FragmentCourses extends Fragment{
             Toast.makeText(getActivity(),"Check your connection and try again",Toast.LENGTH_SHORT).show();
             swipeRefreshLayout.setRefreshing(false);
         }
-    }
-
-    void clearTimetable()
-    {
-        ((ViewGroup)FragmentTimetable.v).removeAllViews();
     }
 }

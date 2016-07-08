@@ -110,7 +110,7 @@ public class SearchActivity extends AppCompatActivity {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     // Perform action on key press
-                    if (searchBar.getText().toString().equals("")) {searchBar.setError("Enter search text");return false;}
+                    if (searchBar.getText().toString().equals("")) {searchBar.setError("Enter search text");searchBar.requestFocus();return false;}
                     hideKeyboard(SearchActivity.this);
                     String searchString = searchBar.getText().toString();
                     searchapi(searchString);
@@ -122,7 +122,7 @@ public class SearchActivity extends AppCompatActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (searchBar.getText().toString().equals("")) {searchBar.setError("Enter search text");return;}
+                if (searchBar.getText().toString().equals("")) {searchBar.setError("Enter search text");searchBar.requestFocus();return;}
 
                 searchapi(searchBar.getText().toString());
             }

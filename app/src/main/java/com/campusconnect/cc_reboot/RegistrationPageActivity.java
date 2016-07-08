@@ -108,7 +108,6 @@ public class RegistrationPageActivity extends AppCompatActivity{
                 .load(personPhoto)
                 .fit()
                 .into(profilePicture);
-        //profilePicture.setFocusable(false);
         collegeName.setHintTextColor(Color.BLACK);
         Retrofit retrofit = new Retrofit.
                 Builder()
@@ -130,7 +129,6 @@ public class RegistrationPageActivity extends AppCompatActivity{
 
                     }
                     ArrayAdapter<String> data = new ArrayAdapter<String>(RegistrationPageActivity.this,android.R.layout.simple_list_item_1,collegeNames);
-                    //collegeName.setFocusable(false);
                     collegeName.setAdapter(data);
                 }
             }
@@ -140,59 +138,6 @@ public class RegistrationPageActivity extends AppCompatActivity{
 
             }
         });
-
-
-
-//        batchName.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                DatePickerDialog datePickerDialog = new DatePickerDialog(RegistrationPageActivity.this, new DatePickerDialog.OnDateSetListener() {
-//                    @Override
-//                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-//                        batchName.setText(year+"");
-//                    }
-//                }, 2013, 1, 1);
-//                DatePicker datePick=datePickerDialog.getDatePicker();
-//                try{
-//                Field[] datePickerDialogFields = datePick.getClass().getDeclaredFields();
-//
-//                for (Field datePickerDialogField : datePickerDialogFields) {
-//                    if (datePickerDialogField.getName().equals("mDatePicker")) {
-//                        datePickerDialogField.setAccessible(true);
-//                        DatePicker datePicker = (DatePicker) datePickerDialogField.get(datePick);
-//                        DatePicker monPickerPicker = (DatePicker) datePickerDialogField.get(datePick);
-//
-//                        Field datePickerFields[] = datePickerDialogField.getType().getDeclaredFields();
-//                        for (Field datePickerField : datePickerFields) {
-//                            if ("mDayPicker".equals(datePickerField.getName()) || "mDaySpinner".equals(datePickerField
-//                                    .getName())) {
-//                                datePickerField.setAccessible(true);
-//                                Object dayPicker;
-//                                dayPicker = datePickerField.get(datePicker);
-//                                ((View) dayPicker).setVisibility(View.GONE);
-//                            }
-//                            if ("mMonthpicker".equals(datePickerField.getName()) || "mMonthSpinner".equals(datePickerField
-//                                    .getName())) {
-//                                datePickerField.setAccessible(true);
-//                                Object dayPicker;
-//                                dayPicker = datePickerField.get(datePicker);
-//                                ((View) dayPicker).setVisibility(View.GONE);
-//                            }
-//                        }
-//                        datePicker.setCalendarViewShown(false);
-//
-//                    }
-//
-//                }
-//            }catch(Exception ex){
-//            }
-//
-//
-//
-//
-//        }
-//        });
-
         branchName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                                                 @Override
                                                 public void onFocusChange(View v, boolean hasFocus) {
@@ -235,12 +180,14 @@ public class RegistrationPageActivity extends AppCompatActivity{
                 if(signUp!=null)
                 {
                     profileId = signUp.getKey();
-                    new mobile_register().execute(personId,profileId,batchName.getText().toString(),branchName.getText().toString(),sectionName.getText().toString());
+                    new mobile_register().execute(personId,profileId,batchName.getText().toString(),branchName.getText().toString(),sectionName.getText().toString(),collegeName.getText().toString());
                     SharedPreferences sharedPreferences = getSharedPreferences("CC",MODE_PRIVATE);
                     sharedPreferences
                             .edit()
                             .putString("profileId",profileId)
                             .putString("collegeId",collegeId)
+                            .putString("personId",personId)
+                            .putString("collegeName",collegeName.getText().toString())
                             .putString("batchName",batchName.getText().toString())
                             .putString("branchName",branchName.getText().toString())
                             .putString("sectionName",sectionName.getText().toString())
@@ -325,6 +272,7 @@ public class RegistrationPageActivity extends AppCompatActivity{
                 jsonObject.put("gprofileId",params[0]);
                 jsonObject.put("profileId",params[1]);
                 jsonObject.put("profileName",personName);
+                jsonObject.put("collegeName",params[5]);
                 jsonObject.put("collegeId",collegeId);
                 jsonObject.put("branchName",params[3]);
                 jsonObject.put("sectionName",params[4]);
