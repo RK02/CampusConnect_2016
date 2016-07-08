@@ -85,6 +85,7 @@ public class FragmentCourses extends Fragment{
             }
         });
 
+
         courseNames = new ArrayList<>();
         courseIds = new ArrayList<>();
         course_list = (RecyclerView) v.findViewById (R.id.rv_courses);
@@ -100,6 +101,7 @@ public class FragmentCourses extends Fragment{
         cm = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         activeNetwork =  cm.getActiveNetworkInfo();
         isConnected= activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        swipeRefreshLayout.setRefreshing(true);
         if(isConnected) {
             call.enqueue(new Callback<Example>() {
                 @Override
@@ -133,11 +135,15 @@ public class FragmentCourses extends Fragment{
                         swipeRefreshLayout.setRefreshing(false);
                     }
 
+
                 }
 
                 @Override
                 public void onFailure(Call<Example> call, Throwable t) {
+                    swipeRefreshLayout.setRefreshing(false);
+                    Toast.makeText(getActivity(),"Oops! Something went wrong!",Toast.LENGTH_SHORT).show();
                 }
+
             });
         }else{
             Toast.makeText(getActivity(),"Check your connection and try again",Toast.LENGTH_SHORT).show();
