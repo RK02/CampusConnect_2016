@@ -143,6 +143,7 @@ public class AddEventActivity extends AppCompatActivity {
                 }
             });break;
         }
+        name.setFocusable(false);
     }
 
     @Override
