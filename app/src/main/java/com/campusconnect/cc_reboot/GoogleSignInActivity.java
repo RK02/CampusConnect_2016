@@ -171,20 +171,7 @@ public class GoogleSignInActivity extends BaseActivity implements
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount acct = result.getSignInAccount();
                 firebaseAuthWithGoogle(acct);
-                    personName = acct.getDisplayName();
-                    personEmail = acct.getEmail();
-                    personId = acct.getId();
-                    Log.i("sw32", personId + ": here");
-                    personPhoto = acct.getPhotoUrl().toString();
-                    mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
-                    SharedPreferences sharedpreferences = getSharedPreferences("CC", Context.MODE_PRIVATE);
-                    if (sharedpreferences.contains("profileId")) {
-                        Intent home = new Intent(GoogleSignInActivity.this, HomeActivity2.class);
-                        home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(home);
-                    } else {
-                        new register_mobile().execute(personId);
-                    }
+
 
             }else {
                 // Google Sign In failed, update UI appropriately
@@ -197,7 +184,7 @@ public class GoogleSignInActivity extends BaseActivity implements
     // [END onactivityresult]
 
     // [START auth_with_google]
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+    private void firebaseAuthWithGoogle(final GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
         // [START_EXCLUDE silent]
         showProgressDialog();
@@ -218,6 +205,23 @@ public class GoogleSignInActivity extends BaseActivity implements
                             Log.w(TAG, "signInWithCredential", task.getException());
                             Toast.makeText(GoogleSignInActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            personName = acct.getDisplayName();
+                            personEmail = acct.getEmail();
+                            personId = acct.getId();
+                            Log.i("sw32", personId + ": here");
+                            personPhoto = acct.getPhotoUrl().toString();
+                            mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
+                            SharedPreferences sharedpreferences = getSharedPreferences("CC", Context.MODE_PRIVATE);
+                            if (sharedpreferences.contains("profileId")) {
+                                Intent home = new Intent(GoogleSignInActivity.this, HomeActivity2.class);
+                                home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(home);
+                            } else {
+                                new register_mobile().execute(personId);
+                            }
                         }
 
 
