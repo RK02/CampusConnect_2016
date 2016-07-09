@@ -3,9 +3,13 @@ package com.campusconnect.cc_reboot;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +27,7 @@ import com.campusconnect.cc_reboot.POJO.ModelSignUp;
 import com.campusconnect.cc_reboot.POJO.MyApi;
 import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -30,6 +35,10 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -41,6 +50,11 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -82,6 +96,8 @@ public class EditProfileActivity extends AppCompatActivity {
     ArrayList<String> collegeIds;
     String profileId;
     String collegeId;
+    File newProfilePicture;
+    Uri uri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +120,7 @@ public class EditProfileActivity extends AppCompatActivity {
         Picasso.with(EditProfileActivity.this)
                 .load(personPhoto)
                 .fit()
+                .memoryPolicy(MemoryPolicy.NO_CACHE,MemoryPolicy.NO_STORE)
                 .into(profilePicture);
         Retrofit retrofit = new Retrofit.
                 Builder()
@@ -156,10 +173,84 @@ public class EditProfileActivity extends AppCompatActivity {
                 new sign_up().execute();
             }
         });
+        profilePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(i, 69);
+            }
+        });
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case 69:{
+                if(data!=null) {
+                    uri = data.getData();
+                    Picasso.with(EditProfileActivity.this)
+                            .load(uri.toString())
+                            .fit()
+                            .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                            .into(profilePicture);
+                    break;
+                }
+            }
+        }
+    }
+
     public void SignUp()
     {
+        if(uri!=null) {
+            newProfilePicture = new File(uri.getPath());
+            OkHttpClient client = new OkHttpClient();
+            RequestBody requestBody;
+            MultipartBody.Builder body = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)
+                    .addFormDataPart("profileId", getSharedPreferences("CC", MODE_PRIVATE).getString("profileId", ""));
+            Bitmap original = null;
+            try {
+                original = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
+            int size = original.getRowBytes() * original.getHeight();
+            Log.i("sw32size", size + "");
+            FileOutputStream out = null;
+            try {
+                out = new FileOutputStream(getFilesDir() + "/temp" + "profile" + ".jpeg");
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            if (size > 10000000)
+                original.compress(Bitmap.CompressFormat.JPEG, 20, out);
+            else
+                original.compress(Bitmap.CompressFormat.JPEG, 50, out);
+            body.addFormDataPart("file", "profile.jpg", RequestBody.create(MediaType.parse("image/*"), new File(getFilesDir() + "/temp" + "profile" + ".jpeg")));
+
+
+            requestBody = body.build();
+            Request request1 = new Request.Builder()
+                    .url("https://uploadnotes-2016.appspot.com/changePic")
+                    .post(requestBody)
+                    .build();
+            try {
+                okhttp3.Response response = client.newCall(request1).execute();
+                String url = response.body().string();
+                Log.i("sw32",url);
+                JSONObject json = new JSONObject(url);
+                personPhoto = json.getString("url");
+                Log.i("sw32",personPhoto);
+                getSharedPreferences("CC",MODE_PRIVATE).edit().putString("photourl",personPhoto).commit();
+                Log.i("sw32",getSharedPreferences("CC",MODE_PRIVATE).getString("photourl","fakedesu"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
         Retrofit retrofit = new Retrofit.
                 Builder()
                 .baseUrl(FragmentCourses.BASE_URL)
@@ -173,7 +264,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 batchName.getText().toString(),
                 branchName.getText().toString(),
                 sectionName.getText().toString(),
-                personPhoto);
+                getSharedPreferences("CC",MODE_PRIVATE).getString("photourl","fakedesu"));
 
 
 
@@ -235,6 +326,7 @@ public class EditProfileActivity extends AppCompatActivity {
             progressDialog.dismiss();
         }
     }
+
 
 
 

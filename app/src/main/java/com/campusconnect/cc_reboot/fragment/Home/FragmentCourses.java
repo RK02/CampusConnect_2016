@@ -1,6 +1,7 @@
 package com.campusconnect.cc_reboot.fragment.Home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -20,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.campusconnect.cc_reboot.CoursePageActivity;
 import com.campusconnect.cc_reboot.HomeActivity;
 import com.campusconnect.cc_reboot.HomeActivity2;
 import com.campusconnect.cc_reboot.POJO.*;
@@ -117,7 +119,7 @@ public class FragmentCourses extends Fragment{
                         Log.i("sw32","calloncreate");
                         List<AvailableCourseList> availableCourseList = example.getAvailableCourseList();
                         List<SubscribedCourseList> subscribedCourseList = example.getSubscribedCourseList();
-                        for (SubscribedCourseList x : subscribedCourseList) {
+                        for (final SubscribedCourseList x : subscribedCourseList) {
                             courseNames.add(x.getCourseName());
                             courseIds.add(x.getCourseId());
                             mCourseAdapter.add(x);
@@ -129,6 +131,15 @@ public class FragmentCourses extends Fragment{
                                 cell_container = (LinearLayout) FragmentTimetable.v.findViewById(Integer.parseInt(x.getDate().get(i) + "" + (Integer.parseInt(x.getStartTime().get(i).substring(0, 2)) - 6)));
                                 cell_container.setBackgroundColor(Color.parseColor(x.getColour()));
                                 ((TextView)cell.findViewById(R.id.cellText)).setText(x.getCourseName());
+                                cell.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Intent coursePage = new Intent(getActivity(), CoursePageActivity.class);
+                                        coursePage.putExtra("courseId",x.getCourseId());
+                                        coursePage.putExtra("courseColor",Color.parseColor(x.getColour()));
+                                        startActivity(coursePage);
+                                    }
+                                });
                                 cell_container.removeAllViews();
                                 cell_container.addView(cell);
                                 i--;
@@ -204,7 +215,7 @@ public class FragmentCourses extends Fragment{
                     profilePoints = example.getPoints();
                     List<AvailableCourseList> availableCourseList = example.getAvailableCourseList();
                     List<SubscribedCourseList> subscribedCourseList = example.getSubscribedCourseList();
-                    for (SubscribedCourseList x : subscribedCourseList) {
+                    for (final SubscribedCourseList x : subscribedCourseList) {
                         courseNames.add(x.getCourseName());
                         courseIds.add(x.getCourseId());
                         mCourseAdapter.add(x);
@@ -215,6 +226,15 @@ public class FragmentCourses extends Fragment{
                             cell_container = (LinearLayout) FragmentTimetable.v.findViewById(Integer.parseInt(x.getDate().get(i) + "" + (Integer.parseInt(x.getStartTime().get(i).substring(0, 2)) - 6)));
                             cell_container.setBackgroundColor(Color.parseColor(x.getColour()));
                             ((TextView)cell.findViewById(R.id.cellText)).setText(x.getCourseName());
+                            cell.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent coursePage = new Intent(getActivity(), CoursePageActivity.class);
+                                    coursePage.putExtra("courseId",x.getCourseId());
+                                    coursePage.putExtra("courseColor",Color.parseColor(x.getColour()));
+                                    startActivity(coursePage);
+                                }
+                            });
                             cell_container.removeAllViews();
                             cell_container.addView(cell);
                             i--;

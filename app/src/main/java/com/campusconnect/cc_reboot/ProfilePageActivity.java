@@ -23,6 +23,8 @@ import com.campusconnect.cc_reboot.slidingtab.SlidingTabLayout_home;
 import com.campusconnect.cc_reboot.viewpager.ViewPagerAdapter_course;
 import com.campusconnect.cc_reboot.viewpager.ViewPagerAdapter_profile;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
@@ -109,7 +111,11 @@ public class ProfilePageActivity extends AppCompatActivity implements FloatingAc
                 Log.i("sw32", "" + response.code());
                 Example example = response.body();
                 if (example != null) {
-                    Picasso.with(ProfilePageActivity.this).load(example.getPhotoUrl()).into(profile_image);
+                    Picasso.with(ProfilePageActivity.this)
+                            .load(example.getPhotoUrl())
+                            .memoryPolicy(MemoryPolicy.NO_CACHE,MemoryPolicy.NO_STORE)
+                            .networkPolicy(NetworkPolicy.NO_CACHE,NetworkPolicy.NO_STORE)
+                            .into(profile_image);
                     profile_name.setText(example.getProfileName());
                     profile_points.setText(example.getPoints());
                 }

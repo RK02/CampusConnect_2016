@@ -48,6 +48,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
@@ -83,15 +85,7 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
     private Fragment fragment = null;
     GoogleApiClient mGoogleApiClient;
     Fragment homefrag;
-    Fragment addCourse;
-    Fragment gifts;
-    Fragment howTo;
-    Fragment invite;
-    Fragment settings;
-    Fragment tnc;
-    Fragment rate;
-    Fragment feedback;
-    Fragment about;
+    View headerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,12 +104,14 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
 
         homefrag = new FragmentHome();
         //Setting up Header View
-        final View headerView = getLayoutInflater().inflate(R.layout.header, navigationView, false);
+        headerView = getLayoutInflater().inflate(R.layout.header, navigationView, false);
         navigationView.addHeaderView(headerView);
         ImageView view = (ImageView) headerView.findViewById(R.id.profile_image);
-        Picasso.with(HomeActivity2.this).
-                load(getSharedPreferences("CC",MODE_PRIVATE).getString("photourl","fakedesu")).error(R.mipmap.ic_launcher).
-                into(view);
+        Picasso.with(HomeActivity2.this)
+                .load(getSharedPreferences("CC",MODE_PRIVATE).getString("photourl","fakedesu")).error(R.mipmap.ic_launcher)
+                .memoryPolicy(MemoryPolicy.NO_CACHE,MemoryPolicy.NO_STORE)
+                .networkPolicy(NetworkPolicy.NO_CACHE,NetworkPolicy.NO_STORE)
+                .into(view);
         ((TextView)headerView.findViewById(R.id.tv_username)).setText(getSharedPreferences("CC",MODE_PRIVATE).getString("profileName","PLACEHOLDER"));
 
 
@@ -203,6 +199,20 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
                 .build();
         mGoogleApiClient.connect();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ImageView view = (ImageView) headerView.findViewById(R.id.profile_image);
+        Picasso.with(HomeActivity2.this).
+                load(getSharedPreferences("CC",MODE_PRIVATE).getString("photourl","fakedesu")).error(R.mipmap.ic_launcher)
+                .memoryPolicy(MemoryPolicy.NO_CACHE,MemoryPolicy.NO_STORE)
+                .networkPolicy(NetworkPolicy.NO_CACHE,NetworkPolicy.NO_STORE)
+                .into(view);
+        ((TextView)headerView.findViewById(R.id.tv_points)).setText(FragmentCourses.profilePoints);
+
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()){
