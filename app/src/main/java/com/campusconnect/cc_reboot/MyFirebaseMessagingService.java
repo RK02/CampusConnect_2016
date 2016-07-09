@@ -76,7 +76,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             case "exam":intent = new Intent(this,ExamPageActivity.class); intent.putExtra("testId",id);break;
         }
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis() /* Request code */, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);

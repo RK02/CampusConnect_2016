@@ -62,6 +62,7 @@ public class NotesSliderPageFragment extends Fragment implements View.OnTouchLis
         pager_img = (ViewPagerDisable) rootView.findViewById(R.id.viewpager_images);
 
         page_pos = fragArgs.getInt("PagePos");
+        Log.i("sw32",page_pos+" : Page pos");
         for(ArrayList<String> a : urls)
         {
             totalPages+=a.size();

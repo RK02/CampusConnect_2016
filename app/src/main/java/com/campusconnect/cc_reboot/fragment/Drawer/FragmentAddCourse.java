@@ -144,6 +144,7 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
         MyApi myApi = retrofit.create(MyApi.class);
         Call<ModelBranchList> call;
 
+
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("CC", Context.MODE_PRIVATE);
         String branchName = sharedPreferences.getString("branchName", "");
         String batchName = sharedPreferences.getString("batchName", "");

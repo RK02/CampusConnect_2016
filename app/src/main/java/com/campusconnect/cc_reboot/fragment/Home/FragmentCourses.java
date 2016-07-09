@@ -77,7 +77,6 @@ public class FragmentCourses extends Fragment{
         a.save();a.delete();
         myApi = retrofit.create(MyApi.class);
         swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swiperefresh);
-        swipeRefreshLayout.offsetTopAndBottom(100);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -86,6 +85,7 @@ public class FragmentCourses extends Fragment{
             }
         });
         swipeRefreshLayout.setRefreshing(true);
+
 
 
         courseNames = new ArrayList<>();
@@ -104,6 +104,7 @@ public class FragmentCourses extends Fragment{
         activeNetwork =  cm.getActiveNetworkInfo();
         isConnected= activeNetwork != null && activeNetwork.isConnectedOrConnecting();
         if(isConnected) {
+            swipeRefreshLayout.setRefreshing(true);
             call.enqueue(new Callback<Example>() {
                 @Override
                 public void onResponse(Call<Example> call, Response<Example> response) {
@@ -148,6 +149,7 @@ public class FragmentCourses extends Fragment{
             });
         }else{
             Toast.makeText(getActivity(),"Check your connection and try again",Toast.LENGTH_SHORT).show();
+            swipeRefreshLayout.setRefreshing(false);
         }
 
         return v;

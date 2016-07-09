@@ -174,6 +174,7 @@ public class UploadPicturesActivity extends AppCompatActivity {
 
             }
         });
+
         camera.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -194,9 +195,9 @@ public class UploadPicturesActivity extends AppCompatActivity {
                 else {
                     Intent description = new Intent(UploadPicturesActivity.this, AddEventActivity.class);
                     description.putExtra("Mode",3);
-                    if(CoursePageActivity.courseId!=null) {
-                        description.putExtra("courseId", CoursePageActivity.courseId);
-                        description.putExtra("courseTitle", CoursePageActivity.courseTitle);
+                    if(getIntent().hasExtra("courseId")) {
+                        description.putExtra("courseId", getIntent().getStringExtra("courseId"));
+                        description.putExtra("courseTitle", getIntent().getStringExtra("courseTitle"));
                     }
                     startActivityForResult(description,1);
                 }
@@ -212,7 +213,10 @@ public class UploadPicturesActivity extends AppCompatActivity {
         });
     }
 
-
+    @Override
+    public void onBackPressed() {
+        cancel.performClick();
+    }
 
     private void galleryIntent()
     {
