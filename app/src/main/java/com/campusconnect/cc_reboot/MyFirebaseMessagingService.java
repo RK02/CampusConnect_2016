@@ -70,13 +70,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      */
     private void sendNotification(String title, String messageBody,String type, String id) {
         Intent intent = new Intent(this,HomeActivity2.class);
+        Log.i("sw32notification",id + ":"+type+ ":" + messageBody);
         switch(type){
             case "notes":intent = new Intent(this,NotePageActivity.class); intent.putExtra("noteBookId",id); break;
             case "assignment":intent = new Intent(this,AssignmentPageActivity.class); intent.putExtra("assignmentId",id);break;
             case "exam":intent = new Intent(this,ExamPageActivity.class); intent.putExtra("testId",id);break;
         }
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis() /* Request code */, intent,
+        intent.setAction(Long.toString(System.currentTimeMillis()));
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);

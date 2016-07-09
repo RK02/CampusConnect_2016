@@ -51,6 +51,8 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
     private ViewPagerDisable mNotesPager;
     private PagerAdapter mNotesPagerAdapter;
     ArrayList<String> Titles;
+    ArrayList<String> pages;
+    ArrayList<String> descriptions;
     int NumPages;
     public static ArrayList<ArrayList<String>> urls;
 
@@ -63,13 +65,18 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
 
         Titles = new ArrayList<>();
         urls = new ArrayList<>();
+        pages = new ArrayList<>();
+        descriptions = new ArrayList<>();
+
 
         for(int i =1 ; i<=NotePageActivity.jsonNoteList.length(); i++)
         {
             try {
                 ArrayList<String> tempList = new ArrayList<>();
                 Note temp = (Note)NotePageActivity.jsonNoteList.get(i+"");
+                pages.add(temp.getUrlList().size()+"");
                 tempList.addAll(temp.getUrlList());
+                descriptions.add(temp.getDescription());
                 urls.add(tempList);
                 Titles.add("Class "+i);
             } catch (JSONException e) {
@@ -84,7 +91,25 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
         mNotesPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(),Titles,urls,NumPages,this);
         mNotesPager.setAdapter(mNotesPagerAdapter);
         mNotesPager.setPageTransformer(true, new ZoomOutPageTransformer());
+        mNotesPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Log.i("sw32externviewpager",position+"");
+//                book_title.setText("Class "+(position+1));
+                page_description.setText(descriptions.get(position));
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        mNotesPager.setCurrentItem(NotePageActivity.jsonNoteList.length()-1);
         //Hiding the notepage info
         Animation fadeOut = new AlphaAnimation(1, 0.4f);
         fadeOut.setInterpolator(new AccelerateInterpolator()); //and this
@@ -107,6 +132,8 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
             mNotesPager.setCurrentItem(mNotesPager.getCurrentItem() - 1);
         }
     }
+
+
 
     @Override
     public void onClick(View view) {
