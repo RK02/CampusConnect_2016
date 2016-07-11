@@ -86,6 +86,7 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
         NumPages = Titles.size();
 
 
+
         // Instantiate a ViewPager and a PagerAdapter.
         mNotesPager = (ViewPagerDisable) findViewById(R.id.pager);
         mNotesPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(),Titles,urls,NumPages,this);
@@ -177,6 +178,7 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
     public void notePageInfo(String class_no, String curr_page, String total_pages) {
         book_title.setText(class_no);
         page_number.setText(curr_page+"/"+total_pages);
+       // page_description.setText(descriptions.get(Integer.parseInt(class_no.split(" ")[1])));
     }
 
     @Override
@@ -191,5 +193,6 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
             trial_button.startAnimation(fadeOut);
         }
     }
+
 }
 

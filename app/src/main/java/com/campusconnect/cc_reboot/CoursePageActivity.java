@@ -119,9 +119,6 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
         course_pager.setCurrentItem(defaultTabPosition);
         course_tabs.setDistributeEvenly(true);
         course_tabs.setViewPager(course_pager);
-
-
-
         Retrofit retrofit = new Retrofit.
                 Builder()
                 .baseUrl(MyApi.BASE_URL)

@@ -156,6 +156,10 @@ public class RegistrationPageActivity extends AppCompatActivity{
                 String temp = collegeName.getText().toString();
                 int index = collegeNames.indexOf(temp);
                 if(index < 0 ){collegeName.setError("Select a valid college name");collegeName.requestFocus();return; }
+                if(profileName.getText().toString().equals("")){profileName.setError("Enter Name");profileName.requestFocus();return;}
+                if(collegeName.getText().toString().equals("")){collegeName.setError("Enter College Name");collegeName.requestFocus();return;}
+                if(batchName.getText().toString().equals("")){batchName.setError("Enter Batch Name");batchName.requestFocus();return;}
+                if(branchName.getText().toString().equals("")){branchName.setError("Enter Branch Name");branchName.requestFocus();return;}
                 collegeId = collegeIds.get(index);
                 new sign_up().execute();
             }

@@ -93,7 +93,6 @@ public class FragmentTimetable extends Fragment implements ScrollViewListener{
         setUpTable();
         header_scroll_horizontal.setScrollViewListener(this);
         body_scroll_horizontal.setScrollViewListener(this);
-
         return v;
     }
 
@@ -118,11 +117,7 @@ public class FragmentTimetable extends Fragment implements ScrollViewListener{
                 cell_container.setPadding(0,16,0,16);
                 cell_container.setOrientation(LinearLayout.VERTICAL);
                 cell_container.setId(Integer.parseInt(i+""+j));
-
                 map.get(j).addView(cell_container);
             }
-
     }
-
-
 }

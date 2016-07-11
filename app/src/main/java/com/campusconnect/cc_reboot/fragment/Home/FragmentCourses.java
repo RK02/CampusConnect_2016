@@ -27,8 +27,6 @@ import com.campusconnect.cc_reboot.R;
 import com.campusconnect.cc_reboot.adapter.CourseListAdapter;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -72,8 +70,6 @@ public class FragmentCourses extends Fragment{
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_courses, container, false);
-        SubscribedCourseList a = new SubscribedCourseList();
-        a.save();a.delete();
         myApi = retrofit.create(MyApi.class);
         swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swiperefresh);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -85,7 +81,7 @@ public class FragmentCourses extends Fragment{
         courseNames = new ArrayList<>();
         courseIds = new ArrayList<>();
         course_list = (RecyclerView) v.findViewById (R.id.rv_courses);
-        final ArrayList<SubscribedCourseList> courses = new ArrayList<>();
+        ArrayList<SubscribedCourseList> courses = new ArrayList<>();
         timeTableViews = new HashMap<>();
         //Setting the recyclerView
 
@@ -98,9 +94,19 @@ public class FragmentCourses extends Fragment{
         cm = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         activeNetwork =  cm.getActiveNetworkInfo();
         isConnected= activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        Log.i("sw32call","create");
         if(isConnected) {
-            refreshPage();
+            SubscribedCourseList a = new SubscribedCourseList();
+            a.save();a.delete();
+            swipeRefreshLayout.post(new Runnable() {
+                @Override public void run() {
+                    swipeRefreshLayout.setRefreshing(true);
+                    // directly call onRefresh() method
+                    refreshPage();
+                }
+            });
         }else{
+            resumePage();
             Toast.makeText(getActivity(),"Check your connection and try again",Toast.LENGTH_SHORT).show();
         }
 
@@ -110,6 +116,7 @@ public class FragmentCourses extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
+        Log.i("sw32call","resume");
         cm = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         activeNetwork = cm.getActiveNetworkInfo();
         isConnected= activeNetwork != null && activeNetwork.isConnected();
@@ -134,12 +141,23 @@ public class FragmentCourses extends Fragment{
 
     }
 
+    void resumePage()
+    {
+        List<SubscribedCourseList> aa = SubscribedCourseList.listAll(SubscribedCourseList.class);
+        for (SubscribedCourseList x : aa) {
+            courseNames.add(x.getCourseName());
+            courseIds.add(x.getCourseId());
+            mCourseAdapter.add(x);
+            Log.i("sw32cache",x.getCourseName());
+            x.save();
+            FirebaseMessaging.getInstance().subscribeToTopic(x.getCourseId());
+        }
+    }
+
     void refreshPage(){
-        swipeRefreshLayout.setRefreshing(true);
         cm = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         activeNetwork = cm.getActiveNetworkInfo();
         isConnected= activeNetwork != null && activeNetwork.isConnected();
-        //clearTimetable();
         Log.i("sw32","callonrefresh");
         if(isConnected){
         courseNames.clear();
@@ -201,6 +219,9 @@ public class FragmentCourses extends Fragment{
             }
             @Override
             public void onFailure(Call<Example> call, Throwable t) {
+                Toast.makeText(getActivity(),"Oops! Something went wrong!",Toast.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(false);
+
             }
         });
 

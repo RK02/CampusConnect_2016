@@ -143,6 +143,7 @@ public class NotesSliderPageFragment extends Fragment implements View.OnTouchLis
             super.setUserVisibleHint(isVisibleToUser);
             if (isVisibleToUser) {
                 notePageInfoToActivity.notePageInfo(class_no,curr_page, total_pages);
+
             }
 
         }

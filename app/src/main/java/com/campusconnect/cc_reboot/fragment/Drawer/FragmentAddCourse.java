@@ -1,6 +1,7 @@
 package com.campusconnect.cc_reboot.fragment.Drawer;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.Fragment;
 
@@ -54,6 +55,7 @@ import com.campusconnect.cc_reboot.POJO.MyApi;
 import com.campusconnect.cc_reboot.R;
 import com.campusconnect.cc_reboot.adapter.CourseColorsListAdapter;
 import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
+import com.campusconnect.cc_reboot.fragment.Home.FragmentTimetable;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -212,13 +214,19 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
                         final TimePickerDialog startTimePickerDialog = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-
+                                Log.i("sw32time", minute+" :sw32minute");
                                 if (minute < 10) {
                                     startTime.setText(hourOfDay + ":0" + minute);
+                                    endTime.setText((hourOfDay+1) + ":0" + minute);
                                 } else {
                                     startTime.setText(hourOfDay + ":" + minute);
+                                    endTime.setText((hourOfDay+1) + ":" + minute);
                                 }
-                                if(hourOfDay <12) startTime.setText("0"+startTime.getText().toString());
+                                if(hourOfDay <10) {
+                                    startTime.setText("0"+startTime.getText().toString());
+                                    endTime.setText("0" + endTime.getText().toString());
+                                }
+
 
 
                             }
@@ -227,13 +235,16 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                                 if (hourOfDay > Integer.parseInt(startTime.getText().toString().split(":")[0])) {
-                                    if (minute < 10) endTime.setText(hourOfDay + ":0" + minute);
-                                    if(hourOfDay <12) endTime.setText("0"+endTime.getText().toString());
-                                    else {
+                                    Log.i("sw32time", minute+" :sw32minute");
+                                    if (minute < 10) {
+                                        endTime.setText(hourOfDay + ":0" + minute);
+                                    }else
+                                    {
                                         endTime.setText(hourOfDay + ":" + minute);
                                     }
+                                    if(hourOfDay <10) endTime.setText("0"+endTime.getText().toString());
                                 } else {
-                                    Toast.makeText(getActivity(), "Please Select a Valid Time", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), "End Time must be greater than start time", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }, 9, 00, false);
@@ -347,10 +358,13 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
                 dates.subList(0,dates.size()),
                 startTimes.subList(0,startTimes.size()),
                 endTimes.subList(0,endTimes.size()),
-                String.format("#%06X", (0xFFFFFF & courseColorPicker.getSolidColor())),
+                //String.format("#%06X", (0xFFFFFF & courseColorPicker.getSolidColor())),
+                //TODO: how to get the damn color
+                //String.format("#%06X", (0xffffff & R.color.cardview_light_background)),
+                "#ed999a",
                 e+""
                 );
-
+        Log.i("sw32color",String.format("#%06X", (0xFFFFFF & courseColorPicker.getSolidColor())));
         Call<ModelAddCourse> call = myApi.addCourse(body);
         call.enqueue(new Callback<ModelAddCourse>() {
             @Override
@@ -361,6 +375,18 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
                 finish();
                 Intent intent = new Intent(getActivity(), CoursePageActivity.class);
                 intent.putExtra("courseId",courseId);
+                intent.putExtra("courseColor", Color.parseColor("#ed999a"));
+                FragmentCourses.courseIds.add(courseId);
+                FragmentCourses.courseNames.add(courseName.getText().toString());
+                try{
+                    int index = FragmentCourses.courseIds.indexOf(courseId);
+                    Log.i("sw32index", "indexed at : " + index);
+                }
+                catch(Exception e)
+                {
+                    e.printStackTrace();
+                }
+
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }

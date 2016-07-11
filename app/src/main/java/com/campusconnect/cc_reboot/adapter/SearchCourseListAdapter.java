@@ -2,6 +2,7 @@ package com.campusconnect.cc_reboot.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -43,12 +44,14 @@ public class SearchCourseListAdapter extends
     @Override
     public void onBindViewHolder(SearchNotesListViewHolder searchNotesListViewHolder, int i) {
         final CourseList a =  courseLists.get(i);
+
         searchNotesListViewHolder.notebooks.setText(a.getNotesCount());
         searchNotesListViewHolder.semester.setText(a.getSemester());
         searchNotesListViewHolder.students.setText(a.getStudentCount());
         searchNotesListViewHolder.course_title.setText(a.getCourseName());
         searchNotesListViewHolder.professor.setText(a.getProfessorName());
         searchNotesListViewHolder.section.setText(a.getSectionNames().get(0));
+        searchNotesListViewHolder.search_course_card.setCardBackgroundColor(Color.parseColor(a.getColour()));
         searchNotesListViewHolder.search_course_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,7 +60,7 @@ public class SearchCourseListAdapter extends
                 int index = viewGroup.indexOfChild(v);
                 String id = courseLists.get(index).getCourseId();
                 intent_temp.putExtra("courseId",id);
-                intent_temp.putExtra("courseColor",a.getColour());
+                intent_temp.putExtra("courseColor",Color.parseColor(a.getColour()));
                 context.startActivity(intent_temp);
             }
         });

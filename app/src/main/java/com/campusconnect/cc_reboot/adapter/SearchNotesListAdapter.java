@@ -42,11 +42,12 @@ public class SearchNotesListAdapter extends
 
     @Override
     public void onBindViewHolder(SearchCourseListViewHolder searchCourseListViewHolder, final int i) {
-        searchCourseListViewHolder.note_name.setText(mNotes.get(i).getCourseName());
-        searchCourseListViewHolder.note_pages_count.setText(mNotes.get(i).getPages());
-        searchCourseListViewHolder.note_views.setText(mNotes.get(i).getViews());
-        searchCourseListViewHolder.note_uploader.setText(mNotes.get(i).getUploaderName());
-        searchCourseListViewHolder.note_rating.setText(mNotes.get(i).getTotalRating());
+        NoteBookList aa = mNotes.get(i);
+        searchCourseListViewHolder.note_name.setText(aa.getCourseName());
+        searchCourseListViewHolder.note_pages_count.setText(aa.getPages());
+        searchCourseListViewHolder.note_views.setText(aa.getViews());
+        searchCourseListViewHolder.note_uploader.setText(aa.getUploaderName());
+        searchCourseListViewHolder.note_rating.setText(aa.getTotalRating());
         String time = mNotes.get(i).getLastUpdated();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         int days = 0,hours=0,minutes=0,seconds=0;
