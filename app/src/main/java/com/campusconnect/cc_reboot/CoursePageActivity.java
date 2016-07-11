@@ -21,6 +21,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
+import com.campusconnect.cc_reboot.fragment.Home.FragmentTimetable;
 import com.campusconnect.cc_reboot.slidingtab.SlidingTabLayout_home;
 import com.campusconnect.cc_reboot.viewpager.ViewPagerAdapter_course;
 import com.campusconnect.cc_reboot.POJO.*;
@@ -216,6 +218,11 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
 
                     new unsub().execute();
                     FirebaseMessaging.getInstance().unsubscribeFromTopic(courseId);
+                    for(String viewId : FragmentCourses.timeTableViews.get(courseId)){
+                        LinearLayout a = ((LinearLayout)FragmentTimetable.v.findViewById(Integer.parseInt(viewId)));
+                                a.removeAllViews();
+                        a.setBackgroundColor(Color.rgb(223,223,223));
+                    }
                     SubscribedCourseList.find(SubscribedCourseList.class,"course_id = ?",courseId).get(0).delete();
                     finish();
                 }

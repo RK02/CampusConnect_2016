@@ -109,8 +109,9 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
         ImageView view = (ImageView) headerView.findViewById(R.id.profile_image);
         Picasso.with(HomeActivity2.this)
                 .load(getSharedPreferences("CC",MODE_PRIVATE).getString("photourl","fakedesu")).error(R.mipmap.ic_launcher)
-                .memoryPolicy(MemoryPolicy.NO_CACHE,MemoryPolicy.NO_STORE)
-                .networkPolicy(NetworkPolicy.NO_CACHE,NetworkPolicy.NO_STORE)
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
+                .placeholder(R.mipmap.ccnoti)
                 .into(view);
         ((TextView)headerView.findViewById(R.id.tv_username)).setText(getSharedPreferences("CC",MODE_PRIVATE).getString("profileName","PLACEHOLDER"));
 
@@ -206,8 +207,9 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
         ImageView view = (ImageView) headerView.findViewById(R.id.profile_image);
         Picasso.with(HomeActivity2.this).
                 load(getSharedPreferences("CC",MODE_PRIVATE).getString("photourl","fakedesu")).error(R.mipmap.ic_launcher)
-                .memoryPolicy(MemoryPolicy.NO_CACHE,MemoryPolicy.NO_STORE)
-                .networkPolicy(NetworkPolicy.NO_CACHE,NetworkPolicy.NO_STORE)
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
+                .placeholder(R.mipmap.ccnoti)
                 .into(view);
         ((TextView)headerView.findViewById(R.id.tv_points)).setText(FragmentCourses.profilePoints);
 

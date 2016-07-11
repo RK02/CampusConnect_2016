@@ -113,8 +113,8 @@ public class ProfilePageActivity extends AppCompatActivity implements FloatingAc
                 if (example != null) {
                     Picasso.with(ProfilePageActivity.this)
                             .load(example.getPhotoUrl())
-                            .memoryPolicy(MemoryPolicy.NO_CACHE,MemoryPolicy.NO_STORE)
-                            .networkPolicy(NetworkPolicy.NO_CACHE,NetworkPolicy.NO_STORE)
+                            .memoryPolicy(MemoryPolicy.NO_CACHE)
+                            .networkPolicy(NetworkPolicy.NO_CACHE)
                             .into(profile_image);
                     profile_name.setText(example.getProfileName());
                     profile_points.setText(example.getPoints());
@@ -174,6 +174,18 @@ public class ProfilePageActivity extends AppCompatActivity implements FloatingAc
     public void onMenuCollapsed() {
         fab_menu_container.getBackground().setAlpha(0);
         fab_menu_container.setOnTouchListener(null);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Picasso.with(ProfilePageActivity.this)
+                .load(getSharedPreferences("CC",MODE_PRIVATE).getString("photourl","fakedesu"))
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
+                .error(R.mipmap.ccnoti)
+                .placeholder(R.mipmap.ccnoti)
+                .into(profile_image);
     }
 }
 
