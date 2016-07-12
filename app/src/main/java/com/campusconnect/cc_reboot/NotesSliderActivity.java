@@ -25,6 +25,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import retrofit2.http.Body;
 
 /**
  * Created by RK on 04/06/2016.
@@ -37,6 +38,8 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
     TextView page_number;
     @Bind(R.id.tv_note_page_description)
     TextView page_description;
+    @Bind(R.id.tv_note_page_date)
+    TextView page_date;
 
     @Bind(R.id.container_note_page_info)
     RelativeLayout note_page_info;
@@ -44,11 +47,14 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
     @Bind(R.id.ib_trial)
     ImageButton trial_button;
 
+
+
     private ViewPagerDisable mNotesPager;
     private PagerAdapter mNotesPagerAdapter;
     ArrayList<String> Titles;
     ArrayList<String> pages;
     ArrayList<String> descriptions;
+    ArrayList<String> dates;
     int NumPages;
     public static ArrayList<ArrayList<String>> urls;
 
@@ -62,6 +68,7 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
         Titles = new ArrayList<>();
         urls = new ArrayList<>();
         pages = new ArrayList<>();
+        dates = new ArrayList<>();
         descriptions = new ArrayList<>();
 
 
@@ -72,6 +79,7 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
                 Note temp = (Note)NotePageActivity.jsonNoteList.get(i+"");
                 pages.add(temp.getUrlList().size()+"");
                 tempList.addAll(temp.getUrlList());
+                dates.add(temp.getDate());
                 descriptions.add(temp.getDescription());
                 urls.add(tempList);
                 Titles.add("Class "+i);
@@ -98,6 +106,7 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
             public void onPageSelected(int position) {
                 Log.i("sw32externviewpager",position+"");
                 page_description.setText(descriptions.get(position));
+                page_date.setText(dates.get(position));
             }
 
             @Override

@@ -343,6 +343,7 @@ public class GoogleSignInActivity extends BaseActivity implements
                 os.flush();
                 os.close();
                 int status = connection.getResponseCode();
+                Log.i("sw32signin",status +": "+ connection.getResponseMessage());
                 InputStream is = connection.getInputStream();
                 BufferedReader br = new BufferedReader(new InputStreamReader(is));
                 StringBuilder sb = new StringBuilder();

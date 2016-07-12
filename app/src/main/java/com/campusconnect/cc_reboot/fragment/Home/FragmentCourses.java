@@ -62,6 +62,8 @@ public class FragmentCourses extends Fragment{
     public static final String BASE_URL = "https://uploadnotes-2016.appspot.com/_ah/api/notesapi/v1/";
     public static final String uploadURL = "https://uploadnotes-2016.appspot.com/img";
     public static final String django = "https://campusconnect-2016.herokuapp.com";
+    //public static final String django = "http://10.75.133.109:8000";
+
     public static  String profileName = "";
     public static  String profilePoints = "";
     public static ArrayList<String> courseNames;

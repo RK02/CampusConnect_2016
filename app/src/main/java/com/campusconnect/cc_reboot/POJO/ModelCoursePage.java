@@ -17,6 +17,7 @@ public class ModelCoursePage {
     private String assignmentCount;
     private String testCount;
     private String courseName;
+    private String semester;
     private List<String> startTime = new ArrayList<String>();
     private List<String> date = new ArrayList<String>();
     private List<String> endTime = new ArrayList<String>();
@@ -24,6 +25,7 @@ public class ModelCoursePage {
     private String notesCount;
     private String studentCount;
     private String professorName;
+    private String isAdmin;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
@@ -238,5 +240,21 @@ public class ModelCoursePage {
 
     public void setProfessorName(String professorName) {
         this.professorName = professorName;
+    }
+
+    public String getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(String isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+
+    public String getSemester() {
+        return semester;
+    }
+
+    public void setSemester(String semester) {
+        this.semester = semester;
     }
 }

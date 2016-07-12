@@ -63,6 +63,10 @@ public class SearchNotesListAdapter extends
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        days = Math.abs(days);
+        hours = Math.abs(hours);
+        minutes = Math.abs(minutes);
+        seconds = Math.abs(seconds);
         if(days==0) {if(hours==0) {if(minutes==0) {if(seconds==0) {searchCourseListViewHolder.last_updated.setText("Just now");}
         else {if(seconds==1) searchCourseListViewHolder.last_updated.setText(seconds + " second ago");
         else searchCourseListViewHolder.last_updated.setText(seconds + " seconds ago");}}

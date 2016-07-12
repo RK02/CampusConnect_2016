@@ -1,17 +1,13 @@
 package com.campusconnect.cc_reboot;
 
-import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.util.Log;
-import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -34,21 +30,18 @@ import org.json.JSONObject;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.StringTokenizer;
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.POST;
 
 /**
  * Created by RK on 04/06/2016.
@@ -79,6 +72,9 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
     @Bind(R.id.container_course_info)
     RelativeLayout course_info_container;
 
+    @Bind(R.id.ib_edit_course)
+    ImageButton editCourse;
+
     @Bind(R.id.container_fab)
     FrameLayout fab_menu_container;
 
@@ -101,6 +97,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course);
         ButterKnife.bind(this);
+        editCourse.setVisibility(View.GONE);
 
         //Setting FAB container's background to be fully transparent by default
         fab_menu_container.getBackground().setAlpha(0);
@@ -113,6 +110,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
 
 
         course_pager = (ViewPager) findViewById(R.id.pager_course);
+        course_pager.setOffscreenPageLimit(3);
         course_tabs = (SlidingTabLayout_home) findViewById(R.id.tabs_course);
         course_adapter = new ViewPagerAdapter_course(getSupportFragmentManager(), Titles, Numboftabs, courseColor, this);
         course_pager.setAdapter(course_adapter);
@@ -132,12 +130,32 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
         call.enqueue(new Callback<ModelCoursePage>() {
             @Override
             public void onResponse(Call<ModelCoursePage> call, Response<ModelCoursePage> response) {
-                ModelCoursePage modelCoursePage = response.body();
+                final ModelCoursePage modelCoursePage = response.body();
                 if(modelCoursePage != null) {
                     course_title.setText(modelCoursePage.getCourseName());
                     courseTitle = course_title.getText().toString();
                     course_prof.setText(modelCoursePage.getProfessorName());
                     course_details.setText(modelCoursePage.getDescription());
+                    if(modelCoursePage.getIsAdmin().equals("1"))
+                    {
+                        editCourse.setVisibility(View.VISIBLE);
+                        editCourse.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(CoursePageActivity.this,EditCourseActivity.class);
+                                intent.putExtra("editCourse","");
+                                intent.putExtra("courseName",courseTitle);
+                                intent.putStringArrayListExtra("dates",new ArrayList<>(modelCoursePage.getDate()));
+                                intent.putStringArrayListExtra("startTimes",new ArrayList<>(modelCoursePage.getStartTime()));
+                                intent.putStringArrayListExtra("endTimes",new ArrayList<>(modelCoursePage.getEndTime()));
+                                intent.putExtra("prof",modelCoursePage.getProfessorName());
+                                intent.putExtra("sem",modelCoursePage.getSemester());
+                                //modelCoursePage.
+
+                            }
+                        });
+                    }
+
                     if(modelCoursePage.getIsSubscribed().equals("1")) subscribe_button.setChecked(true);
                 }
             }
@@ -200,8 +218,6 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                         @Override
                         public void onResponse(Call<ModelSubscribe> call, Response<ModelSubscribe> response) {
                             FirebaseMessaging.getInstance().subscribeToTopic(courseId);
-
-                            finish();
                         }
 
                         @Override
