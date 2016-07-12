@@ -1,35 +1,28 @@
 package com.campusconnect.cc_reboot;
-import android.app.FragmentManager;
-import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.multidex.MultiDex;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.campusconnect.cc_reboot.POJO.CustomNotification;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentAbout;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentAddCourse;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentFeedback;
@@ -41,7 +34,6 @@ import com.campusconnect.cc_reboot.fragment.Drawer.FragmentRate;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentSettings;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentTerms;
 import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
-import com.campusconnect.cc_reboot.fragment.Home.FragmentTimetable;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -98,6 +90,7 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
             String id = getIntent().getExtras().getString("id");
             Log.i("sw32notif", type + "::" +id);
         }
+
         fab_menu_container.getBackground().setAlpha(0);
         toolbar = (Toolbar) findViewById (R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -204,6 +197,11 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
     @Override
     protected void onResume() {
         super.onResume();
+
+        if(getIntent().hasExtra("pendingIntentAction"))
+        {
+            CustomNotification.deleteAll(CustomNotification.class);
+        }
         ImageView view = (ImageView) headerView.findViewById(R.id.profile_image);
         Picasso.with(HomeActivity2.this).
                 load(getSharedPreferences("CC",MODE_PRIVATE).getString("photourl","fakedesu")).error(R.mipmap.ic_launcher)

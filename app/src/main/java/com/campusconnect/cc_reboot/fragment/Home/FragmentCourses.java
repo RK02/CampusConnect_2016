@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.campusconnect.cc_reboot.CoursePageActivity;
+import com.campusconnect.cc_reboot.POJO.CustomNotification;
 import com.campusconnect.cc_reboot.POJO.*;
 
 import com.campusconnect.cc_reboot.R;
@@ -98,6 +99,8 @@ public class FragmentCourses extends Fragment{
         if(isConnected) {
             SubscribedCourseList a = new SubscribedCourseList();
             a.save();a.delete();
+            CustomNotification aa = new CustomNotification();
+            aa.save();aa.delete();
             swipeRefreshLayout.post(new Runnable() {
                 @Override public void run() {
                     swipeRefreshLayout.setRefreshing(true);

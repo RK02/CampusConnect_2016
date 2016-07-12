@@ -14,18 +14,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.campusconnect.cc_reboot.POJO.Note;
-import com.campusconnect.cc_reboot.auxiliary.DepthPageTransformer;
 import com.campusconnect.cc_reboot.auxiliary.ViewPagerDisable;
 import com.campusconnect.cc_reboot.auxiliary.ZoomOutPageTransformer;
 import com.campusconnect.cc_reboot.fragment.NotesSliderPageFragment;
 import com.campusconnect.cc_reboot.viewpager.ScreenSlidePagerAdapter;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -101,7 +97,6 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
             @Override
             public void onPageSelected(int position) {
                 Log.i("sw32externviewpager",position+"");
-//                book_title.setText("Class "+(position+1));
                 page_description.setText(descriptions.get(position));
             }
 

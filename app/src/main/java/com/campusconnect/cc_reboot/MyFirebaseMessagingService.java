@@ -15,24 +15,39 @@
  */
 
 package com.campusconnect.cc_reboot;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
+import com.campusconnect.cc_reboot.POJO.CustomNotification;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
+    NotificationCompat.Builder notificationBuilder;
+    NotificationCompat.InboxStyle inboxStyle;
+    Uri defaultSoundUri;
+    @Override
+    public void onCreate() {
+        defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        inboxStyle = new NotificationCompat.InboxStyle();
+        super.onCreate();
+        notificationBuilder = new NotificationCompat.Builder(this);
+
+
+    }
 
     private static final String TAG = "MyFirebaseMsgService";
     final static String CC = "CCNOTIFS";
+    int notifyId =1;
     /**
      * Called when message is received.
      *
@@ -47,17 +62,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // message, here is where that should be initiated. See sendNotification method below.
         Log.d("sw32message", "From: " + remoteMessage.getFrom());
         Map<String,String> data = remoteMessage.getData();
+        String messageId = remoteMessage.getMessageId();
         String message = data.get("message");
         String title = data.get("title");
         String type = data.get("type");
         String id = data.get("id");
-
-        /*
-         message
-         title
-         type - notes, assignment, exam
-         id
-         */
+        CustomNotification customNotification = new CustomNotification();
+        customNotification.setMessageId(messageId);
+        customNotification.setMessageBody(message);
+        customNotification.setTitle(title);
+        customNotification.setType(type);
+        customNotification.save();
         Log.d("sw32message", "Notification Message Body: " + message);
         sendNotification(title,message,type,id);
     }
@@ -71,29 +86,40 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void sendNotification(String title, String messageBody,String type, String id) {
         Intent intent = new Intent(this,HomeActivity2.class);
         Log.i("sw32notification",id + ":"+type+ ":" + messageBody);
-        switch(type){
-            case "notes":intent = new Intent(this,NotePageActivity.class); intent.putExtra("noteBookId",id); break;
-            case "assignment":intent = new Intent(this,AssignmentPageActivity.class); intent.putExtra("assignmentId",id);break;
-            case "exam":intent = new Intent(this,ExamPageActivity.class); intent.putExtra("testId",id);break;
-        }
+//        switch(type){
+//            case "notes":intent = new Intent(this,NotePageActivity.class); intent.putExtra("noteBookId",id); break;
+//            case "assignment":intent = new Intent(this,AssignmentPageActivity.class); intent.putExtra("assignmentId",id);break;
+//            case "exam":intent = new Intent(this,ExamPageActivity.class); intent.putExtra("testId",id);break;
+//        }
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.setAction(Long.toString(System.currentTimeMillis()));
+        intent.putExtra("pendingIntentAction","Clear Notifications");
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+        inboxStyle = new NotificationCompat.InboxStyle();
+        int i=0;
+        for(CustomNotification customNotification : new ArrayList<>(CustomNotification.listAll(CustomNotification.class)))
+        {
+            Log.i("sw32", "here notification");
+            i++;
+            inboxStyle.addLine(customNotification.getTitle() + " - " + customNotification.getMessageBody());
+        }
+        inboxStyle.setBigContentTitle(i + " New notifications");
+        inboxStyle.setSummaryText("Campus Connect");
+        notificationBuilder
                 .setSmallIcon(R.mipmap.ccnoti)
-                .setContentTitle(title)
-                .setContentText(messageBody)
-                .setAutoCancel(true)
+                .setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.mipmap.ccnoti))
+                .setContentTitle("Campus Connect")
+                .setStyle(inboxStyle)
                 .setGroup(CC)
+                .setGroupSummary(true)
                 .setSound(defaultSoundUri)
+                .setAutoCancel(true)
                 .setContentIntent(pendingIntent);
 
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify((int) System.currentTimeMillis() /* ID of notification */, notificationBuilder.build());
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.notify( notifyId /*(int) System.currentTimeMillis()*/ /* ID of notification */, notificationBuilder.build());
 
     }
 }
