@@ -215,7 +215,7 @@ public class GoogleSignInActivity extends BaseActivity implements
                             if(acct.getPhotoUrl()!=null)
                             personPhoto = acct.getPhotoUrl().toString()+"";
                             else
-                            personPhoto = "";
+                            personPhoto = "shit";
                             mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
                             SharedPreferences sharedpreferences = getSharedPreferences("CC", Context.MODE_PRIVATE);
                             if (sharedpreferences.contains("profileId")) {

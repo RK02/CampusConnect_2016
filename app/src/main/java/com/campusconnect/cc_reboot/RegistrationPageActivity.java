@@ -108,6 +108,7 @@ public class RegistrationPageActivity extends AppCompatActivity{
         profileName.setFocusable(false);
         Picasso.with(RegistrationPageActivity.this)
                 .load(personPhoto)
+                .error(R.mipmap.ccnoti)
                 .fit()
                 .into(profilePicture);
         collegeName.setHintTextColor(Color.BLACK);
