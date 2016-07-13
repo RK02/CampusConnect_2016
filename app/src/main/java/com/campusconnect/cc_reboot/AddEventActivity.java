@@ -1,8 +1,6 @@
 package com.campusconnect.cc_reboot;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,36 +16,24 @@ import android.widget.EditText;
 
 import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
 
-import org.json.JSONObject;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.zip.ZipInputStream;
 
-import okhttp3.Call;
-import okhttp3.Callback;
+
+
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.Response;
-import retrofit2.http.Multipart;
+
 
 public class AddEventActivity extends AppCompatActivity {
 
@@ -76,6 +62,7 @@ public class AddEventActivity extends AppCompatActivity {
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         String formattedDate = df.format(c.getTime());
         date.setText(formattedDate);
+        dueDate.setText(formattedDate);
         date.setFocusable(false);
         if(getIntent().hasExtra("courseName"))
         {
@@ -91,7 +78,6 @@ public class AddEventActivity extends AppCompatActivity {
             courseId = getIntent().getStringExtra("courseId");
             if(!courseName.equals("")) {
                 course.setText(courseName + "");
-                course.setFocusable(false);
             }
 
         }
@@ -156,6 +142,7 @@ public class AddEventActivity extends AppCompatActivity {
                 }
             });break;
         }
+        name.setFocusable(false);
     }
 
     @Override
@@ -174,7 +161,13 @@ public class AddEventActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog.setMessage("Uploading notes...");
+            if(course.getText().toString().equals("")){course.setError("Select course");course.requestFocus();return;}
+            if(name.getText().toString().equals("")){name.setError("Pick Type");name.requestFocus();return;}
+            if(dueDate.getVisibility()==View.VISIBLE){
+                if (dueDate.getText().toString().equals("")) {
+                dueDate.setError("Enter due date");dueDate.requestFocus();return;}
+                }
+            progressDialog.setMessage("Uploading...");
             progressDialog.setCancelable(false);
             progressDialog.show();
         }
@@ -191,38 +184,45 @@ public class AddEventActivity extends AppCompatActivity {
                     .addFormDataPart("courseId",courseId)
                     .addFormDataPart("type",params[0])
                     .addFormDataPart("desc",params[1]+"")
+                    .addFormDataPart("title","Test Title")
                     .addFormDataPart("date",params[2]);
             File file;
             int i=1;
             if(!params[3].equals(""))
             {
                 body.addFormDataPart("dueDate",params[3]);
+                body.addFormDataPart("dueTime","08:00:00");
             }
-            for(String temp : UploadPicturesActivity.urls)
-            {
-                Log.i("sw32","test : " + temp );
+            if(UploadPicturesActivity.urls!=null) {
+                for (String temp : UploadPicturesActivity.urls) {
+                    Log.i("sw32", "test : " + temp);
 
-                Bitmap original = null;
-                try {
-                    original = BitmapFactory.decodeStream(new FileInputStream(temp));
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    Bitmap original = null;
+                    try {
+                        original = BitmapFactory.decodeStream(new FileInputStream(temp));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    file = new File(getFilesDir() + "/temp" + i + ".jpeg");
+                    i++;
+                    FileOutputStream out = null;
+                    try {
+                        out = new FileOutputStream(file);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    int size = original.getRowBytes() * original.getHeight();
+                    Log.i("sw32size", size + "");
+                    if (size > 10000000)
+                        original.compress(Bitmap.CompressFormat.JPEG, 20, out);
+                    else
+                        original.compress(Bitmap.CompressFormat.JPEG, 50, out);
+                    body.addFormDataPart("file", "test.jpg", RequestBody.create(MediaType.parse("image/*"), file));
                 }
-                file = new File(getFilesDir()+"/temp"+i+".jpeg");
-                i++;
-                FileOutputStream out = null;
-                try {
-                    out = new FileOutputStream(file);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                int size = original.getRowBytes() * original.getHeight();
-                Log.i("sw32size",size+"");
-                if(size > 10000000)
-                    original.compress(Bitmap.CompressFormat.JPEG, 20, out);
-                else
-                    original.compress(Bitmap.CompressFormat.JPEG, 50, out);
-                body.addFormDataPart("file", "test.jpg", RequestBody.create(MediaType.parse("image/*"),file));
+            }
+            else
+            {
+                //body.addFormDataPart("file", "test.jpg", RequestBody.create(MediaType.parse("image/*"), new File("http://www.epirusportal.gr/wp-content/uploads/default-no-image.png")));
             }
             requestBody = body.build();
             Request request = new Request.Builder()

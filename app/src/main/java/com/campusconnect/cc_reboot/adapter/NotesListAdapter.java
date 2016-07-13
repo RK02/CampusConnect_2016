@@ -55,7 +55,7 @@ public class NotesListAdapter extends
     }
 
     @Override
-    public void onBindViewHolder(NotesListViewHolder notesListViewHolder, int i) {
+    public void onBindViewHolder(NotesListViewHolder notesListViewHolder, final int i) {
         notesListViewHolder.note_name.setText(mNotes.get(i).getCourseName());
         notesListViewHolder.note_pages_count.setText(mNotes.get(i).getPages());
         notesListViewHolder.note_views.setText(mNotes.get(i).getViews());
@@ -76,26 +76,34 @@ public class NotesListAdapter extends
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        days = Math.abs(days);
+        hours = Math.abs(hours);
+        minutes = Math.abs(minutes);
+        seconds = Math.abs(seconds);
         if(days==0) {if(hours==0) {if(minutes==0) {if(seconds==0) {notesListViewHolder.last_updated.setText("Just now");}
                     else {if(seconds==1) notesListViewHolder.last_updated.setText(seconds + " second ago");
                         else notesListViewHolder.last_updated.setText(seconds + " seconds ago");}}
                 else {if(minutes==1) notesListViewHolder.last_updated.setText(minutes + " minute ago");
-                    notesListViewHolder.last_updated.setText(minutes + " minutes ago");}}
+                   else notesListViewHolder.last_updated.setText(minutes + " minutes ago");}}
             else {if(hours==1)notesListViewHolder.last_updated.setText(hours + " hour ago");
             else notesListViewHolder.last_updated.setText(hours + " hours ago");}}
         else {if(days==1)notesListViewHolder.last_updated.setText(days + " day ago");
             else notesListViewHolder.last_updated.setText(days + " days ago");}
+
+
+
+
+        notesListViewHolder.notes_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent_temp = new Intent(v.getContext(), NotePageActivity.class);
+                intent_temp.putExtra("noteBookId",mNotes.get(i).getNoteBookId());
+                intent_temp.putExtra("CourseColor",courseColor);
+                context.startActivity(intent_temp);
+            }
+        });
     }
 
-    public String getNoteBookId(String noteBookName)
-    {
-        for(NoteBookList s : mNotes)
-        {
-            if(s.getCourseName().equalsIgnoreCase(noteBookName))
-                return s.getNoteBookId();
-        }
-        return null;
-    }
 
     @Override
     public NotesListViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
@@ -130,17 +138,6 @@ public class NotesListAdapter extends
             super(v);
             ButterKnife.bind(this,v);
 
-            notes_card.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent_temp = new Intent(v.getContext(), NotePageActivity.class);
-                    ViewGroup group = (ViewGroup) v.getParent();
-                    int index = group.indexOfChild(v);
-                    intent_temp.putExtra("noteBookId",mNotes.get(index).getNoteBookId());
-                    intent_temp.putExtra("CourseColor",courseColor);
-                    context.startActivity(intent_temp);
-                }
-            });
 
         }
     }

@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -24,6 +25,10 @@ import com.campusconnect.cc_reboot.POJO.ModelCollegeList;
 import com.campusconnect.cc_reboot.POJO.ModelSignUp;
 import com.campusconnect.cc_reboot.POJO.MyApi;
 import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -85,6 +90,7 @@ public class RegistrationPageActivity extends AppCompatActivity{
     ArrayList<String> collegeIds;
     String profileId;
     String collegeId;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,15 +108,16 @@ public class RegistrationPageActivity extends AppCompatActivity{
         profileName.setFocusable(false);
         Picasso.with(RegistrationPageActivity.this)
                 .load(personPhoto)
+                .error(R.mipmap.ccnoti)
                 .fit()
                 .into(profilePicture);
-        //profilePicture.setFocusable(false);
-
+        collegeName.setHintTextColor(Color.BLACK);
         Retrofit retrofit = new Retrofit.
                 Builder()
                 .baseUrl(FragmentCourses.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+       // mFirebaseAnalytics.logEvent();
         MyApi myApi = retrofit.create(MyApi.class);
         Call<ModelCollegeList> call = myApi.getCollegeList();
         call.enqueue(new Callback<ModelCollegeList>() {
@@ -126,7 +133,6 @@ public class RegistrationPageActivity extends AppCompatActivity{
 
                     }
                     ArrayAdapter<String> data = new ArrayAdapter<String>(RegistrationPageActivity.this,android.R.layout.simple_list_item_1,collegeNames);
-                    //collegeName.setFocusable(false);
                     collegeName.setAdapter(data);
                 }
             }
@@ -136,65 +142,13 @@ public class RegistrationPageActivity extends AppCompatActivity{
 
             }
         });
-
-
-
-//        batchName.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                DatePickerDialog datePickerDialog = new DatePickerDialog(RegistrationPageActivity.this, new DatePickerDialog.OnDateSetListener() {
-//                    @Override
-//                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-//                        batchName.setText(year+"");
-//                    }
-//                }, 2013, 1, 1);
-//                DatePicker datePick=datePickerDialog.getDatePicker();
-//                try{
-//                Field[] datePickerDialogFields = datePick.getClass().getDeclaredFields();
-//
-//                for (Field datePickerDialogField : datePickerDialogFields) {
-//                    if (datePickerDialogField.getName().equals("mDatePicker")) {
-//                        datePickerDialogField.setAccessible(true);
-//                        DatePicker datePicker = (DatePicker) datePickerDialogField.get(datePick);
-//                        DatePicker monPickerPicker = (DatePicker) datePickerDialogField.get(datePick);
-//
-//                        Field datePickerFields[] = datePickerDialogField.getType().getDeclaredFields();
-//                        for (Field datePickerField : datePickerFields) {
-//                            if ("mDayPicker".equals(datePickerField.getName()) || "mDaySpinner".equals(datePickerField
-//                                    .getName())) {
-//                                datePickerField.setAccessible(true);
-//                                Object dayPicker;
-//                                dayPicker = datePickerField.get(datePicker);
-//                                ((View) dayPicker).setVisibility(View.GONE);
-//                            }
-//                            if ("mMonthpicker".equals(datePickerField.getName()) || "mMonthSpinner".equals(datePickerField
-//                                    .getName())) {
-//                                datePickerField.setAccessible(true);
-//                                Object dayPicker;
-//                                dayPicker = datePickerField.get(datePicker);
-//                                ((View) dayPicker).setVisibility(View.GONE);
-//                            }
-//                        }
-//                        datePicker.setCalendarViewShown(false);
-//
-//                    }
-//
-//                }
-//            }catch(Exception ex){
-//            }
-//
-//
-//
-//
-//        }
-//        });
-
         branchName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                                                 @Override
                                                 public void onFocusChange(View v, boolean hasFocus) {
                                                     if (hasFocus) {
                                                         String temp = collegeName.getText().toString();
                                                         int index = collegeNames.indexOf(temp);
+                                                        if(index < 0 ) {collegeName.setError("Select a valid college name");collegeName.requestFocus(); return;}
                                                         branchName.setAdapter(new ArrayAdapter<String>(RegistrationPageActivity.this, android.R.layout.simple_list_item_1, colleges.get(index).getBranchNames()));
                                                     }
                                                 }
@@ -205,6 +159,11 @@ public class RegistrationPageActivity extends AppCompatActivity{
             public void onClick(View v) {
                 String temp = collegeName.getText().toString();
                 int index = collegeNames.indexOf(temp);
+                if(index < 0 ){collegeName.setError("Select a valid college name");collegeName.requestFocus();return; }
+                if(profileName.getText().toString().equals("")){profileName.setError("Enter Name");profileName.requestFocus();return;}
+                if(collegeName.getText().toString().equals("")){collegeName.setError("Enter College Name");collegeName.requestFocus();return;}
+                if(batchName.getText().toString().equals("")){batchName.setError("Enter Batch Name");batchName.requestFocus();return;}
+                if(branchName.getText().toString().equals("")){branchName.setError("Enter Branch Name");branchName.requestFocus();return;}
                 collegeId = collegeIds.get(index);
                 new sign_up().execute();
             }
@@ -220,7 +179,7 @@ public class RegistrationPageActivity extends AppCompatActivity{
         MyApi myApi = retrofit.create(MyApi.class);
 
         MyApi.getProfileIdRequest request;
-        request= new MyApi.getProfileIdRequest(profileName.getText().toString(),collegeId,batchName.getText().toString(),branchName.getText().toString(),sectionName.getText().toString(),personPhoto,personEmail);
+        request= new MyApi.getProfileIdRequest(profileName.getText().toString(),collegeId,batchName.getText().toString(),branchName.getText().toString(),sectionName.getText().toString(),personPhoto,personEmail,FirebaseInstanceId.getInstance().getToken());
         Call<ModelSignUp> call = myApi.getProfileId(request);
         call.enqueue(new Callback<ModelSignUp>() {
             @Override
@@ -229,12 +188,14 @@ public class RegistrationPageActivity extends AppCompatActivity{
                 if(signUp!=null)
                 {
                     profileId = signUp.getKey();
-                    new mobile_register().execute(personId,profileId,batchName.getText().toString(),branchName.getText().toString(),sectionName.getText().toString());
+                    new mobile_register().execute(personId,profileId,batchName.getText().toString(),branchName.getText().toString(),sectionName.getText().toString(),collegeName.getText().toString());
                     SharedPreferences sharedPreferences = getSharedPreferences("CC",MODE_PRIVATE);
                     sharedPreferences
                             .edit()
                             .putString("profileId",profileId)
                             .putString("collegeId",collegeId)
+                            .putString("personId",personId)
+                            .putString("collegeName",collegeName.getText().toString())
                             .putString("batchName",batchName.getText().toString())
                             .putString("branchName",branchName.getText().toString())
                             .putString("sectionName",sectionName.getText().toString())
@@ -289,7 +250,10 @@ public class RegistrationPageActivity extends AppCompatActivity{
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
+            if(profileName.getText().toString().equals("")){profileName.setError("Enter Name");profileName.requestFocus();return;}
+            if(collegeName.getText().toString().equals("")){collegeName.setError("Enter College Name");collegeName.requestFocus();return;}
+            if(batchName.getText().toString().equals("")){batchName.setError("Enter Batch Name");batchName.requestFocus();return;}
+            if(branchName.getText().toString().equals("")){branchName.setError("Enter Branch Name");branchName.requestFocus();return;}
             progressDialog = new ProgressDialog(RegistrationPageActivity.this);
             progressDialog.show();
         }
@@ -316,12 +280,14 @@ public class RegistrationPageActivity extends AppCompatActivity{
                 jsonObject.put("gprofileId",params[0]);
                 jsonObject.put("profileId",params[1]);
                 jsonObject.put("profileName",personName);
+                jsonObject.put("collegeName",params[5]);
                 jsonObject.put("collegeId",collegeId);
                 jsonObject.put("branchName",params[3]);
                 jsonObject.put("sectionName",params[4]);
                 jsonObject.put("batchName",params[2]);
                 jsonObject.put("imageUrl",personPhoto);
                 jsonObject.put("email",personEmail);
+                jsonObject.put("gcmId", FirebaseInstanceId.getInstance().getToken());
                 Log.i("sw32",params[0] +":"+params[1]+":"+personName );
                 os.write(jsonObject.toString().getBytes());
                 os.flush();

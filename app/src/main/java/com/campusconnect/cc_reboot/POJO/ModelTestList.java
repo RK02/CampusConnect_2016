@@ -10,29 +10,28 @@ import java.util.Map;
 
 public class ModelTestList {
 
-    private List<ModelTest> modelTestList = new ArrayList<ModelTest>();
+    private List<ModelTest> examList = new ArrayList<>();
     private String response;
     private String description;
     private String kind;
     private String etag;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
      *
      * @return
-     * The modelTestList
+     * The examList
      */
-    public List<ModelTest> getModelTestList() {
-        return modelTestList;
+    public List<ModelTest> getExamList() {
+        return examList;
     }
 
     /**
      *
-     * @param modelTestList
-     * The modelTestList
+     * @param examList
+     * The examList
      */
-    public void setModelTestList(List<ModelTest> modelTestList) {
-        this.modelTestList = modelTestList;
+    public void setExamList(List<ModelTest> examList) {
+        this.examList = examList;
     }
 
     /**
@@ -105,14 +104,6 @@ public class ModelTestList {
      */
     public void setEtag(String etag) {
         this.etag = etag;
-    }
-
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
     }
 
 }

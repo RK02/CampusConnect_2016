@@ -28,6 +28,9 @@ public interface MyApi {
     @GET("feed/ahJzfnVwbG9hZG5vdGVzLTIwMTZyFAsSB1Byb2ZpbGUYgICAgLyhggoM/")
     Call<Example> getFeed(@Query("profileId") String profileId);
 
+    @GET("branchList/ahJzfnVwbG9hZG5vdGVzLTIwMTZyFAsSB0NvbGxlZ2UYgICAgKKqkQoM")
+    Call<ModelBranchList> getBranches(@Query("collegeId") String collegeId);
+
     @POST("coursePage")
     Call<ModelCoursePage> getCourse(@Body getCourseRequest body);
     class getCourseRequest{
@@ -40,6 +43,26 @@ public interface MyApi {
             this.courseId = courseId;
         }
 
+    }
+    @POST("editProfile")
+    Call<ModelEditProfile> editProfile(@Body editProfileRequest editProfileRequest);
+    class editProfileRequest{
+        private String profileId;
+        private String profileName;
+        private String batchName;
+        private String branchName;
+        private String sectionName;
+        private String photoUrl;
+        public editProfileRequest(String profileId, String profileName,String batchName, String branchName, String sectionName, String photoUrl)
+        {
+
+            this.profileId = profileId;
+            this.profileName = profileName;
+            this.batchName = batchName;
+            this.branchName = branchName;
+            this.sectionName = sectionName;
+            this.photoUrl = photoUrl;
+        }
     }
 
     @POST("notebookList")
@@ -135,10 +158,12 @@ public interface MyApi {
         private String sectionName;
         private String photoUrl;
         private String email;
-        public getProfileIdRequest(String profileName,String collegeId,String batchName, String branchName, String sectionName,String photoUrl,String email)
+        private String gcmId;
+        public getProfileIdRequest(String profileName,String collegeId,String batchName, String branchName, String sectionName,String photoUrl,String email,String gcmId)
         {
             this.profileName = profileName;
             this.collegeId = collegeId;
+            this.gcmId = gcmId;
             if(batchName==null) this.batchName = "";
             else this.batchName = batchName;
             if(branchName==null) this.branchName ="";
@@ -191,6 +216,7 @@ public interface MyApi {
             private String colour;
             private String courseCode;
             private List<String> branchNames;
+        private String elective;
 
             public addCourseRequest(String profileId,
                                     String collegeId,
@@ -204,7 +230,8 @@ public interface MyApi {
                                     List<String> date,
                                     List<String> startTime,
                                     List<String> endTime,
-                                    String colour
+                                    String colour,
+                                    String elective
                                     ){
                 this.profileId = profileId;
                 this.collegeId = collegeId;
@@ -219,6 +246,7 @@ public interface MyApi {
                 this.professorName = professorName;
                 this.date = date;
                 this.colour = colour;
+                this.elective = elective;
         }
 
 
@@ -228,6 +256,25 @@ public interface MyApi {
 //upload issues  with retrofit, switching to asynctask
     //switched to okhttp
 
+
+    @POST("searchNotes")
+    Call<ModelNotesSearch> searchNotes(@Body notesSearch notesSearch);
+    class notesSearch{
+        private String searchString;
+        public notesSearch(String searchString)
+        {
+            this.searchString = searchString;
+        }
+    }
+    @POST("searchCourse")
+    Call<ModelCourseSearch> searchCourse(@Body courseSearch courseSearch);
+    class courseSearch{
+        private String searchString;
+        public courseSearch(String searchString)
+        {
+            this.searchString = searchString;
+        }
+    }
 
 
 }
