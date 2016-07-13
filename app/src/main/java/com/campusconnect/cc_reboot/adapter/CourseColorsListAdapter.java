@@ -2,6 +2,7 @@ package com.campusconnect.cc_reboot.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
@@ -56,6 +57,7 @@ public class CourseColorsListAdapter extends
         } else {
             CourseColorsListViewHolder.course_color_blob.setBackground(context.getResources().getDrawable(color_drawables[i]));
         }
+
     }
 
 

@@ -68,7 +68,6 @@ public class GoogleSignInActivity extends BaseActivity implements
 
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
-    int signInResult;
 
     // [START declare_auth]
     private FirebaseAuth mAuth;
@@ -171,22 +170,9 @@ public class GoogleSignInActivity extends BaseActivity implements
 
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount acct = result.getSignInAccount();
-                if (firebaseAuthWithGoogle(acct) == 1) {
-                    personName = acct.getDisplayName();
-                    personEmail = acct.getEmail();
-                    personId = acct.getId();
-                    Log.i("sw32", personId + ": here");
-                    personPhoto = acct.getPhotoUrl().toString();
-                    mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
-                    SharedPreferences sharedpreferences = getSharedPreferences("CC", Context.MODE_PRIVATE);
-                    if (sharedpreferences.contains("profileId")) {
-                        Intent home = new Intent(GoogleSignInActivity.this, HomeActivity2.class);
-                        home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(home);
-                    } else {
-                        new register_mobile().execute(personId);
-                    }
-                }
+                firebaseAuthWithGoogle(acct);
+
+
             }else {
                 // Google Sign In failed, update UI appropriately
                 // [START_EXCLUDE]
@@ -198,7 +184,7 @@ public class GoogleSignInActivity extends BaseActivity implements
     // [END onactivityresult]
 
     // [START auth_with_google]
-    private int firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+    private void firebaseAuthWithGoogle(final GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
         // [START_EXCLUDE silent]
         showProgressDialog();
@@ -219,11 +205,28 @@ public class GoogleSignInActivity extends BaseActivity implements
                             Log.w(TAG, "signInWithCredential", task.getException());
                             Toast.makeText(GoogleSignInActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            signInResult=0;
                         }
-                        else {
-                            signInResult=1;
+                        else
+                        {
+                            personName = acct.getDisplayName();
+                            personEmail = acct.getEmail();
+                            personId = acct.getId();
+                            Log.i("sw32", personId + ": here");
+                            if(acct.getPhotoUrl()!=null)
+                            personPhoto = acct.getPhotoUrl().toString()+"";
+                            else
+                            personPhoto = "shit";
+                            mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
+                            SharedPreferences sharedpreferences = getSharedPreferences("CC", Context.MODE_PRIVATE);
+                            if (sharedpreferences.contains("profileId")) {
+                                Intent home = new Intent(GoogleSignInActivity.this, HomeActivity2.class);
+                                home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(home);
+                            } else {
+                                new register_mobile().execute(personId);
+                            }
                         }
+
 
 
 
@@ -232,7 +235,6 @@ public class GoogleSignInActivity extends BaseActivity implements
                         // [END_EXCLUDE]
                     }
                 });
-        return signInResult;
     }
     // [END auth_with_google]
 
@@ -344,6 +346,7 @@ public class GoogleSignInActivity extends BaseActivity implements
                 os.flush();
                 os.close();
                 int status = connection.getResponseCode();
+                Log.i("sw32signin",status +": "+ connection.getResponseMessage());
                 InputStream is = connection.getInputStream();
                 BufferedReader br = new BufferedReader(new InputStreamReader(is));
                 StringBuilder sb = new StringBuilder();

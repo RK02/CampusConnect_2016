@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/sarthak/.gradle/caches/modules-2/files-2.1/com.jakewharton/butterknife/7.0.1/d5d13ea991eab0252e3710e5df3d6a9d4b21d461/butterknife-7.0.1.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="d5d13ea991eab0252e3710e5df3d6a9d4b21d461">
+        <dex dex="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/transforms/dex/debug/folders/1000/10/butterknife-7.0.1_1f658b72f0f6cf7b4ee2d9a2b3937aff7abb47b4/classes.dex" />
+    </item>
+    <item
+        jar="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/exploded-aar/com.google.firebase/firebase-auth/9.2.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="20ca7888c59f63d439f218a8810c88039f8bc7db">
+        <dex dex="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.firebase-firebase-auth-9.2.0_d16d5d73057594ade860df21421ebe27f4722a9e/classes.dex" />
+    </item>
+    <item
+        jar="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/exploded-aar/com.getbase/floatingactionbutton/1.10.1/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="f40cf334cdc8b098b74312e21c7741c6eefbeb0e">
+        <dex dex="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.getbase-floatingactionbutton-1.10.1_cac4fb6dd35e66e16b8b3564442bc971ebb73569/classes.dex" />
+    </item>
+    <item
+        jar="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/exploded-aar/com.google.firebase/firebase-iid/9.2.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="dc4c18602ecffb3e69cda6cdc51ba4feac0f97d7">
+        <dex dex="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.firebase-firebase-iid-9.2.0_ccff1e2704299748770f75aab58b328d78c55078/classes.dex" />
+    </item>
+    <item
+        jar="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.4.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="67bd36ee9340ec7c254108936ad16b24bed160cc">
+        <dex dex="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-v4-23.4.0_313013b42cfc2157c0ad25e970ac0adab2a4ceb8/classes.dex" />
+    </item>
+    <item
+        jar="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/exploded-aar/com.android.support/multidex/1.0.1/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="78ea232052df889856dcb7b7b542707c89bb3bfb">
+        <dex dex="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-multidex-1.0.1_c733d98bef5ae5caa58754075b0c4ef623247b0d/classes.dex" />
+    </item>
+    <item
+        jar="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/exploded-aar/com.google.firebase/firebase-analytics/9.2.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="4838df6db988160b107e954e02a745370df543b6">
+        <dex dex="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.firebase-firebase-analytics-9.2.0_3db550d7f405561e90e1f602cabd48544e29ad0b/classes.dex" />
+    </item>
+    <item
+        jar="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/9.2.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="dd7676ac12aa6653718b7ea33d93ce9d6915d526">
+        <dex dex="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-basement-9.2.0_ffc1d25a5977194b1c88654a8101c650446c819e/classes.dex" />
+    </item>
+    <item
+        jar="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/exploded-aar/com.google.firebase/firebase-auth-module/9.2.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="e791f7f2fbf9ca5b3b576916533f844dfb384024">
+        <dex dex="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.firebase-firebase-auth-module-9.2.0_8a9edc573e71f04d2ebebf032dd637eb27c6ea37/classes.dex" />
+    </item>
+    <item
+        jar="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/23.4.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="c2c594cace5d83a3227b2b6e658ecbfd586d3ed9">
+        <dex dex="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-vector-drawable-23.4.0_e59573cd5fdb5ca6f8c37f719600c789ee015fb0/classes.dex" />
+    </item>
+    <item
+        jar="/Users/sarthak/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/converter-gson/2.0.2/f8d87f15b94b8d74e7ccf61d7eedb558811cdb30/converter-gson-2.0.2.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="f8d87f15b94b8d74e7ccf61d7eedb558811cdb30">
+        <dex dex="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/transforms/dex/debug/folders/1000/10/converter-gson-2.0.2_3dda0a136b6e05352df4e230d557de32c5ed0278/classes.dex" />
+    </item>
+    <item
+        jar="/Users/sarthak/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.8.0/5ea7af56cc7c567ed9856d99efb30740e9b17ff/okio-1.8.0.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="05ea7af56cc7c567ed9856d99efb30740e9b17ff">
+        <dex dex="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/transforms/dex/debug/folders/1000/10/okio-1.8.0_7f8b3a7c556a9cc49b29f9209f79676db210b29f/classes.dex" />
+    </item>
+    <item
+        jar="/Users/sarthak/.gradle/caches/modules-2/files-2.1/com.squareup.picasso/picasso/2.5.2/7446d06ec8d4f7ffcc53f1da37c95f200dcb9387/picasso-2.5.2.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="7446d06ec8d4f7ffcc53f1da37c95f200dcb9387">
+        <dex dex="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/transforms/dex/debug/folders/1000/10/picasso-2.5.2_cb2e3ff64142b480da33f060960a2bdcb9527762/classes.dex" />
+    </item>
+    <item
+        jar="/Users/sarthak/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/18.0/cce0823396aa693798f8882e64213b1772032b09/guava-18.0.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="cce0823396aa693798f8882e64213b1772032b09">
+        <dex dex="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/transforms/dex/debug/folders/1000/10/guava-18.0_67e4a5016a763b5f4ed9d0c2eb412dcd4c397d12/classes.dex" />
+    </item>
+    <item
+        jar="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="70f133ca027350aa42ec710517cadbcb48072dc8">
+        <dex dex="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_9424de81146fead881b7fdb8d4a753f5d12a9c2d/classes.dex" />
+    </item>
+    <item
+        jar="/Users/sarthak/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/retrofit/2.0.2/43eeae0b9fb087bb3194ba59ab63a38a32fbf3e/retrofit-2.0.2.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="043eeae0b9fb087bb3194ba59ab63a38a32fbf3e">
+        <dex dex="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/transforms/dex/debug/folders/1000/10/retrofit-2.0.2_79ed9327b48f9e8b6edbc9e5ccb5b146d32ab01f/classes.dex" />
+    </item>
+    <item
+        jar="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/exploded-aar/com.google.firebase/firebase-auth-common/9.2.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="44120508d7240c3e34a05957981a5c3c9b9f61aa">
+        <dex dex="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.firebase-firebase-auth-common-9.2.0_2411d16b55ee251ff3e7a8f104056ac95ea47f4f/classes.dex" />
+    </item>
+    <item
+        jar="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/exploded-aar/com.google.firebase/firebase-messaging/9.2.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="21bb89120d84fa29afeb0f9c0ebf415bc3b45a7e">
+        <dex dex="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.firebase-firebase-messaging-9.2.0_5de4e3c0a055237bb90898655c8a4a61c46d1cae/classes.dex" />
+    </item>
+    <item
+        jar="/Users/sarthak/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/23.4.0/support-annotations-23.4.0.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="ffbe55fdb2bb456b1485831706a9eac3300bb6b8">
+        <dex dex="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-23.4.0_477bc0aa77c7e8181e7a372b1f91ed8e79fea185/classes.dex" />
+    </item>
+    <item
+        jar="/Users/sarthak/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/3.3.1/19047bdb6a4fc00a44124f64ca98e88fc204e7e3/okhttp-3.3.1.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="19047bdb6a4fc00a44124f64ca98e88fc204e7e3">
+        <dex dex="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/transforms/dex/debug/folders/1000/10/okhttp-3.3.1_b3dd51996c2327dd111e2982f7da3d19913928f6/classes.dex" />
+    </item>
+    <item
+        jar="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/23.1.1/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="5e412e954a24c5310a459c09870e4e2081aceb03">
+        <dex dex="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-cardview-v7-23.1.1_cf871761917f27cc9a2fa07da74ba7c0df2fc03b/classes.dex" />
+    </item>
+    <item
+        jar="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.2.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="30489a97b06cc3945bdbcc1770089af9e3b3b64d">
+        <dex dex="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-base-9.2.0_d8d24db6da42cc8fe384f82e7d27e9c3d6c6b2b6/classes.dex" />
+    </item>
+    <item
+        jar="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/exploded-aar/com.google.firebase/firebase-common/9.2.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="363f626ad5686283250cdb6073ae1bba5cb07a87">
+        <dex dex="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.firebase-firebase-common-9.2.0_5d59cc7fae823f0deddad13842a2afee2f6888e8/classes.dex" />
+    </item>
+    <item
+        jar="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.4.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="ec75036c3c52e451d0cde50a5aedaf5fd32354a0">
+        <dex dex="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-recyclerview-v7-23.4.0_44aa6e6f7dfd6692587cf1ec2a35316b9f3b81da/classes.dex" />
+    </item>
+    <item
+        jar="/Users/sarthak/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.6.2/f1bc476cc167b18e66c297df599b2377131a8947/gson-2.6.2.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="f1bc476cc167b18e66c297df599b2377131a8947">
+        <dex dex="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/transforms/dex/debug/folders/1000/10/gson-2.6.2_03e8629cd07070b81884f8c6321013cc370ccb67/classes.dex" />
+    </item>
+    <item
+        jar="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-auth/9.2.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="f56a68df45e18ce77814db6553fdaa229308f49b">
+        <dex dex="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-auth-9.2.0_06054e314f13f3db6e674f8e31a435e51293073e/classes.dex" />
+    </item>
+    <item
+        jar="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/23.4.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="de4db3785756bfb0915a9f59a9b3f2fea7407be4">
+        <dex dex="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-animated-vector-drawable-23.4.0_ff42d254d4930c23a91f65fa0d8f89183a22b8e4/classes.dex" />
+    </item>
+    <item
+        jar="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/exploded-aar/com.android.support/design/23.4.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="5326d9a850d491714fef8cbfaa9ea3416f0bf0d2">
+        <dex dex="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-design-23.4.0_3d9d064fe301a2410604ee732791ebb34d4f7069/classes.dex" />
+    </item>
+    <item
+        jar="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.4.0/jars/libs/internal_impl-23.4.0.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="ea3c07504d2c8f4b13aa17c45c1b68ed9c1c3674">
+        <dex dex="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-23.4.0_765c9eea32664aac032b4becf54cf7c5dac2dc75/classes.dex" />
+    </item>
+    <item
+        jar="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/exploded-aar/com.github.satyan/sugar/1.4/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="ac045b53684345f4ec8468477e8fc5034d0d2bfd">
+        <dex dex="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.github.satyan-sugar-1.4_9ccfb743e2676bab52b87254781d8ec95cd43cc3/classes.dex" />
+    </item>
+    <item
+        jar="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-plus/9.2.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="e3f200938bb888d83c2da807cb6aee983baae254">
+        <dex dex="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-plus-9.2.0_ac6d386d751a353986f5a2ad1237ffdff115e0fc/classes.dex" />
+    </item>
+    <item
+        jar="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="3b0135612ba51acca7cca5b3cbe4b20c766eb13c">
+        <dex dex="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_076c676bbb5f245e0a7ede1eb750e6ae8f5e5d51/classes.dex" />
+    </item>
+    <item
+        jar="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-auth-base/9.2.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="f315c6b5b99081f16a79c9aaa557328a4644fe63">
+        <dex dex="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-auth-base-9.2.0_76c5aa4765a3b6c990d026922cef66e8977087b2/classes.dex" />
+    </item>
+    <item
+        jar="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-tasks/9.2.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="593fbaec1c3e100480a2bd72457b64b7dde6ac2d">
+        <dex dex="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-tasks-9.2.0_09c9744da71e9f5413fae3fe83b75b5d4e10d494/classes.dex" />
+    </item>
+    <item
+        jar="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.4.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="548f06de403a9409f00554b3ee12a9fdea0e236c">
+        <dex dex="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-appcompat-v7-23.4.0_6b5c8880ff6f1277cb139f27362b70e9d2b503d3/classes.dex" />
+    </item>
+    <item
+        jar="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/exploded-aar/com.google.firebase/firebase-analytics-impl/9.2.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="fb15fd9774b5c51dcb39d8e6fa1b6f06bcd1cd34">
+        <dex dex="/Users/sarthak/SarthakShetty@Github/CampusConnect_2016/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.firebase-firebase-analytics-impl-9.2.0_b344bf7bc41ae1d5a9c06776a5f00fec46b84fc2/classes.dex" />
+    </item>
+
+</items>

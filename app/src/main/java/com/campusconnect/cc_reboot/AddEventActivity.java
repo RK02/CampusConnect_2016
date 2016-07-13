@@ -78,7 +78,6 @@ public class AddEventActivity extends AppCompatActivity {
             courseId = getIntent().getStringExtra("courseId");
             if(!courseName.equals("")) {
                 course.setText(courseName + "");
-                course.setFocusable(false);
             }
 
         }
@@ -143,6 +142,7 @@ public class AddEventActivity extends AppCompatActivity {
                 }
             });break;
         }
+        name.setFocusable(false);
     }
 
     @Override
@@ -184,6 +184,7 @@ public class AddEventActivity extends AppCompatActivity {
                     .addFormDataPart("courseId",courseId)
                     .addFormDataPart("type",params[0])
                     .addFormDataPart("desc",params[1]+"")
+                    .addFormDataPart("title","Test Title")
                     .addFormDataPart("date",params[2]);
             File file;
             int i=1;

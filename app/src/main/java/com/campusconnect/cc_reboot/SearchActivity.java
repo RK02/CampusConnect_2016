@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,6 +58,8 @@ public class SearchActivity extends AppCompatActivity {
     MyApi myApi;
     Call<ModelCourseSearch> callCourse;
     Call<ModelNotesSearch> callNotes;
+    @Bind(R.id.ib_search)
+    ImageButton searchButton;
 
 
     @Override
@@ -99,7 +102,7 @@ public class SearchActivity extends AppCompatActivity {
         });
         search_tabs.setDistributeEvenly(true);
         search_tabs.setViewPager(search_pager);
-        searchBar.setImeActionLabel(">", KeyEvent.KEYCODE_ENTER);
+        searchBar.setImeActionLabel(">>", KeyEvent.KEYCODE_ENTER);
         searchBar.setInputType(InputType.TYPE_CLASS_TEXT);
         searchBar.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -107,6 +110,7 @@ public class SearchActivity extends AppCompatActivity {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     // Perform action on key press
+                    if (searchBar.getText().toString().equals("")) {searchBar.setError("Enter search text");searchBar.requestFocus();return false;}
                     hideKeyboard(SearchActivity.this);
                     String searchString = searchBar.getText().toString();
                     searchapi(searchString);
@@ -115,6 +119,15 @@ public class SearchActivity extends AppCompatActivity {
                 return false;
             }
         });
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (searchBar.getText().toString().equals("")) {searchBar.setError("Enter search text");searchBar.requestFocus();return;}
+
+                searchapi(searchBar.getText().toString());
+            }
+        });
+
 
 
 
