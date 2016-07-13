@@ -25,6 +25,7 @@ import com.campusconnect.cc_reboot.POJO.ModelCollegeList;
 import com.campusconnect.cc_reboot.POJO.ModelSignUp;
 import com.campusconnect.cc_reboot.POJO.MyApi;
 import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -89,6 +90,7 @@ public class RegistrationPageActivity extends AppCompatActivity{
     ArrayList<String> collegeIds;
     String profileId;
     String collegeId;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +116,7 @@ public class RegistrationPageActivity extends AppCompatActivity{
                 .baseUrl(FragmentCourses.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+       // mFirebaseAnalytics.logEvent();
         MyApi myApi = retrofit.create(MyApi.class);
         Call<ModelCollegeList> call = myApi.getCollegeList();
         call.enqueue(new Callback<ModelCollegeList>() {

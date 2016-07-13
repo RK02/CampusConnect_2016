@@ -39,6 +39,7 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
@@ -78,6 +79,7 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
     GoogleApiClient mGoogleApiClient;
     Fragment homefrag;
     View headerView;
+    private FirebaseAnalytics firebaseAnalytics;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,7 +109,7 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
                 .placeholder(R.mipmap.ccnoti)
                 .into(view);
         ((TextView)headerView.findViewById(R.id.tv_username)).setText(getSharedPreferences("CC",MODE_PRIVATE).getString("profileName","PLACEHOLDER"));
-
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         //Setting Home Fragment as default
 
@@ -237,6 +239,11 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
     //Layout definition when FAB is expanded
     @Override
     public void onMenuExpanded() {
+
+        Bundle params = new Bundle();
+        params.putString("open_menu","yay");
+        firebaseAnalytics.logEvent("fab_pressed_event", params);
+
         fabMenu.findViewById(R.id.fab_event).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -26,6 +26,7 @@ import com.campusconnect.cc_reboot.POJO.*;
 
 import com.campusconnect.cc_reboot.R;
 import com.campusconnect.cc_reboot.adapter.CourseListAdapter;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
@@ -58,6 +59,7 @@ public class FragmentCourses extends Fragment{
     Call<Example> call;
     ConnectivityManager cm;
     NetworkInfo activeNetwork;
+    private FirebaseAnalytics mFirebaseAnalytics;
     boolean isConnected;
     public static final String BASE_URL = "https://uploadnotes-2016.appspot.com/_ah/api/notesapi/v1/";
     public static final String uploadURL = "https://uploadnotes-2016.appspot.com/img";
@@ -86,6 +88,8 @@ public class FragmentCourses extends Fragment{
         course_list = (RecyclerView) v.findViewById (R.id.rv_courses);
         ArrayList<SubscribedCourseList> courses = new ArrayList<>();
         timeTableViews = new HashMap<>();
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
+
         //Setting the recyclerView
 
         mLayoutManager = new LinearLayoutManager(v.getContext());
