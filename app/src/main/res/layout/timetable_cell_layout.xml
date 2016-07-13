@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="LOL"
+        android:id="@+id/cellText"
         android:textColor="#000000"
         android:padding="4dp"
         android:textSize="14sp"/>

@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.campusconnect.cc_reboot;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -28,7 +26,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -45,10 +42,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-
+import com.google.firebase.iid.FirebaseInstanceId;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -57,7 +53,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-
 /**
  * Demonstrate Firebase Authentication using a Google ID Token.
  */
@@ -154,23 +149,7 @@ public class GoogleSignInActivity extends BaseActivity implements
 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount acct = result.getSignInAccount();
                 firebaseAuthWithGoogle(acct);
-                personName = acct.getDisplayName();
-                personEmail = acct.getEmail();
-                personId = acct.getId();
-                Log.i("sw32",personId + ": here");
-                personPhoto = acct.getPhotoUrl().toString();
-                mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
-                SharedPreferences sharedpreferences = getSharedPreferences("CC", Context.MODE_PRIVATE);
-                if(sharedpreferences.contains("profileId")){
-                    Intent home = new Intent(GoogleSignInActivity.this,HomeActivity2.class);
-                    home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(home);
-                }
-                else
-                {
-                    new register_mobile().execute(personId);
-                }
-            } else {
+            }else {
 // Google Sign In failed, update UI appropriately
 // [START_EXCLUDE]
                 updateUI(null);
@@ -180,7 +159,7 @@ public class GoogleSignInActivity extends BaseActivity implements
     }
     // [END onactivityresult]
 // [START auth_with_google]
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+    private void firebaseAuthWithGoogle(final GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
 // [START_EXCLUDE silent]
         showProgressDialog();
@@ -198,6 +177,26 @@ public class GoogleSignInActivity extends BaseActivity implements
                             Log.w(TAG, "signInWithCredential", task.getException());
                             Toast.makeText(GoogleSignInActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            personName = acct.getDisplayName();
+                            personEmail = acct.getEmail();
+                            personId = acct.getId();
+                            Log.i("sw32", personId + ": here");
+                            if(acct.getPhotoUrl()!=null)
+                                personPhoto = acct.getPhotoUrl().toString()+"";
+                            else
+                                personPhoto = "shit";
+                            mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
+                            SharedPreferences sharedpreferences = getSharedPreferences("CC", Context.MODE_PRIVATE);
+                            if (sharedpreferences.contains("profileId")) {
+                                Intent home = new Intent(GoogleSignInActivity.this, HomeActivity2.class);
+                                home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(home);
+                            } else {
+                                new register_mobile().execute(personId);
+                            }
                         }
 // [START_EXCLUDE]
                         hideProgressDialog();
@@ -296,10 +295,12 @@ public class GoogleSignInActivity extends BaseActivity implements
                 connection.connect();
                 DataOutputStream os = new DataOutputStream(connection.getOutputStream());
                 jsonObject.put("gprofileId",params[0]);
+                jsonObject.put("gcmId",FirebaseInstanceId.getInstance().getToken());
                 os.write(jsonObject.toString().getBytes());
                 os.flush();
                 os.close();
                 int status = connection.getResponseCode();
+                Log.i("sw32signin",status +": "+ connection.getResponseMessage());
                 InputStream is = connection.getInputStream();
                 BufferedReader br = new BufferedReader(new InputStreamReader(is));
                 StringBuilder sb = new StringBuilder();

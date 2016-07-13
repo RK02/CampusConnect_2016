@@ -22,6 +22,7 @@ import com.campusconnect.cc_reboot.auxiliary.ScrollViewListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -67,16 +68,19 @@ public class FragmentTimetable extends Fragment implements ScrollViewListener{
     String startTime[]={"13:00","14:00"};
     String endTime[]={"14:00","15:00"};
 
+    List<SubscribedCourseList> subscribedCourseListList;
+
     TableRow row;
     LinearLayout cell_container;
 
     HashMap<Integer, TableRow> map = new HashMap<Integer, TableRow>();
 
+    public static View v;
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_timetable_true, container, false);
+        v = inflater.inflate(R.layout.fragment_timetable, container, false);
         ButterKnife.bind(this,v);
-
         map.put(1,row_1);
         map.put(2,row_2);
         map.put(3,row_3);
@@ -105,10 +109,8 @@ public class FragmentTimetable extends Fragment implements ScrollViewListener{
         }
 
 
-
         header_scroll_horizontal.setScrollViewListener(this);
         body_scroll_horizontal.setScrollViewListener(this);
-
         return v;
     }
 
@@ -133,10 +135,8 @@ public class FragmentTimetable extends Fragment implements ScrollViewListener{
                 cell_container.setPadding(0,16,0,16);
                 cell_container.setOrientation(LinearLayout.VERTICAL);
                 cell_container.setId(Integer.parseInt(i+""+j));
-
                 map.get(j).addView(cell_container);
             }
-
     }
 
 }
