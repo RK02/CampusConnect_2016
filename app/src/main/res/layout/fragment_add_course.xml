@@ -153,7 +153,7 @@
                 android:textColorHint="#A0A0A0"
                 android:textSize="16sp" />
 
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/et_courseBranch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -168,12 +168,24 @@
                 android:textColor="@color/ColorTextInfo"
                 android:textColorHint="#A0A0A0"
                 android:textSize="16sp" />
+            <CheckBox
+                android:id="@+id/chk_branches"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/et_courseBranch"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:paddingBottom="4dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="16dp"
+                android:paddingTop="4dp"
+                android:text="All branches" />
 
             <View
                 android:id="@+id/divider_2"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@+id/et_courseBranch"
+                android:layout_below="@+id/chk_branches"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="16dp"
                 android:background="@color/ColorKeyStatContainer" />

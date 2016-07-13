@@ -45,6 +45,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -67,6 +68,7 @@ public class GoogleSignInActivity extends BaseActivity implements
 
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
+    int signInResult;
 
     // [START declare_auth]
     private FirebaseAuth mAuth;
@@ -166,26 +168,26 @@ public class GoogleSignInActivity extends BaseActivity implements
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
+
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount acct = result.getSignInAccount();
-                firebaseAuthWithGoogle(acct);
-                personName = acct.getDisplayName();
-                personEmail = acct.getEmail();
-                personId = acct.getId();
-                Log.i("sw32",personId + ": here");
-                personPhoto = acct.getPhotoUrl().toString();
-                mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
-                SharedPreferences sharedpreferences = getSharedPreferences("CC", Context.MODE_PRIVATE);
-                if(sharedpreferences.contains("profileId")){
-                    Intent home = new Intent(GoogleSignInActivity.this,HomeActivity2.class);
-                    home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(home);
+                if (firebaseAuthWithGoogle(acct) == 1) {
+                    personName = acct.getDisplayName();
+                    personEmail = acct.getEmail();
+                    personId = acct.getId();
+                    Log.i("sw32", personId + ": here");
+                    personPhoto = acct.getPhotoUrl().toString();
+                    mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
+                    SharedPreferences sharedpreferences = getSharedPreferences("CC", Context.MODE_PRIVATE);
+                    if (sharedpreferences.contains("profileId")) {
+                        Intent home = new Intent(GoogleSignInActivity.this, HomeActivity2.class);
+                        home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(home);
+                    } else {
+                        new register_mobile().execute(personId);
+                    }
                 }
-                else
-                {
-                    new register_mobile().execute(personId);
-                }
-            } else {
+            }else {
                 // Google Sign In failed, update UI appropriately
                 // [START_EXCLUDE]
                 updateUI(null);
@@ -196,11 +198,12 @@ public class GoogleSignInActivity extends BaseActivity implements
     // [END onactivityresult]
 
     // [START auth_with_google]
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+    private int firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
         // [START_EXCLUDE silent]
         showProgressDialog();
         // [END_EXCLUDE]
+
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
@@ -216,9 +219,12 @@ public class GoogleSignInActivity extends BaseActivity implements
                             Log.w(TAG, "signInWithCredential", task.getException());
                             Toast.makeText(GoogleSignInActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-
-
+                            signInResult=0;
                         }
+                        else {
+                            signInResult=1;
+                        }
+
 
 
                         // [START_EXCLUDE]
@@ -226,6 +232,7 @@ public class GoogleSignInActivity extends BaseActivity implements
                         // [END_EXCLUDE]
                     }
                 });
+        return signInResult;
     }
     // [END auth_with_google]
 
@@ -332,6 +339,7 @@ public class GoogleSignInActivity extends BaseActivity implements
                 connection.connect();
                 DataOutputStream os = new DataOutputStream(connection.getOutputStream());
                 jsonObject.put("gprofileId",params[0]);
+                jsonObject.put("gcmId",FirebaseInstanceId.getInstance().getToken());
                 os.write(jsonObject.toString().getBytes());
                 os.flush();
                 os.close();

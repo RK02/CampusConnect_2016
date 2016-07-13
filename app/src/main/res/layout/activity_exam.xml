@@ -253,7 +253,9 @@
             android:textSize="16sp"
             android:gravity="center"
             android:textOff="REMIND ME"
-            android:textOn="ADDED TO REMIND ME"/>
+            android:textOn="ADDED TO REMIND ME"
+            android:checked="false"
+            android:id="@+id/exam_remind" />
 
     </LinearLayout>
 

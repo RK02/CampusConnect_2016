@@ -45,8 +45,6 @@ public class CustomPagerAdapter extends PagerAdapter {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View rootView = inflater.inflate(R.layout.notes_images, collection, false);
         GestureImageView notes_fullscreen = (GestureImageView) rootView.findViewById(R.id.iv_notes_fullscreen);
-        int index = collection.indexOfChild(rootView);
-        Log.i("sw3adapter",""+index+ ":"+ position);
         Picasso.with(mContext).
                 load(NotesSliderActivity.urls.get(mlevel).get(position)).
                 fit().

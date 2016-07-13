@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,10 +67,14 @@ public class FragmentExam extends Fragment {
             public void onResponse(Call<ModelTestList> call, Response<ModelTestList> response) {
                 ModelTestList testList = response.body();
                 if(testList!=null) {
-                    List<ModelTest> modelTests = testList.getModelTestList();
+                    List<ModelTest> modelTests = testList.getExamList();
                     for (ModelTest modelTest : modelTests) {
                         mExamsAdapter.add(modelTest);
                     }
+                }
+                else
+                {
+                    Log.i("sw32exam","null");
                 }
             }
 

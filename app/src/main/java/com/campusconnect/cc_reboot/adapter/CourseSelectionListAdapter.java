@@ -59,6 +59,17 @@ public class CourseSelectionListAdapter extends
         courseSelectionListViewHolder.course_title.setText(courses.get(i).getCourseName());
         courseSelectionListViewHolder.course_prof.setText(courses.get(i).getProfessorName());
         courseSelectionListViewHolder.course_section.setText(courses.get(i).getSectionNames().toString());
+        courseSelectionListViewHolder.course_subscribe.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) {
+                    subbed.add(courses.get(a).getCourseId());
+                }
+                else {
+                    subbed.remove(courses.get(a).getCourseId());
+                }
+            }
+        });
     }
 
     @Override
@@ -90,35 +101,6 @@ public class CourseSelectionListAdapter extends
         public CourseSelectionListViewHolder(View v) {
             super(v);
             ButterKnife.bind(this,v);
-
-
-
-//            course_select_card.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//
-//
-//                    //Set the course as subscribed
-//                }
-//            });
-
-            course_subscribe.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ViewGroup group = (ViewGroup) course_select_card.getParent();
-                    if(course_subscribe.isChecked()) {
-
-                        subbed.add(courses.get(group.indexOfChild(course_select_card)).getCourseId());
-
-                    }
-                    else {
-
-                        subbed.remove(courses.get(group.indexOfChild(course_select_card)).getCourseId());
-
-                    }
-
-                }
-            });
 
         }
     }

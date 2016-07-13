@@ -3,6 +3,8 @@ package com.campusconnect.cc_reboot.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.campusconnect.cc_reboot.CoursePageActivity;
 import com.campusconnect.cc_reboot.POJO.SubscribedCourseList;
@@ -33,6 +36,9 @@ public class CourseListAdapter extends
         RecyclerView.Adapter<CourseListAdapter.CourseListViewHolder> {
 
     Context context;
+    ConnectivityManager cm;
+    NetworkInfo activeNetwork;
+    boolean isConnected;
 
     private ArrayList<SubscribedCourseList> mCourses;
 
@@ -47,15 +53,7 @@ public class CourseListAdapter extends
         mCourses.add(v);
         notifyDataSetChanged();
     }
-    public String getCourseId(String courseName)
-    {
-        for(SubscribedCourseList s : mCourses)
-        {
-            if(s.getCourseName().equalsIgnoreCase(courseName))
-                return s.getCourseId();
-        }
-        return null;
-    }
+
     public SubscribedCourseList getItem(int position)
     {
         return mCourses.get(position);
@@ -77,7 +75,7 @@ public class CourseListAdapter extends
     }
 
     @Override
-    public void onBindViewHolder(CourseListViewHolder courseListViewHolder, int i) {
+    public void onBindViewHolder(CourseListViewHolder courseListViewHolder, final int i) {
        SubscribedCourseList a =  mCourses.get(i);
         courseListViewHolder.notes_unseen_count.setText(a.getRecentNotes());
         courseListViewHolder.exams_count.setText(a.getDueExams());
@@ -85,22 +83,113 @@ public class CourseListAdapter extends
         courseListViewHolder.course_title.setText(a.getCourseName());
         courseListViewHolder.courseProfessor.setText(a.getProfessorName());
         List<String> days = a.getDate();
-        String tt= "";
-        for(String temp : days)
-        {
-           switch (temp)
-           {
-               case "1":tt+="M ";break;
-               case "2":tt+="T ";break;
-               case "3":tt+="W ";break;
-               case "4":tt+="T ";break;
-               case "5":tt+="F ";break;
-               case "6":tt+="S ";break;
-           }
+        if(days!=null) {
+            String tt = "";
+            for (String temp : days) {
+                switch (temp) {
+                    case "1":
+                        tt += "M ";
+                        break;
+                    case "2":
+                        tt += "T ";
+                        break;
+                    case "3":
+                        tt += "W ";
+                        break;
+                    case "4":
+                        tt += "T ";
+                        break;
+                    case "5":
+                        tt += "F ";
+                        break;
+                    case "6":
+                        tt += "S ";
+                        break;
+                }
+            }
+            a.setTimetable(tt);
         }
-        courseListViewHolder.timetableGlance.setText(tt);
-        //int color = Color.parseColor(a.getColour());
-        //courseListViewHolder.course_card.setBackgroundColor(color);
+        courseListViewHolder.timetableGlance.setText(a.getTimetable());
+        final int color = Color.parseColor(a.getColour());
+        courseListViewHolder.course_card.setCardBackgroundColor(color);
+
+        courseListViewHolder.course_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                activeNetwork =  cm.getActiveNetworkInfo();
+                isConnected= activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+                if(isConnected) {
+                    Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
+                    String id = mCourses.get(i).getCourseId();
+                    intent_temp.putExtra("courseId", id);
+                    intent_temp.putExtra("courseColor", color);
+                    context.startActivity(intent_temp);
+                }
+                else
+                {
+                    Toast.makeText(context,"Check your connection",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        courseListViewHolder.notes_count_container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                activeNetwork =  cm.getActiveNetworkInfo();
+                isConnected= activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+                if(isConnected) {
+                    Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
+                    intent_temp.putExtra("TAB", 0);
+                    String id = mCourses.get(i).getCourseId();
+                    intent_temp.putExtra("courseId", id);
+                    intent_temp.putExtra("courseColor", color);
+                    context.startActivity(intent_temp);
+                } else
+                {
+                    Toast.makeText(context,"Check your connection",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        courseListViewHolder.assignments_count_container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                activeNetwork =  cm.getActiveNetworkInfo();
+                isConnected= activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+                if(isConnected) {
+                    Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
+                    intent_temp.putExtra("TAB", 1);
+                    String id = mCourses.get(i).getCourseId();
+                    intent_temp.putExtra("courseId", id);
+                    intent_temp.putExtra("courseColor", color);
+                    context.startActivity(intent_temp);
+                } else
+                {
+                    Toast.makeText(context,"Check your connection",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        courseListViewHolder.exams_count_container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                activeNetwork =  cm.getActiveNetworkInfo();
+                isConnected= activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+                if(isConnected) {
+                    Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
+                    intent_temp.putExtra("TAB", 2);
+                    String id = mCourses.get(i).getCourseId();
+                    intent_temp.putExtra("courseId", id);
+                    intent_temp.putExtra("courseColor", color);
+                    context.startActivity(intent_temp);
+                } else
+                {
+                    Toast.makeText(context,"Check your connection",Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
 
     }
 
@@ -141,66 +230,6 @@ public class CourseListAdapter extends
         public CourseListViewHolder(View v) {
             super(v);
             ButterKnife.bind(this, v);
-
-            course_card.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
-                    ViewGroup viewGroup = (ViewGroup) course_card.getParent();
-                    int index = viewGroup.indexOfChild(course_card);
-                    String id = mCourses.get(index).getCourseId();
-                    intent_temp.putExtra("courseId",id);
-                    intent_temp.putExtra("courseColor",mCourses.get(index).getColour());
-                    context.startActivity(intent_temp);
-
-
-                    context.startActivity(intent_temp);
-                }
-            });
-            notes_count_container.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
-                    intent_temp.putExtra("TAB",0);
-                    ViewGroup viewGroup = (ViewGroup) course_card.getParent();
-                    int index = viewGroup.indexOfChild(course_card);
-                    String id = mCourses.get(index).getCourseId();
-                    intent_temp.putExtra("courseId",id);
-                    int c = Color.parseColor(mCourses.get(index).getColour());
-                    intent_temp.putExtra("courseColor",c);
-                    context.startActivity(intent_temp);
-                }
-            });
-            assignments_count_container.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
-                    intent_temp.putExtra("TAB",1);
-                    ViewGroup viewGroup = (ViewGroup) course_card.getParent();
-                    int index = viewGroup.indexOfChild(course_card);
-                    String id = mCourses.get(index).getCourseId();
-                    intent_temp.putExtra("courseId",id);
-                    int c = Color.parseColor(mCourses.get(index).getColour());
-                    intent_temp.putExtra("courseColor",c);
-                    context.startActivity(intent_temp);
-                }
-            });
-            exams_count_container.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
-                    intent_temp.putExtra("TAB",2);
-                    ViewGroup viewGroup = (ViewGroup) course_card.getParent();
-                    int index = viewGroup.indexOfChild(course_card);
-                    String id = mCourses.get(index).getCourseId();
-                    intent_temp.putExtra("courseId",id);
-                    int c = Color.parseColor(mCourses.get(index).getColour());
-                    intent_temp.putExtra("courseColor",c);
-                    context.startActivity(intent_temp);
-
-                }
-            });
-
         }
     }
 }

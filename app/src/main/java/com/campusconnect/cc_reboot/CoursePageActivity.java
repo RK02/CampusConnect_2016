@@ -25,6 +25,7 @@ import com.campusconnect.cc_reboot.slidingtab.SlidingTabLayout_home;
 import com.campusconnect.cc_reboot.viewpager.ViewPagerAdapter_course;
 import com.campusconnect.cc_reboot.POJO.*;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,6 +36,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.StringTokenizer;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -106,6 +108,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
         courseColor = getIntent().getIntExtra("courseColor", Color.rgb(224,224,224));
 
         course_info_container.setBackgroundColor(courseColor);
+
 
         course_pager = (ViewPager) findViewById(R.id.pager_course);
         course_tabs = (SlidingTabLayout_home) findViewById(R.id.tabs_course);
@@ -191,9 +194,9 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                     call.enqueue(new Callback<ModelSubscribe>() {
                         @Override
                         public void onResponse(Call<ModelSubscribe> call, Response<ModelSubscribe> response) {
+                            FirebaseMessaging.getInstance().subscribeToTopic(courseId);
 
-                            Intent intent_temp = new Intent(getApplicationContext(), HomeActivity2.class);
-                            startActivity(intent_temp);
+                            finish();
                         }
 
                         @Override
@@ -206,7 +209,9 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                 {
 
                     new unsub().execute();
-
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic(courseId);
+                    SubscribedCourseList.find(SubscribedCourseList.class,"course_id = ?",courseId).get(0).delete();
+                    finish();
                 }
 
                 break;
@@ -243,6 +248,11 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                 e.printStackTrace();
             }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
         }
     }
 

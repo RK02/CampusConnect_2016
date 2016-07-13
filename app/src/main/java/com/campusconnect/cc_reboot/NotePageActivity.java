@@ -20,6 +20,7 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.campusconnect.cc_reboot.POJO.ModelNoteBook;
 import com.campusconnect.cc_reboot.POJO.ModelNoteBookList;
@@ -32,6 +33,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import com.campusconnect.cc_reboot.POJO.*;
 import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
@@ -88,7 +91,7 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
     ImageButton share_note_button;
 
     @Bind(R.id.tb_bookmark)
-    Button bookmark_note_button;
+    ToggleButton bookmark_note_button;
     @Bind(R.id.b_rent)
     Button rent_note_button;
 
@@ -129,6 +132,7 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onResponse(Call<ModelNoteBook> call, Response<ModelNoteBook> response) {
                 ModelNoteBook noteBook = response.body();
+                if(noteBook.getBookmarkStatus().equals("0")){bookmark_note_button.setChecked(false);}else{bookmark_note_button.setChecked(true);}
                 noteList = noteBook.getNotes();
                 jsonNoteList = new JSONObject();
                 for(Note a : noteList)
@@ -283,6 +287,12 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            if (bookmark_note_button.isChecked()) {
+                FirebaseMessaging.getInstance().subscribeToTopic(noteBookId);
+            }
+            else {
+                FirebaseMessaging.getInstance().unsubscribeFromTopic(noteBookId);
+            }
             progressDialog.dismiss();
         }
     }
