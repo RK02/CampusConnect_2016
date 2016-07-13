@@ -50,5 +50,6 @@
     <!-- Server Client ID.  This should be a valid Web OAuth 2.0 Client ID obtained
          from https://console.developers.google.com/ -->
     <string name="server_client_id">195077393179-4ucp5rq0osi2975f9h1vo41ifm4crr2o.apps.googleusercontent.com</string>
+    <string name="title_activity_edit_course">EditCourseActivity</string>
 
 </resources>

@@ -87,7 +87,6 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
         call.enqueue(new Callback<ModelAssignment>() {
             @Override
             public void onResponse(Call<ModelAssignment> call, Response<ModelAssignment> response) {
-
                 ModelAssignment assignment = response.body();
                 assignment_name.setText(assignment.getAssignmentTitle());
                 uploader.setText(assignment.getUploaderName());

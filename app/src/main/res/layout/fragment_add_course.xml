@@ -90,7 +90,7 @@
                 android:layout_below="@+id/et_courseProf"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/edittext_rounded_upload"
-                android:hint="Semester"
+                android:hint="Semester, Odd/Even"
                 android:paddingBottom="4dp"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"

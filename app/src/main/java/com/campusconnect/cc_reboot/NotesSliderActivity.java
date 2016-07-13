@@ -14,21 +14,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.campusconnect.cc_reboot.POJO.Note;
-import com.campusconnect.cc_reboot.auxiliary.DepthPageTransformer;
 import com.campusconnect.cc_reboot.auxiliary.ViewPagerDisable;
 import com.campusconnect.cc_reboot.auxiliary.ZoomOutPageTransformer;
 import com.campusconnect.cc_reboot.fragment.NotesSliderPageFragment;
 import com.campusconnect.cc_reboot.viewpager.ScreenSlidePagerAdapter;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import retrofit2.http.Body;
 
 /**
  * Created by RK on 04/06/2016.
@@ -41,6 +38,8 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
     TextView page_number;
     @Bind(R.id.tv_note_page_description)
     TextView page_description;
+    @Bind(R.id.tv_note_page_date)
+    TextView page_date;
 
     @Bind(R.id.container_note_page_info)
     RelativeLayout note_page_info;
@@ -48,9 +47,14 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
     @Bind(R.id.ib_trial)
     ImageButton trial_button;
 
+
+
     private ViewPagerDisable mNotesPager;
     private PagerAdapter mNotesPagerAdapter;
     ArrayList<String> Titles;
+    ArrayList<String> pages;
+    ArrayList<String> descriptions;
+    ArrayList<String> dates;
     int NumPages;
     public static ArrayList<ArrayList<String>> urls;
 
@@ -63,13 +67,20 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
 
         Titles = new ArrayList<>();
         urls = new ArrayList<>();
+        pages = new ArrayList<>();
+        dates = new ArrayList<>();
+        descriptions = new ArrayList<>();
+
 
         for(int i =1 ; i<=NotePageActivity.jsonNoteList.length(); i++)
         {
             try {
                 ArrayList<String> tempList = new ArrayList<>();
                 Note temp = (Note)NotePageActivity.jsonNoteList.get(i+"");
+                pages.add(temp.getUrlList().size()+"");
                 tempList.addAll(temp.getUrlList());
+                dates.add(temp.getDate());
+                descriptions.add(temp.getDescription());
                 urls.add(tempList);
                 Titles.add("Class "+i);
             } catch (JSONException e) {
@@ -79,12 +90,31 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
         NumPages = Titles.size();
 
 
+
         // Instantiate a ViewPager and a PagerAdapter.
         mNotesPager = (ViewPagerDisable) findViewById(R.id.pager);
         mNotesPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(),Titles,urls,NumPages,this);
         mNotesPager.setAdapter(mNotesPagerAdapter);
         mNotesPager.setPageTransformer(true, new ZoomOutPageTransformer());
+        mNotesPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Log.i("sw32externviewpager",position+"");
+                page_description.setText(descriptions.get(position));
+                page_date.setText(dates.get(position));
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        mNotesPager.setCurrentItem(NotePageActivity.jsonNoteList.length()-1);
         //Hiding the notepage info
         Animation fadeOut = new AlphaAnimation(1, 0.4f);
         fadeOut.setInterpolator(new AccelerateInterpolator()); //and this
@@ -107,6 +137,8 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
             mNotesPager.setCurrentItem(mNotesPager.getCurrentItem() - 1);
         }
     }
+
+
 
     @Override
     public void onClick(View view) {
@@ -150,6 +182,7 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
     public void notePageInfo(String class_no, String curr_page, String total_pages) {
         book_title.setText(class_no);
         page_number.setText(curr_page+"/"+total_pages);
+       // page_description.setText(descriptions.get(Integer.parseInt(class_no.split(" ")[1])));
     }
 
     @Override
@@ -164,5 +197,6 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
             trial_button.startAnimation(fadeOut);
         }
     }
+
 }
 

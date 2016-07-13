@@ -23,6 +23,8 @@ import com.campusconnect.cc_reboot.slidingtab.SlidingTabLayout_home;
 import com.campusconnect.cc_reboot.viewpager.ViewPagerAdapter_course;
 import com.campusconnect.cc_reboot.viewpager.ViewPagerAdapter_profile;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
@@ -109,7 +111,11 @@ public class ProfilePageActivity extends AppCompatActivity implements FloatingAc
                 Log.i("sw32", "" + response.code());
                 Example example = response.body();
                 if (example != null) {
-                    Picasso.with(ProfilePageActivity.this).load(example.getPhotoUrl()).into(profile_image);
+                    Picasso.with(ProfilePageActivity.this)
+                            .load(example.getPhotoUrl())
+                            .memoryPolicy(MemoryPolicy.NO_CACHE)
+                            .networkPolicy(NetworkPolicy.NO_CACHE)
+                            .into(profile_image);
                     profile_name.setText(example.getProfileName());
                     profile_points.setText(example.getPoints());
                 }
@@ -168,6 +174,18 @@ public class ProfilePageActivity extends AppCompatActivity implements FloatingAc
     public void onMenuCollapsed() {
         fab_menu_container.getBackground().setAlpha(0);
         fab_menu_container.setOnTouchListener(null);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Picasso.with(ProfilePageActivity.this)
+                .load(getSharedPreferences("CC",MODE_PRIVATE).getString("photourl","fakedesu"))
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
+                .error(R.mipmap.ccnoti)
+                .placeholder(R.mipmap.ccnoti)
+                .into(profile_image);
     }
 }
 
