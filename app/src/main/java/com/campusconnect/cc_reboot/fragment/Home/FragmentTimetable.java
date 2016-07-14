@@ -67,17 +67,19 @@ public class FragmentTimetable extends Fragment implements ScrollViewListener{
     String date[] = {"1","2"};
     String startTime[]={"13:00","14:00"};
     String endTime[]={"14:00","15:00"};
+
     List<SubscribedCourseList> subscribedCourseListList;
 
     TableRow row;
     LinearLayout cell_container;
 
     HashMap<Integer, TableRow> map = new HashMap<Integer, TableRow>();
+
     public static View v;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        v = inflater.inflate(R.layout.fragment_timetable, container, false);
+        v = inflater.inflate(R.layout.fragment_timetable_true, container, false);
         ButterKnife.bind(this,v);
         map.put(1,row_1);
         map.put(2,row_2);
@@ -90,7 +92,23 @@ public class FragmentTimetable extends Fragment implements ScrollViewListener{
         map.put(9,row_9);
         map.put(10,row_10);
         map.put(11,row_11);
+
         setUpTable();
+
+        for(int i=0;i<2;i++){
+
+
+            //Table cell
+            View cell = LayoutInflater.from(getContext()).inflate(
+                    R.layout.timetable_cell_layout, cell_container, false);
+
+            cell_container = (LinearLayout) v.findViewById(Integer.parseInt(date[i]+""+(Integer.parseInt(startTime[i].substring(0,2))- 6)));
+            cell_container.setBackgroundColor(Color.WHITE);
+
+            cell_container.addView(cell);
+        }
+
+
         header_scroll_horizontal.setScrollViewListener(this);
         body_scroll_horizontal.setScrollViewListener(this);
         return v;
@@ -120,4 +138,5 @@ public class FragmentTimetable extends Fragment implements ScrollViewListener{
                 map.get(j).addView(cell_container);
             }
     }
+
 }

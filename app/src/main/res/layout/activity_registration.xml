@@ -17,6 +17,7 @@
         android:textSize="20sp" />
 
     <ScrollView
+        android:id="@+id/sv_registration"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tv_registration_title"
@@ -77,7 +78,7 @@
                     android:layout_marginTop="4dp"
                     android:background="#000000"
                     android:padding="16dp"
-                    android:src="@drawable/ic_profile_48" />
+                    android:src="@drawable/ic_profile_48_white" />
             </LinearLayout>
 
             <LinearLayout
@@ -95,8 +96,6 @@
                     android:text="Which college do you go to?"
                     android:textColor="@color/ColorTextInfo"
                     android:textSize="14sp" />
-
-
 
                 <AutoCompleteTextView
                     android:id="@+id/et_college_name"

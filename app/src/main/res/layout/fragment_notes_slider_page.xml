@@ -9,8 +9,8 @@
         android:layout_width="match_parent"
         android:clickable="true"
         android:focusable="true"
+        android:background="@android:color/transparent"
         android:focusableInTouchMode="true"
-        android:background="#eaebec"
         android:layout_height="match_parent" />
 
     <View

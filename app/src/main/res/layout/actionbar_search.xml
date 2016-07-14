@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
     android:layout_gravity="right"
-    android:background="@color/ColorPrimaryDark"
+    android:background="@color/ColorPrimary"
     android:elevation="4dp"
     android:gravity="center_vertical"
     android:paddingLeft="@dimen/activity_vertical_margin"

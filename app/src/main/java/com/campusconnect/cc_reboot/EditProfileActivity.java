@@ -1,5 +1,6 @@
 package com.campusconnect.cc_reboot;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,12 +13,16 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.campusconnect.cc_reboot.POJO.CollegeList;
@@ -64,7 +69,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by RK on 04/06/2016.
  */
-public class EditProfileActivity extends AppCompatActivity {
+public class EditProfileActivity extends AppCompatActivity implements View.OnTouchListener{
 
     @Bind(R.id.b_continue_to_course_selection)
     Button continue_to_course_selection_button;
@@ -87,6 +92,9 @@ public class EditProfileActivity extends AppCompatActivity {
     @Bind(R.id.iv_profile_picture)
     ImageView profilePicture;
 
+    @Bind(R.id.sv_registration)
+    ScrollView scrollViewReg;
+
     String personName;
     String personEmail;
     String personPhoto;
@@ -104,23 +112,24 @@ public class EditProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         ButterKnife.bind(this);
+
         collegeNames = new ArrayList<>();
-        collegeIds= new ArrayList<>();
-        personName = getSharedPreferences("CC",MODE_PRIVATE).getString("profileName","");
-        personEmail = getSharedPreferences("CC",MODE_PRIVATE).getString("email","");
-        personPhoto = getSharedPreferences("CC",MODE_PRIVATE).getString("photourl","");
-        personId = getSharedPreferences("CC",MODE_PRIVATE).getString("personId","");
-        collegeName.setText(getSharedPreferences("CC",MODE_PRIVATE).getString("collegeName",""));
-        branchName.setText(getSharedPreferences("CC",MODE_PRIVATE).getString("branchName",""));
-        batchName.setText(getSharedPreferences("CC",MODE_PRIVATE).getString("batchName",""));
-        sectionName.setText(getSharedPreferences("CC",MODE_PRIVATE).getString("sectionName",""));
+        collegeIds = new ArrayList<>();
+        personName = getSharedPreferences("CC", MODE_PRIVATE).getString("profileName", "");
+        personEmail = getSharedPreferences("CC", MODE_PRIVATE).getString("email", "");
+        personPhoto = getSharedPreferences("CC", MODE_PRIVATE).getString("photourl", "");
+        personId = getSharedPreferences("CC", MODE_PRIVATE).getString("personId", "");
+        collegeName.setText(getSharedPreferences("CC", MODE_PRIVATE).getString("collegeName", ""));
+        branchName.setText(getSharedPreferences("CC", MODE_PRIVATE).getString("branchName", ""));
+        batchName.setText(getSharedPreferences("CC", MODE_PRIVATE).getString("batchName", ""));
+        sectionName.setText(getSharedPreferences("CC", MODE_PRIVATE).getString("sectionName", ""));
         collegeName.setFocusable(false);
         profileName.setText(personName);
         profileName.setFocusable(false);
         Picasso.with(EditProfileActivity.this)
                 .load(personPhoto)
                 .fit()
-                .memoryPolicy(MemoryPolicy.NO_CACHE,MemoryPolicy.NO_STORE)
+                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                 .into(profilePicture);
         Retrofit retrofit = new Retrofit.
                 Builder()
@@ -135,13 +144,12 @@ public class EditProfileActivity extends AppCompatActivity {
                 ModelCollegeList collegeList = response.body();
                 if (collegeList != null) {
                     colleges = collegeList.getCollegeList();
-                    for(CollegeList college : colleges)
-                    {
+                    for (CollegeList college : colleges) {
                         collegeNames.add(college.getCollegeName());
                         collegeIds.add(college.getCollegeId());
 
                     }
-                    ArrayAdapter<String> data = new ArrayAdapter<>(EditProfileActivity.this,android.R.layout.simple_list_item_1,collegeNames);
+                    ArrayAdapter<String> data = new ArrayAdapter<>(EditProfileActivity.this, android.R.layout.simple_list_item_1, collegeNames);
                     collegeName.setAdapter(data);
                 }
             }
@@ -157,7 +165,11 @@ public class EditProfileActivity extends AppCompatActivity {
                 if (hasFocus) {
                     String temp = collegeName.getText().toString();
                     int index = collegeNames.indexOf(temp);
-                    if(index < 0 ) {collegeName.setError("Select a valid college name");collegeName.requestFocus(); return;}
+                    if (index < 0) {
+                        collegeName.setError("Select a valid college name");
+                        collegeName.requestFocus();
+                        return;
+                    }
                     branchName.setAdapter(new ArrayAdapter<String>(EditProfileActivity.this, android.R.layout.simple_list_item_1, colleges.get(index).getBranchNames()));
                 }
             }
@@ -168,7 +180,11 @@ public class EditProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String temp = collegeName.getText().toString();
                 int index = collegeNames.indexOf(temp);
-                if(index < 0 ){collegeName.setError("Select a valid college name");collegeName.requestFocus();return; }
+                if (index < 0) {
+                    collegeName.setError("Select a valid college name");
+                    collegeName.requestFocus();
+                    return;
+                }
                 collegeId = collegeIds.get(index);
                 new sign_up().execute();
             }
@@ -176,10 +192,15 @@ public class EditProfileActivity extends AppCompatActivity {
         profilePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(i, 69);
             }
         });
+
+        scrollViewReg.setOnTouchListener(this);
+//        batchName.setOnTouchListener(this);
+//        branchName.setOnTouchListener(this);
+
     }
 
     @Override
@@ -301,6 +322,31 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        switch (view.getId()){
+            case R.id.sv_registration:
+
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                break;
+            case R.id.et_batch:
+            case R.id.et_specialisation:
+
+                if (view.hasFocus()) {
+                    view.getParent().requestDisallowInterceptTouchEvent(true);
+                    switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
+                        case MotionEvent.ACTION_UP:
+                            view.getParent().requestDisallowInterceptTouchEvent(false);
+                            break;
+                    }
+                }
+
+                break;
+        }
+        return false;
     }
 
     class sign_up extends AsyncTask<String,String,String>

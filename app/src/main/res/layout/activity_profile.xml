@@ -30,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:elevation="5dp"
-                android:background="#424242"
+                android:background="#434343"
                 app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
 
                 <!--Course Info-->
@@ -50,7 +50,7 @@
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:layout_marginTop="16dp"
-                        android:src="@drawable/ic_profile_48"
+                        android:src="@drawable/ic_profile_48_white"
                         android:layout_centerHorizontal="true"
                         app:border_color="#55000000"
                         app:border_overlay="false"

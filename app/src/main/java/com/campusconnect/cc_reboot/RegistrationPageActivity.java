@@ -1,5 +1,6 @@
 package com.campusconnect.cc_reboot;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -10,13 +11,16 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 
 import com.campusconnect.cc_reboot.POJO.CollegeList;
@@ -58,7 +62,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by RK on 20/06/2016.
  */
-public class RegistrationPageActivity extends AppCompatActivity{
+public class RegistrationPageActivity extends AppCompatActivity implements View.OnTouchListener{
 
     @Bind(R.id.b_continue_to_course_selection)
     Button continue_to_course_selection_button;
@@ -80,6 +84,9 @@ public class RegistrationPageActivity extends AppCompatActivity{
 
     @Bind(R.id.iv_profile_picture)
     ImageView profilePicture;
+
+    @Bind(R.id.sv_registration)
+    ScrollView scrollViewReg;
 
     String personName;
     String personEmail;
@@ -168,6 +175,8 @@ public class RegistrationPageActivity extends AppCompatActivity{
                 new sign_up().execute();
             }
         });
+
+        scrollViewReg.setOnTouchListener(this);
     }
     public void SignUp()
     {
@@ -215,6 +224,18 @@ public class RegistrationPageActivity extends AppCompatActivity{
             }
         });
 
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        switch (view.getId()){
+            case R.id.sv_registration:
+
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                break;
+        }
+        return false;
     }
 
     class sign_up extends AsyncTask<String,String,String>

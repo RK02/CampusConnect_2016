@@ -1,8 +1,13 @@
 package com.campusconnect.cc_reboot.fragment.Drawer;
 
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.support.v4.app.Fragment;
 
 import android.app.TimePickerDialog;
@@ -36,6 +41,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -77,6 +83,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class FragmentAddCourse extends Fragment implements View.OnClickListener{
 
+    @Bind(R.id.sv_add_course)
+    ScrollView addCourse_scroll;
 
     @Bind(R.id.view_course_color_picker)
     View courseColorPicker;
@@ -137,6 +145,11 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_add_course, container, false);
         ButterKnife.bind(this, v);
+
+        ShapeDrawable courseColor_circle = new ShapeDrawable( new OvalShape() );
+        courseColor_circle.getPaint().setColor(Color.parseColor("#000000"));
+
+        courseColorPicker.setBackground(courseColor_circle);
 
         Retrofit retrofit = new Retrofit.
                 Builder()
@@ -292,7 +305,6 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
     }
 
 
-
     void create()
     {
         if(courseName.getText().toString().equals("")){courseName.setError("Enter Course Name");courseName.requestFocus();return;}
@@ -342,6 +354,9 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
             startTimes.add(((EditText)days_selected.get(temp1).findViewById(R.id.et_startTime)).getText().toString());
             endTimes.add(((EditText)days_selected.get(temp1).findViewById(R.id.et_endTime)).getText().toString());
         }
+
+        ShapeDrawable drawable = (ShapeDrawable)courseColorPicker.getBackground();
+
         MyApi myApi = retrofit.create(MyApi.class);
         int e;
         if(elective.isChecked()) e=1;
@@ -358,12 +373,15 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
                 dates.subList(0,dates.size()),
                 startTimes.subList(0,startTimes.size()),
                 endTimes.subList(0,endTimes.size()),
+
                 //String.format("#%06X", (0xFFFFFF & courseColorPicker.getSolidColor())),
                 //TODO: how to get the damn color
                 //String.format("#%06X", (0xffffff & R.color.cardview_light_background)),
-                "#ed999a",
+                String.format("#%06X", (0xffffff & drawable.getPaint().getColor())),
                 e+""
                 );
+        Log.d("HAHAHA",String.format("#%06X", (0xffffff & drawable.getPaint().getColor())));
+
         Log.i("sw32color",String.format("#%06X", (0xFFFFFF & courseColorPicker.getSolidColor())));
         Call<ModelAddCourse> call = myApi.addCourse(body);
         call.enqueue(new Callback<ModelAddCourse>() {
@@ -409,7 +427,6 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
                 colorPickerDialog = new ColorPickerDialog(getActivity());
 
                 colorPickerDialog.show();
-
 
                 Window window = colorPickerDialog.getWindow();
                 window.setLayout(900, GridLayoutManager.LayoutParams.WRAP_CONTENT);
