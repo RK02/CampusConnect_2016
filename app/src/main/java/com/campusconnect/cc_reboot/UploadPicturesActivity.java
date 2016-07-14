@@ -43,6 +43,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
@@ -78,6 +79,7 @@ public class UploadPicturesActivity extends AppCompatActivity {
     ImageAdapter imageAdapter;
     public static ArrayList<String> urls;
     public static ArrayList<String> uris;
+    private FirebaseAnalytics firebaseAnalytics;
 
     public static float width;
     public static float height;
@@ -125,6 +127,7 @@ public class UploadPicturesActivity extends AppCompatActivity {
                 }
             }
         }
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         final ViewTreeObserver observer= for_measure.getViewTreeObserver();
         observer.addOnGlobalLayoutListener(
@@ -193,6 +196,9 @@ public class UploadPicturesActivity extends AppCompatActivity {
                     Toast.makeText(UploadPicturesActivity.this,"Please Select pictures and then press Next",Toast.LENGTH_LONG).show();
                 }
                 else {
+                    Bundle params = new Bundle();
+                    params.putString("pictures_uploaded",uris.size()+" pictures");
+                    firebaseAnalytics.logEvent("pictures_selected_and_continue",params);
                     Intent description = new Intent(UploadPicturesActivity.this, AddEventActivity.class);
                     description.putExtra("Mode",3);
                     if(getIntent().hasExtra("courseId")) {
@@ -297,7 +303,12 @@ public class UploadPicturesActivity extends AppCompatActivity {
                 uris.clear();
                 imageAdapter.notifyDataSetChanged();
                 Intent intent = new Intent(UploadPicturesActivity.this, CoursePageActivity.class);
-                intent.putExtra("courseId", data.getStringExtra("courseId"));
+                String temp = data.getStringExtra("courseId");
+                if (temp!=null)
+                {
+                    firebaseAnalytics.logEvent("upload_successful",new Bundle());
+                }
+                intent.putExtra("courseId",temp);
                 startActivity(intent);
                 finish();
             }

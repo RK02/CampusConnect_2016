@@ -37,6 +37,7 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -70,6 +71,7 @@ public class GoogleSignInActivity extends BaseActivity implements
     private GoogleApiClient mGoogleApiClient;
     private TextView mStatusTextView;
     private TextView mDetailTextView;
+    private FirebaseAnalytics firebaseAnalytics;
     String personName,personEmail,personId,personPhoto;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +84,7 @@ public class GoogleSignInActivity extends BaseActivity implements
                 startActivity(home);
             }
         }
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
 // Views
         mStatusTextView = (TextView) findViewById(R.id.status);
         mDetailTextView = (TextView) findViewById(R.id.detail);
@@ -180,6 +183,9 @@ public class GoogleSignInActivity extends BaseActivity implements
                         }
                         else
                         {
+                            Bundle params = new Bundle();
+                            params.putString("firebaseauth","success");
+                            firebaseAnalytics.logEvent("firebase_auth",params);
                             personName = acct.getDisplayName();
                             personEmail = acct.getEmail();
                             personId = acct.getId();

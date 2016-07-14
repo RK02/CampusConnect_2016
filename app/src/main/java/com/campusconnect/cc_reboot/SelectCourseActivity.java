@@ -19,6 +19,7 @@ import com.campusconnect.cc_reboot.POJO.MyApi;
 import com.campusconnect.cc_reboot.adapter.AssignmentsListAdapter;
 import com.campusconnect.cc_reboot.adapter.CourseSelectionListAdapter;
 import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 
@@ -46,6 +47,7 @@ public class SelectCourseActivity extends AppCompatActivity{
 
     CourseSelectionListAdapter mCourseSelectionAdapter;
     LinearLayoutManager mLayoutManager;
+    private FirebaseAnalytics firebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +72,7 @@ public class SelectCourseActivity extends AppCompatActivity{
                 .baseUrl(FragmentCourses.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
         MyApi myApi = retrofit.create(MyApi.class);
         MyApi.getCoursesRequest body = new MyApi.getCoursesRequest(getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""));
         Call<ModelCourseSubscribe> call = myApi.getCourses(body);
@@ -117,6 +120,10 @@ public class SelectCourseActivity extends AppCompatActivity{
                         Intent intent_temp = new Intent(getApplicationContext(), HomeActivity2.class);
                         intent_temp.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent_temp);
+                        Bundle params = new Bundle();
+                        params. putString("course_subscribe","success");
+                        firebaseAnalytics.logEvent("course_subscribe",params);
+                        finish();
                     }
 
                     @Override

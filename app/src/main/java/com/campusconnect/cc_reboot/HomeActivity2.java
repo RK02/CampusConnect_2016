@@ -265,6 +265,9 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
         fabMenu.findViewById(R.id.fab_others).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bundle params = new Bundle();
+                params.putString("event","notes");
+                firebaseAnalytics.logEvent("notes_upload_start",params);
                 startActivity(new Intent(HomeActivity2.this,UploadPicturesActivity.class));
                 fabMenu.collapse();
             }
