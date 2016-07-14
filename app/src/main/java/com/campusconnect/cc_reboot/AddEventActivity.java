@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -46,6 +47,7 @@ public class AddEventActivity extends AppCompatActivity {
     Button upload;
     String courseName;
     String courseId;
+    private FirebaseAnalytics firebaseAnalytics;
 
     private ProgressDialog progressDialog;
 
@@ -64,6 +66,7 @@ public class AddEventActivity extends AppCompatActivity {
         date.setText(formattedDate);
         dueDate.setText(formattedDate);
         date.setFocusable(false);
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
         if(getIntent().hasExtra("courseName"))
         {
             courseName = getIntent().getStringExtra("courseName");
@@ -161,6 +164,7 @@ public class AddEventActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            firebaseAnalytics.logEvent("picture_upload_started",new Bundle());
             if(course.getText().toString().equals("")){course.setError("Select course");course.requestFocus();return;}
             if(name.getText().toString().equals("")){name.setError("Pick Type");name.requestFocus();return;}
             if(dueDate.getVisibility()==View.VISIBLE){
