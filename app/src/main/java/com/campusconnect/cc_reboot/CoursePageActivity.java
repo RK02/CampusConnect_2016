@@ -1,5 +1,7 @@
 package com.campusconnect.cc_reboot;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -7,9 +9,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -17,6 +24,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.campusconnect.cc_reboot.adapter.CourseListAdapter;
+import com.campusconnect.cc_reboot.adapter.StudentsListAdapter;
 import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
 import com.campusconnect.cc_reboot.fragment.Home.FragmentTimetable;
 import com.campusconnect.cc_reboot.slidingtab.SlidingTabLayout_home;
@@ -91,6 +100,8 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
     static public String courseTitle;
     int courseColor;
     int defaultTabPosition=0;
+
+    StudentsListAdapter mStudentsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,6 +185,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
         search_button.setOnClickListener(this);
         notification_button.setOnClickListener(this);
         subscribe_button.setOnClickListener(this);
+        course_view_students.setOnClickListener(this);
 
     }
 
@@ -239,6 +251,15 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                     SubscribedCourseList.find(SubscribedCourseList.class,"course_id = ?",courseId).get(0).delete();
                     finish();
                 }
+
+                break;
+
+            case R.id.tv_view_students:
+
+                ViewStudentsDialog viewStudentsDialog = new ViewStudentsDialog(this);
+                viewStudentsDialog.show();
+                Window window = viewStudentsDialog.getWindow();
+                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
                 break;
 
@@ -335,6 +356,54 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
     public void onMenuCollapsed() {
         fab_menu_container.getBackground().setAlpha(0);
         fab_menu_container.setOnTouchListener(null);
+    }
+
+    public class ViewStudentsDialog extends Dialog {
+
+        public Activity c;
+        public Dialog d;
+        public String id;
+        Context context;
+
+        @Bind(R.id.cross_button)
+        LinearLayout close;
+        @Bind(R.id.rv_students_list)
+        RecyclerView students_list;
+
+
+        public ViewStudentsDialog(Activity a) {
+            super(a);
+            // TODO Auto-generated constructor stub
+            this.c = a;
+            this.context = context;
+            this.id=id;
+        }
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
+            setContentView(R.layout.view_students_dialog_box);
+            ButterKnife.bind(this);
+
+            students_list.setHasFixedSize(true);
+            LinearLayoutManager llm = new LinearLayoutManager(c);
+            llm.setOrientation(LinearLayoutManager.VERTICAL);
+            students_list.setLayoutManager(llm);
+            students_list.setItemAnimator(new DefaultItemAnimator());
+
+            mStudentsAdapter = new StudentsListAdapter(CoursePageActivity.this);
+            students_list.setAdapter(mStudentsAdapter);
+
+            close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dismiss();
+                }
+
+            });
+        }
+
     }
 }
 

@@ -294,7 +294,7 @@
             android:background="@color/ColorTextHeading" />
 
         <Button
-            android:id="@+id/b_rent"
+            android:id="@+id/b_rate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -303,7 +303,7 @@
             android:minHeight="0dp"
             android:paddingBottom="12dp"
             android:paddingTop="12dp"
-            android:text="RENT"
+            android:text="RATE"
             android:textColor="@color/ColorTextHeading"
             android:textSize="16sp" />
 

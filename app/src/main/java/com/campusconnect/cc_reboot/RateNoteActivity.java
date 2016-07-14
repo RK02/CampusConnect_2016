@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 /**
  * Created by RK on 04/06/2016.
  */
-public class RentNoteActivity extends AppCompatActivity {
+public class RateNoteActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

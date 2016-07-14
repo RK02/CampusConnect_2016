@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/student_card"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:orientation="vertical"
+    card_view:cardElevation="0dp"
+    card_view:cardMaxElevation="0dp"
+    card_view:cardPreventCornerOverlap="false"
+    card_view:cardUseCompatPadding="true">
+
+    <RelativeLayout
+        android:id="@+id/container_student_card_all"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <RelativeLayout
+            android:id="@+id/container_student_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <com.campusconnect.cc_reboot.auxiliary.CircularImageView xmlns:app="http://schemas.android.com/tools"
+                android:id="@+id/iv_student_profile_picture"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerVertical="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_profile_48_black"
+                app:border_width="0dp" />
+
+            <RelativeLayout
+                android:id="@+id/container_student_basic_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="8dp"
+                android:layout_toLeftOf="@+id/tb_make_admin"
+                android:layout_toRightOf="@+id/iv_student_profile_picture">
+
+                <TextView
+                    android:id="@+id/tv_student_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ankit Desh"
+                    android:textColor="@color/ColorTextInfo"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_student_hobbies"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_student_name"
+                    android:text="Loves to cycle, dance and sing."
+                    android:textColor="@color/ColorTextInfo"
+                    android:textSize="16sp" />
+
+            </RelativeLayout>
+
+            <ToggleButton
+                android:id="@+id/tb_make_admin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/container_student_basic_info"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/selector_make_admin"
+                android:elevation="4dp"
+                android:minHeight="0dp"
+                android:minWidth="0dp"
+                android:paddingBottom="4dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="4dp"
+                android:textAllCaps="false"
+                android:textColor="@color/ColorTextInfo"
+                android:textOff="Make Admin"
+                android:textOn="Admin"
+                android:textSize="14sp" />
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/container_student_card"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@color/ColorKeyStatContainer" />
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

@@ -79,7 +79,7 @@ public class FragmentTimetable extends Fragment implements ScrollViewListener{
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        v = inflater.inflate(R.layout.fragment_timetable, container, false);
+        v = inflater.inflate(R.layout.fragment_timetable_true, container, false);
         ButterKnife.bind(this,v);
         map.put(1,row_1);
         map.put(2,row_2);
