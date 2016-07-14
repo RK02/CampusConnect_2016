@@ -2,11 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#d9d9d9"
+    android:background="@android:color/transparent"
     android:orientation="vertical">
 
     <com.campusconnect.cc_reboot.auxiliary.PinchToZoom.GestureImageView
         android:id="@+id/iv_notes_fullscreen"
         android:layout_width="match_parent"
+        android:background="@android:color/transparent"
         android:layout_height="match_parent"/>.
 </LinearLayout>
