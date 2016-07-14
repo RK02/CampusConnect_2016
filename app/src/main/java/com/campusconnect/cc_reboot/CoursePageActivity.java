@@ -32,6 +32,7 @@ import com.campusconnect.cc_reboot.slidingtab.SlidingTabLayout_home;
 import com.campusconnect.cc_reboot.viewpager.ViewPagerAdapter_course;
 import com.campusconnect.cc_reboot.POJO.*;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONException;
@@ -100,6 +101,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
     static public String courseTitle;
     int courseColor;
     int defaultTabPosition=0;
+    private FirebaseAnalytics firebaseAnalytics;
 
     StudentsListAdapter mStudentsAdapter;
 
@@ -134,6 +136,8 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         MyApi myapi = retrofit.create(MyApi.class);
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        firebaseAnalytics.logEvent("course_page_launched",new Bundle());
 
         MyApi.getCourseRequest getCourseRequest = new MyApi.getCourseRequest(getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""),courseId);
 

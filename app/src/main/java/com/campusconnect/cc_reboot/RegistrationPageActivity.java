@@ -124,7 +124,7 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
                 .baseUrl(FragmentCourses.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-       // mFirebaseAnalytics.logEvent();
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         MyApi myApi = retrofit.create(MyApi.class);
         Call<ModelCollegeList> call = myApi.getCollegeList();
         call.enqueue(new Callback<ModelCollegeList>() {
@@ -164,6 +164,7 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
         continue_to_course_selection_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String temp = collegeName.getText().toString();
                 int index = collegeNames.indexOf(temp);
                 if(index < 0 ){collegeName.setError("Select a valid college name");collegeName.requestFocus();return; }
@@ -173,6 +174,9 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
                 if(branchName.getText().toString().equals("")){branchName.setError("Enter Branch Name");branchName.requestFocus();return;}
                 collegeId = collegeIds.get(index);
                 new sign_up().execute();
+                Bundle params = new Bundle();
+                params.putString("sign_up","success");
+                mFirebaseAnalytics.logEvent("sign_up",params);
             }
         });
 
