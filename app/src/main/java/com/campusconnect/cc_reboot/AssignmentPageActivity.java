@@ -1,5 +1,6 @@
 package com.campusconnect.cc_reboot;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -17,10 +18,15 @@ import com.campusconnect.cc_reboot.POJO.ModelAssignment;
 import com.campusconnect.cc_reboot.POJO.MyApi;
 import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
 
+import org.json.JSONException;
 import org.w3c.dom.Text;
 
 import butterknife.Bind;
 import butterknife.*;
+import io.branch.indexing.BranchUniversalObject;
+import io.branch.referral.Branch;
+import io.branch.referral.BranchError;
+import io.branch.referral.util.LinkProperties;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -71,36 +77,6 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
         setContentView(R.layout.activity_assignment);
         ButterKnife.bind(this);
 
-        courseColor = getIntent().getIntExtra("CourseColor", Color.rgb(224,224,224));
-        assignments_container.setBackgroundColor(courseColor);
-
-        assignmentId = getIntent().getStringExtra("assignmentId");
-
-        Retrofit retrofit = new Retrofit.
-                Builder()
-                .baseUrl(MyApi.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        MyApi myApi = retrofit.create(MyApi.class);
-        MyApi.getAssignmentRequest body = new MyApi.getAssignmentRequest(assignmentId, getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""));
-        Call<ModelAssignment> call  = myApi.getAssignment(body);
-        call.enqueue(new Callback<ModelAssignment>() {
-            @Override
-            public void onResponse(Call<ModelAssignment> call, Response<ModelAssignment> response) {
-                ModelAssignment assignment = response.body();
-                assignment_name.setText(assignment.getAssignmentTitle());
-                uploader.setText(assignment.getUploaderName());
-                date_posted.setText(assignment.getLastUpdated().substring(0,10));
-                dueDate.setText(assignment.getDueDate());
-                views.setText(assignment.getViews());
-                description.setText(assignment.getAssignmentDesc());
-            }
-
-            @Override
-            public void onFailure(Call<ModelAssignment> call, Throwable t) {
-
-            }
-        });
 
         //OnClickListeners
         edit_note_button.setOnClickListener(this);
@@ -127,7 +103,7 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
                 break;
 
             case R.id.ib_share:
-
+                share_link();
                 break;
 
             case R.id.iv_assignment:
@@ -142,6 +118,88 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
             default:
                 break;
         }
+
+    }
+    void share_link()
+    {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.show();
+        BranchUniversalObject branchUniversalObject = new BranchUniversalObject()
+                .setContentIndexingMode(BranchUniversalObject.CONTENT_INDEX_MODE.PUBLIC)
+                .addContentMetadata("assignmentId", assignmentId);
+
+        LinkProperties linkProperties = new LinkProperties()
+                .setChannel("whatsapp")
+                .setFeature("sharing")
+                .addControlParameter("$desktop_url", "http://campusconnect-2016.herokuapp.com/assignment?id=" + assignmentId);
+
+        final Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.setType("text/plain");
+        sendIntent.setPackage("com.whatsapp");
+        branchUniversalObject.generateShortUrl(this, linkProperties, new Branch.BranchLinkCreateListener() {
+            @Override
+            public void onLinkCreate(String url, BranchError error) {
+                if (error == null) {
+                    Log.i("MyApp", "got my Branch link to share: " + url);
+                    sendIntent.putExtra(Intent.EXTRA_TEXT,url);
+                    progressDialog.dismiss();
+                    startActivityForResult(sendIntent,1);
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
+        if (Branch.isAutoDeepLinkLaunch(this)) {
+            try {
+                String autoDeeplinkedValue = Branch.getInstance().getLatestReferringParams().getString("assignmentId");
+                assignmentId = autoDeeplinkedValue;
+                Log.i("sw32Deep","Launched by Branch on auto deep linking!"
+                        + "\n\n" + autoDeeplinkedValue);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            assignmentId = getIntent().getStringExtra("assignmentId");
+        }
+        courseColor = getIntent().getIntExtra("CourseColor", Color.rgb(224,224,224));
+        assignments_container.setBackgroundColor(courseColor);
+        Retrofit retrofit = new Retrofit.
+                Builder()
+                .baseUrl(MyApi.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        MyApi myApi = retrofit.create(MyApi.class);
+        MyApi.getAssignmentRequest body = new MyApi.getAssignmentRequest(assignmentId, getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""));
+        Call<ModelAssignment> call  = myApi.getAssignment(body);
+        call.enqueue(new Callback<ModelAssignment>() {
+            @Override
+            public void onResponse(Call<ModelAssignment> call, Response<ModelAssignment> response) {
+                ModelAssignment assignment = response.body();
+                assignment_name.setText(assignment.getAssignmentTitle());
+                uploader.setText(assignment.getUploaderName());
+                date_posted.setText(assignment.getLastUpdated().substring(0,10));
+                dueDate.setText(assignment.getDueDate());
+                views.setText(assignment.getViews());
+                description.setText(assignment.getAssignmentDesc());
+            }
+
+            @Override
+            public void onFailure(Call<ModelAssignment> call, Throwable t) {
+
+            }
+        });
+
+
+
+
 
     }
 }

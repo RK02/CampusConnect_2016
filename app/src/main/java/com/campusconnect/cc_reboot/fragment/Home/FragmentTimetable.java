@@ -138,5 +138,4 @@ public class FragmentTimetable extends Fragment implements ScrollViewListener{
                 map.get(j).addView(cell_container);
             }
     }
-
 }

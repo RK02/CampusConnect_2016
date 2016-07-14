@@ -1,5 +1,6 @@
 package com.campusconnect.cc_reboot;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -17,8 +18,14 @@ import com.campusconnect.cc_reboot.POJO.ModelTest;
 import com.campusconnect.cc_reboot.POJO.MyApi;
 import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
 
+import org.json.JSONException;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.branch.indexing.BranchUniversalObject;
+import io.branch.referral.Branch;
+import io.branch.referral.BranchError;
+import io.branch.referral.util.LinkProperties;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -71,7 +78,93 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
         courseColor = getIntent().getIntExtra("CourseColor", Color.rgb(224,224,224));
         exam_container.setBackgroundColor(courseColor);
 
-        testId = getIntent().getStringExtra("testId");
+
+
+        //OnClickListeners
+        edit_note_button.setOnClickListener(this);
+        share_note_button.setOnClickListener(this);
+        exam_last_page.setOnClickListener(this);
+        remind_button.setOnClickListener(this);
+
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        switch (view.getId()){
+
+            case R.id.ib_edit_note:
+                intent = new Intent(getApplicationContext(), EditNoteActivity.class);
+                startActivity(intent);
+                break;
+
+
+            case R.id.ib_share:
+                share_link();
+                break;
+
+            case R.id.iv_exam:
+//                intent = new Intent(getApplicationContext(), NotesSliderActivity.class);
+//                startActivity(intent);
+                break;
+            case R.id.tb_remind_me:
+
+                break;
+
+            default:
+                break;
+        }
+
+    }
+    void share_link()
+    {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.show();
+        BranchUniversalObject branchUniversalObject = new BranchUniversalObject()
+                .setContentIndexingMode(BranchUniversalObject.CONTENT_INDEX_MODE.PUBLIC)
+                .addContentMetadata("examId", testId);
+
+        LinkProperties linkProperties = new LinkProperties()
+                .setChannel("whatsapp")
+                .setFeature("sharing")
+                .addControlParameter("$desktop_url", "http://campusconnect-2016.herokuapp.com/exam?id=" + testId);
+
+        final Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.setType("text/plain");
+        sendIntent.setPackage("com.whatsapp");
+        branchUniversalObject.generateShortUrl(this, linkProperties, new Branch.BranchLinkCreateListener() {
+            @Override
+            public void onLinkCreate(String url, BranchError error) {
+                if (error == null) {
+                    Log.i("MyApp", "got my Branch link to share: " + url);
+                    sendIntent.putExtra(Intent.EXTRA_TEXT,url);
+                    progressDialog.dismiss();
+                    startActivityForResult(sendIntent,1);
+                }
+            }
+        });
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (Branch.isAutoDeepLinkLaunch(this)) {
+            try {
+                String autoDeeplinkedValue = Branch.getInstance().getLatestReferringParams().getString("examId");
+                testId = autoDeeplinkedValue;
+                Log.i("sw32Deep","Launched by Branch on auto deep linking!"
+                        + "\n\n" + autoDeeplinkedValue);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            testId = getIntent().getStringExtra("testId");
+        }
         Log.i("sw32test",testId);
 
         Retrofit retrofit = new Retrofit.
@@ -100,43 +193,6 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
             }
         });
 
-        //OnClickListeners
-        edit_note_button.setOnClickListener(this);
-        share_note_button.setOnClickListener(this);
-        exam_last_page.setOnClickListener(this);
-        remind_button.setOnClickListener(this);
-
     }
-
-    @Override
-    public void onClick(View view) {
-
-        switch (view.getId()){
-
-            case R.id.ib_edit_note:
-                intent = new Intent(getApplicationContext(), EditNoteActivity.class);
-                startActivity(intent);
-                break;
-
-
-            case R.id.ib_share:
-
-                break;
-
-            case R.id.iv_exam:
-//                intent = new Intent(getApplicationContext(), NotesSliderActivity.class);
-//                startActivity(intent);
-                break;
-
-            case R.id.tb_remind_me:
-
-                break;
-
-            default:
-                break;
-        }
-
-    }
-
 }
 

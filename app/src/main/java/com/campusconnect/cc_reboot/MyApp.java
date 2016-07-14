@@ -7,6 +7,8 @@ import com.campusconnect.cc_reboot.POJO.SubscribedCourseList;
 import com.orm.SugarApp;
 import com.orm.SugarContext;
 
+import io.branch.referral.Branch;
+
 /**
  * Created by sarthak on 7/5/16.
  */
@@ -21,6 +23,7 @@ public class MyApp extends SugarApp {
     public void onCreate() {
         super.onCreate();
         SugarContext.init(this);
+        Branch.getAutoInstance(this);
     }
 
     @Override

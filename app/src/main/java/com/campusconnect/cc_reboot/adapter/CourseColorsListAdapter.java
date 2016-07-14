@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.campusconnect.cc_reboot.EditCourseActivity;
 import com.campusconnect.cc_reboot.NotePageActivity;
 import com.campusconnect.cc_reboot.POJO.NoteBookList;
 import com.campusconnect.cc_reboot.R;
@@ -85,8 +86,10 @@ public class CourseColorsListAdapter extends
                     ShapeDrawable courseColor_circle = new ShapeDrawable( new OvalShape() );
                     courseColor_circle.getPaint().setColor(Color.parseColor(courseColors[getAdapterPosition()]));
                     colorPicker.setBackground(courseColor_circle);
-
+                    if(FragmentAddCourse.colorPickerDialog!=null)
                     FragmentAddCourse.colorPickerDialog.dismiss();
+                    if(EditCourseActivity.colorPickerDialog!=null)
+                    EditCourseActivity.colorPickerDialog.dismiss();
                 }
             });
 

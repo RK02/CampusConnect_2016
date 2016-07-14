@@ -116,10 +116,10 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
         fab_menu_container.getBackground().setAlpha(0);
 
         defaultTabPosition = getIntent().getIntExtra("TAB",0);
-        courseId = getIntent().getStringExtra("courseId");
         courseColor = getIntent().getIntExtra("courseColor", Color.rgb(224,224,224));
 
         course_info_container.setBackgroundColor(courseColor);
+        courseId = getIntent().getStringExtra("courseId");
 
 
         course_pager = (ViewPager) findViewById(R.id.pager_course);
@@ -130,6 +130,46 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
         course_pager.setCurrentItem(defaultTabPosition);
         course_tabs.setDistributeEvenly(true);
         course_tabs.setViewPager(course_pager);
+
+
+        //Listener to define layouts for FAB expanded and collapsed modes
+        fabMenu.setOnFloatingActionsMenuUpdateListener(this);
+
+        //OnClickListeners
+        sort_button.setOnClickListener(this);
+        search_button.setOnClickListener(this);
+        notification_button.setOnClickListener(this);
+        subscribe_button.setOnClickListener(this);
+        course_view_students.setOnClickListener(this);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode)
+        {
+            case 69:
+            {
+                if(resultCode==1)
+                {
+                    if(data!=null)
+                    {
+                        courseColor = data.getIntExtra("courseColor",0);
+                        courseId = data.getStringExtra("courseId");
+                    }
+                    onResume();
+                }
+                break;
+            }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        course_info_container.setBackgroundColor(courseColor);
+        course_adapter = new ViewPagerAdapter_course(getSupportFragmentManager(), Titles, Numboftabs, courseColor, this);
         Retrofit retrofit = new Retrofit.
                 Builder()
                 .baseUrl(MyApi.BASE_URL)
@@ -160,13 +200,18 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                                 Intent intent = new Intent(CoursePageActivity.this,EditCourseActivity.class);
                                 intent.putExtra("editCourse","");
                                 intent.putExtra("courseName",courseTitle);
+                                intent.putExtra("courseCode",modelCoursePage.getCourseCode());
                                 intent.putStringArrayListExtra("dates",new ArrayList<>(modelCoursePage.getDate()));
                                 intent.putStringArrayListExtra("startTimes",new ArrayList<>(modelCoursePage.getStartTime()));
                                 intent.putStringArrayListExtra("endTimes",new ArrayList<>(modelCoursePage.getEndTime()));
+                                intent.putStringArrayListExtra("batchNames",new ArrayList<String>(modelCoursePage.getBatchNames()));
+                                intent.putStringArrayListExtra("branchNames",new ArrayList<String>(modelCoursePage.getBranchNames()));
+                                intent.putStringArrayListExtra("sectionNames",new ArrayList<String>(modelCoursePage.getSectionNames()));
                                 intent.putExtra("prof",modelCoursePage.getProfessorName());
                                 intent.putExtra("sem",modelCoursePage.getSemester());
-                                //modelCoursePage.
-
+                                intent.putExtra("e",modelCoursePage.getElective());
+                                intent.putExtra("courseId",courseId);
+                                startActivityForResult(intent,69);
                             }
                         });
                     }
@@ -180,22 +225,6 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
 
             }
         });
-
-        //Listener to define layouts for FAB expanded and collapsed modes
-        fabMenu.setOnFloatingActionsMenuUpdateListener(this);
-
-        //OnClickListeners
-        sort_button.setOnClickListener(this);
-        search_button.setOnClickListener(this);
-        notification_button.setOnClickListener(this);
-        subscribe_button.setOnClickListener(this);
-        course_view_students.setOnClickListener(this);
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
 
     }
 

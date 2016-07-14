@@ -147,7 +147,7 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
         ButterKnife.bind(this, v);
 
         ShapeDrawable courseColor_circle = new ShapeDrawable( new OvalShape() );
-        courseColor_circle.getPaint().setColor(Color.parseColor("#000000"));
+        courseColor_circle.getPaint().setColor(Color.parseColor("#EE5451"));
 
         courseColorPicker.setBackground(courseColor_circle);
 

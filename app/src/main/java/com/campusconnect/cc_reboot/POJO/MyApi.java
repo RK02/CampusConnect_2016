@@ -75,6 +75,20 @@ public interface MyApi {
             this.courseId = courseId;
         }
     }
+
+    @POST("rateThis")
+    Call<ModelRate> rate(@Body rateNoteBook rateNoteBook);
+    class rateNoteBook{
+        private String profileId;
+        private String noteBookId;
+        private float rating;
+        public rateNoteBook(String profileId, String noteBookId, float rating)
+        {
+            this.profileId = profileId;
+            this.noteBookId = noteBookId;
+            this. rating = rating;
+        }
+    }
     @POST("notebookList")
     Call<ModelNoteBookList> getBookmarked(@Body getBookmarkedRequest body);
     class getBookmarkedRequest{
@@ -84,6 +98,8 @@ public interface MyApi {
             this.bpid = profileId;
         }
     }
+
+
     @POST("notebookList")
     Call<ModelNoteBookList> getUploaded(@Body getUploadedRequest body);
     class getUploadedRequest{
@@ -251,6 +267,63 @@ public interface MyApi {
 
 
     }
+
+    @POST("editCourse")
+    Call<ModelAddCourse> editCourse(@Body editCourseRequest body);
+    class editCourseRequest{
+
+        private String collegeId;
+        private String courseName;
+        private String courseId;
+        private List<String> batchNames;
+        private List<String> sectionNames;
+        private String profileId;
+        private String semester;
+        private List<String> date;
+        private List<String> startTime;
+        private List<String> endTime;
+        private String professorName;
+        private String colour;
+        private String courseCode;
+        private List<String> branchNames;
+        private String elective;
+
+        public editCourseRequest(String profileId,
+                                String collegeId,
+                                String courseName,
+                                String courseCode,
+                                String professorName,
+                                String semester,
+                                List<String> batchNames,
+                                List<String> sectionNames,
+                                List<String> branchNames,
+                                List<String> date,
+                                List<String> startTime,
+                                List<String> endTime,
+                                String colour,
+                                String elective,
+                                String courseId
+        ){
+            this.courseId = courseId;
+            this.profileId = profileId;
+            this.collegeId = collegeId;
+            this.semester = semester;
+            this.batchNames = batchNames;
+            this.branchNames = branchNames;
+            this.sectionNames = sectionNames;
+            this.courseCode = courseCode;
+            this.startTime = startTime;
+            this.endTime = endTime;
+            this.courseName = courseName;
+            this.professorName = professorName;
+            this.date = date;
+            this.colour = colour;
+            this.elective = elective;
+        }
+
+
+    }
+
 
 
 //upload issues  with retrofit, switching to asynctask
