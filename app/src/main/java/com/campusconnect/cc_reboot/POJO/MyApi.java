@@ -206,8 +206,8 @@ public interface MyApi {
     Call<ModelSubscribe> subscribeCourse(@Body subscribeCourseRequest body);
     class subscribeCourseRequest{
         private String profileId;
-        private String[] courseIds;
-        public subscribeCourseRequest(String profileId, String[] courseIds){
+        private List<String> courseIds;
+        public subscribeCourseRequest(String profileId, List<String> courseIds){
             this.profileId = profileId;
             this.courseIds = courseIds;
         }

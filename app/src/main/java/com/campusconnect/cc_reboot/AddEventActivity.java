@@ -286,6 +286,7 @@ public class AddEventActivity extends AppCompatActivity {
             progressDialog.dismiss();
                 Intent intent = new Intent();
                 intent.putExtra("courseId",courseId);
+                intent.putExtra("uploadNotesActivity","success");
             setResult(1,intent);
             finish();
         }

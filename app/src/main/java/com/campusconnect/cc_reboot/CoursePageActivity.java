@@ -176,8 +176,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         MyApi myapi = retrofit.create(MyApi.class);
-        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        firebaseAnalytics.logEvent("course_page_launched",new Bundle());
+
 
         MyApi.getCourseRequest getCourseRequest = new MyApi.getCourseRequest(getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""),courseId);
 
@@ -185,6 +184,10 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
         call.enqueue(new Callback<ModelCoursePage>() {
             @Override
             public void onResponse(Call<ModelCoursePage> call, Response<ModelCoursePage> response) {
+                if(getIntent().hasExtra("uploadNotesActivity")) {
+                    firebaseAnalytics = FirebaseAnalytics.getInstance(CoursePageActivity.this);
+                    firebaseAnalytics.logEvent("course_page_launched", new Bundle());
+                }
                 final ModelCoursePage modelCoursePage = response.body();
                 if(modelCoursePage != null) {
                     course_title.setText(modelCoursePage.getCourseName());
@@ -257,7 +260,9 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                             .addConverterFactory(GsonConverterFactory.create())
                             .build();
                     MyApi myApi = retrofit.create(MyApi.class);
-                    MyApi.subscribeCourseRequest body = new MyApi.subscribeCourseRequest(getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""),new String[]{courseId});
+                    ArrayList<String> temp = new ArrayList<String>();
+                    temp.add(courseId);
+                    MyApi.subscribeCourseRequest body = new MyApi.subscribeCourseRequest(getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""),temp);
                     Call<ModelSubscribe> call = myApi.subscribeCourse(body);
                     call.enqueue(new Callback<ModelSubscribe>() {
                         @Override

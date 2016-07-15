@@ -203,35 +203,42 @@ public class UploadPicturesActivity extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(uris.isEmpty()){
-                    Toast.makeText(UploadPicturesActivity.this,"Please Select pictures and then press Next",Toast.LENGTH_LONG).show();
-                }
-                else {
-                    Bundle params = new Bundle();
-                    params.putString("pictures_uploaded",uris.size()+" pictures");
-                    firebaseAnalytics.logEvent("pictures_selected_and_continue",params);
-
-                    if(getCallingActivity()!=null)
-                    {
-                        Intent data = new Intent();
-                        data.putStringArrayListExtra("urls",urls);
-                        data.putStringArrayListExtra("uris",uris);
-                        setResult(1,data);
-                        finish();
-                    }
-                    else {
-                        Intent description = new Intent(UploadPicturesActivity.this, AddEventActivity.class);
-                        description.putExtra("Mode", 3);
-                        if (getIntent().hasExtra("courseId")) {
-                            description.putExtra("courseId", getIntent().getStringExtra("courseId"));
-                            description.putExtra("courseTitle", getIntent().getStringExtra("courseTitle"));
-                        } else if (getIntent().hasExtra("courseName")) {
-                            description.putExtra("courseName", getIntent().getStringExtra("courseName"));
-                            description.putExtra("description", getIntent().getStringExtra("description"));
+                    if (uris.isEmpty()) {
+                        if(getCallingActivity()!=null)
+                        {
+                            Intent data = new Intent();
+                            data.putStringArrayListExtra("urls", urls);
+                            data.putStringArrayListExtra("uris", uris);
+                            setResult(1, data);
+                            finish();
                         }
-                        startActivityForResult(description, 1);
+                        else {
+
+                            Toast.makeText(UploadPicturesActivity.this, "Please Select pictures and then press Next", Toast.LENGTH_LONG).show();
+                        }
+                        } else {
+                        if (getCallingActivity() != null) {
+                            Intent data = new Intent();
+                            data.putStringArrayListExtra("urls", urls);
+                            data.putStringArrayListExtra("uris", uris);
+                            setResult(1, data);
+                            finish();
+                        } else {
+                            Intent description = new Intent(UploadPicturesActivity.this, AddEventActivity.class);
+                            description.putExtra("Mode", 3);
+                            if (getIntent().hasExtra("courseId")) {
+                                description.putExtra("courseId", getIntent().getStringExtra("courseId"));
+                                description.putExtra("courseTitle", getIntent().getStringExtra("courseTitle"));
+                            } else if (getIntent().hasExtra("courseName")) {
+                                description.putExtra("courseName", getIntent().getStringExtra("courseName"));
+                                description.putExtra("description", getIntent().getStringExtra("description"));
+                            }
+                            Bundle params = new Bundle();
+                            params.putString("pictures_uploaded", uris.size() + " pictures");
+                            firebaseAnalytics.logEvent("pictures_selected_and_continue", params);
+                            startActivityForResult(description, 1);
+                        }
                     }
-                }
             }
         });
         gridView.setAdapter(imageAdapter);
