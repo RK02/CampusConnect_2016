@@ -1,10 +1,13 @@
 package com.campusconnect.cc_reboot;
 
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -47,6 +50,8 @@ public class AddEventActivity extends AppCompatActivity {
     Button upload;
     String courseName;
     String courseId;
+    NotificationManager mNotifyManager;
+    NotificationCompat.Builder mBuilder;
     private FirebaseAnalytics firebaseAnalytics;
     private ProgressDialog progressDialog;
     ArrayList<String> urls;
@@ -67,6 +72,13 @@ public class AddEventActivity extends AppCompatActivity {
         date.setText(formattedDate);
         dueDate.setText(formattedDate);
         date.setFocusable(false);
+         mNotifyManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+         mBuilder= new NotificationCompat.Builder(this);
+        mBuilder.setContentTitle("CampusConnect")
+                .setContentText("Uploading...")
+                .setSmallIcon(R.mipmap.ccnoti);
+// Start a lengthy operation in a background thread
         firebaseAnalytics = FirebaseAnalytics.getInstance(this);
         if(getIntent().hasExtra("courseName"))
         {
@@ -195,6 +207,8 @@ public class AddEventActivity extends AppCompatActivity {
             intent.putExtra("uploadNotesActivity","success");
             setResult(1,intent);
             finish();
+            mBuilder.setProgress(0,0,true);
+            mNotifyManager.notify(1,mBuilder.build());
         }
 
         @Override
@@ -288,6 +302,7 @@ public class AddEventActivity extends AppCompatActivity {
             @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            mNotifyManager.cancel(1);
 
         }
 
