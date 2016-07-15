@@ -3,8 +3,7 @@
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -27,7 +26,7 @@
                     layout="@layout/actionbar_home"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    app:layout_scrollFlags="scroll|enterAlways"></include>
+                    app:layout_scrollFlags="scroll|enterAlways|snap"></include>
 
                 <include
                     android:id="@+id/toolbar"
@@ -35,44 +34,68 @@
 
             </android.support.design.widget.AppBarLayout>
 
-            <FrameLayout
-                android:id="@+id/frame"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:elevation="4dp"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-                <android.support.design.widget.CoordinatorLayout
-                    android:id="@+id/coordinatorLayout_home"
+                <FrameLayout
+                    android:id="@+id/frame"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <!-- AppBar Layout   -->
-                    <android.support.design.widget.AppBarLayout
-                        android:id="@+id/appBarLayout_home"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content">
+                    <android.support.design.widget.CoordinatorLayout
+                        android:id="@+id/coordinatorLayout_home"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
-                        <com.campusconnect.cc_reboot.slidingtab.SlidingTabLayout_home
-                            android:id="@+id/tabs_home"
+                        <!-- AppBar Layout   -->
+                        <android.support.design.widget.AppBarLayout
+                            android:id="@+id/appBarLayout_home"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content">
+
+                            <com.campusconnect.cc_reboot.slidingtab.SlidingTabLayout_home
+                                android:id="@+id/tabs_home"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/ColorPrimary"
+                                android:elevation="4dp" />
+
+                        </android.support.design.widget.AppBarLayout>
+
+                        <android.support.v4.view.ViewPager
+                            android:id="@+id/pager_home"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/ColorPrimary"
-                            android:elevation="4dp" />
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="#ffffff" />
 
-                    </android.support.design.widget.AppBarLayout>
+                    </android.support.design.widget.CoordinatorLayout>
 
-                    <android.support.v4.view.ViewPager
-                        android:id="@+id/pager_home"
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/notification_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/blur"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="#ffffff"
-                        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                        android:background="@android:color/white" />
 
-                </android.support.design.widget.CoordinatorLayout>
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_notification"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:clipToPadding="false" />
 
-            </FrameLayout>
+                </FrameLayout>
+            </RelativeLayout>
         </android.support.design.widget.CoordinatorLayout>
 
     </FrameLayout>

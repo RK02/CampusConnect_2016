@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.campusconnect.cc_reboot.CoursePageActivity;
+import com.campusconnect.cc_reboot.DummyActivity;
 import com.campusconnect.cc_reboot.POJO.SubscribedCourseList;
 import com.campusconnect.cc_reboot.R;
 
@@ -120,7 +121,7 @@ public class CourseListAdapter extends
                 activeNetwork =  cm.getActiveNetworkInfo();
                 isConnected= activeNetwork != null && activeNetwork.isConnectedOrConnecting();
                 if(isConnected) {
-                    Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
+                    Intent intent_temp = new Intent(v.getContext(), DummyActivity.class);
                     String id = mCourses.get(i).getCourseId();
                     intent_temp.putExtra("courseId", id);
                     intent_temp.putExtra("courseColor", color);

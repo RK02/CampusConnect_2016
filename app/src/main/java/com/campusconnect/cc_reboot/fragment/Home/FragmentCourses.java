@@ -27,6 +27,7 @@ import com.campusconnect.cc_reboot.POJO.*;
 
 import com.campusconnect.cc_reboot.R;
 import com.campusconnect.cc_reboot.adapter.CourseListAdapter;
+import com.campusconnect.cc_reboot.adapter.TimetableAdapter;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -205,7 +206,7 @@ public class FragmentCourses extends Fragment{
                                 temp.add(viewId);
                                 timeTableViews.put(x.getCourseId(),temp);
                             }
-                            cell_container = (LinearLayout) FragmentTimetable.v.findViewById(Integer.parseInt(viewId));
+                            cell_container = (LinearLayout) TimetableAdapter.itemView.findViewById(Integer.parseInt(viewId));
                             cell_container.setBackgroundColor(Color.parseColor(x.getColour()));
                             ((TextView)cell.findViewById(R.id.cellText)).setText(x.getCourseName());
                             cell.setOnClickListener(new View.OnClickListener() {
