@@ -41,6 +41,7 @@ import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -106,6 +107,7 @@ public class EditCourseActivity extends AppCompatActivity {
     String oldcoursename;
     String courseId;
     ShapeDrawable drawable;
+    List<String> branchNamesList;
 
 
     @Bind(R.id.b_cancel)
@@ -203,13 +205,14 @@ public class EditCourseActivity extends AppCompatActivity {
             public void onResponse(Call<ModelBranchList> call, Response<ModelBranchList> response) {
                 final ModelBranchList modelBranchList = response.body();
                 if (modelBranchList != null) {
-                    courseBranch.setAdapter(new ArrayAdapter<String>(EditCourseActivity.this, android.R.layout.simple_list_item_1, modelBranchList.getBranchList()));
+                    branchNamesList = modelBranchList.getBranchList();
+                    courseBranch.setAdapter(new ArrayAdapter<String>(EditCourseActivity.this, android.R.layout.simple_list_item_1,branchNamesList ));
                     branches.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                             if (isChecked) {
                                 String temp = "";
-                                for (String branch : modelBranchList.getBranchList()) {
+                                for (String branch :branchNamesList ) {
                                     temp += branch + ",";
                                 }
                                 temp = temp.substring(0, temp.lastIndexOf(","));
@@ -356,6 +359,19 @@ public class EditCourseActivity extends AppCompatActivity {
         if(courseBatch.getText().toString().equals("")){courseBatch.setError("Enter Batch");courseBatch.requestFocus();return;}
         if(courseBranch.getText().toString().equals("")){courseBranch.setError("Enter Branch");courseBranch.requestFocus();return;}
         if(days_selected.size()==0){Toast.makeText(EditCourseActivity.this,"Select appropriate times for this course",Toast.LENGTH_SHORT).show();return;}
+        String[] selected = courseBranch.getText().toString().split(",");
+        for(String branch : selected) {
+            if (branchNamesList.indexOf(branch) < 0) {
+                courseBranch.setError("Select Valid branch");
+                courseBranch.requestFocus();
+                return;
+            }
+        }
+
+
+
+
+
         Retrofit retrofit = new Retrofit.
                 Builder()
                 .baseUrl(MyApi.BASE_URL)
