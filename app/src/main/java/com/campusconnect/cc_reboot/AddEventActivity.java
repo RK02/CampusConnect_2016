@@ -187,9 +187,14 @@ public class AddEventActivity extends AppCompatActivity {
                 if (dueDate.getText().toString().equals("")) {
                 dueDate.setError("Enter due date");dueDate.requestFocus();return;}
                 }
-            progressDialog.setMessage("Uploading...");
-            progressDialog.setCancelable(false);
-            progressDialog.show();
+//            progressDialog.setMessage("Uploading...");
+//            progressDialog.setCancelable(false);
+//            progressDialog.show();
+            Intent intent = new Intent();
+            intent.putExtra("courseId",courseId);
+            intent.putExtra("uploadNotesActivity","success");
+            setResult(1,intent);
+            finish();
         }
 
         @Override
@@ -283,12 +288,7 @@ public class AddEventActivity extends AppCompatActivity {
             @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            progressDialog.dismiss();
-                Intent intent = new Intent();
-                intent.putExtra("courseId",courseId);
-                intent.putExtra("uploadNotesActivity","success");
-            setResult(1,intent);
-            finish();
+
         }
 
     }

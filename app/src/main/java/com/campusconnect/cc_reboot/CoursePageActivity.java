@@ -281,11 +281,11 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
 
                     new unsub().execute();
                     FirebaseMessaging.getInstance().unsubscribeFromTopic(courseId);
-                    for(String viewId : FragmentCourses.timeTableViews.get(courseId)){
-                        LinearLayout a = ((LinearLayout)FragmentTimetable.v.findViewById(Integer.parseInt(viewId)));
-                                a.removeAllViews();
-                        a.setBackgroundColor(Color.rgb(223,223,223));
-                    }
+//                    for(String viewId : FragmentCourses.timeTableViews.get(courseId)){
+//                        LinearLayout a = ((LinearLayout)FragmentTimetable.v.findViewById(Integer.parseInt(viewId)));
+//                                a.removeAllViews();
+//                        a.setBackgroundColor(Color.rgb(223,223,223));
+//                    }
                     SubscribedCourseList.find(SubscribedCourseList.class,"course_id = ?",courseId).get(0).delete();
                     finish();
                 }

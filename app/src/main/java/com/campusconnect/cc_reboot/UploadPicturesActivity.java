@@ -334,14 +334,11 @@ public class UploadPicturesActivity extends AppCompatActivity {
                 urls.clear();
                 uris.clear();
                 imageAdapter.notifyDataSetChanged();
-                Intent intent = new Intent(UploadPicturesActivity.this, CoursePageActivity.class);
                 String temp = data.getStringExtra("courseId");
                 if (temp!=null)
                 {
                     firebaseAnalytics.logEvent("upload_successful",new Bundle());
                 }
-                intent.putExtra("courseId",temp);
-                startActivity(intent);
                 finish();
             }
             else if(resultCode==2)
