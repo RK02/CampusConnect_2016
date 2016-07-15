@@ -48,8 +48,9 @@ public class AddEventActivity extends AppCompatActivity {
     String courseName;
     String courseId;
     private FirebaseAnalytics firebaseAnalytics;
-
     private ProgressDialog progressDialog;
+    ArrayList<String> urls;
+    ArrayList<String> uris;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,9 +71,12 @@ public class AddEventActivity extends AppCompatActivity {
         if(getIntent().hasExtra("courseName"))
         {
             courseName = getIntent().getStringExtra("courseName");
+            Log.i("sw32upload",courseName + " this");
             course.setText(courseName);
             course.setFocusable(false);
-            description.setText(getIntent().getStringExtra("description")+"");
+            String desc = getIntent().getStringExtra("description")+"";
+            Log.i("sw32upload",desc + " this");
+            description.setText(desc);
 
         }
         if(getIntent().hasExtra("courseId"))
@@ -101,13 +105,20 @@ public class AddEventActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(mode!=3)
                 {
-                    startActivityForResult(new Intent(AddEventActivity.this,UploadPicturesActivity.class),1);
+                    Intent intent = new Intent(AddEventActivity.this,UploadPicturesActivity.class);
+                    if(urls!=null)
+                    {
+                        intent.putStringArrayListExtra("urls",urls);
+                        intent.putStringArrayListExtra("uris",uris);
+                    }
+                    startActivityForResult(intent,1);
                 }
                 else
                 {
                     Intent temp = new Intent();
+                    temp.putExtra("mode",mode);
                     temp.putExtra("description",description.getText().toString()+"");
-                    temp.putExtra("courseName",courseName+"");
+                    temp.putExtra("courseName",course.getText().toString()+"");
                     setResult(2,temp);
                     finish();
                 }
@@ -155,6 +166,11 @@ public class AddEventActivity extends AppCompatActivity {
         {
             if(resultCode==0){
                 finish();
+            }
+            if(resultCode==1)
+            {
+                urls = data.getStringArrayListExtra("urls");
+                uris = data.getStringArrayListExtra("uris");
             }
         }
     }
@@ -224,9 +240,33 @@ public class AddEventActivity extends AppCompatActivity {
                     body.addFormDataPart("file", "test.jpg", RequestBody.create(MediaType.parse("image/*"), file));
                 }
             }
-            else
+            else if(urls!=null)
             {
-                //body.addFormDataPart("file", "test.jpg", RequestBody.create(MediaType.parse("image/*"), new File("http://www.epirusportal.gr/wp-content/uploads/default-no-image.png")));
+                for (String temp : urls) {
+                    Log.i("sw32", "test : " + temp);
+
+                    Bitmap original = null;
+                    try {
+                        original = BitmapFactory.decodeStream(new FileInputStream(temp));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    file = new File(getFilesDir() + "/temp" + i + ".jpeg");
+                    i++;
+                    FileOutputStream out = null;
+                    try {
+                        out = new FileOutputStream(file);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    int size = original.getRowBytes() * original.getHeight();
+                    Log.i("sw32size", size + "");
+                    if (size > 10000000)
+                        original.compress(Bitmap.CompressFormat.JPEG, 20, out);
+                    else
+                        original.compress(Bitmap.CompressFormat.JPEG, 50, out);
+                    body.addFormDataPart("file", "test.jpg", RequestBody.create(MediaType.parse("image/*"), file));
+                }
             }
             requestBody = body.build();
             Request request = new Request.Builder()
