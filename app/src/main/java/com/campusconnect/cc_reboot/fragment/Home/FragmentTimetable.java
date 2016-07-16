@@ -68,5 +68,4 @@ public class FragmentTimetable extends Fragment{
 
         return v;
     }
-
 }

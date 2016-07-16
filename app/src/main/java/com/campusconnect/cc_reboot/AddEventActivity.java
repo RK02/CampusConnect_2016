@@ -1,10 +1,13 @@
 package com.campusconnect.cc_reboot;
 
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -47,9 +50,12 @@ public class AddEventActivity extends AppCompatActivity {
     Button upload;
     String courseName;
     String courseId;
+    NotificationManager mNotifyManager;
+    NotificationCompat.Builder mBuilder;
     private FirebaseAnalytics firebaseAnalytics;
-
     private ProgressDialog progressDialog;
+    ArrayList<String> urls;
+    ArrayList<String> uris;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,13 +72,23 @@ public class AddEventActivity extends AppCompatActivity {
         date.setText(formattedDate);
         dueDate.setText(formattedDate);
         date.setFocusable(false);
+         mNotifyManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+         mBuilder= new NotificationCompat.Builder(this);
+        mBuilder.setContentTitle("CampusConnect")
+                .setContentText("Uploading...")
+                .setSmallIcon(R.mipmap.ccnoti);
+// Start a lengthy operation in a background thread
         firebaseAnalytics = FirebaseAnalytics.getInstance(this);
         if(getIntent().hasExtra("courseName"))
         {
             courseName = getIntent().getStringExtra("courseName");
+            Log.i("sw32upload",courseName + " this");
             course.setText(courseName);
             course.setFocusable(false);
-            description.setText(getIntent().getStringExtra("description")+"");
+            String desc = getIntent().getStringExtra("description")+"";
+            Log.i("sw32upload",desc + " this");
+            description.setText(desc);
 
         }
         if(getIntent().hasExtra("courseId"))
@@ -101,13 +117,20 @@ public class AddEventActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(mode!=3)
                 {
-                    startActivityForResult(new Intent(AddEventActivity.this,UploadPicturesActivity.class),1);
+                    Intent intent = new Intent(AddEventActivity.this,UploadPicturesActivity.class);
+                    if(urls!=null)
+                    {
+                        intent.putStringArrayListExtra("urls",urls);
+                        intent.putStringArrayListExtra("uris",uris);
+                    }
+                    startActivityForResult(intent,1);
                 }
                 else
                 {
                     Intent temp = new Intent();
+                    temp.putExtra("mode",mode);
                     temp.putExtra("description",description.getText().toString()+"");
-                    temp.putExtra("courseName",courseName+"");
+                    temp.putExtra("courseName",course.getText().toString()+"");
                     setResult(2,temp);
                     finish();
                 }
@@ -156,6 +179,11 @@ public class AddEventActivity extends AppCompatActivity {
             if(resultCode==0){
                 finish();
             }
+            if(resultCode==1)
+            {
+                urls = data.getStringArrayListExtra("urls");
+                uris = data.getStringArrayListExtra("uris");
+            }
         }
     }
 
@@ -171,9 +199,16 @@ public class AddEventActivity extends AppCompatActivity {
                 if (dueDate.getText().toString().equals("")) {
                 dueDate.setError("Enter due date");dueDate.requestFocus();return;}
                 }
-            progressDialog.setMessage("Uploading...");
-            progressDialog.setCancelable(false);
-            progressDialog.show();
+//            progressDialog.setMessage("Uploading...");
+//            progressDialog.setCancelable(false);
+//            progressDialog.show();
+            Intent intent = new Intent();
+            intent.putExtra("courseId",courseId);
+            intent.putExtra("uploadNotesActivity","success");
+            setResult(1,intent);
+            finish();
+            mBuilder.setProgress(0,0,true);
+            mNotifyManager.notify(1,mBuilder.build());
         }
 
         @Override
@@ -224,9 +259,33 @@ public class AddEventActivity extends AppCompatActivity {
                     body.addFormDataPart("file", "test.jpg", RequestBody.create(MediaType.parse("image/*"), file));
                 }
             }
-            else
+            else if(urls!=null)
             {
-                //body.addFormDataPart("file", "test.jpg", RequestBody.create(MediaType.parse("image/*"), new File("http://www.epirusportal.gr/wp-content/uploads/default-no-image.png")));
+                for (String temp : urls) {
+                    Log.i("sw32", "test : " + temp);
+
+                    Bitmap original = null;
+                    try {
+                        original = BitmapFactory.decodeStream(new FileInputStream(temp));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    file = new File(getFilesDir() + "/temp" + i + ".jpeg");
+                    i++;
+                    FileOutputStream out = null;
+                    try {
+                        out = new FileOutputStream(file);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    int size = original.getRowBytes() * original.getHeight();
+                    Log.i("sw32size", size + "");
+                    if (size > 10000000)
+                        original.compress(Bitmap.CompressFormat.JPEG, 20, out);
+                    else
+                        original.compress(Bitmap.CompressFormat.JPEG, 50, out);
+                    body.addFormDataPart("file", "test.jpg", RequestBody.create(MediaType.parse("image/*"), file));
+                }
             }
             requestBody = body.build();
             Request request = new Request.Builder()
@@ -243,11 +302,8 @@ public class AddEventActivity extends AppCompatActivity {
             @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            progressDialog.dismiss();
-                Intent intent = new Intent();
-                intent.putExtra("courseId",courseId);
-            setResult(1,intent);
-            finish();
+            mNotifyManager.cancel(1);
+
         }
 
     }

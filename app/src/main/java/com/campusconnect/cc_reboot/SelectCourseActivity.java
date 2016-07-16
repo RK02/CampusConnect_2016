@@ -97,21 +97,13 @@ public class SelectCourseActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 subbed = mCourseSelectionAdapter.getSubbed();
-                String[] temp = new String[subbed.size()];
-                int i=0;
-                for(String course : subbed)
-                {
-                    temp[i] = course;
-                    i++;
-                }
-                Log.i("sw32",subbed.toString());
                 Retrofit retrofit = new Retrofit.
                         Builder()
                         .baseUrl(FragmentCourses.BASE_URL)
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
                 MyApi myApi = retrofit.create(MyApi.class);
-                MyApi.subscribeCourseRequest body = new MyApi.subscribeCourseRequest(getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""),temp);
+                MyApi.subscribeCourseRequest body = new MyApi.subscribeCourseRequest(getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""),subbed);
                 Call<ModelSubscribe> call = myApi.subscribeCourse(body);
                 call.enqueue(new Callback<ModelSubscribe>() {
                     @Override

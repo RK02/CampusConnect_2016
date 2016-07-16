@@ -229,10 +229,10 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
         fab_menu_container.getBackground().setAlpha(0);
 
         defaultTabPosition = getIntent().getIntExtra("TAB",0);
-        courseId = getIntent().getStringExtra("courseId");
         courseColor = getIntent().getIntExtra("courseColor", Color.rgb(224,224,224));
 
         course_info_container.setBackgroundColor(courseColor);
+        courseId = getIntent().getStringExtra("courseId");
 
 
         course_pager = (ViewPager) findViewById(R.id.pager_course);
@@ -243,56 +243,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
         course_pager.setCurrentItem(defaultTabPosition);
         course_tabs.setDistributeEvenly(true);
         course_tabs.setViewPager(course_pager);
-        Retrofit retrofit = new Retrofit.
-                Builder()
-                .baseUrl(MyApi.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        MyApi myapi = retrofit.create(MyApi.class);
-        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        firebaseAnalytics.logEvent("course_page_launched",new Bundle());
 
-        MyApi.getCourseRequest getCourseRequest = new MyApi.getCourseRequest(getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""),courseId);
-
-        Call<ModelCoursePage> call = myapi.getCourse(getCourseRequest);
-        call.enqueue(new Callback<ModelCoursePage>() {
-            @Override
-            public void onResponse(Call<ModelCoursePage> call, Response<ModelCoursePage> response) {
-                final ModelCoursePage modelCoursePage = response.body();
-                if(modelCoursePage != null) {
-                    course_title.setText(modelCoursePage.getCourseName());
-                    courseTitle = course_title.getText().toString();
-                    course_prof.setText(modelCoursePage.getProfessorName());
-                    course_details.setText(modelCoursePage.getDescription());
-                    if(modelCoursePage.getIsAdmin().equals("1"))
-                    {
-                        editCourse.setVisibility(View.VISIBLE);
-                        editCourse.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent intent = new Intent(CoursePageActivity.this,EditCourseActivity.class);
-                                intent.putExtra("editCourse","");
-                                intent.putExtra("courseName",courseTitle);
-                                intent.putStringArrayListExtra("dates",new ArrayList<>(modelCoursePage.getDate()));
-                                intent.putStringArrayListExtra("startTimes",new ArrayList<>(modelCoursePage.getStartTime()));
-                                intent.putStringArrayListExtra("endTimes",new ArrayList<>(modelCoursePage.getEndTime()));
-                                intent.putExtra("prof",modelCoursePage.getProfessorName());
-                                intent.putExtra("sem",modelCoursePage.getSemester());
-                                //modelCoursePage.
-
-                            }
-                        });
-                    }
-
-                    if(modelCoursePage.getIsSubscribed().equals("1")) subscribe_button.setChecked(true);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ModelCoursePage> call, Throwable t) {
-
-            }
-        });
 
         //Listener to define layouts for FAB expanded and collapsed modes
         fabMenu.setOnFloatingActionsMenuUpdateListener(this);
@@ -322,8 +273,89 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode)
+        {
+            case 69:
+            {
+                if(resultCode==1)
+                {
+                    if(data!=null)
+                    {
+                        courseColor = data.getIntExtra("courseColor",0);
+                        courseId = data.getStringExtra("courseId");
+                    }
+                    onResume();
+                }
+                break;
+            }
+        }
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
+        course_info_container.setBackgroundColor(courseColor);
+        course_adapter = new ViewPagerAdapter_course(getSupportFragmentManager(), Titles, Numboftabs, courseColor, this);
+        Retrofit retrofit = new Retrofit.
+                Builder()
+                .baseUrl(MyApi.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        MyApi myapi = retrofit.create(MyApi.class);
+
+
+        MyApi.getCourseRequest getCourseRequest = new MyApi.getCourseRequest(getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""),courseId);
+
+        Call<ModelCoursePage> call = myapi.getCourse(getCourseRequest);
+        call.enqueue(new Callback<ModelCoursePage>() {
+            @Override
+            public void onResponse(Call<ModelCoursePage> call, Response<ModelCoursePage> response) {
+                if(getIntent().hasExtra("uploadNotesActivity")) {
+                    firebaseAnalytics = FirebaseAnalytics.getInstance(CoursePageActivity.this);
+                    firebaseAnalytics.logEvent("course_page_launched", new Bundle());
+                }
+                final ModelCoursePage modelCoursePage = response.body();
+                if(modelCoursePage != null) {
+                    course_title.setText(modelCoursePage.getCourseName());
+                    courseTitle = course_title.getText().toString();
+                    course_prof.setText(modelCoursePage.getProfessorName());
+                    course_details.setText(modelCoursePage.getDescription());
+                    if(modelCoursePage.getIsAdmin().equals("1"))
+                    {
+                        editCourse.setVisibility(View.VISIBLE);
+                        editCourse.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(CoursePageActivity.this,EditCourseActivity.class);
+                                intent.putExtra("editCourse","");
+                                intent.putExtra("courseName",courseTitle);
+                                intent.putExtra("courseCode",modelCoursePage.getCourseCode());
+                                intent.putStringArrayListExtra("dates",new ArrayList<>(modelCoursePage.getDate()));
+                                intent.putStringArrayListExtra("startTimes",new ArrayList<>(modelCoursePage.getStartTime()));
+                                intent.putStringArrayListExtra("endTimes",new ArrayList<>(modelCoursePage.getEndTime()));
+                                intent.putStringArrayListExtra("batchNames",new ArrayList<String>(modelCoursePage.getBatchNames()));
+                                intent.putStringArrayListExtra("branchNames",new ArrayList<String>(modelCoursePage.getBranchNames()));
+                                intent.putStringArrayListExtra("sectionNames",new ArrayList<String>(modelCoursePage.getSectionNames()));
+                                intent.putExtra("prof",modelCoursePage.getProfessorName());
+                                intent.putExtra("sem",modelCoursePage.getSemester());
+                                intent.putExtra("e",modelCoursePage.getElective());
+                                intent.putExtra("courseId",courseId);
+                                startActivityForResult(intent,69);
+                            }
+                        });
+                    }
+
+                    if(modelCoursePage.getIsSubscribed().equals("1")) subscribe_button.setChecked(true);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ModelCoursePage> call, Throwable t) {
+
+            }
+        });
 
     }
 
@@ -356,7 +388,9 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                             .addConverterFactory(GsonConverterFactory.create())
                             .build();
                     MyApi myApi = retrofit.create(MyApi.class);
-                    MyApi.subscribeCourseRequest body = new MyApi.subscribeCourseRequest(getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""),new String[]{courseId});
+                    ArrayList<String> temp = new ArrayList<String>();
+                    temp.add(courseId);
+                    MyApi.subscribeCourseRequest body = new MyApi.subscribeCourseRequest(getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""),temp);
                     Call<ModelSubscribe> call = myApi.subscribeCourse(body);
                     call.enqueue(new Callback<ModelSubscribe>() {
                         @Override
@@ -375,11 +409,11 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
 
                     new unsub().execute();
                     FirebaseMessaging.getInstance().unsubscribeFromTopic(courseId);
-                    for(String viewId : FragmentCourses.timeTableViews.get(courseId)){
-                        LinearLayout a = ((LinearLayout)FragmentTimetable.v.findViewById(Integer.parseInt(viewId)));
-                                a.removeAllViews();
-                        a.setBackgroundColor(Color.rgb(223,223,223));
-                    }
+//                    for(String viewId : FragmentCourses.timeTableViews.get(courseId)){
+//                        LinearLayout a = ((LinearLayout)FragmentTimetable.v.findViewById(Integer.parseInt(viewId)));
+//                                a.removeAllViews();
+//                        a.setBackgroundColor(Color.rgb(223,223,223));
+//                    }
                     SubscribedCourseList.find(SubscribedCourseList.class,"course_id = ?",courseId).get(0).delete();
                     finish();
                 }

@@ -26,6 +26,11 @@ public class ModelCoursePage {
     private String studentCount;
     private String professorName;
     private String isAdmin;
+    private String courseCode;
+    private String elective;
+    private List<String> branchNames = new ArrayList<>();
+    private List<String> sectionNames = new ArrayList<>();
+    private List<String> batchNames = new ArrayList<>();
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
@@ -256,5 +261,45 @@ public class ModelCoursePage {
 
     public void setSemester(String semester) {
         this.semester = semester;
+    }
+
+    public List<String> getBranchNames() {
+        return branchNames;
+    }
+
+    public void setBranchNames(List<String> branchNames) {
+        this.branchNames = branchNames;
+    }
+
+    public List<String> getSectionNames() {
+        return sectionNames;
+    }
+
+    public void setSectionNames(List<String> sectionNames) {
+        this.sectionNames = sectionNames;
+    }
+
+    public List<String> getBatchNames() {
+        return batchNames;
+    }
+
+    public void setBatchNames(List<String> batchNames) {
+        this.batchNames = batchNames;
+    }
+
+    public String getCourseCode() {
+        return courseCode;
+    }
+
+    public void setCourseCode(String courseCode) {
+        this.courseCode = courseCode;
+    }
+
+    public String getElective() {
+        return elective;
+    }
+
+    public void setElective(String elective) {
+        this.elective = elective;
     }
 }

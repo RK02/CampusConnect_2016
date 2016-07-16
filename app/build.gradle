@@ -55,10 +55,10 @@ dependencies {
     compile 'com.android.support:multidex:1.0.0'
     compile 'com.google.firebase:firebase-messaging:9.2.0'
     compile 'com.github.satyan:sugar:1.4'
+    compile 'io.branch.sdk.android:library:1.+'
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.7@aar') { transitive = true }
 }
 
-
-
-
-
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'

@@ -125,6 +125,7 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        mFirebaseAnalytics.logEvent("sign_up_start",new Bundle());
         MyApi myApi = retrofit.create(MyApi.class);
         Call<ModelCollegeList> call = myApi.getCollegeList();
         call.enqueue(new Callback<ModelCollegeList>() {

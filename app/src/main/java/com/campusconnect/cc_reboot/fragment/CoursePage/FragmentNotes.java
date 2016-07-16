@@ -69,13 +69,17 @@ public class FragmentNotes extends Fragment {
             @Override
             public void onResponse(Call<ModelNoteBookList> call, Response<ModelNoteBookList> response) {
                 ModelNoteBookList modelNoteBookList = response.body();
+                Log.i("sw32","herenotelist");
+                Log.i("sw32","herenotelist " + response.code());
                 if(modelNoteBookList != null) {
+                    Log.i("sw32","herenotelist1");
                     List<NoteBookList> noteBookLists = modelNoteBookList.getNoteBookList();
                     for (NoteBookList x : noteBookLists) {
                         mNotesAdapter.add(x);
                         mNotesAdapter.notifyDataSetChanged();
                     }
                 }
+                Log.i("sw32","herenotelist");
             }
 
             @Override

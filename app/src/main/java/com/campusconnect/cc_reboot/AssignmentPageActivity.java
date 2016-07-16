@@ -1,5 +1,6 @@
 package com.campusconnect.cc_reboot;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -13,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -39,9 +41,17 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
+import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
+
+import org.json.JSONException;
+import org.w3c.dom.Text;
 
 import butterknife.Bind;
 import butterknife.*;
+import io.branch.indexing.BranchUniversalObject;
+import io.branch.referral.Branch;
+import io.branch.referral.BranchError;
+import io.branch.referral.util.LinkProperties;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -51,7 +61,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by RK on 04/06/2016.
  */
-public class AssignmentPageActivity extends AppCompatActivity implements View.OnClickListener{
+public class AssignmentPageActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Bind(R.id.drawer)
     DrawerLayout drawerLayout;
@@ -95,8 +105,8 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
 
     //Flags
     boolean doubleBackToExitPressedOnce = false;
-    boolean at_home=true;
-    String frag_title="";
+    boolean at_home = true;
+    String frag_title = "";
     private Toolbar toolbar;
     private Fragment fragment = null;
     Fragment homefrag;
@@ -112,7 +122,7 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
 
         //Drawer stuff
         home_title = (TextView) findViewById(R.id.tv_title);
-        toolbar = (Toolbar) findViewById (R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 //        homefrag = new FragmentHome();
         //Setting up Header View
@@ -148,11 +158,13 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
                 super.onDrawerClosed(drawerView);
 
             }
+
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
 
             }
+
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 super.onDrawerSlide(drawerView, slideOffset);
@@ -176,7 +188,7 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
         });
         //Drawer ends
 
-        courseColor = getIntent().getIntExtra("CourseColor", Color.rgb(224,224,224));
+        courseColor = getIntent().getIntExtra("CourseColor", Color.rgb(224, 224, 224));
         assignments_container.setBackgroundColor(courseColor);
 
         assignmentId = getIntent().getStringExtra("assignmentId");
@@ -187,15 +199,15 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         MyApi myApi = retrofit.create(MyApi.class);
-        MyApi.getAssignmentRequest body = new MyApi.getAssignmentRequest(assignmentId, getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""));
-        Call<ModelAssignment> call  = myApi.getAssignment(body);
+        MyApi.getAssignmentRequest body = new MyApi.getAssignmentRequest(assignmentId, getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId", ""));
+        Call<ModelAssignment> call = myApi.getAssignment(body);
         call.enqueue(new Callback<ModelAssignment>() {
             @Override
             public void onResponse(Call<ModelAssignment> call, Response<ModelAssignment> response) {
                 ModelAssignment assignment = response.body();
                 assignment_name.setText(assignment.getAssignmentTitle());
                 uploader.setText(assignment.getUploaderName());
-                date_posted.setText(assignment.getLastUpdated().substring(0,10));
+                date_posted.setText(assignment.getLastUpdated().substring(0, 10));
                 dueDate.setText(assignment.getDueDate());
                 views.setText(assignment.getViews());
                 description.setText(assignment.getAssignmentDesc());
@@ -234,7 +246,7 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
     @Override
     public void onClick(View view) {
 
-        switch (view.getId()){
+        switch (view.getId()) {
 
             case R.id.ib_edit_note:
                 intent = new Intent(getApplicationContext(), EditNoteActivity.class);
@@ -247,7 +259,7 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
                 break;
 
             case R.id.ib_share:
-
+                share_link();
                 break;
 
             case R.id.iv_assignment:
@@ -264,44 +276,45 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
         }
 
     }
+
     //Function for fragment selection and commits
-    public void displayView(int viewId){
+    public void displayView(int viewId) {
         switch (viewId) {
             case R.id.item_timetable:
-                at_home=true;
-                Intent intent_home = new Intent(AssignmentPageActivity.this,HomeActivity2.class);
+                at_home = true;
+                Intent intent_home = new Intent(AssignmentPageActivity.this, HomeActivity2.class);
                 startActivity(intent_home);
                 break;
             case R.id.item_add_course:
                 fragment = new FragmentAddCourse();
                 frag_title = "Add Course";
-                at_home=false;
+                at_home = false;
                 break;
             case R.id.item_bookmark:
-                Intent intent_profile = new Intent(AssignmentPageActivity.this,ProfilePageActivity.class);
+                Intent intent_profile = new Intent(AssignmentPageActivity.this, ProfilePageActivity.class);
                 startActivity(intent_profile);
-                at_home=false;
+                at_home = false;
                 break;
             case R.id.item_getting_points:
                 fragment = new FragmentPointsInfo();
                 frag_title = "Getting Points";
-                at_home=false;
+                at_home = false;
                 break;
             case R.id.item_invite:
                 fragment = new FragmentInvite();
                 frag_title = "Invite";
-                at_home=false;
+                at_home = false;
                 break;
             case R.id.item_settings:
                 fragment = new FragmentSettings();
                 frag_title = "Settings";
-                at_home=false;
+                at_home = false;
                 break;
             case R.id.item_logout:
-                at_home=true;
+                at_home = true;
                 Auth.GoogleSignInApi.signOut(mGoogleApiClient);
-                Intent intent = new Intent(AssignmentPageActivity.this,GoogleSignInActivity.class);
-                intent.putExtra("logout","temp");
+                Intent intent = new Intent(AssignmentPageActivity.this, GoogleSignInActivity.class);
+                intent.putExtra("logout", "temp");
                 FirebaseAuth.getInstance().signOut();
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
@@ -309,22 +322,22 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
             case R.id.item_t_and_c:
                 fragment = new FragmentTerms();
                 frag_title = "Terms and Conditions";
-                at_home=false;
+                at_home = false;
                 break;
             case R.id.item_rate:
                 fragment = new FragmentRate();
                 frag_title = "Rate App";
-                at_home=false;
+                at_home = false;
                 break;
             case R.id.item_feedback:
                 fragment = new FragmentFeedback();
                 frag_title = "Feedback";
-                at_home=false;
+                at_home = false;
                 break;
             case R.id.item_about:
                 fragment = new FragmentAbout();
                 frag_title = "About Us";
-                at_home=false;
+                at_home = false;
                 break;
             default:
                 Toast.makeText(getApplicationContext(), "Something's Wrong", Toast.LENGTH_SHORT).show();
@@ -334,23 +347,19 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
             home_title.setText(frag_title);
             android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             //fragmentTransaction.remove(getSupportFragmentManager().findFragmentById(R.id.frame));
-            Fragment temp  = getSupportFragmentManager().findFragmentById(R.id.frame);
+            Fragment temp = getSupportFragmentManager().findFragmentById(R.id.frame);
 
-            if(temp==homefrag) {
-                if(!at_home) {
+            if (temp == homefrag) {
+                if (!at_home) {
                     fragmentTransaction.add(R.id.frame, fragment);
                     fragmentTransaction.commit();
                 }
-            }
-            else
-            {
-                if(!at_home) {
+            } else {
+                if (!at_home) {
                     fragmentTransaction.remove(temp);
                     fragmentTransaction.add(R.id.frame, fragment);
                     fragmentTransaction.commit();
-                }
-                else
-                {
+                } else {
                     fragmentTransaction.remove(temp);
                     fragmentTransaction.commit();
                 }
@@ -362,27 +371,104 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
     @Override
     public void onBackPressed() {
 //Go to home if the drawer is closed and the we are not on the HomeFragment (at_home flag checks for the latter)
-        if(at_home==false && !drawerLayout.isDrawerOpen(GravityCompat.START)) {
+        if (at_home == false && !drawerLayout.isDrawerOpen(GravityCompat.START)) {
 //Unchecking all the drawer menu items before going back to home
             int size = navigationView.getMenu().size();
             for (int i = 0; i < size; i++) {
                 navigationView.getMenu().getItem(i).setChecked(false);
             }
 //Opening the HomeFragment
-            frag_title="Assignment";
+            frag_title = "Assignment";
             home_title.setText(frag_title);
             android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
             fragmentTransaction.remove(getSupportFragmentManager().findFragmentById(R.id.frame));
             fragmentTransaction.commit();
             at_home = true;
-        }else if(at_home==true && !drawerLayout.isDrawerOpen(GravityCompat.START)){
+        } else if (at_home == true && !drawerLayout.isDrawerOpen(GravityCompat.START)) {
 //Implementation of "Click back again to exit"
 
             super.onBackPressed();
-        }
-        else
+        } else
             drawerLayout.closeDrawers();
     }
+
+    void share_link() {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.show();
+        BranchUniversalObject branchUniversalObject = new BranchUniversalObject()
+                .setContentIndexingMode(BranchUniversalObject.CONTENT_INDEX_MODE.PUBLIC)
+                .addContentMetadata("assignmentId", assignmentId);
+
+        LinkProperties linkProperties = new LinkProperties()
+                .setChannel("whatsapp")
+                .setFeature("sharing")
+                .addControlParameter("$desktop_url", "http://campusconnect-2016.herokuapp.com/assignment?id=" + assignmentId);
+
+        final Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.setType("text/plain");
+        sendIntent.setPackage("com.whatsapp");
+        branchUniversalObject.generateShortUrl(this, linkProperties, new Branch.BranchLinkCreateListener() {
+            @Override
+            public void onLinkCreate(String url, BranchError error) {
+                if (error == null) {
+                    Log.i("MyApp", "got my Branch link to share: " + url);
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, url);
+                    progressDialog.dismiss();
+                    startActivityForResult(sendIntent, 1);
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
+        if (Branch.isAutoDeepLinkLaunch(this)) {
+            try {
+                String autoDeeplinkedValue = Branch.getInstance().getLatestReferringParams().getString("assignmentId");
+                assignmentId = autoDeeplinkedValue;
+                Log.i("sw32Deep", "Launched by Branch on auto deep linking!"
+                        + "\n\n" + autoDeeplinkedValue);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            assignmentId = getIntent().getStringExtra("assignmentId");
+        }
+        courseColor = getIntent().getIntExtra("CourseColor", Color.rgb(224, 224, 224));
+        assignments_container.setBackgroundColor(courseColor);
+        Retrofit retrofit = new Retrofit.
+                Builder()
+                .baseUrl(MyApi.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        MyApi myApi = retrofit.create(MyApi.class);
+        MyApi.getAssignmentRequest body = new MyApi.getAssignmentRequest(assignmentId, getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId", ""));
+        Call<ModelAssignment> call = myApi.getAssignment(body);
+        call.enqueue(new Callback<ModelAssignment>() {
+            @Override
+            public void onResponse(Call<ModelAssignment> call, Response<ModelAssignment> response) {
+                ModelAssignment assignment = response.body();
+                assignment_name.setText(assignment.getAssignmentTitle());
+                uploader.setText(assignment.getUploaderName());
+                date_posted.setText(assignment.getLastUpdated().substring(0, 10));
+                dueDate.setText(assignment.getDueDate());
+                views.setText(assignment.getViews());
+                description.setText(assignment.getAssignmentDesc());
+            }
+
+            @Override
+            public void onFailure(Call<ModelAssignment> call, Throwable t) {
+
+            }
+        });
+
+
+    }
 }
+
 

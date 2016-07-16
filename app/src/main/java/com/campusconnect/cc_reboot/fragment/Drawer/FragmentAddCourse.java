@@ -139,6 +139,7 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
 
     String profileId;
     String collegeId;
+    List<String> branchNames;
 
     @Nullable
     @Override
@@ -147,7 +148,7 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
         ButterKnife.bind(this, v);
 
         ShapeDrawable courseColor_circle = new ShapeDrawable( new OvalShape() );
-        courseColor_circle.getPaint().setColor(Color.parseColor("#000000"));
+        courseColor_circle.getPaint().setColor(Color.parseColor("#EE5451"));
 
         courseColorPicker.setBackground(courseColor_circle);
 
@@ -178,7 +179,8 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                             if (isChecked) {
                                 String temp = "";
-                                for (String branch : modelBranchList.getBranchList()) {
+                                branchNames = modelBranchList.getBranchList();
+                                for (String branch : branchNames) {
                                     temp += branch + ",";
                                 }
                                 temp = temp.substring(0, temp.lastIndexOf(","));
@@ -314,6 +316,15 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
         if(courseBatch.getText().toString().equals("")){courseBatch.setError("Enter Batch");courseBatch.requestFocus();return;}
         if(courseBranch.getText().toString().equals("")){courseBranch.setError("Enter Branch");courseBranch.requestFocus();return;}
         if(days_selected.size()==0){Toast.makeText(getActivity(),"Select appropriate times for this course",Toast.LENGTH_SHORT).show();return;}
+        String[] selected = courseBranch.getText().toString().split(",");
+        for(String branch : selected) {
+            if (branchNames.indexOf(branch) < 0) {
+                courseBranch.setError("Select Valid branch");
+                courseBranch.requestFocus();
+                return;
+            }
+        }
+
         Retrofit retrofit = new Retrofit.
                 Builder()
                 .baseUrl(MyApi.BASE_URL)

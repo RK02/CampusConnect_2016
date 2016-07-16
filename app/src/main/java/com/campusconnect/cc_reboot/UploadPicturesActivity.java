@@ -92,8 +92,19 @@ public class UploadPicturesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_upload_pictures);
 
         ButterKnife.bind(this);
-        urls = new ArrayList<>();
-        uris = new ArrayList<>();
+        imageAdapter = new ImageAdapter(this);
+        if(getIntent().hasExtra("urls"))
+        {
+            urls = getIntent().getStringArrayListExtra("urls");
+            uris = getIntent().getStringArrayListExtra("uris");
+            imageAdapter.notifyDataSetChanged();
+
+        }
+        else {
+            urls = new ArrayList<>();
+            uris = new ArrayList<>();
+            imageAdapter.notifyDataSetChanged();
+        }
         if (Build.VERSION.SDK_INT >= 23) {
             //do your check here
             if (ContextCompat.checkSelfPermission(this,Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -187,26 +198,47 @@ public class UploadPicturesActivity extends AppCompatActivity {
         });
         gridView= (GridView) findViewById(R.id.imageGrid);
 
-        imageAdapter = new ImageAdapter(this);
+
         next = (Button) findViewById(R.id.BtnNext);
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(uris.isEmpty()){
-                    Toast.makeText(UploadPicturesActivity.this,"Please Select pictures and then press Next",Toast.LENGTH_LONG).show();
-                }
-                else {
-                    Bundle params = new Bundle();
-                    params.putString("pictures_uploaded",uris.size()+" pictures");
-                    firebaseAnalytics.logEvent("pictures_selected_and_continue",params);
-                    Intent description = new Intent(UploadPicturesActivity.this, AddEventActivity.class);
-                    description.putExtra("Mode",3);
-                    if(getIntent().hasExtra("courseId")) {
-                        description.putExtra("courseId", getIntent().getStringExtra("courseId"));
-                        description.putExtra("courseTitle", getIntent().getStringExtra("courseTitle"));
+                    if (uris.isEmpty()) {
+                        if(getCallingActivity()!=null)
+                        {
+                            Intent data = new Intent();
+                            data.putStringArrayListExtra("urls", urls);
+                            data.putStringArrayListExtra("uris", uris);
+                            setResult(1, data);
+                            finish();
+                        }
+                        else {
+
+                            Toast.makeText(UploadPicturesActivity.this, "Please Select pictures and then press Next", Toast.LENGTH_LONG).show();
+                        }
+                        } else {
+                        if (getCallingActivity() != null) {
+                            Intent data = new Intent();
+                            data.putStringArrayListExtra("urls", urls);
+                            data.putStringArrayListExtra("uris", uris);
+                            setResult(1, data);
+                            finish();
+                        } else {
+                            Intent description = new Intent(UploadPicturesActivity.this, AddEventActivity.class);
+                            description.putExtra("Mode", 3);
+                            if (getIntent().hasExtra("courseId")) {
+                                description.putExtra("courseId", getIntent().getStringExtra("courseId"));
+                                description.putExtra("courseTitle", getIntent().getStringExtra("courseTitle"));
+                            } else if (getIntent().hasExtra("courseName")) {
+                                description.putExtra("courseName", getIntent().getStringExtra("courseName"));
+                                description.putExtra("description", getIntent().getStringExtra("description"));
+                            }
+                            Bundle params = new Bundle();
+                            params.putString("pictures_uploaded", uris.size() + " pictures");
+                            firebaseAnalytics.logEvent("pictures_selected_and_continue", params);
+                            startActivityForResult(description, 1);
+                        }
                     }
-                    startActivityForResult(description,1);
-                }
             }
         });
         gridView.setAdapter(imageAdapter);
@@ -302,27 +334,25 @@ public class UploadPicturesActivity extends AppCompatActivity {
                 urls.clear();
                 uris.clear();
                 imageAdapter.notifyDataSetChanged();
-                Intent intent = new Intent(UploadPicturesActivity.this, CoursePageActivity.class);
                 String temp = data.getStringExtra("courseId");
                 if (temp!=null)
                 {
                     firebaseAnalytics.logEvent("upload_successful",new Bundle());
                 }
-                intent.putExtra("courseId",temp);
-                startActivity(intent);
                 finish();
             }
             else if(resultCode==2)
             {
                 final String cname = data.getStringExtra("courseName")+"";
                 final String desc = data.getStringExtra("description")+"";
+                Log.i("sw32uploadnext", cname + ":" + desc);
                 next.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(UploadPicturesActivity.this,AddEventActivity.class);
                         intent.putExtra("courseName",cname+"");
                         intent.putExtra("description",desc+"");
-                        startActivity(intent);
+                        startActivityForResult(intent,1);
                     }
                 });
 

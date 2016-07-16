@@ -222,6 +222,7 @@ public class FragmentCourses extends Fragment{
                             cell_container.addView(cell);
                             i--;
                         }
+
                         FirebaseMessaging.getInstance().subscribeToTopic(x.getCourseId());
                     }
                     swipeRefreshLayout.setRefreshing(false);

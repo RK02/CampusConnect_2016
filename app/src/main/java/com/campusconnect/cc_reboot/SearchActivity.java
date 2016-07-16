@@ -30,6 +30,7 @@ import com.campusconnect.cc_reboot.fragment.SearchPage.FragmentSearchNotes;
 import com.campusconnect.cc_reboot.slidingtab.SlidingTabLayout_home;
 import com.campusconnect.cc_reboot.viewpager.ViewPagerAdapter_home;
 import com.campusconnect.cc_reboot.viewpager.ViewPagerAdapter_search;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +61,7 @@ public class SearchActivity extends AppCompatActivity {
     Call<ModelNotesSearch> callNotes;
     @Bind(R.id.ib_search)
     ImageButton searchButton;
+    private FirebaseAnalytics firebaseAnalytics;
 
 
     @Override
@@ -199,6 +201,10 @@ public class SearchActivity extends AppCompatActivity {
     {
         searchCourse(searchString);
         searchNotes(searchString);
+        Bundle params = new Bundle();
+        params.putString("searchstring",searchString);
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        firebaseAnalytics.logEvent("search_event",params);
     }
 }
 

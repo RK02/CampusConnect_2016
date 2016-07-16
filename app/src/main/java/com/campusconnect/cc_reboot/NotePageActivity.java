@@ -49,6 +49,10 @@ import android.widget.ToggleButton;
 import com.campusconnect.cc_reboot.POJO.ModelNoteBook;
 import com.campusconnect.cc_reboot.POJO.MyApi;
 
+import io.branch.indexing.BranchUniversalObject;
+import io.branch.referral.Branch;
+import io.branch.referral.BranchError;
+import io.branch.referral.util.LinkProperties;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -72,6 +76,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
@@ -138,6 +143,7 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
     int courseColor;
     Retrofit retrofit;
     List<Note> noteList;
+    RateNoteDialog rateNoteDialog;
     public static JSONObject jsonNoteList;
     public static ArrayList<String> descriptions;
     public static ArrayList<String> dates;
@@ -230,12 +236,54 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
         courseColor = getIntent().getIntExtra("CourseColor", Color.rgb(224, 224, 224));
         notes_container.setBackgroundColor(courseColor);
 
-        noteBookId = getIntent().getStringExtra("noteBookId");
+
 
         descriptions = new ArrayList<>();
         dates = new ArrayList<>();
 
+        //OnClickListeners
+        edit_note_button.setOnClickListener(this);
+        fullscreen_button.setOnClickListener(this);
+        share_note_button.setOnClickListener(this);
+        notes_last_page.setOnClickListener(this);
+        bookmark_note_button.setOnClickListener(this);
+        rate_note_button.setOnClickListener(this);
 
+        //GoogleSignIn stuff
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+                    }
+                } /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+        mGoogleApiClient.connect();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (Branch.isAutoDeepLinkLaunch(this)) {
+            try {
+                String autoDeeplinkedValue = Branch.getInstance().getLatestReferringParams().getString("noteBookId");
+                noteBookId = autoDeeplinkedValue;
+                Log.i("sw32Deep","Launched by Branch on auto deep linking!"
+                        + "\n\n" + autoDeeplinkedValue);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            noteBookId = getIntent().getStringExtra("noteBookId");
+        }
         retrofit = new Retrofit.
                 Builder()
                 .baseUrl(MyApi.BASE_URL)
@@ -325,29 +373,11 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
             public void onFailure(Call<ModelNoteBook> call, Throwable t) {
             }
         });
-        //OnClickListeners
-        edit_note_button.setOnClickListener(this);
-        fullscreen_button.setOnClickListener(this);
-        share_note_button.setOnClickListener(this);
-        notes_last_page.setOnClickListener(this);
-        bookmark_note_button.setOnClickListener(this);
-        rate_note_button.setOnClickListener(this);
 
-        //GoogleSignIn stuff
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, new GoogleApiClient.OnConnectionFailedListener() {
-                    @Override
-                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-                    }
-                } /* OnConnectionFailedListener */)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-        mGoogleApiClient.connect();
-
+    }
+    @Override
+    public void onNewIntent(Intent intent) {
+        this.setIntent(intent);
     }
 
     @Override
@@ -366,7 +396,7 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
                 break;
 
             case R.id.ib_share:
-
+                share_link();
                 break;
 
             case R.id.iv_notes:
@@ -379,7 +409,7 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
                 break;
 
             case R.id.b_rate:
-                RateNoteDialog rateNoteDialog = new RateNoteDialog(this);
+                rateNoteDialog = new RateNoteDialog(this);
                 rateNoteDialog.show();
                 Window window = rateNoteDialog.getWindow();
                 window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -389,6 +419,35 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
                 break;
         }
 
+    }
+    void share_link()
+    {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.show();
+        BranchUniversalObject branchUniversalObject = new BranchUniversalObject()
+                .setContentIndexingMode(BranchUniversalObject.CONTENT_INDEX_MODE.PUBLIC)
+                .addContentMetadata("noteBookId", noteBookId);
+
+        LinkProperties linkProperties = new LinkProperties()
+                .setChannel("whatsapp")
+                .setFeature("sharing")
+                .addControlParameter("$desktop_url", "http://campusconnect-2016.herokuapp.com/notebook?id=" + noteBookId);
+
+        final Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.setType("text/plain");
+        sendIntent.setPackage("com.whatsapp");
+        branchUniversalObject.generateShortUrl(this, linkProperties, new Branch.BranchLinkCreateListener() {
+            @Override
+            public void onLinkCreate(String url, BranchError error) {
+                if (error == null) {
+                    Log.i("MyApp", "got my Branch link to share: " + url);
+                    sendIntent.putExtra(Intent.EXTRA_TEXT,url);
+                    progressDialog.dismiss();
+                    startActivityForResult(sendIntent,1);
+                }
+            }
+        });
     }
 
     class bookmarkNote extends AsyncTask<String, String, String> {
@@ -461,6 +520,7 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
             super(a);
             // TODO Auto-generated constructor stub
             this.c = a;
+            this.c = a;
         }
 
         @Override
@@ -476,6 +536,41 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
             DrawableCompat.setTint(progress.getDrawable(1),Color.YELLOW);
             DrawableCompat.setTint(progress.getDrawable(2),Color.YELLOW);
 //            stars.getDrawable(2).setColorFilter(Color.rgb(255,247,151), PorterDuff.Mode.SRC_ATOP);
+
+            submit_rate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Retrofit retrofit = new Retrofit.
+                            Builder()
+                            .baseUrl(MyApi.BASE_URL)
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+                    MyApi myApi = retrofit.create(MyApi.class);
+                    MyApi.rateNoteBook body = new MyApi.rateNoteBook(getSharedPreferences("CC",MODE_PRIVATE).getString("profileId","fakedesu"),noteBookId,rating.getRating());
+                    Call<ModelRate> call = myApi.rate(body);
+                    try {
+                        call.enqueue(new Callback<ModelRate>() {
+                            @Override
+                            public void onResponse(Call<ModelRate> call, Response<ModelRate> response) {
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<ModelRate> call, Throwable t) {
+
+                            }
+                        });
+                        FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(NotePageActivity.this);
+                        Bundle params = new Bundle();
+                        params.putString("rated_notes",rating.getRating()+" stars");
+                        firebaseAnalytics.logEvent("notes_rate",params);
+                        rateNoteDialog.dismiss();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            });
 
             rating.setOnTouchListener(new View.OnTouchListener() {
                 @Override
