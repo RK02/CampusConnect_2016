@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container_acb_home"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
     android:layout_gravity="right"
@@ -9,28 +10,58 @@
     android:paddingLeft="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_vertical_margin">
 
-    <ImageButton
-        android:id="@+id/ib_menu"
+    <FrameLayout
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:background="@android:color/transparent"
-        android:src="@mipmap/ic_menu_24" />
+        android:layout_height="match_parent">
+
+        <ImageButton
+            android:id="@+id/ib_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:src="@mipmap/ic_menu_24" />
+        <ImageButton
+            android:id="@+id/ib_close"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:background="@android:color/transparent"
+            android:src="@mipmap/ic_close_24_white" />
+    </FrameLayout>
+
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingLeft="@dimen/activity_vertical_margin">
 
-        <TextView
-            android:id="@+id/tv_title"
+        <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            android:text="Home"
-            android:layout_marginTop="-2dp"
-            android:gravity="center"
-            android:textColor="@color/ColorTextHeading"
-            android:textSize="22sp"/>
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="-2dp"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:text="Home"
+                android:textColor="@color/ColorTextHeading"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/tv_title_notification"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="-2dp"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:text="Notifications"
+                android:textColor="@color/ColorTextHeading"
+                android:textSize="22sp"
+                android:visibility="gone" />
+        </FrameLayout>
 
         <ImageButton
             android:id="@+id/ib_search"

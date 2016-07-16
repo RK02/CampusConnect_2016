@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.campusconnect.cc_reboot.auxiliary.ObservableScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/scroll_horizontal_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:measureAllChildren="false"
+        android:scrollbars="none">
+
+        <TableLayout
+            android:id="@+id/top_header"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/ColorRecyclerBackground"
+            android:orientation="vertical"
+            android:stretchColumns="*">
+
+            <!--ROW 1-->
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="1dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="center"
+                    android:paddingBottom="16dp"
+                    android:paddingLeft="32dp"
+                    android:paddingRight="32dp"
+                    android:paddingTop="16dp"
+                    android:text="MON"
+                    android:textColor="@android:color/transparent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="1dp"
+                    android:background="@color/ColorPrimary"
+                    android:gravity="center"
+                    android:paddingBottom="16dp"
+                    android:paddingLeft="32dp"
+                    android:paddingRight="32dp"
+                    android:paddingTop="16dp"
+                    android:text="MON"
+                    android:textColor="@color/ColorTextHeading" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="1dp"
+                    android:background="@color/ColorPrimary"
+                    android:gravity="center"
+                    android:paddingBottom="16dp"
+                    android:paddingLeft="32dp"
+                    android:paddingRight="32dp"
+                    android:paddingTop="16dp"
+                    android:text="TUE"
+                    android:textColor="@color/ColorTextHeading" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="1dp"
+                    android:background="@color/ColorPrimary"
+                    android:gravity="center"
+                    android:paddingBottom="16dp"
+                    android:paddingLeft="32dp"
+                    android:paddingRight="32dp"
+                    android:paddingTop="16dp"
+                    android:text="WED"
+                    android:textColor="@color/ColorTextHeading" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="1dp"
+                    android:background="@color/ColorPrimary"
+                    android:gravity="center"
+                    android:paddingBottom="16dp"
+                    android:paddingLeft="32dp"
+                    android:paddingRight="32dp"
+                    android:paddingTop="16dp"
+                    android:text="THU"
+                    android:textColor="@color/ColorTextHeading" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="1dp"
+                    android:background="@color/ColorPrimary"
+                    android:gravity="center"
+                    android:paddingBottom="16dp"
+                    android:paddingLeft="32dp"
+                    android:paddingRight="32dp"
+                    android:paddingTop="16dp"
+                    android:text="FRI"
+                    android:textColor="@color/ColorTextHeading" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="1dp"
+                    android:background="@color/ColorPrimary"
+                    android:gravity="center"
+                    android:paddingBottom="16dp"
+                    android:paddingLeft="32dp"
+                    android:paddingRight="32dp"
+                    android:paddingTop="16dp"
+                    android:text="SAT"
+                    android:textColor="@color/ColorTextHeading" />
+
+
+            </TableRow>
+        </TableLayout>
+
+    </com.campusconnect.cc_reboot.auxiliary.ObservableScrollView>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_timetable"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/ColorRecyclerBackground" />
+</LinearLayout>

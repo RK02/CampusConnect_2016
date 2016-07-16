@@ -7,32 +7,58 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.campusconnect.cc_reboot.adapter.CourseListAdapter;
 import com.campusconnect.cc_reboot.adapter.StudentsListAdapter;
+import com.campusconnect.cc_reboot.fragment.Drawer.FragmentAbout;
+import com.campusconnect.cc_reboot.fragment.Drawer.FragmentAddCourse;
+import com.campusconnect.cc_reboot.fragment.Drawer.FragmentFeedback;
+import com.campusconnect.cc_reboot.fragment.Drawer.FragmentGifts;
+import com.campusconnect.cc_reboot.fragment.Drawer.FragmentHome;
+import com.campusconnect.cc_reboot.fragment.Drawer.FragmentInvite;
+import com.campusconnect.cc_reboot.fragment.Drawer.FragmentPointsInfo;
+import com.campusconnect.cc_reboot.fragment.Drawer.FragmentRate;
+import com.campusconnect.cc_reboot.fragment.Drawer.FragmentSettings;
+import com.campusconnect.cc_reboot.fragment.Drawer.FragmentTerms;
 import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
 import com.campusconnect.cc_reboot.fragment.Home.FragmentTimetable;
 import com.campusconnect.cc_reboot.slidingtab.SlidingTabLayout_home;
 import com.campusconnect.cc_reboot.viewpager.ViewPagerAdapter_course;
 import com.campusconnect.cc_reboot.POJO.*;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONException;
@@ -57,6 +83,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by RK on 04/06/2016.
  */
 public class CoursePageActivity extends AppCompatActivity implements FloatingActionsMenu.OnFloatingActionsMenuUpdateListener, View.OnClickListener{
+
+    @Bind(R.id.drawer)
+    DrawerLayout drawerLayout;
+    @Bind(R.id.navigation_view)
+    NavigationView navigationView;
+    @Bind(R.id.frame)
+    FrameLayout fragment_frame;
 
     @Bind(R.id.ib_sort)
     ImageButton sort_button;
@@ -91,6 +124,17 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
     @Bind(R.id.fab_menu)
     FloatingActionsMenu fabMenu;
 
+    //Flags
+    boolean doubleBackToExitPressedOnce = false;
+    boolean at_home=true;
+    String frag_title="";
+    private Toolbar toolbar;
+    private Fragment fragment = null;
+    Fragment homefrag;
+    View headerView;
+    public static TextView home_title;
+    GoogleApiClient mGoogleApiClient;
+
     ViewPagerAdapter_course course_adapter;
     ViewPager course_pager;
     public static SlidingTabLayout_home course_tabs;
@@ -111,6 +155,75 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
         setContentView(R.layout.activity_course);
         ButterKnife.bind(this);
         editCourse.setVisibility(View.GONE);
+
+        //Drawer stuff
+        home_title = (TextView) findViewById(R.id.tv_title);
+        toolbar = (Toolbar) findViewById (R.id.toolbar);
+        setSupportActionBar(toolbar);
+//        homefrag = new FragmentHome();
+        //Setting up Header View
+        headerView = getLayoutInflater().inflate(R.layout.header, navigationView, false);
+        navigationView.addHeaderView(headerView);
+        ImageView view = (ImageView) headerView.findViewById(R.id.profile_image);
+
+        //Unchecking all the drawer menu items before going back to home in case the app crashes
+        int size = navigationView.getMenu().size();
+        for (int i = 0; i < size; i++) {
+            navigationView.getMenu().getItem(i).setChecked(false);
+        }
+//Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+//Checking if the item is in checked state or not, if not make it in checked state
+                if (menuItem.isChecked())
+                    menuItem.setChecked(false);
+                else
+                    menuItem.setChecked(true);
+//Closing drawer on item click
+                drawerLayout.closeDrawers();
+//Fragment selection and commits
+                displayView(menuItem.getItemId());
+                return true;
+            }
+        });
+//Initializing ActionBarToggle
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.openDrawer, R.string.closeDrawer) {
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+
+            }
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+
+            }
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                super.onDrawerSlide(drawerView, slideOffset);
+                toolbar.setAlpha(1 - slideOffset / 2);
+                fragment_frame.setTranslationX((drawerLayout.getWidth() * slideOffset) / 4);
+                fragment_frame.setTranslationX((drawerLayout.getWidth() * slideOffset) / 4);
+            }
+        };
+
+        //Setting the actionbarToggle to drawer layout
+        drawerLayout.setDrawerListener(actionBarDrawerToggle);
+        //calling sync state is necessary or else the hamburger icon won't show up
+        actionBarDrawerToggle.syncState();
+        //Listener to define layouts for FAB expanded and collapsed modes
+        fabMenu.setOnFloatingActionsMenuUpdateListener(this);
+        //OnClickListener Header View
+        headerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent_temp = new Intent(getApplicationContext(), ProfilePageActivity.class);
+                startActivity(intent_temp);
+            }
+        });
+
+        //Drawer ends
 
         //Setting FAB container's background to be fully transparent by default
         fab_menu_container.getBackground().setAlpha(0);
@@ -141,6 +254,21 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
         notification_button.setOnClickListener(this);
         subscribe_button.setOnClickListener(this);
         course_view_students.setOnClickListener(this);
+
+        //GoogleSignIn stuff
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+                    }
+                } /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+        mGoogleApiClient.connect();
 
     }
 
@@ -396,6 +524,8 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
         fab_menu_container.setOnTouchListener(null);
     }
 
+
+
     public class ViewStudentsDialog extends Dialog {
 
         public Activity c;
@@ -442,6 +572,132 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
             });
         }
 
+    }
+
+    //Function for fragment selection and commits
+    public void displayView(int viewId){
+        switch (viewId) {
+            case R.id.item_timetable:
+                at_home=true;
+                Intent intent_home = new Intent(CoursePageActivity.this,HomeActivity2.class);
+                startActivity(intent_home);
+                break;
+            case R.id.item_add_course:
+                fragment = new FragmentAddCourse();
+                frag_title = "Add Course";
+                at_home=false;
+                break;
+            case R.id.item_bookmark:
+                Intent intent_profile = new Intent(CoursePageActivity.this,ProfilePageActivity.class);
+                startActivity(intent_profile);
+                at_home=false;
+                break;
+            case R.id.item_getting_points:
+                fragment = new FragmentPointsInfo();
+                frag_title = "Getting Points";
+                at_home=false;
+                break;
+            case R.id.item_invite:
+                fragment = new FragmentInvite();
+                frag_title = "Invite";
+                at_home=false;
+                break;
+            case R.id.item_settings:
+                fragment = new FragmentSettings();
+                frag_title = "Settings";
+                at_home=false;
+                break;
+            case R.id.item_logout:
+                at_home=true;
+                Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+                Intent intent = new Intent(CoursePageActivity.this,GoogleSignInActivity.class);
+                intent.putExtra("logout","temp");
+                FirebaseAuth.getInstance().signOut();
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+            case R.id.item_t_and_c:
+                fragment = new FragmentTerms();
+                frag_title = "Terms and Conditions";
+                at_home=false;
+                break;
+            case R.id.item_rate:
+                fragment = new FragmentRate();
+                frag_title = "Rate App";
+                at_home=false;
+                break;
+            case R.id.item_feedback:
+                fragment = new FragmentFeedback();
+                frag_title = "Feedback";
+                at_home=false;
+                break;
+            case R.id.item_about:
+                fragment = new FragmentAbout();
+                frag_title = "About Us";
+                at_home=false;
+                break;
+            default:
+                Toast.makeText(getApplicationContext(), "Something's Wrong", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        if (fragment != null) {
+            if(at_home==false)
+                fabMenu.setVisibility(View.GONE);
+            else
+                fabMenu.setVisibility(View.VISIBLE);
+
+            home_title.setText(frag_title);
+            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            //fragmentTransaction.remove(getSupportFragmentManager().findFragmentById(R.id.frame));
+            Fragment temp  = getSupportFragmentManager().findFragmentById(R.id.frame);
+
+            if(temp==homefrag) {
+                if(!at_home) {
+                    fragmentTransaction.add(R.id.frame, fragment);
+                    fragmentTransaction.commit();
+                }
+            }
+            else
+            {
+                if(!at_home) {
+                    fragmentTransaction.remove(temp);
+                    fragmentTransaction.add(R.id.frame, fragment);
+                    fragmentTransaction.commit();
+                }
+                else
+                {
+                    fragmentTransaction.remove(temp);
+                    fragmentTransaction.commit();
+                }
+            }
+
+        }
+    }
+    @Override
+    public void onBackPressed() {
+//Go to home if the drawer is closed and the we are not on the HomeFragment (at_home flag checks for the latter)
+        if(at_home==false && !drawerLayout.isDrawerOpen(GravityCompat.START)) {
+//Unchecking all the drawer menu items before going back to home
+            int size = navigationView.getMenu().size();
+            for (int i = 0; i < size; i++) {
+                navigationView.getMenu().getItem(i).setChecked(false);
+            }
+//Opening the HomeFragment
+            fabMenu.setVisibility(View.VISIBLE);
+            frag_title="Course";
+            home_title.setText(frag_title);
+            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
+            fragmentTransaction.remove(getSupportFragmentManager().findFragmentById(R.id.frame));
+            fragmentTransaction.commit();
+            at_home = true;
+        }else if(at_home==true && !drawerLayout.isDrawerOpen(GravityCompat.START)){
+//Implementation of "Click back again to exit"
+
+           super.onBackPressed();
+        }
+        else
+            drawerLayout.closeDrawers();
     }
 }
 
