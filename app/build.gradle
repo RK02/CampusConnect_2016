@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-//    signingConfigs {
-//        config {
-//            keyAlias 'cckey'
-//            keyPassword 'password'
-//            storeFile file('/Users/sarthak/cckeystore.jks')
-//            storePassword 'password'
-//        }
-//    }
+    signingConfigs {
+        config {
+            keyAlias 'cckey'
+            keyPassword 'password'
+            storeFile file('cckeystore.jks')
+            storePassword 'password'
+        }
+    }
     dexOptions {
         javaMaxHeapSize "4g"
     }
@@ -27,9 +27,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-//        debug {
-//            signingConfig signingConfigs.config
-//        }
+        debug {
+            signingConfig signingConfigs.config
+        }
     }
 }
 
@@ -55,10 +55,10 @@ dependencies {
     compile 'com.android.support:multidex:1.0.0'
     compile 'com.google.firebase:firebase-messaging:9.2.0'
     compile 'com.github.satyan:sugar:1.4'
+    compile 'io.branch.sdk.android:library:1.+'
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.7@aar') { transitive = true }
 }
 
-
-
-
-
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'

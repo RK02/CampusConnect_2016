@@ -1,266 +1,315 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/coordinatorLayout"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <!--AppBar Layout   -->
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/appBarLayout_acb"
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/coordinatorLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-            <!-- ViewPagerAdapter_home Toolbar   -->
-            <include
-                android:id="@+id/include_acb_note"
-                layout="@layout/actionbar_assignment"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:layout_scrollFlags="scroll|enterAlways"></include>
+            <!-- AppBar Layout   -->
+            <android.support.design.widget.AppBarLayout
+                android:id="@+id/appBarLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
 
-            <android.support.design.widget.CollapsingToolbarLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
-
-                <RelativeLayout
-                    android:id="@+id/container_assignment"
+                <include
+                    android:id="@+id/include_acb_note"
+                    layout="@layout/actionbar_assignment"
                     android:layout_width="match_parent"
-                    android:layout_height="280dp"
-                    android:background="@color/ColorRecyclerBackground"
-                    android:paddingLeft="24dp"
-                    android:paddingRight="24dp"
-                    android:paddingTop="24dp"
-                    app:layout_collapseMode="parallax">
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_collapseMode="pin"
+                    app:layout_scrollFlags="scroll|enterAlways|snap"></include>>
 
-                    <ImageView
-                        android:id="@+id/iv_assignment"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="-50dp"
-                        android:scaleType="fitCenter" />
-                </RelativeLayout>
-            </android.support.design.widget.CollapsingToolbarLayout>
-        </android.support.design.widget.AppBarLayout>
+                <include
+                    android:id="@+id/toolbar"
+                    layout="@layout/toolbar" />
 
-        <android.support.v4.widget.NestedScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            </android.support.design.widget.AppBarLayout>
 
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="16dp">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:elevation="4dp"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-                <!--Assignment card top container-->
-                <RelativeLayout
-                    android:id="@+id/top_part_card"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp">
-                    <!--Title and Author container-->
-                    <LinearLayout
-                        android:id="@+id/container_title_author"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_toLeftOf="@+id/container_date_posted"
-                        android:orientation="vertical">
+                <FrameLayout
+                    android:id="@+id/frame"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                        <TextView
-                            android:id="@+id/tv_assignment_name"
-                            android:layout_width="wrap_content"
+                    <android.support.design.widget.CoordinatorLayout
+                        android:id="@+id/coordinatorLayout_home"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <!-- AppBar Layout   -->
+                        <android.support.design.widget.AppBarLayout
+                            android:id="@+id/appBarLayout_home"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content">
+
+                            <android.support.design.widget.CollapsingToolbarLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:elevation="5dp"
+                                app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
+
+                                <RelativeLayout
+                                    android:id="@+id/container_assignment"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="280dp"
+                                    android:background="@color/ColorRecyclerBackground"
+                                    android:paddingLeft="24dp"
+                                    android:paddingRight="24dp"
+                                    android:paddingTop="24dp"
+                                    app:layout_collapseMode="parallax">
+
+                                    <ImageView
+                                        android:id="@+id/iv_assignment"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginBottom="-50dp"
+                                        android:scaleType="fitCenter" />
+                                </RelativeLayout>
+
+                            </android.support.design.widget.CollapsingToolbarLayout>
+
+                        </android.support.design.widget.AppBarLayout>
+
+                        <android.support.v4.widget.NestedScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="ASSIGNMENT 1"
-                            android:textColor="@color/ColorTextInfo"
-                            android:textSize="18sp" />
+                            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-                        <RelativeLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingLeft="2dp"
-                            android:paddingTop="2dp">
-
-                            <View
-                                android:layout_width="4dp"
-                                android:layout_height="match_parent"
-                                android:layout_alignBottom="@+id/tv_uploader"
-                                android:layout_alignTop="@+id/tv_uploader"
-                                android:background="#000000" />
-
-                            <TextView
-                                android:id="@+id/tv_uploader"
+                            <RelativeLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:paddingLeft="10dp"
-                                android:text="by Blah456"
-                                android:textColor="@color/ColorTextInfo"
-                                android:textSize="14sp" />
-                        </RelativeLayout>
+                                android:paddingTop="16dp">
 
-                    </LinearLayout>
+                                <!--Assignment card top container-->
+                                <RelativeLayout
+                                    android:id="@+id/top_part_card"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingLeft="16dp"
+                                    android:paddingRight="16dp">
+                                    <!--Title and Author container-->
+                                    <LinearLayout
+                                        android:id="@+id/container_title_author"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentLeft="true"
+                                        android:layout_toLeftOf="@+id/container_date_posted"
+                                        android:orientation="vertical">
 
-                    <!--Date Posted container-->
-                    <RelativeLayout
-                        android:id="@+id/container_date_posted"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:orientation="vertical">
+                                        <TextView
+                                            android:id="@+id/tv_assignment_name"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="ASSIGNMENT 1"
+                                            android:textColor="@color/ColorTextInfo"
+                                            android:textSize="18sp" />
 
-                        <TextView
-                            android:id="@+id/tv_posted_on_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical|right"
-                            android:paddingLeft="40dp"
-                            android:text="Posted on"
-                            android:textColor="@color/ColorTextInfo"
-                            android:textSize="18sp" />
+                                        <RelativeLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:paddingLeft="2dp"
+                                            android:paddingTop="2dp">
 
-                        <RelativeLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignLeft="@+id/tv_posted_on_title"
-                            android:layout_alignRight="@+id/tv_posted_on_title"
-                            android:layout_below="@+id/tv_posted_on_title"
-                            android:gravity="right"
-                            android:paddingRight="2dp"
-                            android:paddingTop="2dp">
+                                            <View
+                                                android:layout_width="4dp"
+                                                android:layout_height="match_parent"
+                                                android:layout_alignBottom="@+id/tv_uploader"
+                                                android:layout_alignTop="@+id/tv_uploader"
+                                                android:background="#000000" />
 
-                            <TextView
-                                android:id="@+id/tv_date_posted"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:paddingRight="10dp"
-                                android:text="21 May, 2016"
-                                android:textColor="@color/ColorTextInfo"
-                                android:textSize="14sp" />
+                                            <TextView
+                                                android:id="@+id/tv_uploader"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:paddingLeft="10dp"
+                                                android:text="by Blah456"
+                                                android:textColor="@color/ColorTextInfo"
+                                                android:textSize="14sp" />
+                                        </RelativeLayout>
 
-                            <View
-                                android:id="@+id/marker_posted_on"
-                                android:layout_width="4dp"
-                                android:layout_height="match_parent"
-                                android:layout_alignBottom="@+id/tv_date_posted"
-                                android:layout_alignTop="@+id/tv_date_posted"
-                                android:layout_toRightOf="@+id/tv_date_posted"
-                                android:background="#000000" />
+                                    </LinearLayout>
 
-                        </RelativeLayout>
-                    </RelativeLayout>
-                </RelativeLayout>
+                                    <!--Date Posted container-->
+                                    <RelativeLayout
+                                        android:id="@+id/container_date_posted"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentRight="true"
+                                        android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_description"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/top_part_card"
-                    android:padding="24dp"
-                    android:text="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout."
-                    android:textColor="@color/ColorTextInfo"
-                    android:textSize="16sp" />
+                                        <TextView
+                                            android:id="@+id/tv_posted_on_title"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="center_vertical|right"
+                                            android:paddingLeft="40dp"
+                                            android:text="Posted on"
+                                            android:textColor="@color/ColorTextInfo"
+                                            android:textSize="18sp" />
+
+                                        <RelativeLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_alignLeft="@+id/tv_posted_on_title"
+                                            android:layout_alignRight="@+id/tv_posted_on_title"
+                                            android:layout_below="@+id/tv_posted_on_title"
+                                            android:gravity="right"
+                                            android:paddingRight="2dp"
+                                            android:paddingTop="2dp">
+
+                                            <TextView
+                                                android:id="@+id/tv_date_posted"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:paddingRight="10dp"
+                                                android:text="21 May, 2016"
+                                                android:textColor="@color/ColorTextInfo"
+                                                android:textSize="14sp" />
+
+                                            <View
+                                                android:id="@+id/marker_posted_on"
+                                                android:layout_width="4dp"
+                                                android:layout_height="match_parent"
+                                                android:layout_alignBottom="@+id/tv_date_posted"
+                                                android:layout_alignTop="@+id/tv_date_posted"
+                                                android:layout_toRightOf="@+id/tv_date_posted"
+                                                android:background="#000000" />
+
+                                        </RelativeLayout>
+                                    </RelativeLayout>
+                                </RelativeLayout>
+
+                                <TextView
+                                    android:id="@+id/tv_description"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/top_part_card"
+                                    android:padding="24dp"
+                                    android:text="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout."
+                                    android:textColor="@color/ColorTextInfo"
+                                    android:textSize="16sp" />
+                            </RelativeLayout>
+                        </android.support.v4.widget.NestedScrollView>
+
+                    </android.support.design.widget.CoordinatorLayout>
+
+                </FrameLayout>
+
             </RelativeLayout>
-        </android.support.v4.widget.NestedScrollView>
-
-    </android.support.design.widget.CoordinatorLayout>
-
-    <LinearLayout
-        android:id="@+id/container_stats"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/container_action_buttons"
-        android:background="@color/ColorKeyStatContainer"
-        android:orientation="horizontal"
-        android:paddingBottom="16dp"
-        android:paddingTop="16dp"
-        android:weightSum="2">
+        </android.support.design.widget.CoordinatorLayout>
 
         <LinearLayout
-            android:id="@+id/container_stats_views"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.7"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/ib_views"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:src="@mipmap/ic_views_18_black" />
-
-            <TextView
-                android:id="@+id/tv_views_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:paddingLeft="8dp"
-                android:text="5392"
-                android:textColor="@color/ColorTextInfo"
-                android:textSize="16sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/container_due_date"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.3"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/ib_due_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:src="@mipmap/ic_due_18" />
-
-            <TextView
-                android:id="@+id/tv_due_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:paddingLeft="8dp"
-                android:text="DUE: 25 Sept, 2016"
-                android:textColor="@color/ColorTextInfo"
-                android:textSize="16sp" />
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/container_action_buttons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
-
-        <ToggleButton
-            android:id="@+id/tb_remind_me"
+            android:id="@+id/container_stats"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/ColorPrimary"
-            android:gravity="center"
-            android:minHeight="0dp"
-            android:paddingBottom="12dp"
-            android:paddingTop="12dp"
-            android:textOff="REMIND ME"
-            android:textOn="ADDED TO REMIND ME"
-            android:textColor="@color/ColorTextHeading"
-            android:textSize="16sp" />
+            android:layout_above="@+id/container_action_buttons"
+            android:background="@color/ColorKeyStatContainer"
+            android:orientation="horizontal"
+            android:paddingBottom="16dp"
+            android:paddingTop="16dp"
+            android:weightSum="2">
 
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/container_stats_views"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-</RelativeLayout>
+                <ImageButton
+                    android:id="@+id/ib_views"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:src="@mipmap/ic_views_18_black" />
+
+                <TextView
+                    android:id="@+id/tv_views_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:paddingLeft="8dp"
+                    android:text="5392"
+                    android:textColor="@color/ColorTextInfo"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/container_due_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.3"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/ib_due_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:src="@mipmap/ic_due_18" />
+
+                <TextView
+                    android:id="@+id/tv_due_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:paddingLeft="8dp"
+                    android:text="DUE: 25 Sept, 2016"
+                    android:textColor="@color/ColorTextInfo"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/container_action_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+
+            <ToggleButton
+                android:id="@+id/tb_remind_me"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/ColorPrimary"
+                android:gravity="center"
+                android:minHeight="0dp"
+                android:paddingBottom="12dp"
+                android:paddingTop="12dp"
+                android:textOff="REMIND ME"
+                android:textOn="ADDED TO REMIND ME"
+                android:textColor="@color/ColorTextHeading"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/ColorRecyclerBackground"
+        app:itemIconTint="@color/selector_drawer_item"
+        app:itemTextColor="@color/selector_drawer_item"
+        app:menu="@layout/drawer" />
+</android.support.v4.widget.DrawerLayout>

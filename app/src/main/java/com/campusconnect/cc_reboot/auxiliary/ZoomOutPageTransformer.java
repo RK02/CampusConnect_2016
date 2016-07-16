@@ -30,9 +30,9 @@ public class ZoomOutPageTransformer implements ViewPager.PageTransformer {
             view.setScaleX(scaleFactor);
             view.setScaleY(scaleFactor);
 
-            view.setAlpha(MIN_ALPHA +
-                    (scaleFactor - MIN_SCALE) /
-                            (1 - MIN_SCALE) * (1 - MIN_ALPHA));
+//            view.setAlpha(MIN_ALPHA +
+//                    (scaleFactor - MIN_SCALE) /
+//                            (1 - MIN_SCALE) * (1 - MIN_ALPHA));
 
         } else {
             view.setAlpha(0);

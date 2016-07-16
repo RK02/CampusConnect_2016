@@ -21,10 +21,10 @@
             android:title="Add Course" />
 
         <item
-            android:id="@+id/item_gifts"
+            android:id="@+id/item_bookmark"
             android:checked="false"
-            android:icon="@mipmap/ic_edit_24_black"
-            android:title="Gifts" />
+            android:icon="@mipmap/ic_bookmark_24_black"
+            android:title="Bookmarks" />
     </group>
 
     <!--Group 2-->

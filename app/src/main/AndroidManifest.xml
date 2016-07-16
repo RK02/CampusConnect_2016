@@ -24,9 +24,10 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="f36cb93f6f4460b768644db9ecbc2b70feabb4d7"
-            />
-        <meta-data android:name="io.branch.sdk.BranchKey" android:value="key_live_jgl6YTLmWFUWqekOmqpuomdbwDlaAuaB" />
+            android:value="f36cb93f6f4460b768644db9ecbc2b70feabb4d7" />
+        <meta-data
+            android:name="io.branch.sdk.BranchKey"
+            android:value="key_live_jgl6YTLmWFUWqekOmqpuomdbwDlaAuaB" />
         <meta-data
             android:name="DATABASE"
             android:value="cc.db" />
@@ -68,19 +69,23 @@
         <activity
             android:name=".SplashActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask">
+
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
-            <data android:scheme="https" android:host="campusconnectreboot.app.link" />
-            <action android:name="android.intent.action.VIEW" />
-            <category android:name="android.intent.category.DEFAULT" />
-            <category android:name="android.intent.category.BROWSABLE" />
-        </intent-filter>
+                <data
+                    android:host="campusconnectreboot.app.link"
+                    android:scheme="https" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".CoursePageActivity"
@@ -89,22 +94,27 @@
         <activity
             android:name=".NotePageActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
             android:launchMode="singleTask"
-            >
-            <meta-data android:name="io.branch.sdk.auto_link_keys" android:value="noteBookId" />
-            </activity>
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="io.branch.sdk.auto_link_keys"
+                android:value="noteBookId" />
+        </activity>
         <activity
             android:name=".AssignmentPageActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" >
-            <meta-data android:name="io.branch.sdk.auto_link_keys" android:value="assignmentId" />
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="io.branch.sdk.auto_link_keys"
+                android:value="assignmentId" />
         </activity>
         <activity
             android:name=".ExamPageActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" >
-            <meta-data android:name="io.branch.sdk.auto_link_keys" android:value="examId" />
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="io.branch.sdk.auto_link_keys"
+                android:value="examId" />
         </activity>
         <activity
             android:name=".SearchActivity"
@@ -124,7 +134,7 @@
         <activity
             android:name=".SortActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".GiftsActivity"
             android:label="@string/app_name"
@@ -139,6 +149,10 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".DummyActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".RateNoteActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
@@ -147,8 +161,8 @@
         <activity
             android:name=".HomeActivity2"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" >
-        </activity>
+            android:windowSoftInputMode="adjustPan"></activity>
+
         <activity android:name=".CreateCourseActivity" />
         <activity
             android:name=".EditCourseActivity"

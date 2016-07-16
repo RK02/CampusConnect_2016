@@ -48,6 +48,7 @@ public class CustomPagerAdapter extends PagerAdapter {
         Picasso.with(mContext).
                 load(NotesSliderActivity.urls.get(mlevel).get(position)).
                 fit().
+                noFade().
                 error(R.mipmap.ic_pages_18).
                 into(notes_fullscreen);
         collection.addView(rootView);

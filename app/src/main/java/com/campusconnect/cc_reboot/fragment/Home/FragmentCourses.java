@@ -27,6 +27,7 @@ import com.campusconnect.cc_reboot.POJO.*;
 
 import com.campusconnect.cc_reboot.R;
 import com.campusconnect.cc_reboot.adapter.CourseListAdapter;
+import com.campusconnect.cc_reboot.adapter.TimetableAdapter;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -191,36 +192,37 @@ public class FragmentCourses extends Fragment{
                         courseIds.add(x.getCourseId());
                         mCourseAdapter.add(x);
                         x.save();
-//                        int i = x.getDate().size()-1;
-//                        while(i>=0) {
-//                            View cell = LayoutInflater.from(getContext()).inflate(R.layout.timetable_cell_layout, cell_container, false);
-//                            String viewId = x.getDate().get(i) + "" + (Integer.parseInt(x.getStartTime().get(i).substring(0, 2)) - 6);
-//                            if(timeTableViews.containsKey(x.getCourseId()))
-//                            {
-//                                timeTableViews.get(x.getCourseId()).add(viewId);
-//                            }
-//                            else
-//                            {
-//                                ArrayList<String> temp = new ArrayList<>();
-//                                temp.add(viewId);
-//                                timeTableViews.put(x.getCourseId(),temp);
-//                            }
-//                            cell_container = (LinearLayout) FragmentTimetable.v.findViewById(Integer.parseInt(viewId));
-//                            //cell_container.setBackgroundColor(Color.parseColor(x.getColour()));
-//                            ((TextView)cell.findViewById(R.id.cellText)).setText(x.getCourseName());
-//                            cell.setOnClickListener(new View.OnClickListener() {
-//                                @Override
-//                                public void onClick(View v) {
-//                                    Intent coursePage = new Intent(getActivity(), CoursePageActivity.class);
-//                                    coursePage.putExtra("courseId",x.getCourseId());
-//                                    coursePage.putExtra("courseColor",Color.parseColor(x.getColour()));
-//                                    startActivity(coursePage);
-//                                }
-//                            });
-//                            cell_container.removeAllViews();
-//                            cell_container.addView(cell);
-//                            i--;
-//                        }
+                        int i = x.getDate().size()-1;
+                        while(i>=0) {
+                            View cell = LayoutInflater.from(getContext()).inflate(R.layout.timetable_cell_layout, cell_container, false);
+                            String viewId = x.getDate().get(i) + "" + (Integer.parseInt(x.getStartTime().get(i).substring(0, 2)) - 6);
+                            if(timeTableViews.containsKey(x.getCourseId()))
+                            {
+                                timeTableViews.get(x.getCourseId()).add(viewId);
+                            }
+                            else
+                            {
+                                ArrayList<String> temp = new ArrayList<>();
+                                temp.add(viewId);
+                                timeTableViews.put(x.getCourseId(),temp);
+                            }
+                            cell_container = (LinearLayout) TimetableAdapter.itemView.findViewById(Integer.parseInt(viewId));
+                            cell_container.setBackgroundColor(Color.parseColor(x.getColour()));
+                            ((TextView)cell.findViewById(R.id.cellText)).setText(x.getCourseName());
+                            cell.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent coursePage = new Intent(getActivity(), CoursePageActivity.class);
+                                    coursePage.putExtra("courseId",x.getCourseId());
+                                    coursePage.putExtra("courseColor",Color.parseColor(x.getColour()));
+                                    startActivity(coursePage);
+                                }
+                            });
+                            cell_container.removeAllViews();
+                            cell_container.addView(cell);
+                            i--;
+                        }
+
                         FirebaseMessaging.getInstance().subscribeToTopic(x.getCourseId());
                     }
                     swipeRefreshLayout.setRefreshing(false);
