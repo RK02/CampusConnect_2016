@@ -24,87 +24,30 @@
     </layouts>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="No Filters" />
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
     <option name="TOOL_WINDOW_REGEXP_FILTER" value="false" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="80a5ed8f-fb48-4369-9fff-bb59af00c30b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-hdpi/ccnoti.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/EditCourseActivity.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/MyApp.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/POJO/CustomNotification.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/POJO/ModelBranchList.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/POJO/ModelCourseSearch.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/POJO/ModelEditProfile.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/POJO/ModelNotesSearch.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/animation_drawable_icon_container.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/my_transition_bg_reverse.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.10/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/.gradle/2.10/taskArtifacts/cache.properties.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.10/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/2.10/taskArtifacts/fileHashes.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.10/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/2.10/taskArtifacts/fileSnapshots.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.10/taskArtifacts/outputFileStates.bin" afterPath="$PROJECT_DIR$/.gradle/2.10/taskArtifacts/outputFileStates.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.10/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/.gradle/2.10/taskArtifacts/taskArtifacts.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app-debug.apk" afterPath="$PROJECT_DIR$/app/app-debug.apk" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.10/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.bin" afterPath="$PROJECT_DIR$/.gradle/2.10/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.bin" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.10/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" afterPath="$PROJECT_DIR$/.gradle/2.10/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.10/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.bin" afterPath="$PROJECT_DIR$/.gradle/2.10/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.bin" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.10/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" afterPath="$PROJECT_DIR$/.gradle/2.10/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build.gradle" afterPath="$PROJECT_DIR$/app/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/AddEventActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/AddEventActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/AssignmentPageActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/AssignmentPageActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/CoursePageActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/CoursePageActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/EditProfileActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/EditProfileActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/ExamPageActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/ExamPageActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/GoogleSignInActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/GoogleSignInActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/HomeActivity2.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/HomeActivity2.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/MyFirebaseInstanceIDService.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/MyFirebaseInstanceIDService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/MyFirebaseMessagingService.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/MyFirebaseMessagingService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/NotePageActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/NotePageActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/NotesSliderActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/NotesSliderActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/POJO/CourseList.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/POJO/CourseList.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/POJO/ModelCoursePage.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/POJO/ModelCoursePage.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/POJO/ModelNoteBook.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/POJO/ModelNoteBook.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/POJO/ModelTest.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/POJO/ModelTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/POJO/ModelTestList.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/POJO/ModelTestList.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/POJO/MyApi.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/POJO/MyApi.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/POJO/NoteBookList.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/POJO/NoteBookList.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/POJO/SubscribedCourseList.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/POJO/SubscribedCourseList.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/ProfilePageActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/ProfilePageActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/RegistrationPageActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/RegistrationPageActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/SearchActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/SearchActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/SelectCourseActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/SelectCourseActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/UploadPicturesActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/UploadPicturesActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/adapter/AssignmentsListAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/adapter/AssignmentsListAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/adapter/BookmarkedNotesListAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/adapter/BookmarkedNotesListAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/adapter/CourseColorsListAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/adapter/CourseColorsListAdapter.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/adapter/CourseListAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/adapter/CourseListAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/adapter/CourseSelectionListAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/adapter/CourseSelectionListAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/adapter/ExamsListAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/adapter/ExamsListAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/adapter/NotesListAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/adapter/NotesListAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/adapter/SearchCourseListAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/adapter/SearchCourseListAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/adapter/SearchNotesListAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/adapter/SearchNotesListAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/adapter/UploadedNotesListAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/adapter/UploadedNotesListAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/fragment/CoursePage/FragmentExam.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/fragment/CoursePage/FragmentExam.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/fragment/Drawer/FragmentAddCourse.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/fragment/Drawer/FragmentAddCourse.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/fragment/Drawer/FragmentSettings.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/fragment/Drawer/FragmentSettings.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/fragment/Home/FragmentCourses.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/fragment/Home/FragmentCourses.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/fragment/Home/FragmentTimetable.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/fragment/Home/FragmentTimetable.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/fragment/NotesSliderPageFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/fragment/NotesSliderPageFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/fragment/SearchPage/FragmentSearchCourse.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/fragment/SearchPage/FragmentSearchCourse.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/fragment/SearchPage/FragmentSearchNotes.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/fragment/SearchPage/FragmentSearchNotes.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/viewpager/CustomPagerAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/viewpager/CustomPagerAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable/edittext_rounded.xml" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/edittext_rounded.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/actionbar_course.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/actionbar_course.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/actionbar_search.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/actionbar_search.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_exam.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_exam.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_note.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_note.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_registration.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_registration.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/card_layout_search_note.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/card_layout_search_note.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/course_day.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/course_day.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_add_course.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_add_course.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_courses.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_courses.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_timetable.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_timetable.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/timetable_cell_layout.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/timetable_cell_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values-v21/styles.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values-v21/styles.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable/app_icon_container_active.xml" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/app_icon_container_active.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable/app_icon_container_inactive.xml" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/app_icon_container_inactive.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/dialog_custom_progress.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/dialog_custom_progress.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/intermediates/dex-cache/cache.xml" afterPath="$PROJECT_DIR$/build/intermediates/dex-cache/cache.xml" />
     </list>
     <ignored path="CampusConnect_2016.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -132,49 +75,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="FragmentTimetable.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/fragment/Home/FragmentTimetable.java">
+      <file leaf-file-name="AndroidManifest.xml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="138" column="13" selection-start-line="138" selection-start-column="13" selection-end-line="138" selection-end-column="13" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#2028#2047#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GoogleSignInActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/GoogleSignInActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="357" column="38" selection-start-line="357" selection-start-column="38" selection-end-line="357" selection-end-column="38" />
-              <folding>
-                <element signature="e#0#612#0" expanded="true" />
-                <element signature="imports" expanded="true" />
-                <element signature="e#4540#5108#0" expanded="true" />
-                <element signature="e#5107#5108#0" expanded="true" />
-                <element signature="e#6835#8934#0" expanded="true" />
-                <element signature="e#8159#8215#0" expanded="true" />
-                <element signature="e#8933#8934#0" expanded="true" />
-                <element signature="e#9373#9580#0" expanded="true" />
-                <element signature="e#9579#9580#0" expanded="true" />
-                <element signature="e#9788#9995#0" expanded="true" />
-                <element signature="e#9994#9995#0" expanded="true" />
-                <element signature="e#10145#10199#0" expanded="true" />
-                <element signature="e#10238#10292#0" expanded="true" />
-                <element signature="e#10504#10523#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="HomeActivity2.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/HomeActivity2.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.047091413">
-              <caret line="265" column="21" selection-start-line="265" selection-start-column="21" selection-end-line="265" selection-end-column="21" />
+            <state vertical-scroll-proportion="-0.63505745">
+              <caret line="63" column="30" selection-start-line="63" selection-start-column="30" selection-end-line="63" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -185,9 +90,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="resourceFile" />
         <option value="Class" />
         <option value="layoutResourceFile_vertical" />
+        <option value="resourceFile" />
       </list>
     </option>
   </component>
@@ -1017,7 +922,7 @@
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="validateDebugSigning" />
+                <option name="name" value="validateConfigSigning" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
@@ -1809,7 +1714,7 @@
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
-                <option name="name" value="validateDebugSigning" />
+                <option name="name" value="validateConfigSigning" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
@@ -1822,7 +1727,7 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="4400651596153" />
+        <entry key="$PROJECT_DIR$" value="4400827499216" />
       </map>
     </option>
     <option name="projectBuildClasspath">
@@ -2127,12 +2032,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_create_course.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/day_event.xml" />
-        <option value="$PROJECT_DIR$/build.gradle" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/SplashActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/fragment/CoursePage/FragmentNotes.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/edittext_rounded_upload.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/CreateCourseActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/course_day.xml" />
@@ -2150,12 +2049,10 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/POJO/ModelCoursePage.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/POJO/SubscribedCourseList.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/POJO/AvailableCourseList.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/HomeActivity2.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/NotesSliderActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/viewpager/ScreenSlidePagerAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/fragment/NotesSliderPageFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/viewpager/CustomPagerAdapter.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/adapter/CourseListAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/POJO/MyApi.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/fragment/Profile/FragmentBookmarkedNotes.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/fragment/Profile/FragmentUploadedNotes.java" />
@@ -2167,7 +2064,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/adapter/UploadedNotesListAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/adapter/NotesListAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/card_layout_notes.xml" />
-        <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_upload_pictures.xml" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/auxiliary/ScrollViewListener.java" />
@@ -2178,14 +2074,22 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/timetable_cell_layout.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/fragment/Home/FragmentTimetable.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/GoogleSignInActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/drawable/app_icon_container_active.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/drawable/app_icon_container_inactive.xml" />
+        <option value="$PROJECT_DIR$/app/build.gradle" />
+        <option value="$PROJECT_DIR$/app/src/main/res/drawable/my_transition_bg_reverse.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/drawable/animation_drawable_icon_container.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/dialog_custom_progress.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/MyCustomProgressDialog.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/adapter/CourseListAdapter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/HomeActivity2.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1382" />
-    <option name="height" value="744" />
+    <option name="x" value="-7" />
+    <option name="width" value="1370" />
+    <option name="height" value="735" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -2213,6 +2117,7 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
+      <pane id="Scratches" />
       <pane id="AndroidView">
         <subPane>
           <PATH>
@@ -2253,7 +2158,7 @@
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="layout" />
+              <option name="myItemId" value="drawable" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderTypeNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -2299,11 +2204,46 @@
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="CampusConnect_2016" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="cc_reboot" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="adapter" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="CampusConnect_2016" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="manifests" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidManifestsGroupNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="Scope" />
       <pane id="ProjectPane" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -2322,6 +2262,7 @@
       <recent name="com.campusconnect.cc_reboot" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\src\main\res\drawable" />
       <recent name="C:\Users\RK\Documents\GitHub\CampusConnect_2016\app\src\main\res\layout" />
     </key>
   </component>
@@ -2611,25 +2552,25 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
+    <frame x="-7" y="0" width="1370" height="735" extended-state="0" />
+    <editor active="false" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33617747" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33448875" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2065053" sideWeight="0.2908012" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32577905" sideWeight="0.503231" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4112628" sideWeight="0.49676898" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3032929" sideWeight="0.49676898" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32935154" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3286119" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3275563" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17850953" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2065053" sideWeight="0.70919883" order="3" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20610687" sideWeight="0.70919883" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
@@ -2660,71 +2601,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/POJO/Example.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="21" column="30" selection-start-line="21" selection-start-column="30" selection-end-line="21" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/ExamPageActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3206651">
-          <caret line="32" column="22" selection-start-line="32" selection-start-column="18" selection-end-line="32" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/POJO/AvailableCourseList.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.19002375">
-          <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/card_layout_course.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33152175">
-          <caret line="49" column="45" selection-start-line="49" selection-start-column="36" selection-end-line="49" selection-end-column="45" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/POJO/ModelTestList.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_notes_slider.xml">
-      <provider editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_notes_slider_page.xml">
-      <provider editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.3921568">
-          <caret line="20" column="14" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="14" />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/NotesSliderActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.4444447">
-          <caret line="126" column="55" selection-start-line="126" selection-start-column="55" selection-end-line="126" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/POJO/ModelCoursePage.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.703125">
@@ -2896,7 +2772,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.4265233">
           <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2904,23 +2779,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.39605734">
           <caret line="39" column="36" selection-start-line="39" selection-start-column="36" selection-end-line="39" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.9616725">
-          <caret line="50" column="24" selection-start-line="50" selection-start-column="24" selection-end-line="50" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3256705">
-          <caret line="70" column="28" selection-start-line="70" selection-start-column="28" selection-end-line="70" selection-end-column="28" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2931,18 +2789,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/adapter/CourseListAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.39922482">
-          <caret line="45" column="5" selection-start-line="45" selection-start-column="5" selection-end-line="45" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/SplashActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="27" column="17" selection-start-line="27" selection-start-column="17" selection-end-line="27" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2968,7 +2818,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.12264151">
           <caret line="63" column="0" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2986,21 +2835,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/fragment/Home/FragmentCourses.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4811321">
-          <caret line="80" column="118" selection-start-line="80" selection-start-column="118" selection-end-line="80" selection-end-column="118" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/fragment/NotesSliderPageFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.16037735">
           <caret line="50" column="31" selection-start-line="50" selection-start-column="31" selection-end-line="50" selection-end-column="31" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3027,33 +2865,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="357" column="38" selection-start-line="357" selection-start-column="38" selection-end-line="357" selection-end-column="38" />
-          <folding>
-            <element signature="e#0#612#0" expanded="true" />
-            <element signature="imports" expanded="true" />
-            <element signature="e#4540#5108#0" expanded="true" />
-            <element signature="e#5107#5108#0" expanded="true" />
-            <element signature="e#6835#8934#0" expanded="true" />
-            <element signature="e#8159#8215#0" expanded="true" />
-            <element signature="e#8933#8934#0" expanded="true" />
-            <element signature="e#9373#9580#0" expanded="true" />
-            <element signature="e#9579#9580#0" expanded="true" />
-            <element signature="e#9788#9995#0" expanded="true" />
-            <element signature="e#9994#9995#0" expanded="true" />
-            <element signature="e#10145#10199#0" expanded="true" />
-            <element signature="e#10238#10292#0" expanded="true" />
-            <element signature="e#10504#10523#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/fragment/Home/FragmentTimetable.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="138" column="13" selection-start-line="138" selection-start-column="13" selection-end-line="138" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2028#2047#0" expanded="true" />
-          </folding>
+          <caret line="72" column="0" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -3079,10 +2897,93 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/my_transition_bg_reverse.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.17832167">
+          <caret line="3" column="57" selection-start-line="3" selection-start-column="57" selection-end-line="3" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/fragment/Home/FragmentCourses.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.81272084">
+          <caret line="220" column="60" selection-start-line="220" selection-start-column="60" selection-end-line="220" selection-end-column="60" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/dialog_custom_progress.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="23" column="58" selection-start-line="23" selection-start-column="58" selection-end-line="23" selection-end-column="58" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/my_transition_bg.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.6153846">
+          <caret line="4" column="64" selection-start-line="4" selection-start-column="64" selection-end-line="4" selection-end-column="64" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/MyCustomProgressDialog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="20" column="27" selection-start-line="20" selection-start-column="27" selection-end-line="20" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/app_icon_container_inactive.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/DummyActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.28651685">
+          <caret line="18" column="35" selection-start-line="18" selection-start-column="35" selection-end-line="18" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.27272728">
+          <caret line="28" column="9" selection-start-line="28" selection-start-column="9" selection-end-line="28" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/HomeActivity2.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.047091413">
-          <caret line="265" column="21" selection-start-line="265" selection-start-column="21" selection-end-line="265" selection-end-column="21" />
+        <state vertical-scroll-proportion="0.33333334">
+          <caret line="238" column="92" selection-start-line="238" selection-start-column="92" selection-end-line="238" selection-end-column="92" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/campusconnect/cc_reboot/adapter/CourseListAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6684492">
+          <caret line="123" column="86" selection-start-line="123" selection-start-column="86" selection-end-line="123" selection-end-column="86" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.63505745">
+          <caret line="63" column="30" selection-start-line="63" selection-start-column="30" selection-end-line="63" selection-end-column="30" />
           <folding />
         </state>
       </provider>

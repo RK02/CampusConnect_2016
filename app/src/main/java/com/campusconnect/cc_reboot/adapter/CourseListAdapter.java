@@ -121,7 +121,7 @@ public class CourseListAdapter extends
                 activeNetwork =  cm.getActiveNetworkInfo();
                 isConnected= activeNetwork != null && activeNetwork.isConnectedOrConnecting();
                 if(isConnected) {
-                    Intent intent_temp = new Intent(v.getContext(), DummyActivity.class);
+                    Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
                     String id = mCourses.get(i).getCourseId();
                     intent_temp.putExtra("courseId", id);
                     intent_temp.putExtra("courseColor", color);

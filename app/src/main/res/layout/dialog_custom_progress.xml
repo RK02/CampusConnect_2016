@@ -20,13 +20,15 @@
             android:id="@+id/container_app_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="24dp"
             android:background="@drawable/my_transition_bg">
 
             <ImageView
                 android:id="@+id/iv_app_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/app_icon_72_white" />
+                android:background="@android:color/transparent"
+                android:src="@mipmap/ic_close_24_white" />
         </RelativeLayout>
 
         <TextView
@@ -35,6 +37,7 @@
             android:text="LOADING"
             android:textSize="16sp"
             android:layout_marginTop="32dp"
+            android:gravity="center"
             android:textColor="@color/ColorTextHeading"/>
 
     </LinearLayout>
