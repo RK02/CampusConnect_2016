@@ -137,6 +137,1049 @@
             android:measureAllChildren="false"
             android:scrollbars="none">
 
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/ColorRecyclerBackground"
+                    android:orientation="vertical"
+                    android:stretchColumns="*">
+
+                    <!--ROW 1-->
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_margin="1dp"
+                            android:background="@android:color/transparent"
+                            android:gravity="center"
+                            android:paddingBottom="16dp"
+                            android:paddingLeft="32dp"
+                            android:paddingRight="32dp"
+                            android:paddingTop="16dp"
+                            android:text="MON"
+                            android:textColor="@android:color/transparent" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:background="@color/ColorPrimary"
+                            android:gravity="center"
+                            android:paddingBottom="16dp"
+                            android:paddingLeft="32dp"
+                            android:paddingRight="32dp"
+                            android:paddingTop="16dp"
+                            android:text="MON"
+                            android:textColor="@color/ColorTextHeading" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:background="@color/ColorPrimary"
+                            android:gravity="center"
+                            android:paddingBottom="16dp"
+                            android:paddingLeft="32dp"
+                            android:paddingRight="32dp"
+                            android:paddingTop="16dp"
+                            android:text="TUE"
+                            android:textColor="@color/ColorTextHeading" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:background="@color/ColorPrimary"
+                            android:gravity="center"
+                            android:paddingBottom="16dp"
+                            android:paddingLeft="32dp"
+                            android:paddingRight="32dp"
+                            android:paddingTop="16dp"
+                            android:text="WED"
+                            android:textColor="@color/ColorTextHeading" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:background="@color/ColorPrimary"
+                            android:gravity="center"
+                            android:paddingBottom="16dp"
+                            android:paddingLeft="32dp"
+                            android:paddingRight="32dp"
+                            android:paddingTop="16dp"
+                            android:text="THU"
+                            android:textColor="@color/ColorTextHeading" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:background="@color/ColorPrimary"
+                            android:gravity="center"
+                            android:paddingBottom="16dp"
+                            android:paddingLeft="32dp"
+                            android:paddingRight="32dp"
+                            android:paddingTop="16dp"
+                            android:text="FRI"
+                            android:textColor="@color/ColorTextHeading" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:background="@color/ColorPrimary"
+                            android:gravity="center"
+                            android:paddingBottom="16dp"
+                            android:paddingLeft="32dp"
+                            android:paddingRight="32dp"
+                            android:paddingTop="16dp"
+                            android:text="SAT"
+                            android:textColor="@color/ColorTextHeading" />
+
+
+                    </TableRow>
+
+                    <!--ROW 2-->
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="@color/ColorPrimary"
+                            android:gravity="center"
+                            android:text="7:00 AM"
+                            android:textColor="@color/ColorTextHeading" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Math"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Chemistry"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Heat Transfer"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Fluid Mechanics"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Chemistry"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Industrial Stoich."
+                            android:textColor="@color/ColorTextInfo" />
+                    </TableRow>
+
+                    <!--ROW 3-->
+                    <TableRow
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="@color/ColorPrimary"
+                            android:gravity="center"
+                            android:text="8:00 AM"
+                            android:textColor="@color/ColorTextHeading" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Math"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Chemistry"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Heat Transfer"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Fluid Mechanics"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Chemistry"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Industrial Stoich."
+                            android:textColor="@color/ColorTextInfo" />
+                    </TableRow>
+
+                    <!--ROW 4-->
+                    <TableRow
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="@color/ColorPrimary"
+                            android:gravity="center"
+                            android:text="9:00 AM"
+                            android:textColor="@color/ColorTextHeading" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Math"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Chemistry"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Heat Transfer"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Fluid Mechanics"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Chemistry"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Industrial Stoich."
+                            android:textColor="@color/ColorTextInfo" />
+                    </TableRow>
+
+                    <!--ROW 5-->
+                    <TableRow
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="@color/ColorPrimary"
+                            android:gravity="center"
+                            android:text="10:00 AM"
+                            android:textColor="@color/ColorTextHeading" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Math"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Chemistry"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Heat Transfer"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Fluid Mechanics"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Chemistry"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Industrial Stoich."
+                            android:textColor="@color/ColorTextInfo" />
+                    </TableRow>
+
+                    <!--ROW 6-->
+                    <TableRow
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="@color/ColorPrimary"
+                            android:gravity="center"
+                            android:text="11:00 AM"
+                            android:textColor="@color/ColorTextHeading" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Math"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Chemistry"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Heat Transfer"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Fluid Mechanics"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Chemistry"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Industrial Stoich."
+                            android:textColor="@color/ColorTextInfo" />
+                    </TableRow>
+
+                    <!--ROW 7-->
+                    <TableRow
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="@color/ColorPrimary"
+                            android:gravity="center"
+                            android:text="12:00 PM"
+                            android:textColor="@color/ColorTextHeading" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Math"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Chemistry"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Heat Transfer"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Fluid Mechanics"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Chemistry"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Industrial Stoich."
+                            android:textColor="@color/ColorTextInfo" />
+                    </TableRow>
+
+                    <!--ROW 8-->
+                    <TableRow
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="@color/ColorPrimary"
+                            android:gravity="center"
+                            android:text="1:00 PM"
+                            android:textColor="@color/ColorTextHeading" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Math"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Chemistry"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Heat Transfer"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Fluid Mechanics"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Chemistry"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Industrial Stoich."
+                            android:textColor="@color/ColorTextInfo" />
+                    </TableRow>
+
+                    <!--ROW 9-->
+                    <TableRow
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="@color/ColorPrimary"
+                            android:gravity="center"
+                            android:text="2:00 PM"
+                            android:textColor="@color/ColorTextHeading" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Math"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Chemistry"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Heat Transfer"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Fluid Mechanics"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Chemistry"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Industrial Stoich."
+                            android:textColor="@color/ColorTextInfo" />
+                    </TableRow>
+
+                    <!--ROW 10-->
+                    <TableRow
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="@color/ColorPrimary"
+                            android:gravity="center"
+                            android:text="3:00 PM"
+                            android:textColor="@color/ColorTextHeading" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Math"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Chemistry"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Heat Transfer"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Fluid Mechanics"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Chemistry"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Industrial Stoich."
+                            android:textColor="@color/ColorTextInfo" />
+                    </TableRow>
+
+                    <!--ROW 11-->
+                    <TableRow
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="@color/ColorPrimary"
+                            android:gravity="center"
+                            android:text="4:00 PM"
+                            android:textColor="@color/ColorTextHeading" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Math"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Chemistry"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Heat Transfer"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Fluid Mechanics"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Chemistry"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Industrial Stoich."
+                            android:textColor="@color/ColorTextInfo" />
+                    </TableRow>
+
+                    <!--ROW 12-->
+                    <TableRow
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="@color/ColorPrimary"
+                            android:gravity="center"
+                            android:text="5:00 PM"
+                            android:textColor="@color/ColorTextHeading" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Math"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Chemistry"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Heat Transfer"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Fluid Mechanics"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Chemistry"
+                            android:textColor="@color/ColorTextInfo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:layout_span="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Industrial Stoich."
+                            android:textColor="@color/ColorTextInfo" />
+                    </TableRow>
+
+                </TableLayout>
+=======
             <TableLayout
                 android:id="@+id/table_body"
                 android:layout_width="match_parent"

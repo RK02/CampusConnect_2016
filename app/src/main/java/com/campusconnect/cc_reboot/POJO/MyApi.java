@@ -1,21 +1,11 @@
 package com.campusconnect.cc_reboot.POJO;
 
-import android.util.Log;
-
-import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Retrofit;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 /**
@@ -26,10 +16,13 @@ public interface MyApi {
     String BASE_URL = "https://uploadnotes-2016.appspot.com/_ah/api/notesapi/v1/";
 
     @GET("feed/ahJzfnVwbG9hZG5vdGVzLTIwMTZyFAsSB1Byb2ZpbGUYgICAgLyhggoM/")
-    Call<Example> getFeed(@Query("profileId") String profileId);
+    Call<ModelFeed> getFeed(@Query("profileId") String profileId);
 
     @GET("branchList/ahJzfnVwbG9hZG5vdGVzLTIwMTZyFAsSB0NvbGxlZ2UYgICAgKKqkQoM")
     Call<ModelBranchList> getBranches(@Query("collegeId") String collegeId);
+
+    @GET("getNot/ahJzfnVwbG9hZG5vdGVzLTIwMTZyFAsSB0NvbGxlZ2UYgICAgKKqkQoM")
+    Call<ModelNotificationList> getNotifications(@Query("profileId") String profileId);
 
     @POST("coursePage")
     Call<ModelCoursePage> getCourse(@Body getCourseRequest body);
@@ -44,6 +37,30 @@ public interface MyApi {
         }
 
     }
+    @POST("addAdmin")
+    Call<ModelMakeAdmin> addAdmin(@Body addAdminRequest addAdminRequest);
+    class addAdminRequest{
+        private String profileId;
+        private String courseId;
+        public addAdminRequest(String profileId,String courseId)
+        {
+            this.profileId = profileId;
+            this.courseId = courseId;
+        }
+    }
+
+    @POST("studentList")
+    Call<ModelStudentList> getStudentList(@Body getStudentListRequest getStudentListRequest);
+    class getStudentListRequest{
+        private String profileId;
+        private String courseId;
+        public getStudentListRequest(String profileId,String courseId)
+        {
+            this.profileId = profileId;
+            this.courseId = courseId;
+        }
+    }
+
     @POST("editProfile")
     Call<ModelEditProfile> editProfile(@Body editProfileRequest editProfileRequest);
     class editProfileRequest{
@@ -65,6 +82,20 @@ public interface MyApi {
         }
     }
 
+    @POST("report")
+    Call<Void> report(@Body reportRequest reportRequest);
+    class reportRequest{
+        private String profileId;
+        private String key;
+        private String description;
+        public reportRequest(String profileId, String key, String description){
+            this.profileId = profileId;
+            this.key = key;
+            this.description =description;
+        }
+
+    }
+
     @POST("notebookList")
     Call<ModelNoteBookList> getNoteBookList(@Body getNoteBookListRequest body);
     class getNoteBookListRequest{
@@ -73,6 +104,20 @@ public interface MyApi {
         {
 
             this.courseId = courseId;
+        }
+    }
+
+    @POST("rateThis")
+    Call<ModelRate> rate(@Body rateNoteBook rateNoteBook);
+    class rateNoteBook{
+        private String profileId;
+        private String noteBookId;
+        private int rating;
+        public rateNoteBook(String profileId, String noteBookId, float rating)
+        {
+            this.profileId = profileId;
+            this.noteBookId = noteBookId;
+            this. rating = ((int) rating);
         }
     }
     @POST("notebookList")
@@ -84,6 +129,8 @@ public interface MyApi {
             this.bpid = profileId;
         }
     }
+
+
     @POST("notebookList")
     Call<ModelNoteBookList> getUploaded(@Body getUploadedRequest body);
     class getUploadedRequest{
@@ -190,8 +237,8 @@ public interface MyApi {
     Call<ModelSubscribe> subscribeCourse(@Body subscribeCourseRequest body);
     class subscribeCourseRequest{
         private String profileId;
-        private String[] courseIds;
-        public subscribeCourseRequest(String profileId, String[] courseIds){
+        private List<String> courseIds;
+        public subscribeCourseRequest(String profileId, List<String> courseIds){
             this.profileId = profileId;
             this.courseIds = courseIds;
         }
@@ -251,6 +298,63 @@ public interface MyApi {
 
 
     }
+
+    @POST("editCourse")
+    Call<ModelAddCourse> editCourse(@Body editCourseRequest body);
+    class editCourseRequest{
+
+        private String collegeId;
+        private String courseName;
+        private String courseId;
+        private List<String> batchNames;
+        private List<String> sectionNames;
+        private String profileId;
+        private String semester;
+        private List<String> date;
+        private List<String> startTime;
+        private List<String> endTime;
+        private String professorName;
+        private String colour;
+        private String courseCode;
+        private List<String> branchNames;
+        private String elective;
+
+        public editCourseRequest(String profileId,
+                                String collegeId,
+                                String courseName,
+                                String courseCode,
+                                String professorName,
+                                String semester,
+                                List<String> batchNames,
+                                List<String> sectionNames,
+                                List<String> branchNames,
+                                List<String> date,
+                                List<String> startTime,
+                                List<String> endTime,
+                                String colour,
+                                String elective,
+                                String courseId
+        ){
+            this.courseId = courseId;
+            this.profileId = profileId;
+            this.collegeId = collegeId;
+            this.semester = semester;
+            this.batchNames = batchNames;
+            this.branchNames = branchNames;
+            this.sectionNames = sectionNames;
+            this.courseCode = courseCode;
+            this.startTime = startTime;
+            this.endTime = endTime;
+            this.courseName = courseName;
+            this.professorName = professorName;
+            this.date = date;
+            this.colour = colour;
+            this.elective = elective;
+        }
+
+
+    }
+
 
 
 //upload issues  with retrofit, switching to asynctask

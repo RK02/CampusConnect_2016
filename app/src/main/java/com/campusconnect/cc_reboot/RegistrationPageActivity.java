@@ -1,34 +1,37 @@
 package com.campusconnect.cc_reboot;
 
-import android.app.DatePickerDialog;
+import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
+import android.widget.ScrollView;
 
 import com.campusconnect.cc_reboot.POJO.CollegeList;
-import com.campusconnect.cc_reboot.POJO.Example;
 import com.campusconnect.cc_reboot.POJO.ModelCollegeList;
 import com.campusconnect.cc_reboot.POJO.ModelSignUp;
 import com.campusconnect.cc_reboot.POJO.MyApi;
 import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -39,12 +42,10 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import butterknife.Bind;
@@ -58,7 +59,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by RK on 20/06/2016.
  */
-public class RegistrationPageActivity extends AppCompatActivity{
+public class RegistrationPageActivity extends AppCompatActivity implements View.OnTouchListener, View.OnClickListener{
 
     @Bind(R.id.b_continue_to_course_selection)
     Button continue_to_course_selection_button;
@@ -67,7 +68,7 @@ public class RegistrationPageActivity extends AppCompatActivity{
     EditText profileName;
 
     @Bind(R.id.et_college_name)
-    AutoCompleteTextView collegeName;
+    EditText collegeName;
 
     @Bind(R.id.et_batch)
     EditText batchName;
@@ -81,6 +82,9 @@ public class RegistrationPageActivity extends AppCompatActivity{
     @Bind(R.id.iv_profile_picture)
     ImageView profilePicture;
 
+    @Bind(R.id.sv_registration)
+    ScrollView scrollViewReg;
+
     String personName;
     String personEmail;
     String personPhoto;
@@ -88,8 +92,11 @@ public class RegistrationPageActivity extends AppCompatActivity{
     List<CollegeList> colleges;
     ArrayList<String> collegeNames;
     ArrayList<String> collegeIds;
+    ArrayAdapter<String> data;
     String profileId;
     String collegeId;
+    String collegeNameString;
+    int pos_college_selection;
     private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
@@ -117,7 +124,8 @@ public class RegistrationPageActivity extends AppCompatActivity{
                 .baseUrl(FragmentCourses.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-       // mFirebaseAnalytics.logEvent();
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        mFirebaseAnalytics.logEvent("sign_up_start",new Bundle());
         MyApi myApi = retrofit.create(MyApi.class);
         Call<ModelCollegeList> call = myApi.getCollegeList();
         call.enqueue(new Callback<ModelCollegeList>() {
@@ -132,8 +140,10 @@ public class RegistrationPageActivity extends AppCompatActivity{
                         collegeIds.add(college.getCollegeId());
 
                     }
-                    ArrayAdapter<String> data = new ArrayAdapter<String>(RegistrationPageActivity.this,android.R.layout.simple_list_item_1,collegeNames);
-                    collegeName.setAdapter(data);
+                    data = new ArrayAdapter<String>(RegistrationPageActivity.this,android.R.layout.simple_list_item_1,collegeNames);
+                    data.add("Unable to find college");
+//                    collegeName.setAdapter(data);
+
                 }
             }
 
@@ -157,6 +167,7 @@ public class RegistrationPageActivity extends AppCompatActivity{
         continue_to_course_selection_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String temp = collegeName.getText().toString();
                 int index = collegeNames.indexOf(temp);
                 if(index < 0 ){collegeName.setError("Select a valid college name");collegeName.requestFocus();return; }
@@ -166,8 +177,14 @@ public class RegistrationPageActivity extends AppCompatActivity{
                 if(branchName.getText().toString().equals("")){branchName.setError("Enter Branch Name");branchName.requestFocus();return;}
                 collegeId = collegeIds.get(index);
                 new sign_up().execute();
+                Bundle params = new Bundle();
+                params.putString("sign_up","success");
+                mFirebaseAnalytics.logEvent("sign_up",params);
             }
         });
+
+        scrollViewReg.setOnTouchListener(this);
+        collegeName.setOnClickListener(this);
     }
     public void SignUp()
     {
@@ -214,6 +231,56 @@ public class RegistrationPageActivity extends AppCompatActivity{
 
             }
         });
+
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        switch (view.getId()){
+            case R.id.sv_registration:
+
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                break;
+        }
+        return false;
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        switch (view.getId()){
+            case R.id.et_college_name:
+                AlertDialog.Builder builderCollegeList = new AlertDialog.Builder(RegistrationPageActivity.this);
+                builderCollegeList.setTitle("Select your college");
+                builderCollegeList.setNegativeButton(
+                        "cancel",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                builderCollegeList.setAdapter(
+                        data,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                collegeNameString = data.getItem(which);
+                                pos_college_selection=which;
+                                if(pos_college_selection!=data.getCount()-1)
+                                    collegeName.setText(collegeNameString);
+                                else{
+                                    CollegeNotFoundDialog getdetailsDialog = new CollegeNotFoundDialog((Activity) RegistrationPageActivity.this);
+                                    Window window = getdetailsDialog.getWindow();
+                                    window.setLayout(450, ViewGroup.LayoutParams.WRAP_CONTENT);
+                                    getdetailsDialog.show();
+                                }
+                            }
+                        });
+                builderCollegeList.show();
+                break;
+        }
 
     }
 
@@ -311,6 +378,39 @@ public class RegistrationPageActivity extends AppCompatActivity{
                 e.printStackTrace();
             }
             return null;
+        }
+    }
+
+    public class CollegeNotFoundDialog extends Dialog {
+        public Activity c;
+        public Dialog d;
+        Context context;
+        @Bind(R.id.b_submit)
+        Button submit;
+        @Bind(R.id.et_name)
+        EditText client_name;
+        @Bind(R.id.et_college_name)
+        EditText college_name;
+        @Bind(R.id.et_email_id)
+        EditText email_ID;
+        @Bind(R.id.et_phone_no)
+        EditText phone_no;
+        @Bind(R.id.et_location)
+        EditText location;
+
+        public CollegeNotFoundDialog(Activity a) {
+            super(a);
+// TODO Auto-generated constructor stub
+            this.c = a;
+            this.context = context;
+        }
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
+            setContentView(R.layout.dialog_get_college_details);
+            ButterKnife.bind(this);
         }
     }
 }

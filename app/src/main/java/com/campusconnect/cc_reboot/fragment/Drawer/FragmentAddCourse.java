@@ -1,8 +1,8 @@
 package com.campusconnect.cc_reboot.fragment.Drawer;
 
-import android.content.DialogInterface;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.support.v4.app.Fragment;
 
 import android.app.TimePickerDialog;
@@ -11,22 +11,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -36,26 +30,21 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.view.Window;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ToggleButton;
 
 import com.campusconnect.cc_reboot.CoursePageActivity;
 import com.campusconnect.cc_reboot.HomeActivity2;
-import com.campusconnect.cc_reboot.POJO.Example;
 import com.campusconnect.cc_reboot.POJO.ModelAddCourse;
 import com.campusconnect.cc_reboot.POJO.ModelBranchList;
 import com.campusconnect.cc_reboot.POJO.MyApi;
 import com.campusconnect.cc_reboot.R;
 import com.campusconnect.cc_reboot.adapter.CourseColorsListAdapter;
 import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
-import com.campusconnect.cc_reboot.fragment.Home.FragmentTimetable;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -64,8 +53,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -77,6 +64,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class FragmentAddCourse extends Fragment implements View.OnClickListener{
 
+    @Bind(R.id.sv_add_course)
+    ScrollView addCourse_scroll;
 
     @Bind(R.id.view_course_color_picker)
     View courseColorPicker;
@@ -131,12 +120,18 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
 
     String profileId;
     String collegeId;
+    List<String> branchNames;
 
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_add_course, container, false);
         ButterKnife.bind(this, v);
+
+        ShapeDrawable courseColor_circle = new ShapeDrawable( new OvalShape() );
+        courseColor_circle.getPaint().setColor(Color.parseColor("#EE5451"));
+
+        courseColorPicker.setBackground(courseColor_circle);
 
         Retrofit retrofit = new Retrofit.
                 Builder()
@@ -165,7 +160,8 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                             if (isChecked) {
                                 String temp = "";
-                                for (String branch : modelBranchList.getBranchList()) {
+                                branchNames = modelBranchList.getBranchList();
+                                for (String branch : branchNames) {
                                     temp += branch + ",";
                                 }
                                 temp = temp.substring(0, temp.lastIndexOf(","));
@@ -292,7 +288,6 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
     }
 
 
-
     void create()
     {
         if(courseName.getText().toString().equals("")){courseName.setError("Enter Course Name");courseName.requestFocus();return;}
@@ -302,6 +297,15 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
         if(courseBatch.getText().toString().equals("")){courseBatch.setError("Enter Batch");courseBatch.requestFocus();return;}
         if(courseBranch.getText().toString().equals("")){courseBranch.setError("Enter Branch");courseBranch.requestFocus();return;}
         if(days_selected.size()==0){Toast.makeText(getActivity(),"Select appropriate times for this course",Toast.LENGTH_SHORT).show();return;}
+        String[] selected = courseBranch.getText().toString().split(",");
+        for(String branch : selected) {
+            if (branchNames.indexOf(branch) < 0) {
+                courseBranch.setError("Select Valid branch");
+                courseBranch.requestFocus();
+                return;
+            }
+        }
+
         Retrofit retrofit = new Retrofit.
                 Builder()
                 .baseUrl(MyApi.BASE_URL)
@@ -342,6 +346,9 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
             startTimes.add(((EditText)days_selected.get(temp1).findViewById(R.id.et_startTime)).getText().toString());
             endTimes.add(((EditText)days_selected.get(temp1).findViewById(R.id.et_endTime)).getText().toString());
         }
+
+        ShapeDrawable drawable = (ShapeDrawable)courseColorPicker.getBackground();
+
         MyApi myApi = retrofit.create(MyApi.class);
         int e;
         if(elective.isChecked()) e=1;
@@ -358,12 +365,15 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
                 dates.subList(0,dates.size()),
                 startTimes.subList(0,startTimes.size()),
                 endTimes.subList(0,endTimes.size()),
+
                 //String.format("#%06X", (0xFFFFFF & courseColorPicker.getSolidColor())),
                 //TODO: how to get the damn color
                 //String.format("#%06X", (0xffffff & R.color.cardview_light_background)),
-                "#ed999a",
+                String.format("#%06X", (0xffffff & drawable.getPaint().getColor())),
                 e+""
                 );
+        Log.d("HAHAHA",String.format("#%06X", (0xffffff & drawable.getPaint().getColor())));
+
         Log.i("sw32color",String.format("#%06X", (0xFFFFFF & courseColorPicker.getSolidColor())));
         Call<ModelAddCourse> call = myApi.addCourse(body);
         call.enqueue(new Callback<ModelAddCourse>() {
@@ -409,7 +419,6 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
                 colorPickerDialog = new ColorPickerDialog(getActivity());
 
                 colorPickerDialog.show();
-
 
                 Window window = colorPickerDialog.getWindow();
                 window.setLayout(900, GridLayoutManager.LayoutParams.WRAP_CONTENT);

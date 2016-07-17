@@ -26,6 +26,7 @@ import com.campusconnect.cc_reboot.POJO.*;
 
 import com.campusconnect.cc_reboot.R;
 import com.campusconnect.cc_reboot.adapter.CourseListAdapter;
+import com.campusconnect.cc_reboot.adapter.TimetableAdapter;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -56,7 +57,7 @@ public class FragmentCourses extends Fragment{
             .addConverterFactory(GsonConverterFactory.create())
             .build();
     MyApi myApi;
-    Call<Example> call;
+    Call<ModelFeed> call;
     ConnectivityManager cm;
     NetworkInfo activeNetwork;
     private FirebaseAnalytics mFirebaseAnalytics;
@@ -173,18 +174,18 @@ public class FragmentCourses extends Fragment{
         courseIds.clear();
         mCourseAdapter.clear();
         call= myApi.getFeed(getActivity().getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""));
-        call.enqueue(new Callback<Example>() {
+        call.enqueue(new Callback<ModelFeed>() {
             @Override
-            public void onResponse(Call<Example> call, Response<Example> response) {
+            public void onResponse(Call<ModelFeed> call, Response<ModelFeed> response) {
                 Log.i("sw32",""+response.code());
-                Example example = response.body();
+                ModelFeed modelFeed = response.body();
                 new FragmentTimetable();
-                if(example!=null) {
+                if(modelFeed !=null) {
                     mCourseAdapter.clear();
-                    profileName = example.getProfileName();
-                    profilePoints = example.getPoints();
-                    List<AvailableCourseList> availableCourseList = example.getAvailableCourseList();
-                    List<SubscribedCourseList> subscribedCourseList = example.getSubscribedCourseList();
+                    profileName = modelFeed.getProfileName();
+                    profilePoints = modelFeed.getPoints();
+                    List<AvailableCourseList> availableCourseList = modelFeed.getAvailableCourseList();
+                    List<SubscribedCourseList> subscribedCourseList = modelFeed.getSubscribedCourseList();
                     for (final SubscribedCourseList x : subscribedCourseList) {
                         courseNames.add(x.getCourseName());
                         courseIds.add(x.getCourseId());
@@ -204,7 +205,7 @@ public class FragmentCourses extends Fragment{
                                 temp.add(viewId);
                                 timeTableViews.put(x.getCourseId(),temp);
                             }
-                            cell_container = (LinearLayout) FragmentTimetable.v.findViewById(Integer.parseInt(viewId));
+                            cell_container = (LinearLayout) TimetableAdapter.itemView.findViewById(Integer.parseInt(viewId));
                             cell_container.setBackgroundColor(Color.parseColor(x.getColour()));
                             ((TextView)cell.findViewById(R.id.cellText)).setText(x.getCourseName());
                             cell.setOnClickListener(new View.OnClickListener() {
@@ -220,6 +221,7 @@ public class FragmentCourses extends Fragment{
                             cell_container.addView(cell);
                             i--;
                         }
+
                         FirebaseMessaging.getInstance().subscribeToTopic(x.getCourseId());
                     }
                     swipeRefreshLayout.setRefreshing(false);
@@ -227,7 +229,7 @@ public class FragmentCourses extends Fragment{
 
             }
             @Override
-            public void onFailure(Call<Example> call, Throwable t) {
+            public void onFailure(Call<ModelFeed> call, Throwable t) {
                 Toast.makeText(getActivity(),"Oops! Something went wrong!",Toast.LENGTH_SHORT).show();
                 swipeRefreshLayout.setRefreshing(false);
 

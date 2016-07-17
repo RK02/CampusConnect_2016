@@ -1,7 +1,6 @@
 package com.campusconnect.cc_reboot;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -9,31 +8,22 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.campusconnect.cc_reboot.POJO.AvailableCourseList;
 import com.campusconnect.cc_reboot.POJO.CourseList;
-import com.campusconnect.cc_reboot.POJO.Example;
 import com.campusconnect.cc_reboot.POJO.ModelCourseSearch;
 import com.campusconnect.cc_reboot.POJO.ModelNotesSearch;
 import com.campusconnect.cc_reboot.POJO.MyApi;
 import com.campusconnect.cc_reboot.POJO.NoteBookList;
-import com.campusconnect.cc_reboot.POJO.SubscribedCourseList;
-import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
 import com.campusconnect.cc_reboot.fragment.SearchPage.FragmentSearchCourse;
 import com.campusconnect.cc_reboot.fragment.SearchPage.FragmentSearchNotes;
 import com.campusconnect.cc_reboot.slidingtab.SlidingTabLayout_home;
-import com.campusconnect.cc_reboot.viewpager.ViewPagerAdapter_home;
 import com.campusconnect.cc_reboot.viewpager.ViewPagerAdapter_search;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadFactory;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -60,6 +50,7 @@ public class SearchActivity extends AppCompatActivity {
     Call<ModelNotesSearch> callNotes;
     @Bind(R.id.ib_search)
     ImageButton searchButton;
+    private FirebaseAnalytics firebaseAnalytics;
 
 
     @Override
@@ -199,6 +190,10 @@ public class SearchActivity extends AppCompatActivity {
     {
         searchCourse(searchString);
         searchNotes(searchString);
+        Bundle params = new Bundle();
+        params.putString("searchstring",searchString);
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        firebaseAnalytics.logEvent("search_event",params);
     }
 }
 

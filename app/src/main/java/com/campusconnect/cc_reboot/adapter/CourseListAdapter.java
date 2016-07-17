@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.campusconnect.cc_reboot.CoursePageActivity;
+import com.campusconnect.cc_reboot.DummyActivity;
 import com.campusconnect.cc_reboot.POJO.SubscribedCourseList;
 import com.campusconnect.cc_reboot.R;
 
@@ -130,6 +131,14 @@ public class CourseListAdapter extends
                 {
                     Toast.makeText(context,"Check your connection",Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        courseListViewHolder.course_card.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(context,"Report Course yet to be implemented",Toast.LENGTH_SHORT).show();
+                return true;
             }
         });
         courseListViewHolder.notes_count_container.setOnClickListener(new View.OnClickListener() {

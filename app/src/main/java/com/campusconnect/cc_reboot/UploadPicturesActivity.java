@@ -15,6 +15,8 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
@@ -41,8 +43,10 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
@@ -68,19 +72,23 @@ public class UploadPicturesActivity extends AppCompatActivity {
     @Bind(R.id.for_height)
     View for_measure;
 
+    View uploadDefaultActionView;
+
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
-    private Button btnSelect;
+    public static Button btnSelect;
     private Button next;
-    private Button camera;
+    public static Button camera;
     Button cancel;
     private  String pictureImagePath="";
     GridView gridView;
     ImageAdapter imageAdapter;
     public static ArrayList<String> urls;
     public static ArrayList<String> uris;
+    private FirebaseAnalytics firebaseAnalytics;
 
     public static float width;
     public static float height;
+    public static int action;
     final int READ_EXTERNAL=69;
     final int WRITE_EXTERNAL=70;
 
@@ -90,8 +98,18 @@ public class UploadPicturesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_upload_pictures);
 
         ButterKnife.bind(this);
-        urls = new ArrayList<>();
-        uris = new ArrayList<>();
+        imageAdapter = new ImageAdapter(this);
+        if(getIntent().hasExtra("urls"))
+        {
+            urls = getIntent().getStringArrayListExtra("urls");
+            uris = getIntent().getStringArrayListExtra("uris");
+            imageAdapter.notifyDataSetChanged();
+        }
+        else {
+            urls = new ArrayList<>();
+            uris = new ArrayList<>();
+            imageAdapter.notifyDataSetChanged();
+        }
         if (Build.VERSION.SDK_INT >= 23) {
             //do your check here
             if (ContextCompat.checkSelfPermission(this,Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -125,6 +143,7 @@ public class UploadPicturesActivity extends AppCompatActivity {
                 }
             }
         }
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         final ViewTreeObserver observer= for_measure.getViewTreeObserver();
         observer.addOnGlobalLayoutListener(
@@ -184,23 +203,49 @@ public class UploadPicturesActivity extends AppCompatActivity {
         });
         gridView= (GridView) findViewById(R.id.imageGrid);
 
-        imageAdapter = new ImageAdapter(this);
+
         next = (Button) findViewById(R.id.BtnNext);
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(uris.isEmpty()){
-                    Toast.makeText(UploadPicturesActivity.this,"Please Select pictures and then press Next",Toast.LENGTH_LONG).show();
-                }
-                else {
-                    Intent description = new Intent(UploadPicturesActivity.this, AddEventActivity.class);
-                    description.putExtra("Mode",3);
-                    if(getIntent().hasExtra("courseId")) {
-                        description.putExtra("courseId", getIntent().getStringExtra("courseId"));
-                        description.putExtra("courseTitle", getIntent().getStringExtra("courseTitle"));
+                    if (uris.isEmpty()) {
+                        if(getCallingActivity()!=null)
+                        {
+                            Intent data = new Intent();
+                            data.putStringArrayListExtra("urls", urls);
+                            data.putStringArrayListExtra("uris", uris);
+                            setResult(1, data);
+                            finish();
+                        }
+                        else {
+
+                            Toast.makeText(UploadPicturesActivity.this, "Please Select pictures and then press Next", Toast.LENGTH_LONG).show();
+                        }
+                        } else {
+                        if (getCallingActivity() != null) {
+                            Intent data = new Intent();
+                            data.putStringArrayListExtra("urls", urls);
+                            data.putStringArrayListExtra("uris", uris);
+                            setResult(1, data);
+                            finish();
+                        } else {
+                            Intent description = new Intent(UploadPicturesActivity.this, AddEventActivity.class);
+                            description.putExtra("Mode", 3);
+                            if (getIntent().hasExtra("courseId")) {
+                                description.putExtra("courseId", getIntent().getStringExtra("courseId"));
+                                description.putExtra("courseTitle", getIntent().getStringExtra("courseTitle"));
+                            } else if (getIntent().hasExtra("courseName")) {
+                                description.putExtra("courseName", getIntent().getStringExtra("courseName"));
+                                description.putExtra("description", getIntent().getStringExtra("description"));
+                            }
+                            Bundle params = new Bundle();
+                            params.putString("pictures_uploaded", uris.size() + " pictures");
+                            firebaseAnalytics.logEvent("pictures_selected_and_continue", params);
+                            description.putExtra("urls",urls);
+                            description.putExtra("uris",uris);
+                            startActivityForResult(description, 1);
+                        }
                     }
-                    startActivityForResult(description,1);
-                }
             }
         });
         gridView.setAdapter(imageAdapter);
@@ -287,31 +332,37 @@ public class UploadPicturesActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == SELECT_FILE)
+            if (requestCode == SELECT_FILE){
                 onSelectFromGalleryResult(data);
-            else if (requestCode == REQUEST_CAMERA)
-                onCaptureImageResult(data);
+            action =0;}
+            else if (requestCode == REQUEST_CAMERA){
+                onCaptureImageResult(data);action=1;}
         }else if(requestCode==1) {
             if (resultCode == 1) {
                 urls.clear();
                 uris.clear();
                 imageAdapter.notifyDataSetChanged();
-                Intent intent = new Intent(UploadPicturesActivity.this, CoursePageActivity.class);
-                intent.putExtra("courseId", data.getStringExtra("courseId"));
-                startActivity(intent);
+                String temp = data.getStringExtra("courseId");
+                if (temp!=null)
+                {
+                    firebaseAnalytics.logEvent("upload_successful",new Bundle());
+                }
                 finish();
             }
             else if(resultCode==2)
             {
                 final String cname = data.getStringExtra("courseName")+"";
                 final String desc = data.getStringExtra("description")+"";
+                Log.i("sw32uploadnext", cname + ":" + desc);
                 next.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(UploadPicturesActivity.this,AddEventActivity.class);
                         intent.putExtra("courseName",cname+"");
                         intent.putExtra("description",desc+"");
-                        startActivity(intent);
+                        intent.putExtra("urls",urls);
+                        intent.putExtra("uris",uris);
+                        startActivityForResult(intent,1);
                     }
                 });
 
@@ -321,7 +372,15 @@ public class UploadPicturesActivity extends AppCompatActivity {
     private void onCaptureImageResult(Intent data) {
         File imgFile = new File(pictureImagePath);
         urls.add(pictureImagePath);
-        uris.add(Uri.fromFile(imgFile).toString());
+        if(imageAdapter.getCount()==0) {
+
+            uris.add(Uri.fromFile(imgFile).toString());
+            uris.add("add");
+        }
+        else
+        {
+            uris.add(uris.indexOf("add"),Uri.fromFile(imgFile).toString());
+        }
         imageAdapter.notifyDataSetChanged();
 
     }
@@ -333,7 +392,10 @@ public class UploadPicturesActivity extends AppCompatActivity {
             try {
                 Uri path =  data.getData();
                 urls.add(getFilePath(UploadPicturesActivity.this,path));
-                uris.add(path.toString());
+                if(imageAdapter.getCount()==0) {
+                    uris.add(path.toString());
+                    uris.add("add");
+                }else{uris.add(uris.indexOf("add"),path.toString());}
                 imageAdapter.notifyDataSetChanged();
             } catch (URISyntaxException e) {
                 e.printStackTrace();
@@ -348,7 +410,14 @@ public class UploadPicturesActivity extends AppCompatActivity {
             {
                 try {
                     Uri uripath = clipData.getItemAt(i).getUri();
-                    uris.add(uripath.toString());
+                    if(imageAdapter.getCount()==0) {
+                        uris.add(uripath.toString());
+                        uris.add("add");
+                    }
+                    else
+                    {
+                        uris.add(uris.indexOf("add"),uripath.toString());
+                    }
                     urls.add(getFilePath(UploadPicturesActivity.this,uripath));
                     imageAdapter.notifyDataSetChanged();
                 }  catch (URISyntaxException e) {
@@ -423,7 +492,11 @@ public class UploadPicturesActivity extends AppCompatActivity {
 class ImageAdapter extends BaseAdapter {
     private Context mContext;
     private LayoutInflater mInflater;
-
+    View uploadDefaultActionView;
+    RelativeLayout layout_default_upload;
+    Bitmap bm_default_upload;
+    ImageView iv_default_upload;
+    Drawable drawable;
 
     public ImageAdapter(Context c) {
         mContext = c;
@@ -431,16 +504,16 @@ class ImageAdapter extends BaseAdapter {
     }
 
     public int getCount() {
-        return UploadPicturesActivity.uris.size();
+            return UploadPicturesActivity.uris.size();
     }
 
     public Object getItem(int position) {
+
         return UploadPicturesActivity.uris.get(position);
+
     }
 
-    public long getItemId(int position) {
-        return position;
-    }
+
 
     // create a new ImageView for each item referenced by the Adapter
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -452,31 +525,116 @@ class ImageAdapter extends BaseAdapter {
             convertView.setMinimumHeight((int)(UploadPicturesActivity.height/2));
             holder.imageview = (ImageView) convertView.findViewById(R.id.grid_item_image);
             holder.delete = (ImageButton) convertView.findViewById(R.id.delete);
+            holder.parent_layout = (RelativeLayout) convertView.findViewById(R.id.GridItem12);
             convertView.setTag(holder);
+
+            uploadDefaultActionView =  mInflater.inflate(R.layout.card_default_upload, null);
+            uploadDefaultActionView.setMinimumWidth((int)(UploadPicturesActivity.width/2));
+            uploadDefaultActionView.setMinimumHeight((int)(UploadPicturesActivity.height/2));
+
+            layout_default_upload = (RelativeLayout) uploadDefaultActionView.findViewById(R.id.container_default_upload);
+
+            layout_default_upload.setDrawingCacheEnabled(true);
+
+            //View to Bitmap conversion
+            layout_default_upload.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+            layout_default_upload.layout(0, 0, layout_default_upload.getMeasuredWidth(), layout_default_upload.getMeasuredHeight());
+            layout_default_upload.buildDrawingCache(true);
+            bm_default_upload = Bitmap.createBitmap(layout_default_upload.getDrawingCache());  //Bitmap
+            layout_default_upload.setDrawingCacheEnabled(false); // clear drawing cache
+
+            //Bitmap to drawable conversion
+            drawable = new BitmapDrawable(mContext.getResources(), bm_default_upload);
+
+            //Random shit I was trying to experiment with - keep it or delete it based on your needs bro
+//            iv_default_upload = new ImageView(mContext);
+//            iv_default_upload.setImageDrawable(drawable);
+//            Log.d("HAHA",""+iv_default_upload);
+//            Uri imgUri=Uri.parse("android.resource.com.campusconnect.cc.reboot."+drawable);
+//            iv_default_upload.setImageURI(null);
+//            iv_default_upload.setImageURI(imgUri);
+
         }
         else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UploadPicturesActivity.uris.remove(position);
-                UploadPicturesActivity.urls.remove(position);
-                notifyDataSetChanged();
-            }
-        });
-        Log.i("sw32urls",UploadPicturesActivity.uris.get(position) + " ::" +UploadPicturesActivity.urls.get(position));
 
-        Picasso.with(mContext)
-                .load(UploadPicturesActivity.uris.get(position))
-                .memoryPolicy(MemoryPolicy.NO_CACHE,MemoryPolicy.NO_STORE)
-                .error(R.mipmap.ic_pages_18)
-                .fit()
-                .into(holder.imageview);
-        return convertView;
+            holder.delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    UploadPicturesActivity.uris.remove(position);
+                    UploadPicturesActivity.urls.remove(position);
+                    notifyDataSetChanged();
+                }
+            });
+
+
+
+        //I have changed the .load() content of Picasso just to test...default upload is a drawable now and comes up on an error. It is getting offset for some reason.
+
+        if(UploadPicturesActivity.uris.get(position).equals("add"))
+        {
+            holder.delete.setVisibility(View.GONE);
+            if(UploadPicturesActivity.action == 0){
+            holder.imageview.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    UploadPicturesActivity.btnSelect.performClick();
+                }
+            });}
+            else if(UploadPicturesActivity.action ==1)
+            {
+                holder.imageview.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        UploadPicturesActivity.camera.performClick();
+                    }
+                });
+            }
+
+
+            Picasso.with(mContext)
+                    .load(R.drawable.bk_default_upload)
+                    .fit()
+                    .centerInside()
+                    .error(drawable)
+                    .into(holder.imageview);
+
+        }
+
+        else {
+            holder.delete.setVisibility(View.VISIBLE);
+            holder.imageview.setOnClickListener(null);
+            Picasso.with(mContext)
+                    .load(UploadPicturesActivity.uris.get(position))
+                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                    .error(drawable)
+                    .fit()
+                    .centerInside()
+                    .into(holder.imageview);
+        }
+
+            return convertView;
+    }
+
+    public long getItemId(int position) {
+        return position;
+    }
+
+    protected Bitmap ConvertToBitmap(RelativeLayout layout) {
+
+        layout.setDrawingCacheEnabled(true);
+
+        layout.buildDrawingCache();
+
+        return layout.getDrawingCache();
+
+
     }
 }
 class ViewHolder {
     ImageView imageview;
     ImageButton delete;
+    RelativeLayout parent_layout;
 }

@@ -1,190 +1,227 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/coordinatorLayout"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-         <!--AppBar Layout   -->
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/appBarLayout_acb"
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/coordinatorLayout"
             android:layout_width="match_parent"
-            android:background="#E0E0E0"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-            <!-- ViewPagerAdapter_home Toolbar   -->
-            <include
-                android:id="@+id/include_acb_course"
-                layout="@layout/actionbar_course"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:layout_scrollFlags="scroll|enterAlways"></include>
+            <!-- AppBar Layout   -->
+            <android.support.design.widget.AppBarLayout
+                android:id="@+id/appBarLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
 
-            <android.support.design.widget.CollapsingToolbarLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:elevation="5dp"
-                app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
-
-                <!--Course Info-->
-                <RelativeLayout
-                    android:id="@+id/container_course_info"
+                <include
+                    android:id="@+id/include_acb_course"
+                    layout="@layout/actionbar_course"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                    android:paddingBottom="24dp"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    app:layout_collapseParallaxMultiplier="0"
-                    app:layout_collapseMode="parallax">
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_scrollFlags="scroll|enterAlways|snap"></include>
 
-                    <ToggleButton
-                        android:id="@+id/tb_subscribe"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="SUBSCRIBE"
-                        android:textColor="@color/ColorTextHeading"
-                        android:layout_marginTop="16dp"
-                        android:layout_alignParentRight="true"
-                        android:minHeight="0dp"
-                        android:minWidth="0dp"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="4dp"
-                        android:paddingLeft="16dp"
-                        android:paddingRight="16dp"
-                        android:elevation="4dp"
-                        android:textOff="SUBSCRIBE"
-                        android:textOn="SUBSCRIBED"
-                        android:background="@drawable/selector_subscribe"/>
+                <include
+                    android:id="@+id/toolbar"
+                    layout="@layout/toolbar" />
 
-                    <TextView
-                        android:id="@+id/tv_course_title"
+            </android.support.design.widget.AppBarLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:elevation="4dp"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <FrameLayout
+                    android:id="@+id/frame"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <android.support.design.widget.CoordinatorLayout
+                        android:id="@+id/coordinatorLayout_home"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:layout_below="@+id/tb_subscribe"
-                        android:text="COURSE 1"
-                        android:layout_marginTop="12dp"
-                        android:textStyle="bold"
-                        android:textAllCaps="true"
-                        android:textColor="@color/ColorTextInfo"
-                        android:textSize="18sp" />
+                        android:layout_height="match_parent">
 
-                    <!--Full course details container-->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_course_title"
-                        android:orientation="horizontal"
-                        android:paddingLeft="16dp"
-                        android:paddingRight="16dp"
-                        android:paddingTop="24dp"
-                        android:weightSum="2">
+                        <!-- AppBar Layout   -->
+                        <android.support.design.widget.AppBarLayout
+                            android:id="@+id/appBarLayout_home"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content">
 
-                        <!--Course details and Timetable container-->
-                        <LinearLayout
-                            android:id="@+id/container_course_details"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/tv_timetable"
+                            <android.support.design.widget.CollapsingToolbarLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:ellipsize="end"
-                                android:gravity="left"
-                                android:maxLines="1"
-                                android:textColor="@color/ColorTextInfo"
-                                android:text="Timetable"
-                                android:textSize="16sp" />
+                                android:elevation="5dp"
+                                app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
 
-                            <TextView
-                                android:id="@+id/tv_course_details"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:ellipsize="end"
-                                android:gravity="left"
-                                android:textStyle="bold"
-                                android:maxLines="1"
-                                android:textColor="@color/ColorTextInfo"
-                                android:paddingTop="24dp"
-                                android:text="Details"
-                                android:textSize="16sp" />
-                        </LinearLayout>
-
-                        <!--Professor and students details-->
-                        <RelativeLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1">
-
-                            <LinearLayout
-                                android:id="@+id/container_professor_students"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:id="@+id/tv_prof_name"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@+id/tv_course_title"
-                                    android:ellipsize="end"
-                                    android:gravity="left"
-                                    android:textColor="@color/ColorTextInfo"
-                                    android:maxLines="1"
-                                    android:paddingRight="2dp"
-                                    android:text="Professor XYZXMNOPQ"
-                                    android:textSize="16sp" />
-
-                                <TextView
-                                    android:id="@+id/tv_view_students"
+                                <!--Course Info-->
+                                <RelativeLayout
+                                    android:id="@+id/container_course_info"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:ellipsize="end"
-                                    android:gravity="left"
-                                    android:maxLines="1"
-                                    android:textStyle="bold"
-                                    android:textColor="@color/ColorTextInfo"
-                                    android:paddingTop="24dp"
-                                    android:text="Students"
-                                    android:textSize="16sp" />
-                            </LinearLayout>
-                        </RelativeLayout>
-                    </LinearLayout>
-                </RelativeLayout>
+                                    android:paddingBottom="24dp"
+                                    android:paddingLeft="16dp"
+                                    android:paddingRight="16dp"
+                                    app:layout_collapseMode="parallax"
+                                    app:layout_collapseParallaxMultiplier="0"
+                                    app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            </android.support.design.widget.CollapsingToolbarLayout>
+                                    <ToggleButton
+                                        android:id="@+id/tb_subscribe"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_marginTop="16dp"
+                                        android:background="@drawable/selector_subscribe"
+                                        android:elevation="4dp"
+                                        android:minHeight="0dp"
+                                        android:minWidth="0dp"
+                                        android:paddingBottom="4dp"
+                                        android:paddingLeft="16dp"
+                                        android:paddingRight="16dp"
+                                        android:paddingTop="4dp"
+                                        android:text="SUBSCRIBE"
+                                        android:textColor="@color/ColorTextHeading"
+                                        android:textOff="SUBSCRIBE"
+                                        android:textOn="SUBSCRIBED" />
 
-            <com.campusconnect.cc_reboot.slidingtab.SlidingTabLayout_home
-                android:id="@+id/tabs_course"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/ColorPrimary"
-                android:elevation="4dp" />
+                                    <TextView
+                                        android:id="@+id/tv_course_title"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@+id/tb_subscribe"
+                                        android:layout_marginTop="12dp"
+                                        android:gravity="center"
+                                        android:text="COURSE 1"
+                                        android:textAllCaps="true"
+                                        android:textColor="@color/ColorTextInfo"
+                                        android:textSize="18sp"
+                                        android:textStyle="bold" />
 
-        </android.support.design.widget.AppBarLayout>
+                                    <!--Full course details container-->
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@+id/tv_course_title"
+                                        android:orientation="horizontal"
+                                        android:paddingLeft="16dp"
+                                        android:paddingRight="16dp"
+                                        android:paddingTop="24dp"
+                                        android:weightSum="2">
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/pager_course"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="#ffffff"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                                        <!--Course details and Timetable container-->
+                                        <LinearLayout
+                                            android:id="@+id/container_course_details"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_alignParentLeft="true"
+                                            android:layout_weight="1"
+                                            android:orientation="vertical">
 
-    </android.support.design.widget.CoordinatorLayout>
+                                            <TextView
+                                                android:id="@+id/tv_timetable"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:ellipsize="end"
+                                                android:gravity="left"
+                                                android:maxLines="1"
+                                                android:text="Timetable"
+                                                android:textColor="@color/ColorTextInfo"
+                                                android:textSize="16sp" />
+
+                                            <TextView
+                                                android:id="@+id/tv_course_details"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:ellipsize="end"
+                                                android:gravity="left"
+                                                android:maxLines="1"
+                                                android:paddingTop="24dp"
+                                                android:text="Details"
+                                                android:textColor="@color/ColorTextInfo"
+                                                android:textSize="16sp"
+                                                android:textStyle="bold" />
+                                        </LinearLayout>
+
+                                        <!--Professor and students details-->
+                                        <RelativeLayout
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1">
+
+                                            <LinearLayout
+                                                android:id="@+id/container_professor_students"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_alignParentRight="true"
+                                                android:orientation="vertical">
+
+                                                <TextView
+                                                    android:id="@+id/tv_prof_name"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_below="@+id/tv_course_title"
+                                                    android:ellipsize="end"
+                                                    android:gravity="left"
+                                                    android:maxLines="1"
+                                                    android:paddingRight="2dp"
+                                                    android:text="Professor XYZXMNOPQ"
+                                                    android:textColor="@color/ColorTextInfo"
+                                                    android:textSize="16sp" />
+
+                                                <TextView
+                                                    android:id="@+id/tv_view_students"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:ellipsize="end"
+                                                    android:gravity="left"
+                                                    android:maxLines="1"
+                                                    android:paddingTop="24dp"
+                                                    android:text="Students"
+                                                    android:textColor="@color/ColorTextInfo"
+                                                    android:textSize="16sp"
+                                                    android:textStyle="bold" />
+                                            </LinearLayout>
+                                        </RelativeLayout>
+                                    </LinearLayout>
+                                </RelativeLayout>
+
+                            </android.support.design.widget.CollapsingToolbarLayout>
+
+                            <com.campusconnect.cc_reboot.slidingtab.SlidingTabLayout_home
+                                android:id="@+id/tabs_course"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/ColorPrimary"
+                                android:elevation="4dp" />
+
+                        </android.support.design.widget.AppBarLayout>
+
+                        <android.support.v4.view.ViewPager
+                            android:id="@+id/pager_course"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="#ffffff"
+                            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+                    </android.support.design.widget.CoordinatorLayout>
+
+                </FrameLayout>
+
+
+            </RelativeLayout>
+        </android.support.design.widget.CoordinatorLayout>
+
+    </FrameLayout>
 
     <FrameLayout
         android:id="@+id/container_fab"
@@ -238,5 +275,13 @@
         </com.getbase.floatingactionbutton.FloatingActionsMenu>
     </FrameLayout>
 
-
-</FrameLayout>
+    <android.support.design.widget.NavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/ColorRecyclerBackground"
+        app:itemIconTint="@color/selector_drawer_item"
+        app:itemTextColor="@color/selector_drawer_item"
+        app:menu="@layout/drawer" />
+</android.support.v4.widget.DrawerLayout>

@@ -6,6 +6,7 @@
     android:background="@color/ColorRecyclerBackground">
 
     <ScrollView
+        android:id="@+id/sv_add_course"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/ColorRecyclerBackground">
@@ -17,7 +18,7 @@
             android:gravity="center"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
-            android:paddingBottom="64dp">
+            android:paddingBottom="8dp">
 
             <LinearLayout
                 android:id="@+id/container_course_name"
@@ -46,8 +47,7 @@
                     android:id="@+id/view_course_color_picker"
                     android:layout_width="28dp"
                     android:layout_height="28dp"
-                    android:layout_marginLeft="8dp"
-                    android:background="@drawable/color_picker_r1" />
+                    android:layout_marginLeft="8dp" />
             </LinearLayout>
 
 

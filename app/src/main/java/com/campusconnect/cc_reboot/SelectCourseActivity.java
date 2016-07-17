@@ -12,19 +12,17 @@ import android.view.View;
 import android.widget.Button;
 
 import com.campusconnect.cc_reboot.POJO.CourseList;
-import com.campusconnect.cc_reboot.POJO.Example;
 import com.campusconnect.cc_reboot.POJO.ModelCourseSubscribe;
 import com.campusconnect.cc_reboot.POJO.ModelSubscribe;
 import com.campusconnect.cc_reboot.POJO.MyApi;
-import com.campusconnect.cc_reboot.adapter.AssignmentsListAdapter;
 import com.campusconnect.cc_reboot.adapter.CourseSelectionListAdapter;
 import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -46,6 +44,7 @@ public class SelectCourseActivity extends AppCompatActivity{
 
     CourseSelectionListAdapter mCourseSelectionAdapter;
     LinearLayoutManager mLayoutManager;
+    private FirebaseAnalytics firebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +69,7 @@ public class SelectCourseActivity extends AppCompatActivity{
                 .baseUrl(FragmentCourses.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
         MyApi myApi = retrofit.create(MyApi.class);
         MyApi.getCoursesRequest body = new MyApi.getCoursesRequest(getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""));
         Call<ModelCourseSubscribe> call = myApi.getCourses(body);
@@ -94,21 +94,13 @@ public class SelectCourseActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 subbed = mCourseSelectionAdapter.getSubbed();
-                String[] temp = new String[subbed.size()];
-                int i=0;
-                for(String course : subbed)
-                {
-                    temp[i] = course;
-                    i++;
-                }
-                Log.i("sw32",subbed.toString());
                 Retrofit retrofit = new Retrofit.
                         Builder()
                         .baseUrl(FragmentCourses.BASE_URL)
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
                 MyApi myApi = retrofit.create(MyApi.class);
-                MyApi.subscribeCourseRequest body = new MyApi.subscribeCourseRequest(getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""),temp);
+                MyApi.subscribeCourseRequest body = new MyApi.subscribeCourseRequest(getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""),subbed);
                 Call<ModelSubscribe> call = myApi.subscribeCourse(body);
                 call.enqueue(new Callback<ModelSubscribe>() {
                     @Override
@@ -117,6 +109,10 @@ public class SelectCourseActivity extends AppCompatActivity{
                         Intent intent_temp = new Intent(getApplicationContext(), HomeActivity2.class);
                         intent_temp.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent_temp);
+                        Bundle params = new Bundle();
+                        params. putString("course_subscribe","success");
+                        firebaseAnalytics.logEvent("course_subscribe",params);
+                        finish();
                     }
 
                     @Override

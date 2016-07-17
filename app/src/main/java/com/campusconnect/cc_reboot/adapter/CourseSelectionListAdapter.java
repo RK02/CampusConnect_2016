@@ -1,10 +1,8 @@
 package com.campusconnect.cc_reboot.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,20 +10,13 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.campusconnect.cc_reboot.AssignmentPageActivity;
 import com.campusconnect.cc_reboot.POJO.CourseList;
-import com.campusconnect.cc_reboot.POJO.Example;
-import com.campusconnect.cc_reboot.POJO.ModelCourseSubscribe;
-import com.campusconnect.cc_reboot.POJO.MyApi;
 import com.campusconnect.cc_reboot.R;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by RK on 05/06/2016.
@@ -55,7 +46,6 @@ public class CourseSelectionListAdapter extends
     @Override
     public void onBindViewHolder(CourseSelectionListViewHolder courseSelectionListViewHolder, int i) {
         final int a = i;
-        Log.i("sw32bind","Binding");
         courseSelectionListViewHolder.course_title.setText(courses.get(i).getCourseName());
         courseSelectionListViewHolder.course_prof.setText(courses.get(i).getProfessorName());
         courseSelectionListViewHolder.course_section.setText(courses.get(i).getSectionNames().toString());
@@ -70,6 +60,7 @@ public class CourseSelectionListAdapter extends
                 }
             }
         });
+        courseSelectionListViewHolder.course_subscribe.setChecked(true);
     }
 
     @Override
