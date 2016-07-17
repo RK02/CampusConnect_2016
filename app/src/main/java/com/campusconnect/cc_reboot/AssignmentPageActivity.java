@@ -249,8 +249,27 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
         switch (view.getId()) {
 
             case R.id.ib_edit_note:
-                intent = new Intent(getApplicationContext(), EditNoteActivity.class);
-                startActivity(intent);
+                //intent = new Intent(getApplicationContext(), EditNoteActivity.class);
+                //startActivity(intent);
+                Retrofit retrofit = new Retrofit.
+                        Builder()
+                        .baseUrl(MyApi.BASE_URL)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+                MyApi myApi = retrofit.create(MyApi.class);
+                MyApi.reportRequest body= new MyApi.reportRequest(getSharedPreferences("CC",MODE_PRIVATE).getString("profileId",""),assignmentId,"");
+                Call<Void> call = myApi.report(body);
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        Toast.makeText(AssignmentPageActivity.this,"Thank you for the feedback. We will get back to you shortly",Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+
+                    }
+                });
                 break;
 
             case R.id.ib_fullscreen:

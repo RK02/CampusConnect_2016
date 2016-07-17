@@ -82,6 +82,20 @@ public interface MyApi {
         }
     }
 
+    @POST("report")
+    Call<Void> report(@Body reportRequest reportRequest);
+    class reportRequest{
+        private String profileId;
+        private String key;
+        private String description;
+        public reportRequest(String profileId, String key, String description){
+            this.profileId = profileId;
+            this.key = key;
+            this.description =description;
+        }
+
+    }
+
     @POST("notebookList")
     Call<ModelNoteBookList> getNoteBookList(@Body getNoteBookListRequest body);
     class getNoteBookListRequest{
