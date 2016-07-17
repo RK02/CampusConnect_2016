@@ -3,7 +3,6 @@ package com.campusconnect.cc_reboot;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -23,12 +22,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.campusconnect.cc_reboot.POJO.Example;
+import com.campusconnect.cc_reboot.POJO.ModelFeed;
 import com.campusconnect.cc_reboot.POJO.MyApi;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentAbout;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentAddCourse;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentFeedback;
-import com.campusconnect.cc_reboot.fragment.Drawer.FragmentGifts;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentInvite;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentPointsInfo;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentRate;
@@ -202,26 +200,26 @@ public class ProfilePageActivity extends AppCompatActivity implements FloatingAc
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         MyApi myApi = retrofit.create(MyApi.class);
-        Call<Example> call = myApi.getFeed(getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""));
-        call.enqueue(new Callback<Example>() {
+        Call<ModelFeed> call = myApi.getFeed(getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""));
+        call.enqueue(new Callback<ModelFeed>() {
             @Override
-            public void onResponse(Call<Example> call, Response<Example> response) {
+            public void onResponse(Call<ModelFeed> call, Response<ModelFeed> response) {
 
                 Log.i("sw32", "" + response.code());
-                Example example = response.body();
-                if (example != null) {
+                ModelFeed modelFeed = response.body();
+                if (modelFeed != null) {
                     Picasso.with(ProfilePageActivity.this)
-                            .load(example.getPhotoUrl())
+                            .load(modelFeed.getPhotoUrl())
                             .memoryPolicy(MemoryPolicy.NO_CACHE)
                             .networkPolicy(NetworkPolicy.NO_CACHE)
                             .into(profile_image);
-                    profile_name.setText(example.getProfileName());
-                    profile_points.setText(example.getPoints());
+                    profile_name.setText(modelFeed.getProfileName());
+                    profile_points.setText(modelFeed.getPoints());
                 }
             }
 
             @Override
-            public void onFailure(Call<Example> call, Throwable t) {
+            public void onFailure(Call<ModelFeed> call, Throwable t) {
 
             }
         });

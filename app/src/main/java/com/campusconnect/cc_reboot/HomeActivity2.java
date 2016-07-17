@@ -43,6 +43,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.campusconnect.cc_reboot.POJO.CustomNotification;
+import com.campusconnect.cc_reboot.POJO.ModelNotification;
+import com.campusconnect.cc_reboot.POJO.ModelNotificationList;
+import com.campusconnect.cc_reboot.POJO.MyApi;
 import com.campusconnect.cc_reboot.adapter.NotificationAdapter;
 import com.campusconnect.cc_reboot.adapter.TimetableAdapter;
 import com.campusconnect.cc_reboot.auxiliary.AlphaAdapter_reverse;
@@ -72,8 +75,17 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 /**
  * Created by RK on 04/06/2016.
  */
@@ -117,6 +129,7 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
     ImageView bk_blur;
     @Bind(R.id.notification_layout)
     FrameLayout layout_notification;
+    List<ModelNotification> notifications;
 
     Interpolator interpolator_notification = new DecelerateInterpolator();
 
@@ -136,19 +149,45 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
         setContentView(R.layout.activity_home_true);
         ButterKnife.bind(this);
 
-        layout_notification.setVisibility(View.GONE);
 
-        mLayoutManager = new LinearLayoutManager(this);
-        mNotificationAdapter = new NotificationAdapter(this);
-        notification_list.setLayoutManager(mLayoutManager);
-        notification_list.setItemAnimator(new DefaultItemAnimator());
+        Retrofit retrofit = new Retrofit.
+                Builder()
+                .baseUrl(MyApi.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        MyApi myApi = retrofit.create(MyApi.class);
+        Call<ModelNotificationList> call = myApi.getNotifications(getSharedPreferences("CC",MODE_PRIVATE).getString("profileId",""));
+        call.enqueue(new Callback<ModelNotificationList>() {
+            @Override
+            public void onResponse(Call<ModelNotificationList> call, Response<ModelNotificationList> response) {
+                if(response!=null) {
+                    Log.i("sw32notifications",response.code()+"");
+                    ModelNotificationList modelNotificationList = response.body();
+                    if(modelNotificationList!=null)
+                           notifications= modelNotificationList.getNotificationList();
 
-        alphaAdapter = new AlphaInAnimationAdapter(mNotificationAdapter);
-        scaleAdapter = new ScaleInAnimationAdapter(
-                alphaAdapter);
-        scale_back = new ScaleAdapter_reverse(
-                mNotificationAdapter);
-        alpha_back = new AlphaAdapter_reverse(scale_back);
+                    layout_notification.setVisibility(View.GONE);
+                    mNotificationAdapter = new NotificationAdapter(HomeActivity2.this, notifications);
+
+                    mLayoutManager = new LinearLayoutManager(HomeActivity2.this);
+
+                    notification_list.setLayoutManager(mLayoutManager);
+                    notification_list.setItemAnimator(new DefaultItemAnimator());
+
+                    alphaAdapter = new AlphaInAnimationAdapter(mNotificationAdapter);
+                    scaleAdapter = new ScaleInAnimationAdapter(
+                            alphaAdapter);
+                    scale_back = new ScaleAdapter_reverse(
+                            mNotificationAdapter);
+                    alpha_back = new AlphaAdapter_reverse(scale_back);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ModelNotificationList> call, Throwable t) {
+
+            }
+        });
 
 //Setting FAB container's background to be fully transparent by default
         home_title = (TextView) findViewById(R.id.tv_title);
@@ -278,6 +317,7 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
                 .into(view);
         ((TextView)headerView.findViewById(R.id.tv_points)).setText(FragmentCourses.profilePoints);
 
+
     }
 
     @Override
@@ -361,6 +401,9 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
 
                         }
                     }, 500);
+
+
+
 
                     close_button.setOnClickListener(new View.OnClickListener() {
                         @Override

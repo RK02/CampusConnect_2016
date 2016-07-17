@@ -1,7 +1,6 @@
 package com.campusconnect.cc_reboot;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -11,7 +10,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -23,23 +21,17 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.campusconnect.cc_reboot.POJO.CollegeList;
-import com.campusconnect.cc_reboot.POJO.Example;
 import com.campusconnect.cc_reboot.POJO.ModelCollegeList;
 import com.campusconnect.cc_reboot.POJO.ModelSignUp;
 import com.campusconnect.cc_reboot.POJO.MyApi;
 import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -50,12 +42,10 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import butterknife.Bind;
@@ -233,6 +223,7 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
                     Intent intent_temp = new Intent(getApplicationContext(), SelectCourseActivity.class);
                     intent_temp.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent_temp);
+                    finish();
                 }
             }
 

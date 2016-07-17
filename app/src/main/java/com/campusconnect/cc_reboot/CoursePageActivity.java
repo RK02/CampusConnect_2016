@@ -453,11 +453,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                 os.flush();
                 os.close();
                 Log.i("sw32",connection.getResponseMessage() +":" +connection.getResponseCode());
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return null;
@@ -560,8 +556,33 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
             students_list.setLayoutManager(llm);
             students_list.setItemAnimator(new DefaultItemAnimator());
 
-            mStudentsAdapter = new StudentsListAdapter(CoursePageActivity.this);
-            students_list.setAdapter(mStudentsAdapter);
+            Retrofit retrofit = new Retrofit.
+                    Builder()
+                    .baseUrl(MyApi.BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            MyApi myApi = retrofit.create(MyApi.class);
+            MyApi.getStudentListRequest body = new MyApi.getStudentListRequest(getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""),courseId);
+            Call<ModelStudentList> call = myApi.getStudentList(body);
+            call.enqueue(new Callback<ModelStudentList>() {
+                @Override
+                public void onResponse(Call<ModelStudentList> call, Response<ModelStudentList> response) {
+                    ModelStudentList studentList = response.body();
+                    if(studentList!=null) {
+                        Boolean isAdmin=false;
+                        if(studentList.getIsAdmin().equals("1")) isAdmin = true;
+                        studentList.getStudentList();
+                        mStudentsAdapter = new StudentsListAdapter(CoursePageActivity.this,studentList.getStudentList(),isAdmin,courseId);
+                        students_list.setAdapter(mStudentsAdapter);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ModelStudentList> call, Throwable t) {
+
+                }
+            });
 
             close.setOnClickListener(new View.OnClickListener() {
                 @Override

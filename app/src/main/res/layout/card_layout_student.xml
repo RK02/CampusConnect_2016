@@ -55,23 +55,12 @@
                     android:text="Ankit Desh"
                     android:textColor="@color/ColorTextInfo"
                     android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/tv_student_hobbies"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_student_name"
-                    android:text="Loves to cycle, dance and sing."
-                    android:textColor="@color/ColorTextInfo"
-                    android:textSize="16sp" />
-
             </RelativeLayout>
 
             <ToggleButton
                 android:id="@+id/tb_make_admin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/container_student_basic_info"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/selector_make_admin"

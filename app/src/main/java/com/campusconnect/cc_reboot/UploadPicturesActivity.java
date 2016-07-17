@@ -75,9 +75,9 @@ public class UploadPicturesActivity extends AppCompatActivity {
     View uploadDefaultActionView;
 
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
-    private Button btnSelect;
+    public static Button btnSelect;
     private Button next;
-    private Button camera;
+    public static Button camera;
     Button cancel;
     private  String pictureImagePath="";
     GridView gridView;
@@ -88,6 +88,7 @@ public class UploadPicturesActivity extends AppCompatActivity {
 
     public static float width;
     public static float height;
+    public static int action;
     final int READ_EXTERNAL=69;
     final int WRITE_EXTERNAL=70;
 
@@ -103,7 +104,6 @@ public class UploadPicturesActivity extends AppCompatActivity {
             urls = getIntent().getStringArrayListExtra("urls");
             uris = getIntent().getStringArrayListExtra("uris");
             imageAdapter.notifyDataSetChanged();
-
         }
         else {
             urls = new ArrayList<>();
@@ -241,6 +241,8 @@ public class UploadPicturesActivity extends AppCompatActivity {
                             Bundle params = new Bundle();
                             params.putString("pictures_uploaded", uris.size() + " pictures");
                             firebaseAnalytics.logEvent("pictures_selected_and_continue", params);
+                            description.putExtra("urls",urls);
+                            description.putExtra("uris",uris);
                             startActivityForResult(description, 1);
                         }
                     }
@@ -330,10 +332,11 @@ public class UploadPicturesActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == SELECT_FILE)
+            if (requestCode == SELECT_FILE){
                 onSelectFromGalleryResult(data);
-            else if (requestCode == REQUEST_CAMERA)
-                onCaptureImageResult(data);
+            action =0;}
+            else if (requestCode == REQUEST_CAMERA){
+                onCaptureImageResult(data);action=1;}
         }else if(requestCode==1) {
             if (resultCode == 1) {
                 urls.clear();
@@ -357,6 +360,8 @@ public class UploadPicturesActivity extends AppCompatActivity {
                         Intent intent = new Intent(UploadPicturesActivity.this,AddEventActivity.class);
                         intent.putExtra("courseName",cname+"");
                         intent.putExtra("description",desc+"");
+                        intent.putExtra("urls",urls);
+                        intent.putExtra("uris",uris);
                         startActivityForResult(intent,1);
                     }
                 });
@@ -367,7 +372,15 @@ public class UploadPicturesActivity extends AppCompatActivity {
     private void onCaptureImageResult(Intent data) {
         File imgFile = new File(pictureImagePath);
         urls.add(pictureImagePath);
-        uris.add(Uri.fromFile(imgFile).toString());
+        if(imageAdapter.getCount()==0) {
+
+            uris.add(Uri.fromFile(imgFile).toString());
+            uris.add("add");
+        }
+        else
+        {
+            uris.add(uris.indexOf("add"),Uri.fromFile(imgFile).toString());
+        }
         imageAdapter.notifyDataSetChanged();
 
     }
@@ -379,7 +392,10 @@ public class UploadPicturesActivity extends AppCompatActivity {
             try {
                 Uri path =  data.getData();
                 urls.add(getFilePath(UploadPicturesActivity.this,path));
-                uris.add(path.toString());
+                if(imageAdapter.getCount()==0) {
+                    uris.add(path.toString());
+                    uris.add("add");
+                }else{uris.add(uris.indexOf("add"),path.toString());}
                 imageAdapter.notifyDataSetChanged();
             } catch (URISyntaxException e) {
                 e.printStackTrace();
@@ -394,7 +410,14 @@ public class UploadPicturesActivity extends AppCompatActivity {
             {
                 try {
                     Uri uripath = clipData.getItemAt(i).getUri();
-                    uris.add(uripath.toString());
+                    if(imageAdapter.getCount()==0) {
+                        uris.add(uripath.toString());
+                        uris.add("add");
+                    }
+                    else
+                    {
+                        uris.add(uris.indexOf("add"),uripath.toString());
+                    }
                     urls.add(getFilePath(UploadPicturesActivity.this,uripath));
                     imageAdapter.notifyDataSetChanged();
                 }  catch (URISyntaxException e) {
@@ -481,9 +504,6 @@ class ImageAdapter extends BaseAdapter {
     }
 
     public int getCount() {
-        if(UploadPicturesActivity.uris.size()==0)
-            return 0;
-        else
             return UploadPicturesActivity.uris.size();
     }
 
@@ -492,6 +512,8 @@ class ImageAdapter extends BaseAdapter {
         return UploadPicturesActivity.uris.get(position);
 
     }
+
+
 
     // create a new ImageView for each item referenced by the Adapter
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -547,25 +569,53 @@ class ImageAdapter extends BaseAdapter {
                 }
             });
 
-        Log.i("sw32urls",UploadPicturesActivity.uris.get(position) + " ::" +UploadPicturesActivity.urls.get(position));
 
 
         //I have changed the .load() content of Picasso just to test...default upload is a drawable now and comes up on an error. It is getting offset for some reason.
+
+        if(UploadPicturesActivity.uris.get(position).equals("add"))
+        {
+            holder.delete.setVisibility(View.GONE);
+            if(UploadPicturesActivity.action == 0){
+            holder.imageview.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    UploadPicturesActivity.btnSelect.performClick();
+                }
+            });}
+            else if(UploadPicturesActivity.action ==1)
+            {
+                holder.imageview.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        UploadPicturesActivity.camera.performClick();
+                    }
+                });
+            }
+
+
             Picasso.with(mContext)
-                    .load("android.resource.com.campusconnect.cc.reboot."+iv_default_upload.getDrawable())
+                    .load(R.drawable.bk_default_upload)
+                    .fit()
+                    .centerInside()
+                    .error(drawable)
+                    .into(holder.imageview);
+
+        }
+
+        else {
+            holder.delete.setVisibility(View.VISIBLE);
+            holder.imageview.setOnClickListener(null);
+            Picasso.with(mContext)
+                    .load(UploadPicturesActivity.uris.get(position))
                     .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                     .error(drawable)
                     .fit()
+                    .centerInside()
                     .into(holder.imageview);
+        }
 
             return convertView;
-//        }
-//        else{
-//
-//
-//            return uploadDefaultActionView;
-//        }
-
     }
 
     public long getItemId(int position) {

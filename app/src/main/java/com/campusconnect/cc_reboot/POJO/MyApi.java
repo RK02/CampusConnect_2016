@@ -1,21 +1,11 @@
 package com.campusconnect.cc_reboot.POJO;
 
-import android.util.Log;
-
-import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Retrofit;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 /**
@@ -26,10 +16,13 @@ public interface MyApi {
     String BASE_URL = "https://uploadnotes-2016.appspot.com/_ah/api/notesapi/v1/";
 
     @GET("feed/ahJzfnVwbG9hZG5vdGVzLTIwMTZyFAsSB1Byb2ZpbGUYgICAgLyhggoM/")
-    Call<Example> getFeed(@Query("profileId") String profileId);
+    Call<ModelFeed> getFeed(@Query("profileId") String profileId);
 
     @GET("branchList/ahJzfnVwbG9hZG5vdGVzLTIwMTZyFAsSB0NvbGxlZ2UYgICAgKKqkQoM")
     Call<ModelBranchList> getBranches(@Query("collegeId") String collegeId);
+
+    @GET("getNot/ahJzfnVwbG9hZG5vdGVzLTIwMTZyFAsSB0NvbGxlZ2UYgICAgKKqkQoM")
+    Call<ModelNotificationList> getNotifications(@Query("profileId") String profileId);
 
     @POST("coursePage")
     Call<ModelCoursePage> getCourse(@Body getCourseRequest body);
@@ -44,6 +37,30 @@ public interface MyApi {
         }
 
     }
+    @POST("addAdmin")
+    Call<ModelMakeAdmin> addAdmin(@Body addAdminRequest addAdminRequest);
+    class addAdminRequest{
+        private String profileId;
+        private String courseId;
+        public addAdminRequest(String profileId,String courseId)
+        {
+            this.profileId = profileId;
+            this.courseId = courseId;
+        }
+    }
+
+    @POST("studentList")
+    Call<ModelStudentList> getStudentList(@Body getStudentListRequest getStudentListRequest);
+    class getStudentListRequest{
+        private String profileId;
+        private String courseId;
+        public getStudentListRequest(String profileId,String courseId)
+        {
+            this.profileId = profileId;
+            this.courseId = courseId;
+        }
+    }
+
     @POST("editProfile")
     Call<ModelEditProfile> editProfile(@Body editProfileRequest editProfileRequest);
     class editProfileRequest{
@@ -65,6 +82,20 @@ public interface MyApi {
         }
     }
 
+    @POST("report")
+    Call<Void> report(@Body reportRequest reportRequest);
+    class reportRequest{
+        private String profileId;
+        private String key;
+        private String description;
+        public reportRequest(String profileId, String key, String description){
+            this.profileId = profileId;
+            this.key = key;
+            this.description =description;
+        }
+
+    }
+
     @POST("notebookList")
     Call<ModelNoteBookList> getNoteBookList(@Body getNoteBookListRequest body);
     class getNoteBookListRequest{
@@ -81,12 +112,12 @@ public interface MyApi {
     class rateNoteBook{
         private String profileId;
         private String noteBookId;
-        private float rating;
+        private int rating;
         public rateNoteBook(String profileId, String noteBookId, float rating)
         {
             this.profileId = profileId;
             this.noteBookId = noteBookId;
-            this. rating = rating;
+            this. rating = ((int) rating);
         }
     }
     @POST("notebookList")
