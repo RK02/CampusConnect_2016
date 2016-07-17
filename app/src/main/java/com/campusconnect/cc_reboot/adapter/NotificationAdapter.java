@@ -1,10 +1,12 @@
 package com.campusconnect.cc_reboot.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +14,12 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.campusconnect.cc_reboot.AssignmentPageActivity;
+import com.campusconnect.cc_reboot.CoursePageActivity;
+import com.campusconnect.cc_reboot.ExamPageActivity;
+import com.campusconnect.cc_reboot.NotePageActivity;
 import com.campusconnect.cc_reboot.POJO.ModelNotification;
 import com.campusconnect.cc_reboot.POJO.SubscribedCourseList;
 import com.campusconnect.cc_reboot.R;
@@ -58,15 +65,37 @@ public class NotificationAdapter extends
     @Override
     public void onBindViewHolder(NotificationHolder notificationHolder, final int i) {
         ModelNotification notification = notifications.get(i);
-        String type = notification.getType();
+        final String type = notification.getType();
+        final String key = notification.getId();
+        Log.i("sw32Notifications",type + " : " + key);
+        Intent intent = new Intent();
         switch(type){
-            case "notes":break;
-            case "assignment":break;
-            case "exam":break;
-            case "admin":break;
+            case "notes": intent = new Intent(context, NotePageActivity.class);intent.putExtra("noteBookId",key); break;
+            case "assignment":intent = new Intent(context, AssignmentPageActivity.class);intent.putExtra("assignmentId",key);break;
+            case "exam":intent = new Intent(context, ExamPageActivity.class);intent.putExtra("testId",key);break;
+            case "admin":intent = new Intent(context, CoursePageActivity.class);intent.putExtra("courseId",key);break;
+            case "rated":intent = new Intent(context, NotePageActivity.class);intent.putExtra("noteBookId",key);break;
         }
+
+
+        final Intent finalIntent = intent;
+        notificationHolder.notificationCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(key==null)
+                {
+                    Toast.makeText(context,"Oops! Something went wrong!",Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    context.startActivity(finalIntent);
+                }
+            }
+        });
         String message = notification.getText();
         String timestamp = notification.getTimeStamp();
+        String[] aa = timestamp.split("T");
+        timestamp = aa[0] + " " + aa[1];
+        Log.i("sw32timestamp",timestamp);
         notificationHolder.notificationMessage.setText(message);
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         int days = 0,hours=0,minutes=0,seconds=0;
@@ -107,7 +136,8 @@ public class NotificationAdapter extends
 
     public class NotificationHolder extends RecyclerView.ViewHolder{
 
-
+        @Bind(R.id.notification_card)
+        View notificationCard;
         @Bind(R.id.tv_notification)
         TextView notificationMessage;
         @Bind(R.id.tv_notification_timestamp)
