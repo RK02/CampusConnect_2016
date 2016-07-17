@@ -98,12 +98,12 @@ public interface MyApi {
     class rateNoteBook{
         private String profileId;
         private String noteBookId;
-        private float rating;
+        private int rating;
         public rateNoteBook(String profileId, String noteBookId, float rating)
         {
             this.profileId = profileId;
             this.noteBookId = noteBookId;
-            this. rating = rating;
+            this. rating = ((int) rating);
         }
     }
     @POST("notebookList")

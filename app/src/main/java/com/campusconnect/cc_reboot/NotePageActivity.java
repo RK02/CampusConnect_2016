@@ -552,7 +552,7 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
                         call.enqueue(new Callback<ModelRate>() {
                             @Override
                             public void onResponse(Call<ModelRate> call, Response<ModelRate> response) {
-
+                                Log.i("sw32rate",response.code()+"");
                             }
 
                             @Override
