@@ -1,5 +1,6 @@
 package com.campusconnect.cc_reboot;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -29,7 +30,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-
+import java.util.List;
 
 
 import okhttp3.MediaType;
@@ -118,17 +119,16 @@ public class AddEventActivity extends AppCompatActivity {
                 if(mode!=3)
                 {
                     Intent intent = new Intent(AddEventActivity.this,UploadPicturesActivity.class);
-                    if(urls!=null)
-                    {
-                        intent.putStringArrayListExtra("urls",urls);
-                        intent.putStringArrayListExtra("uris",uris);
-                    }
+                    intent.putStringArrayListExtra("urls",urls);
+                    intent.putStringArrayListExtra("uris",uris);
                     startActivityForResult(intent,1);
                 }
                 else
                 {
+
                     Intent temp = new Intent();
-                    temp.putExtra("mode",mode);
+                    temp.putStringArrayListExtra("urls",urls);
+                    temp.putStringArrayListExtra("uris",uris);
                     temp.putExtra("description",description.getText().toString()+"");
                     temp.putExtra("courseName",course.getText().toString()+"");
                     setResult(2,temp);
@@ -189,6 +189,8 @@ public class AddEventActivity extends AppCompatActivity {
 
     class doStuff extends AsyncTask<String, String, String> {
 
+        List<String> urls;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -199,15 +201,15 @@ public class AddEventActivity extends AppCompatActivity {
                 if (dueDate.getText().toString().equals("")) {
                 dueDate.setError("Enter due date");dueDate.requestFocus();return;}
                 }
-//            progressDialog.setMessage("Uploading...");
-//            progressDialog.setCancelable(false);
-//            progressDialog.show();
+            urls =  getIntent().getStringArrayListExtra("urls");
             Intent intent = new Intent();
             intent.putExtra("courseId",courseId);
             intent.putExtra("uploadNotesActivity","success");
             setResult(1,intent);
             finish();
             mBuilder.setProgress(0,0,true);
+            mBuilder.setSmallIcon(R.mipmap.ccnoti);
+            mBuilder.setOngoing(true);
             mNotifyManager.notify(1,mBuilder.build());
         }
 
@@ -232,34 +234,8 @@ public class AddEventActivity extends AppCompatActivity {
                 body.addFormDataPart("dueDate",params[3]);
                 body.addFormDataPart("dueTime","08:00:00");
             }
-            if(UploadPicturesActivity.urls!=null) {
-                for (String temp : UploadPicturesActivity.urls) {
-                    Log.i("sw32", "test : " + temp);
 
-                    Bitmap original = null;
-                    try {
-                        original = BitmapFactory.decodeStream(new FileInputStream(temp));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    file = new File(getFilesDir() + "/temp" + i + ".jpeg");
-                    i++;
-                    FileOutputStream out = null;
-                    try {
-                        out = new FileOutputStream(file);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    int size = original.getRowBytes() * original.getHeight();
-                    Log.i("sw32size", size + "");
-                    if (size > 10000000)
-                        original.compress(Bitmap.CompressFormat.JPEG, 20, out);
-                    else
-                        original.compress(Bitmap.CompressFormat.JPEG, 50, out);
-                    body.addFormDataPart("file", "test.jpg", RequestBody.create(MediaType.parse("image/*"), file));
-                }
-            }
-            else if(urls!=null)
+            if(urls!=null)
             {
                 for (String temp : urls) {
                     Log.i("sw32", "test : " + temp);
@@ -302,9 +278,10 @@ public class AddEventActivity extends AppCompatActivity {
             @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            mNotifyManager.cancel(1);
-
+                mBuilder.setProgress(100,100,false);
+                mBuilder.setContentText("Operation completed!");
+                mBuilder.setOngoing(false);
+            mNotifyManager.notify(1,mBuilder.build());
         }
-
     }
 }

@@ -104,7 +104,6 @@ public class UploadPicturesActivity extends AppCompatActivity {
             urls = getIntent().getStringArrayListExtra("urls");
             uris = getIntent().getStringArrayListExtra("uris");
             imageAdapter.notifyDataSetChanged();
-
         }
         else {
             urls = new ArrayList<>();
@@ -242,6 +241,8 @@ public class UploadPicturesActivity extends AppCompatActivity {
                             Bundle params = new Bundle();
                             params.putString("pictures_uploaded", uris.size() + " pictures");
                             firebaseAnalytics.logEvent("pictures_selected_and_continue", params);
+                            description.putExtra("urls",urls);
+                            description.putExtra("uris",uris);
                             startActivityForResult(description, 1);
                         }
                     }
@@ -359,6 +360,8 @@ public class UploadPicturesActivity extends AppCompatActivity {
                         Intent intent = new Intent(UploadPicturesActivity.this,AddEventActivity.class);
                         intent.putExtra("courseName",cname+"");
                         intent.putExtra("description",desc+"");
+                        intent.putExtra("urls",urls);
+                        intent.putExtra("uris",uris);
                         startActivityForResult(intent,1);
                     }
                 });
