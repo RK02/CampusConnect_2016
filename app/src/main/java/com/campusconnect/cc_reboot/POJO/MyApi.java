@@ -37,6 +37,30 @@ public interface MyApi {
         }
 
     }
+    @POST("addAdmin")
+    Call<ModelMakeAdmin> addAdmin(@Body addAdminRequest addAdminRequest);
+    class addAdminRequest{
+        private String profileId;
+        private String courseId;
+        public addAdminRequest(String profileId,String courseId)
+        {
+            this.profileId = profileId;
+            this.courseId = courseId;
+        }
+    }
+
+    @POST("studentList")
+    Call<ModelStudentList> getStudentList(@Body getStudentListRequest getStudentListRequest);
+    class getStudentListRequest{
+        private String profileId;
+        private String courseId;
+        public getStudentListRequest(String profileId,String courseId)
+        {
+            this.profileId = profileId;
+            this.courseId = courseId;
+        }
+    }
+
     @POST("editProfile")
     Call<ModelEditProfile> editProfile(@Body editProfileRequest editProfileRequest);
     class editProfileRequest{
