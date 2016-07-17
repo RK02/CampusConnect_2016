@@ -15,6 +15,8 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
@@ -41,6 +43,7 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -68,6 +71,8 @@ public class UploadPicturesActivity extends AppCompatActivity {
 
     @Bind(R.id.for_height)
     View for_measure;
+
+    View uploadDefaultActionView;
 
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     private Button btnSelect;
@@ -464,7 +469,11 @@ public class UploadPicturesActivity extends AppCompatActivity {
 class ImageAdapter extends BaseAdapter {
     private Context mContext;
     private LayoutInflater mInflater;
-
+    View uploadDefaultActionView;
+    RelativeLayout layout_default_upload;
+    Bitmap bm_default_upload;
+    ImageView iv_default_upload;
+    Drawable drawable;
 
     public ImageAdapter(Context c) {
         mContext = c;
@@ -472,15 +481,16 @@ class ImageAdapter extends BaseAdapter {
     }
 
     public int getCount() {
-        return UploadPicturesActivity.uris.size();
+        if(UploadPicturesActivity.uris.size()==0)
+            return 0;
+        else
+            return UploadPicturesActivity.uris.size();
     }
 
     public Object getItem(int position) {
-        return UploadPicturesActivity.uris.get(position);
-    }
 
-    public long getItemId(int position) {
-        return position;
+        return UploadPicturesActivity.uris.get(position);
+
     }
 
     // create a new ImageView for each item referenced by the Adapter
@@ -493,31 +503,88 @@ class ImageAdapter extends BaseAdapter {
             convertView.setMinimumHeight((int)(UploadPicturesActivity.height/2));
             holder.imageview = (ImageView) convertView.findViewById(R.id.grid_item_image);
             holder.delete = (ImageButton) convertView.findViewById(R.id.delete);
+            holder.parent_layout = (RelativeLayout) convertView.findViewById(R.id.GridItem12);
             convertView.setTag(holder);
+
+            uploadDefaultActionView =  mInflater.inflate(R.layout.card_default_upload, null);
+            uploadDefaultActionView.setMinimumWidth((int)(UploadPicturesActivity.width/2));
+            uploadDefaultActionView.setMinimumHeight((int)(UploadPicturesActivity.height/2));
+
+            layout_default_upload = (RelativeLayout) uploadDefaultActionView.findViewById(R.id.container_default_upload);
+
+            layout_default_upload.setDrawingCacheEnabled(true);
+
+            //View to Bitmap conversion
+            layout_default_upload.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+            layout_default_upload.layout(0, 0, layout_default_upload.getMeasuredWidth(), layout_default_upload.getMeasuredHeight());
+            layout_default_upload.buildDrawingCache(true);
+            bm_default_upload = Bitmap.createBitmap(layout_default_upload.getDrawingCache());  //Bitmap
+            layout_default_upload.setDrawingCacheEnabled(false); // clear drawing cache
+
+            //Bitmap to drawable conversion
+            drawable = new BitmapDrawable(mContext.getResources(), bm_default_upload);
+
+            //Random shit I was trying to experiment with - keep it or delete it based on your needs bro
+//            iv_default_upload = new ImageView(mContext);
+//            iv_default_upload.setImageDrawable(drawable);
+//            Log.d("HAHA",""+iv_default_upload);
+//            Uri imgUri=Uri.parse("android.resource.com.campusconnect.cc.reboot."+drawable);
+//            iv_default_upload.setImageURI(null);
+//            iv_default_upload.setImageURI(imgUri);
+
         }
         else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UploadPicturesActivity.uris.remove(position);
-                UploadPicturesActivity.urls.remove(position);
-                notifyDataSetChanged();
-            }
-        });
+
+            holder.delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    UploadPicturesActivity.uris.remove(position);
+                    UploadPicturesActivity.urls.remove(position);
+                    notifyDataSetChanged();
+                }
+            });
+
         Log.i("sw32urls",UploadPicturesActivity.uris.get(position) + " ::" +UploadPicturesActivity.urls.get(position));
 
-        Picasso.with(mContext)
-                .load(UploadPicturesActivity.uris.get(position))
-                .memoryPolicy(MemoryPolicy.NO_CACHE,MemoryPolicy.NO_STORE)
-                .error(R.mipmap.ic_pages_18)
-                .fit()
-                .into(holder.imageview);
-        return convertView;
+
+        //I have changed the .load() content of Picasso just to test...default upload is a drawable now and comes up on an error. It is getting offset for some reason.
+            Picasso.with(mContext)
+                    .load("android.resource.com.campusconnect.cc.reboot."+iv_default_upload.getDrawable())
+                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                    .error(drawable)
+                    .fit()
+                    .into(holder.imageview);
+
+            return convertView;
+//        }
+//        else{
+//
+//
+//            return uploadDefaultActionView;
+//        }
+
+    }
+
+    public long getItemId(int position) {
+        return position;
+    }
+
+    protected Bitmap ConvertToBitmap(RelativeLayout layout) {
+
+        layout.setDrawingCacheEnabled(true);
+
+        layout.buildDrawingCache();
+
+        return layout.getDrawingCache();
+
+
     }
 }
 class ViewHolder {
     ImageView imageview;
     ImageButton delete;
+    RelativeLayout parent_layout;
 }
