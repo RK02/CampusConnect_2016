@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/confirmation_dialog_background"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/tv_dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Request to add college"
+        android:textSize="20sp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="18dp"
+        android:paddingBottom="18dp"
+        android:background="#000000"
+        android:textColor="#ffffff"
+        android:gravity="center_vertical"/>
+    <EditText
+        android:id="@+id/et_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_dialog_title"
+        android:hint="Name"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/edittext_rounded_border_visible"
+        android:padding="12dp"
+        android:textSize="14sp"
+        android:textColor="#383838"
+        android:textColorHint="#a0a0a0" />
+    <EditText
+        android:id="@+id/et_college_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et_name"
+        android:hint="College name"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/edittext_rounded_border_visible"
+        android:padding="12dp"
+        android:textSize="14sp"
+        android:textColor="#383838"
+        android:textColorHint="#a0a0a0" />
+    <EditText
+        android:id="@+id/et_email_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et_college_name"
+        android:hint="Email ID"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/edittext_rounded_border_visible"
+        android:padding="12dp"
+        android:textSize="14sp"
+        android:textColor="#383838"
+        android:textColorHint="#a0a0a0" />
+    <EditText
+        android:id="@+id/et_phone_no"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et_email_id"
+        android:hint="Phone Number"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/edittext_rounded_border_visible"
+        android:padding="12dp"
+        android:textSize="14sp"
+        android:textColor="#383838"
+        android:textColorHint="#a0a0a0" />
+    <EditText
+        android:id="@+id/et_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et_phone_no"
+        android:hint="Location"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/edittext_rounded_border_visible"
+        android:padding="12dp"
+        android:textSize="14sp"
+        android:textColor="#383838"
+        android:textColorHint="#a0a0a0" />
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/et_location"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:background="#a0a0a0" />
+    <Button
+        android:id="@+id/b_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#eaebec"
+        android:layout_marginTop="5dp"
+        style="?android:attr/borderlessButtonStyle"
+        android:text="Submit"
+        android:textColor="#000000"
+        android:alpha="0.7"
+        android:textSize="16sp"
+        android:layout_below="@+id/divider"/>
+
+</RelativeLayout>
