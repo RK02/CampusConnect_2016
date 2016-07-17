@@ -78,7 +78,7 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
     EditText profileName;
 
     @Bind(R.id.et_college_name)
-    EditText collegeName;
+    TextView collegeName;
 
     @Bind(R.id.et_batch)
     EditText batchName;

@@ -50,6 +50,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:background="@drawable/edittext_rounded"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:padding="4dp"
                     android:textColor="@color/ColorTextInfo"
                     android:textSize="18sp" />
@@ -97,16 +99,23 @@
                     android:textColor="@color/ColorTextInfo"
                     android:textSize="14sp" />
 
-                <EditText
-                    android:id="@+id/et_college_name"
+                <HorizontalScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
                     android:background="@drawable/edittext_rounded"
-                    android:padding="4dp"
-                    android:inputType="none"
-                    android:textColor="@color/ColorTextInfo"
-                    android:textSize="18sp" />
+                    android:scrollbars="none">
+                    <TextView
+                        android:id="@+id/et_college_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:maxLines="1"
+                        android:minLines="1"
+                        android:padding="4dp"
+                        android:scrollHorizontally="true"
+                        android:textColor="@color/ColorTextInfo"
+                        android:textSize="18sp" />
+                </HorizontalScrollView>
             </LinearLayout>
 
             <LinearLayout
@@ -131,10 +140,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:background="@drawable/edittext_rounded"
+                    android:ellipsize="end"
+                    android:inputType="number|numberDecimal"
+                    android:maxLines="1"
                     android:padding="4dp"
                     android:textColor="@color/ColorTextInfo"
-                    android:textSize="18sp"
-                    android:inputType="number|numberDecimal" />
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -159,6 +170,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:background="@drawable/edittext_rounded"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:padding="4dp"
                     android:textColor="@color/ColorTextInfo"
                     android:textSize="18sp" />
@@ -186,6 +199,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:background="@drawable/edittext_rounded"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:padding="4dp"
                     android:textColor="@color/ColorTextInfo"
                     android:textSize="18sp" />

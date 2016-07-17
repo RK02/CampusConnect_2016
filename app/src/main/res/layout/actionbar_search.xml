@@ -31,6 +31,9 @@
                 android:layout_height="match_parent"
                 android:gravity="center_vertical|left"
                 android:layout_alignParentStart="true"
+                android:maxLines="1"
+                android:inputType="text"
+                android:imeOptions="actionSearch"
                 android:textColor="@color/ColorTextHeading"
                 android:hint="Search CampusConnect"
                 android:layout_toLeftOf="@id/ib_search"
@@ -49,6 +52,10 @@
             android:background="@android:color/transparent"
             android:src="@mipmap/ic_search_24"
             android:clickable="true" />
+        <EditText
+            android:id="@+id/et_dummy"
+            android:layout_width="0dp"
+            android:layout_height="0dp" />
     </RelativeLayout>
 
 </LinearLayout>
