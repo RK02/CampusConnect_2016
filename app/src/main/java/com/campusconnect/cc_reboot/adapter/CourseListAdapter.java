@@ -133,6 +133,14 @@ public class CourseListAdapter extends
                 }
             }
         });
+
+        courseListViewHolder.course_card.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(context,"Report Course yet to be implemented",Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
         courseListViewHolder.notes_count_container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
