@@ -12,11 +12,9 @@ import android.view.View;
 import android.widget.Button;
 
 import com.campusconnect.cc_reboot.POJO.CourseList;
-import com.campusconnect.cc_reboot.POJO.Example;
 import com.campusconnect.cc_reboot.POJO.ModelCourseSubscribe;
 import com.campusconnect.cc_reboot.POJO.ModelSubscribe;
 import com.campusconnect.cc_reboot.POJO.MyApi;
-import com.campusconnect.cc_reboot.adapter.AssignmentsListAdapter;
 import com.campusconnect.cc_reboot.adapter.CourseSelectionListAdapter;
 import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -25,7 +23,6 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

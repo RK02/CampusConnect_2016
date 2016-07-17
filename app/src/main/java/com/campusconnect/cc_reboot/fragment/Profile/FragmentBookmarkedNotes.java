@@ -12,13 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.campusconnect.cc_reboot.CoursePageActivity;
-import com.campusconnect.cc_reboot.POJO.AvailableCourseList;
-import com.campusconnect.cc_reboot.POJO.Example;
 import com.campusconnect.cc_reboot.POJO.ModelNoteBookList;
 import com.campusconnect.cc_reboot.POJO.MyApi;
 import com.campusconnect.cc_reboot.POJO.NoteBookList;
-import com.campusconnect.cc_reboot.POJO.SubscribedCourseList;
 import com.campusconnect.cc_reboot.R;
 import com.campusconnect.cc_reboot.adapter.BookmarkedNotesListAdapter;
 

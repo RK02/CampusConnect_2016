@@ -1,7 +1,6 @@
 package com.campusconnect.cc_reboot.fragment.Home;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
@@ -58,7 +57,7 @@ public class FragmentCourses extends Fragment{
             .addConverterFactory(GsonConverterFactory.create())
             .build();
     MyApi myApi;
-    Call<Example> call;
+    Call<ModelFeed> call;
     ConnectivityManager cm;
     NetworkInfo activeNetwork;
     private FirebaseAnalytics mFirebaseAnalytics;
@@ -175,18 +174,18 @@ public class FragmentCourses extends Fragment{
         courseIds.clear();
         mCourseAdapter.clear();
         call= myApi.getFeed(getActivity().getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""));
-        call.enqueue(new Callback<Example>() {
+        call.enqueue(new Callback<ModelFeed>() {
             @Override
-            public void onResponse(Call<Example> call, Response<Example> response) {
+            public void onResponse(Call<ModelFeed> call, Response<ModelFeed> response) {
                 Log.i("sw32",""+response.code());
-                Example example = response.body();
+                ModelFeed modelFeed = response.body();
                 new FragmentTimetable();
-                if(example!=null) {
+                if(modelFeed !=null) {
                     mCourseAdapter.clear();
-                    profileName = example.getProfileName();
-                    profilePoints = example.getPoints();
-                    List<AvailableCourseList> availableCourseList = example.getAvailableCourseList();
-                    List<SubscribedCourseList> subscribedCourseList = example.getSubscribedCourseList();
+                    profileName = modelFeed.getProfileName();
+                    profilePoints = modelFeed.getPoints();
+                    List<AvailableCourseList> availableCourseList = modelFeed.getAvailableCourseList();
+                    List<SubscribedCourseList> subscribedCourseList = modelFeed.getSubscribedCourseList();
                     for (final SubscribedCourseList x : subscribedCourseList) {
                         courseNames.add(x.getCourseName());
                         courseIds.add(x.getCourseId());
@@ -230,7 +229,7 @@ public class FragmentCourses extends Fragment{
 
             }
             @Override
-            public void onFailure(Call<Example> call, Throwable t) {
+            public void onFailure(Call<ModelFeed> call, Throwable t) {
                 Toast.makeText(getActivity(),"Oops! Something went wrong!",Toast.LENGTH_SHORT).show();
                 swipeRefreshLayout.setRefreshing(false);
 

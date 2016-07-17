@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Example {
+public class ModelFeed {
 
     private String description;
     private String photoUrl;
@@ -20,6 +20,7 @@ public class Example {
     private String kind;
     private String etag;
     private String professorName;
+    private String newNotifications;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
@@ -198,5 +199,13 @@ public class Example {
 
     public void setProfessorName(String professorName) {
         this.professorName = professorName;
+    }
+
+    public String getNewNotifications() {
+        return newNotifications;
+    }
+
+    public void setNewNotifications(String newNotifications) {
+        this.newNotifications = newNotifications;
     }
 }
