@@ -280,15 +280,16 @@ public class AddEventActivity extends AppCompatActivity {
                     int size = original.getRowBytes() * original.getHeight();
                     Log.i("sw32size", size + "");
                     if (size > 10000000)
-                        original.compress(Bitmap.CompressFormat.JPEG, 20, out);
+                        original.compress(Bitmap.CompressFormat.JPEG, 40, out);
                     else
-                        original.compress(Bitmap.CompressFormat.JPEG, 50, out);
+                        original.compress(Bitmap.CompressFormat.JPEG, 80, out);
                     body.addFormDataPart("file", "test.jpg", RequestBody.create(MediaType.parse("image/*"), file));
                 }
             }
             requestBody = body.build();
             Request request = new Request.Builder()
-                    .url("https://uploadnotes-2016.appspot.com/img")
+                    //.url("https://uploadnotes-2016.appspot.com/img")
+                    .url("http://imgenhance-ranjithkumar8352.c9users.io/android")
                     .post(requestBody)
                     .build();
             try {

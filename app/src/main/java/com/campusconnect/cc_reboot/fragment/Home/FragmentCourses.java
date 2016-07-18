@@ -170,8 +170,19 @@ public class FragmentCourses extends Fragment{
         isConnected= activeNetwork != null && activeNetwork.isConnected();
         Log.i("sw32","callonrefresh");
         if(isConnected){
+            for(String key : timeTableViews.keySet())
+            {
+                ArrayList<String> viewIds = timeTableViews.get(key);
+                for(String viewId : viewIds)
+                {
+                    LinearLayout a = ((LinearLayout)TimetableAdapter.itemView.findViewById(Integer.parseInt(viewId)));
+                    a.removeAllViews();
+                    a.setBackgroundColor(Color.rgb(223, 223, 223));
+                }
+            }
         courseNames.clear();
         courseIds.clear();
+            timeTableViews = new HashMap<>();
         mCourseAdapter.clear();
         call= myApi.getFeed(getActivity().getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""));
         call.enqueue(new Callback<ModelFeed>() {
@@ -193,32 +204,36 @@ public class FragmentCourses extends Fragment{
                         x.save();
                         int i = x.getDate().size()-1;
                         while(i>=0) {
-                            View cell = LayoutInflater.from(getContext()).inflate(R.layout.timetable_cell_layout, cell_container, false);
-                            String viewId = x.getDate().get(i) + "" + (Integer.parseInt(x.getStartTime().get(i).substring(0, 2)) - 6);
-                            if(timeTableViews.containsKey(x.getCourseId()))
-                            {
-                                timeTableViews.get(x.getCourseId()).add(viewId);
-                            }
-                            else
-                            {
-                                ArrayList<String> temp = new ArrayList<>();
-                                temp.add(viewId);
-                                timeTableViews.put(x.getCourseId(),temp);
-                            }
-                            cell_container = (LinearLayout) TimetableAdapter.itemView.findViewById(Integer.parseInt(viewId));
-                            cell_container.setBackgroundColor(Color.parseColor(x.getColour()));
-                            ((TextView)cell.findViewById(R.id.cellText)).setText(x.getCourseName());
-                            cell.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Intent coursePage = new Intent(getActivity(), CoursePageActivity.class);
-                                    coursePage.putExtra("courseId",x.getCourseId());
-                                    coursePage.putExtra("courseColor",Color.parseColor(x.getColour()));
-                                    startActivity(coursePage);
+                            int start = Integer.parseInt(x.getStartTime().get(i).substring(0, 2));
+                            int end = Integer.parseInt(x.getEndTime().get(i).substring(0, 2));
+                            String date = x.getDate().get(i);
+                            Log.i("sw32timetable",start + " : " + x.getDate().get(i) + " : " + x.getCourseName());
+                            for (int ii = start; ii < end; ii++) {
+                                View cell = LayoutInflater.from(getContext()).inflate(R.layout.timetable_cell_layout, cell_container, false);
+                                String viewId =  date + "" + (ii - 6);
+                                if (timeTableViews.containsKey(x.getCourseId())) {
+                                    timeTableViews.get(x.getCourseId()).add(viewId);
+                                } else {
+                                    ArrayList<String> temp = new ArrayList<>();
+                                    temp.add(viewId);
+                                    timeTableViews.put(x.getCourseId(), temp);
                                 }
-                            });
-                            cell_container.removeAllViews();
-                            cell_container.addView(cell);
+                                cell_container = (LinearLayout) TimetableAdapter.itemView.findViewById(Integer.parseInt(viewId));
+                                cell_container.setBackgroundColor(Color.parseColor(x.getColour()));
+                                ((TextView) cell.findViewById(R.id.cellText)).setText(x.getCourseName());
+                                cell.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Intent coursePage = new Intent(getActivity(), CoursePageActivity.class);
+                                        coursePage.putExtra("courseId", x.getCourseId());
+                                        coursePage.putExtra("courseColor", Color.parseColor(x.getColour()));
+                                        startActivity(coursePage);
+                                    }
+                                });
+                                cell_container.removeAllViews();
+                                cell_container.addView(cell);
+
+                            }
                             i--;
                         }
 

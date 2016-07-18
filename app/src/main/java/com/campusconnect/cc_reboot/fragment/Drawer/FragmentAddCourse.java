@@ -220,7 +220,8 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
                                 }
                                 if(hourOfDay <10) {
                                     startTime.setText("0"+startTime.getText().toString());
-                                    endTime.setText("0" + endTime.getText().toString());
+                                    if(hourOfDay==9) endTime.setText(endTime.getText().toString());
+                                    else endTime.setText("0" + endTime.getText().toString());
                                 }
 
 
