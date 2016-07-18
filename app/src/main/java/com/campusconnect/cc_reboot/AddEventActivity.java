@@ -143,8 +143,15 @@ public class AddEventActivity extends AppCompatActivity {
                 submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    courseId = FragmentCourses.courseIds.get(FragmentCourses.courseNames.indexOf(course.getText().toString()));
-                    new doStuff().execute("exam",description.getText().toString(),date.getText().toString(),dueDate.getText().toString());
+                    int index = FragmentCourses.courseNames.indexOf(course.getText().toString());
+                    if(index<0){
+                        course.setError("Select valid course");
+                        course.requestFocus();
+                        return;
+                    }
+                    else {courseId = FragmentCourses.courseIds.get(index);
+                        new doStuff().execute("exam",description.getText().toString(),date.getText().toString(),dueDate.getText().toString());
+                    }
                 }
             });break;
             case 2: name.setText("Assignment");
@@ -152,8 +159,15 @@ public class AddEventActivity extends AppCompatActivity {
                 submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    courseId = FragmentCourses.courseIds.get(FragmentCourses.courseNames.indexOf(course.getText().toString()));
-                    new doStuff().execute("assignment",description.getText().toString(),date.getText().toString(),dueDate.getText().toString());
+                    int index = FragmentCourses.courseNames.indexOf(course.getText().toString());
+                    if(index<0){
+                        course.setError("Select valid course");
+                        course.requestFocus();
+                        return;
+                    }
+                    else {courseId = FragmentCourses.courseIds.get(index);
+                        new doStuff().execute("assignment",description.getText().toString(),date.getText().toString(),dueDate.getText().toString());
+                    }
                 }
             });break;
             case 3:
@@ -163,8 +177,17 @@ public class AddEventActivity extends AppCompatActivity {
                 submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    courseId = FragmentCourses.courseIds.get(FragmentCourses.courseNames.indexOf(course.getText().toString()));
-                    new doStuff().execute("notes",description.getText().toString(),date.getText().toString(),"");
+                    int index = FragmentCourses.courseNames.indexOf(course.getText().toString());
+                    if(index<0){
+                        course.setError("Select valid course");
+                        course.requestFocus();
+                        return;
+                    }
+                    else {
+                        courseId = FragmentCourses.courseIds.get(index);
+                        new doStuff().execute("notes",description.getText().toString(),date.getText().toString(),"");
+                    }
+
                 }
             });break;
         }

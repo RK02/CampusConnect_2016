@@ -563,7 +563,8 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                     .build();
 
             MyApi myApi = retrofit.create(MyApi.class);
-            MyApi.getStudentListRequest body = new MyApi.getStudentListRequest(getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""),courseId);
+            final String profileId=getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId","");
+            MyApi.getStudentListRequest body = new MyApi.getStudentListRequest(profileId,courseId);
             Call<ModelStudentList> call = myApi.getStudentList(body);
             call.enqueue(new Callback<ModelStudentList>() {
                 @Override
@@ -573,7 +574,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                         Boolean isAdmin=false;
                         if(studentList.getIsAdmin().equals("1")) isAdmin = true;
                         studentList.getStudentList();
-                        mStudentsAdapter = new StudentsListAdapter(CoursePageActivity.this,studentList.getStudentList(),isAdmin,courseId);
+                        mStudentsAdapter = new StudentsListAdapter(CoursePageActivity.this,studentList.getStudentList(),isAdmin,courseId,profileId);
                         students_list.setAdapter(mStudentsAdapter);
                     }
                 }

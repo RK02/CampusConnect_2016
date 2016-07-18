@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.campusconnect.cc_reboot.POJO.CollegeList;
 import com.campusconnect.cc_reboot.POJO.ModelCollegeList;
