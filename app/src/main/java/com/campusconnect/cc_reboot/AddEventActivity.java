@@ -24,6 +24,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
 import com.campusconnect.cc_reboot.fragment.NotesSliderPageFragment;
@@ -50,6 +51,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 
 public class AddEventActivity extends AppCompatActivity {
@@ -111,6 +113,7 @@ public class AddEventActivity extends AppCompatActivity {
             courseId = getIntent().getStringExtra("courseId");
             if(!courseName.equals("")) {
                 course.setText(courseName + "");
+                course.setFocusable(false);
             }
 
         }
@@ -275,6 +278,7 @@ public class AddEventActivity extends AppCompatActivity {
             mBuilder.setProgress(0,0,true);
             mBuilder.setSmallIcon(R.mipmap.ccnoti);
             mBuilder.setOngoing(true);
+            mBuilder.setContentIntent(null);
             mNotifyManager.notify(1,mBuilder.build());
         }
 
@@ -342,9 +346,20 @@ public class AddEventActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             try {
-                String res = response.body().string();
+                ResponseBody res = response.body();
+                String jsonresponse=null;
+                        if(res!=null)
+                        {
+                            jsonresponse = res.string();
+                        }
+                else
+                        {
+                            mBuilder.setContentText("Upload failed!");
+                            mBuilder.setProgress(0,0,false);
+                            mNotifyManager.notify(1,mBuilder.build());
+                        }
                 Log.i("sw32response",res + " :////");
-                JSONObject jsonObject = new JSONObject(res);
+                JSONObject jsonObject = new JSONObject(jsonresponse);
                 switch (type){
                     case "notes":return jsonObject.getString("noteBookId");
                     case "assignment":return jsonObject.getString("assignmentId");
@@ -360,8 +375,7 @@ public class AddEventActivity extends AppCompatActivity {
             @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-                mBuilder.setProgress(100,100,false);
-                mBuilder.setContentText("Operation completed!");
+                mBuilder.setContentText("Uploading completed! Check it out!");
                 mBuilder.setOngoing(false);
                 Intent intent;
                 switch (type){
@@ -373,7 +387,10 @@ public class AddEventActivity extends AppCompatActivity {
                 PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0 /* Request code */, intent,
                         PendingIntent.FLAG_UPDATE_CURRENT);
                 mBuilder.setContentIntent(pendingIntent);
+                mBuilder.setAutoCancel(true);
+                mBuilder.setProgress(0,0,false);
             mNotifyManager.notify(1,mBuilder.build());
+                Toast.makeText(getApplicationContext(),"Your upload has completed",Toast.LENGTH_SHORT).show();
         }
     }
 }

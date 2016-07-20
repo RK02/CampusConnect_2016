@@ -148,6 +148,7 @@ public class FragmentCourses extends Fragment{
             }
         }
         else if (aa.size() > courseIds.size()){
+            Log.i("sw32onresume",aa.size()+ " : " + courseIds.size());
             refreshPage();
         }
 
@@ -176,6 +177,7 @@ public class FragmentCourses extends Fragment{
         isConnected= activeNetwork != null && activeNetwork.isConnected();
         Log.i("sw32","callonrefresh");
         if(isConnected){
+            SubscribedCourseList.deleteAll(SubscribedCourseList.class);
             for(String key : timeTableViews.keySet())
             {
                 ArrayList<String> viewIds = timeTableViews.get(key);

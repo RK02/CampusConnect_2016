@@ -82,6 +82,7 @@ public class GoogleSignInActivity extends BaseActivity implements
                 Intent home = new Intent(GoogleSignInActivity.this,HomeActivity2.class);
                 home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(home);
+                finish();
             }
         }
         firebaseAnalytics = FirebaseAnalytics.getInstance(this);
@@ -200,6 +201,7 @@ public class GoogleSignInActivity extends BaseActivity implements
                                 Intent home = new Intent(GoogleSignInActivity.this, HomeActivity2.class);
                                 home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(home);
+                                finish();
                             } else {
                                 new register_mobile().execute(personId);
                             }
@@ -338,6 +340,7 @@ public class GoogleSignInActivity extends BaseActivity implements
                 if(personPhoto!=null) signUp.putExtra("personPhoto",personPhoto.toString());
                 signUp.putExtra("personId",personId);
                 startActivity(signUp);
+                finish();
             }
             else
             {
@@ -366,6 +369,7 @@ public class GoogleSignInActivity extends BaseActivity implements
                 Intent home = new Intent(GoogleSignInActivity.this, HomeActivity2.class);
                 home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(home);
+                finish();
             }
             progressBar.dismiss();
         }
