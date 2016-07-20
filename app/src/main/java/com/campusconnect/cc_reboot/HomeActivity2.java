@@ -510,6 +510,7 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
                 intent.putExtra("logout","temp");
                 FirebaseAuth.getInstance().signOut();
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                getSharedPreferences("CC",MODE_PRIVATE).edit().clear().commit();
                 startActivity(intent);
                 break;
             case R.id.item_t_and_c:

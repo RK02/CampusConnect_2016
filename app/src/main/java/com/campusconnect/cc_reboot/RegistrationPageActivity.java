@@ -22,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -73,6 +74,9 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
 
     @Bind(R.id.et_batch)
     EditText batchName;
+
+    @Bind(R.id.horizontal_scroll_view)
+    HorizontalScrollView horizontalScrollView;
 
     @Bind(R.id.et_specialisation)
     AutoCompleteTextView branchName;
@@ -141,7 +145,7 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
                         collegeIds.add(college.getCollegeId());
 
                     }
-                    data = new ArrayAdapter<String>(RegistrationPageActivity.this,android.R.layout.simple_list_item_1,collegeNames);
+                    data = new ArrayAdapter<>(RegistrationPageActivity.this,android.R.layout.simple_list_item_1,collegeNames);
                     data.add("Unable to find college");
 //                    collegeName.setAdapter(data);
 
@@ -186,6 +190,7 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
 
         scrollViewReg.setOnTouchListener(this);
         collegeName.setOnClickListener(this);
+        horizontalScrollView.setOnClickListener(this);
     }
     public void SignUp()
     {
@@ -252,6 +257,7 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
     public void onClick(View view) {
 
         switch (view.getId()){
+            case R.id.horizontal_scroll_view:
             case R.id.et_college_name:
                 AlertDialog.Builder builderCollegeList = new AlertDialog.Builder(RegistrationPageActivity.this);
                 builderCollegeList.setTitle("Select your college");
@@ -402,7 +408,7 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
 
         public CollegeNotFoundDialog(Activity a) {
             super(a);
-// TODO Auto-generated constructor stub
+            // TODO Auto-generated constructor stub
             this.c = a;
             this.context = context;
         }

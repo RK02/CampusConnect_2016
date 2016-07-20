@@ -47,6 +47,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class FragmentCourses extends Fragment{
 
     RecyclerView course_list;
+    Boolean resumeHasRun = false;
     CourseListAdapter mCourseAdapter;
     LinearLayoutManager mLayoutManager;
     SwipeRefreshLayout swipeRefreshLayout;
@@ -90,7 +91,6 @@ public class FragmentCourses extends Fragment{
         ArrayList<SubscribedCourseList> courses = new ArrayList<>();
         timeTableViews = new HashMap<>();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
-
         //Setting the recyclerView
 
         mLayoutManager = new LinearLayoutManager(v.getContext());
@@ -104,10 +104,6 @@ public class FragmentCourses extends Fragment{
         isConnected= activeNetwork != null && activeNetwork.isConnectedOrConnecting();
         Log.i("sw32call","create");
         if(isConnected) {
-            SubscribedCourseList a = new SubscribedCourseList();
-            a.save();a.delete();
-            CustomNotification aa = new CustomNotification();
-            aa.save();aa.delete();
             swipeRefreshLayout.post(new Runnable() {
                 @Override public void run() {
                     swipeRefreshLayout.setRefreshing(true);
@@ -126,7 +122,13 @@ public class FragmentCourses extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
-        Log.i("sw32call","resume");
+
+        if(!resumeHasRun)
+        {
+            resumeHasRun = true;
+            return;
+        }
+        Log.i("sw32call","onresume");
         cm = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         activeNetwork = cm.getActiveNetworkInfo();
         isConnected= activeNetwork != null && activeNetwork.isConnected();
@@ -141,24 +143,28 @@ public class FragmentCourses extends Fragment{
                 courseNames.add(x.getCourseName());
                 courseIds.add(x.getCourseId());
                 mCourseAdapter.add(x);
-                Log.i("sw32cache",x.getCourseName());
                 x.save();
                 FirebaseMessaging.getInstance().subscribeToTopic(x.getCourseId());
             }
         }
-        else if (aa.size() > courseIds.size()){refreshPage();}
+        else if (aa.size() > courseIds.size()){
+            refreshPage();
+        }
 
 
     }
 
     void resumePage()
     {
+
         List<SubscribedCourseList> aa = SubscribedCourseList.listAll(SubscribedCourseList.class);
+        courseNames.clear();
+        courseIds.clear();
+        mCourseAdapter.clear();
         for (SubscribedCourseList x : aa) {
             courseNames.add(x.getCourseName());
             courseIds.add(x.getCourseId());
             mCourseAdapter.add(x);
-            Log.i("sw32cache",x.getCourseName());
             x.save();
             FirebaseMessaging.getInstance().subscribeToTopic(x.getCourseId());
         }
@@ -188,7 +194,6 @@ public class FragmentCourses extends Fragment{
         call.enqueue(new Callback<ModelFeed>() {
             @Override
             public void onResponse(Call<ModelFeed> call, Response<ModelFeed> response) {
-                Log.i("sw32",""+response.code());
                 ModelFeed modelFeed = response.body();
                 new FragmentTimetable();
                 if(modelFeed !=null) {
@@ -207,7 +212,6 @@ public class FragmentCourses extends Fragment{
                             int start = Integer.parseInt(x.getStartTime().get(i).substring(0, 2));
                             int end = Integer.parseInt(x.getEndTime().get(i).substring(0, 2));
                             String date = x.getDate().get(i);
-                            Log.i("sw32timetable",start + " : " + x.getDate().get(i) + " : " + x.getCourseName());
                             for (int ii = start; ii < end; ii++) {
                                 View cell = LayoutInflater.from(getContext()).inflate(R.layout.timetable_cell_layout, cell_container, false);
                                 String viewId =  date + "" + (ii - 6);
@@ -232,11 +236,9 @@ public class FragmentCourses extends Fragment{
                                 });
                                 cell_container.removeAllViews();
                                 cell_container.addView(cell);
-
                             }
                             i--;
                         }
-
                         FirebaseMessaging.getInstance().subscribeToTopic(x.getCourseId());
                     }
                     swipeRefreshLayout.setRefreshing(false);
@@ -247,7 +249,6 @@ public class FragmentCourses extends Fragment{
             public void onFailure(Call<ModelFeed> call, Throwable t) {
                 Toast.makeText(getActivity(),"Oops! Something went wrong!",Toast.LENGTH_SHORT).show();
                 swipeRefreshLayout.setRefreshing(false);
-
             }
         });
 
