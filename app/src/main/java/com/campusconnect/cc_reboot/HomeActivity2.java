@@ -1,4 +1,6 @@
 package com.campusconnect.cc_reboot;
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -28,7 +30,9 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -51,6 +55,7 @@ import com.campusconnect.cc_reboot.adapter.TimetableAdapter;
 import com.campusconnect.cc_reboot.auxiliary.AlphaAdapter_reverse;
 import com.campusconnect.cc_reboot.auxiliary.AlphaInAnimationAdapter;
 import com.campusconnect.cc_reboot.auxiliary.FastBlur;
+import com.campusconnect.cc_reboot.auxiliary.NetworkDownDialog;
 import com.campusconnect.cc_reboot.auxiliary.ScaleAdapter_reverse;
 import com.campusconnect.cc_reboot.auxiliary.ScaleInAnimationAdapter;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentAbout;
@@ -520,6 +525,10 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
             case R.id.item_rate:
                 fragment = new FragmentRate();
                 frag_title = "Rate App";
+//                NetworkDownDialog networkdownDialog = new NetworkDownDialog((Activity) HomeActivity2.this,fragment_frame);
+//                Window window = networkdownDialog.getWindow();
+//                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+//                networkdownDialog.show();
                 at_home=false;
                 break;
             case R.id.item_feedback:
