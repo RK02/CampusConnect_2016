@@ -191,12 +191,6 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
 
 //Setting FAB container's background to be fully transparent by default
         home_title = (TextView) findViewById(R.id.tv_title);
-        if(getIntent().getExtras()!=null){
-            String type = getIntent().getExtras().getString("type");
-            String id = getIntent().getExtras().getString("id");
-            Log.i("sw32notif", type + "::" +id);
-        }
-
         fab_menu_container.getBackground().setAlpha(0);
         toolbar = (Toolbar) findViewById (R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -472,6 +466,7 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
     }
     //Function for fragment selection and commits
     public void displayView(int viewId){
+        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         switch (viewId) {
             case R.id.item_timetable:
                 at_home=true;
@@ -486,7 +481,9 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
             case R.id.item_bookmark:
                 Intent intent_profile = new Intent(HomeActivity2.this,ProfilePageActivity.class);
                 startActivity(intent_profile);
-                at_home=false;
+                fragment = null;
+                frag_title = "Home";
+                at_home=true;
                 break;
             case R.id.item_getting_points:
                 fragment = new FragmentPointsInfo();
@@ -544,7 +541,6 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
                 fabMenu.setVisibility(View.VISIBLE);
 
             home_title.setText(frag_title);
-            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             //fragmentTransaction.remove(getSupportFragmentManager().findFragmentById(R.id.frame));
             Fragment temp  = getSupportFragmentManager().findFragmentById(R.id.frame);
 
@@ -568,6 +564,15 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
                 }
             }
 
+        }
+        else
+        {
+            Fragment temp  = getSupportFragmentManager().findFragmentById(R.id.frame);
+            if(temp!=null)
+            {
+                fragmentTransaction.remove(temp).commit();
+                home_title.setText(frag_title);
+            }
         }
     }
     @Override
