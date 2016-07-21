@@ -161,7 +161,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnTou
 
                     }
                     data = new ArrayAdapter<>(EditProfileActivity.this, android.R.layout.simple_list_item_1, collegeNames);
-                    data.add("Unable to find college");
+                    data.add("Request new college");
 //                    collegeName.setAdapter(data);
                 }
             }

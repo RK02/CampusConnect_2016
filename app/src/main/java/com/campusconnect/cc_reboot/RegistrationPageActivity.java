@@ -72,10 +72,13 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
     @Bind(R.id.et_college_name)
     TextView collegeName;
 
+    @Bind(R.id.hsv_college_name)
+    HorizontalScrollView collegeName_container;
+
     @Bind(R.id.et_batch)
     EditText batchName;
 
-    @Bind(R.id.horizontal_scroll_view)
+    @Bind(R.id.hsv_college_name)
     HorizontalScrollView horizontalScrollView;
 
     @Bind(R.id.et_specialisation)
@@ -123,7 +126,7 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
                 .error(R.mipmap.ccnoti)
                 .fit()
                 .into(profilePicture);
-        collegeName.setHintTextColor(Color.BLACK);
+//        collegeName.setHintTextColor(Color.BLACK);
         Retrofit retrofit = new Retrofit.
                 Builder()
                 .baseUrl(FragmentCourses.BASE_URL)
@@ -145,9 +148,8 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
                         collegeIds.add(college.getCollegeId());
 
                     }
-                    data = new ArrayAdapter<>(RegistrationPageActivity.this,android.R.layout.simple_list_item_1,collegeNames);
-                    data.add("Unable to find college");
-//                    collegeName.setAdapter(data);
+                    data = new ArrayAdapter<String>(RegistrationPageActivity.this,android.R.layout.simple_list_item_1,collegeNames);
+                    data.add("Request new college");
 
                 }
             }
@@ -249,6 +251,8 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
                 InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
                 inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                 break;
+
+
         }
         return false;
     }
@@ -257,7 +261,7 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
     public void onClick(View view) {
 
         switch (view.getId()){
-            case R.id.horizontal_scroll_view:
+            case R.id.hsv_college_name:
             case R.id.et_college_name:
                 AlertDialog.Builder builderCollegeList = new AlertDialog.Builder(RegistrationPageActivity.this);
                 builderCollegeList.setTitle("Select your college");
@@ -276,8 +280,10 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
                             public void onClick(DialogInterface dialog, int which) {
                                 collegeNameString = data.getItem(which);
                                 pos_college_selection=which;
-                                if(pos_college_selection!=data.getCount()-1)
+                                if(pos_college_selection!=data.getCount()-1) {
                                     collegeName.setText(collegeNameString);
+                                    collegeName.setMinEms(0);
+                                }
                                 else{
                                     CollegeNotFoundDialog getdetailsDialog = new CollegeNotFoundDialog((Activity) RegistrationPageActivity.this);
                                     Window window = getdetailsDialog.getWindow();
