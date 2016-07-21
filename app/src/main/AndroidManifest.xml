@@ -189,7 +189,8 @@
         <activity
             android:name=".IntroActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".NoNetworkActivity"></activity>
+        <activity android:name=".NoNetworkActivity" />
+        <activity android:name=".NetworkNotFoundActivity"></activity>
     </application>
 
 </manifest>

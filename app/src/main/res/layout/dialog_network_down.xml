@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="0.8"
-        android:background="@drawable/flash" />
+        android:background="@color/blue_grey_700" />
 
     <ImageView
         android:id="@+id/iv_err"
@@ -18,7 +18,6 @@
         android:layout_height="wrap_content"
         android:scaleType="fitCenter"
         android:src="@drawable/err_network_down"
-        android:background="@android:color/transparent"
-        android:layout_centerInParent="true"/>
+        android:background="@android:color/transparent" />
 
 </RelativeLayout>

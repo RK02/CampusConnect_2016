@@ -132,24 +132,29 @@ public class FragmentCourses extends Fragment{
         cm = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         activeNetwork = cm.getActiveNetworkInfo();
         isConnected= activeNetwork != null && activeNetwork.isConnected();
-
         List<SubscribedCourseList> aa = SubscribedCourseList.listAll(SubscribedCourseList.class);
-        if(aa.size() < courseIds.size())
+        if(!isConnected)
         {
-            courseNames.clear();
-            courseIds.clear();
-            mCourseAdapter.clear();
-            for (SubscribedCourseList x : aa) {
-                courseNames.add(x.getCourseName());
-                courseIds.add(x.getCourseId());
-                mCourseAdapter.add(x);
-                x.save();
-                FirebaseMessaging.getInstance().subscribeToTopic(x.getCourseId());
-            }
+
+
         }
-        else if (aa.size() > courseIds.size()){
-            Log.i("sw32onresume",aa.size()+ " : " + courseIds.size());
-            refreshPage();
+        else {
+
+            if (aa.size() < courseIds.size()) {
+                courseNames.clear();
+                courseIds.clear();
+                mCourseAdapter.clear();
+                for (SubscribedCourseList x : aa) {
+                    courseNames.add(x.getCourseName());
+                    courseIds.add(x.getCourseId());
+                    mCourseAdapter.add(x);
+                    x.save();
+                    FirebaseMessaging.getInstance().subscribeToTopic(x.getCourseId());
+                }
+            } else if (aa.size() > courseIds.size()) {
+                Log.i("sw32onresume", aa.size() + " : " + courseIds.size());
+                refreshPage();
+            }
         }
 
 
@@ -172,9 +177,8 @@ public class FragmentCourses extends Fragment{
     }
 
     void refreshPage(){
-        cm = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        activeNetwork = cm.getActiveNetworkInfo();
-        isConnected= activeNetwork != null && activeNetwork.isConnected();
+
+        isConnected= activeNetwork != null && activeNetwork.isConnectedOrConnecting();
         Log.i("sw32","callonrefresh");
         if(isConnected){
             SubscribedCourseList.deleteAll(SubscribedCourseList.class);
@@ -190,7 +194,7 @@ public class FragmentCourses extends Fragment{
             }
         courseNames.clear();
         courseIds.clear();
-            timeTableViews = new HashMap<>();
+        timeTableViews = new HashMap<>();
         mCourseAdapter.clear();
         call= myApi.getFeed(getActivity().getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""));
         call.enqueue(new Callback<ModelFeed>() {

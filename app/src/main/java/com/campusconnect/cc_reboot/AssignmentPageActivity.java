@@ -498,12 +498,14 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
             @Override
             public void onResponse(Call<ModelAssignment> call, Response<ModelAssignment> response) {
                 ModelAssignment assignment = response.body();
+                if(assignment!=null){
                 assignment_name.setText(assignment.getAssignmentTitle());
                 uploader.setText(assignment.getUploaderName());
                 date_posted.setText(assignment.getLastUpdated().substring(0, 10));
                 dueDate.setText(assignment.getDueDate());
                 views.setText(assignment.getViews());
                 description.setText(assignment.getAssignmentDesc());
+                }
             }
 
             @Override

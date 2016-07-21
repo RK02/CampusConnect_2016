@@ -120,8 +120,8 @@ public class AddEventActivity extends AppCompatActivity {
         else
         {
             ArrayList<String> temp = FragmentCourses.courseNames;
-            Log.i("sw32",""+FragmentCourses.courseNames.size() + ":" + FragmentCourses.courseIds.size());
-            final ArrayAdapter<String> courseNames = new ArrayAdapter<>(AddEventActivity.this,android.R.layout.simple_list_item_1,FragmentCourses.courseNames);
+            //Log.i("sw32",""+FragmentCourses.courseNames.size() + ":" + FragmentCourses.courseIds.size());
+            final ArrayAdapter<String> courseNames = new ArrayAdapter<>(AddEventActivity.this,android.R.layout.simple_list_item_1,temp);
             //course.setAdapter(courseNames);
             final AlertDialog.Builder builderCourseList = new AlertDialog.Builder(AddEventActivity.this);
             builderCourseList.setTitle("Select your course");
@@ -161,6 +161,7 @@ public class AddEventActivity extends AppCompatActivity {
                 if(mode!=3)
                 {
                     Intent intent = new Intent(AddEventActivity.this,UploadPicturesActivity.class);
+                    if(uris==null){urls = new ArrayList<>();uris = new ArrayList<>();}
                     intent.putStringArrayListExtra("urls",urls);
                     intent.putStringArrayListExtra("uris",uris);
                     startActivityForResult(intent,1);
@@ -219,7 +220,14 @@ public class AddEventActivity extends AppCompatActivity {
                 submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int index = FragmentCourses.courseNames.indexOf(course.getText().toString());
+                    int index=-1;
+                    try {
+                        index = FragmentCourses.courseNames.indexOf(course.getText().toString());
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
                     if(index<0){
                         course.setError("Select valid course");
                         course.requestFocus();
@@ -346,11 +354,16 @@ public class AddEventActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             try {
-                ResponseBody res = response.body();
+                Response res = response;
+                ResponseBody responseBody=null;
+                       if(res!=null)
+                       {
+                          responseBody  = res.body();
+                       }
                 String jsonresponse=null;
-                        if(res!=null)
+                        if(responseBody!=null)
                         {
-                            jsonresponse = res.string();
+                            jsonresponse = responseBody.string();
                         }
                 else
                         {
@@ -359,11 +372,16 @@ public class AddEventActivity extends AppCompatActivity {
                             mNotifyManager.notify(1,mBuilder.build());
                         }
                 Log.i("sw32response",res + " :////");
+                if(jsonresponse!=null){
                 JSONObject jsonObject = new JSONObject(jsonresponse);
-                switch (type){
-                    case "notes":return jsonObject.getString("noteBookId");
-                    case "assignment":return jsonObject.getString("assignmentId");
-                    case "exam":return jsonObject.getString("examId");
+                switch (type) {
+                    case "notes":
+                        return jsonObject.getString("noteBookId");
+                    case "assignment":
+                        return jsonObject.getString("assignmentId");
+                    case "exam":
+                        return jsonObject.getString("examId");
+                }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -377,6 +395,7 @@ public class AddEventActivity extends AppCompatActivity {
             super.onPostExecute(s);
                 mBuilder.setContentText("Uploading completed! Check it out!");
                 mBuilder.setOngoing(false);
+                Log.i("sw32notificationlog",s + "   ;;;");
                 Intent intent;
                 switch (type){
                     case "notes":intent = new Intent(getApplicationContext(), NotePageActivity.class); intent.putExtra("noteBookId",s); break;

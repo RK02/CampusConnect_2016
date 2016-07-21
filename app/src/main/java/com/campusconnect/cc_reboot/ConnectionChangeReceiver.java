@@ -1,12 +1,10 @@
 package com.campusconnect.cc_reboot;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 
 
 /**
@@ -25,7 +23,9 @@ public class ConnectionChangeReceiver extends BroadcastReceiver
                 activeNetwork.isConnected();
         if (!isConnected)
         {
-
+            Intent networkNotFoundIntent = new Intent(context,NetworkNotFoundActivity.class);
+            networkNotFoundIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(networkNotFoundIntent);
         }
         else
         {

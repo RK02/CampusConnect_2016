@@ -166,6 +166,15 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
         setSupportActionBar(toolbar);
 //        homefrag = new FragmentHome();
         //Setting up Header View
+
+        course_timetable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(1);
+                finish();
+            }
+        });
+
         headerView = getLayoutInflater().inflate(R.layout.header, navigationView, false);
         navigationView.addHeaderView(headerView);
         ImageView view = (ImageView) headerView.findViewById(R.id.profile_image);
@@ -222,7 +231,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
         ImageView imageView = (ImageView) headerView.findViewById(R.id.profile_image);
 
         Picasso.with(CoursePageActivity.this)
-                .load(getSharedPreferences("CC",MODE_PRIVATE).getString("photourl","fakedesu")).error(R.mipmap.ic_launcher)
+                .load(getSharedPreferences("CC",MODE_PRIVATE).getString("photourl","fakedesu")).error(R.mipmap.ccnoti)
                 .memoryPolicy(MemoryPolicy.NO_CACHE)
                 .networkPolicy(NetworkPolicy.NO_CACHE)
                 .placeholder(R.mipmap.ccnoti)
@@ -309,6 +318,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
     @Override
     protected void onResume() {
         super.onResume();
+        course_details.setText("");
         course_info_container.setBackgroundColor(courseColor);
         course_adapter = new ViewPagerAdapter_course(getSupportFragmentManager(), Titles, Numboftabs, courseColor, this);
         Retrofit retrofit = new Retrofit.
@@ -334,7 +344,6 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                     course_title.setText(modelCoursePage.getCourseName());
                     courseTitle = course_title.getText().toString();
                     course_prof.setText(modelCoursePage.getProfessorName());
-                    course_details.setText(modelCoursePage.getDescription());
                     if(modelCoursePage.getIsAdmin().equals("1"))
                     {
                         editCourse.setVisibility(View.VISIBLE);
@@ -743,7 +752,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
             at_home = true;
         }else if(at_home==true && !drawerLayout.isDrawerOpen(GravityCompat.START)){
 //Implementation of "Click back again to exit"
-
+            setResult(2);
            super.onBackPressed();
         }
         else
