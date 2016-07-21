@@ -465,7 +465,6 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
         final Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.setType("text/plain");
-        sendIntent.setPackage("com.whatsapp");
         branchUniversalObject.generateShortUrl(this, linkProperties, new Branch.BranchLinkCreateListener() {
             @Override
             public void onLinkCreate(String url, BranchError error) {
@@ -474,6 +473,7 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
                     sendIntent.putExtra(Intent.EXTRA_TEXT,url);
                     progressDialog.dismiss();
                     startActivityForResult(sendIntent,1);
+                    startActivityForResult(Intent.createChooser(sendIntent, "Share with..."),1);
                 }
             }
         });

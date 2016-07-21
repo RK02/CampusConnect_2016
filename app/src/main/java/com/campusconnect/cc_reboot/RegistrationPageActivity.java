@@ -78,9 +78,6 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
     @Bind(R.id.et_batch)
     EditText batchName;
 
-    @Bind(R.id.hsv_college_name)
-    HorizontalScrollView horizontalScrollView;
-
     @Bind(R.id.et_specialisation)
     AutoCompleteTextView branchName;
 
@@ -192,7 +189,7 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
 
         scrollViewReg.setOnTouchListener(this);
         collegeName.setOnClickListener(this);
-        horizontalScrollView.setOnClickListener(this);
+        collegeName_container.setOnClickListener(this);
     }
     public void SignUp()
     {

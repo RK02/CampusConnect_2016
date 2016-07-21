@@ -117,20 +117,13 @@ public class CourseListAdapter extends
         courseListViewHolder.course_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-                activeNetwork =  cm.getActiveNetworkInfo();
-                isConnected= activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-                if(isConnected) {
+
                     Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
                     String id = mCourses.get(i).getCourseId();
                     intent_temp.putExtra("courseId", id);
                     intent_temp.putExtra("courseColor", color);
                     context.startActivity(intent_temp);
-                }
-                else
-                {
-                    Toast.makeText(context,"Check your connection",Toast.LENGTH_SHORT).show();
-                }
+
             }
         });
 
@@ -144,59 +137,34 @@ public class CourseListAdapter extends
         courseListViewHolder.notes_count_container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-                activeNetwork =  cm.getActiveNetworkInfo();
-                isConnected= activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-                if(isConnected) {
                     Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
                     intent_temp.putExtra("TAB", 0);
                     String id = mCourses.get(i).getCourseId();
                     intent_temp.putExtra("courseId", id);
                     intent_temp.putExtra("courseColor", color);
                     context.startActivity(intent_temp);
-                } else
-                {
-                    Toast.makeText(context,"Check your connection",Toast.LENGTH_SHORT).show();
-                }
             }
         });
         courseListViewHolder.assignments_count_container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-                activeNetwork =  cm.getActiveNetworkInfo();
-                isConnected= activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-                if(isConnected) {
                     Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
                     intent_temp.putExtra("TAB", 1);
                     String id = mCourses.get(i).getCourseId();
                     intent_temp.putExtra("courseId", id);
                     intent_temp.putExtra("courseColor", color);
                     context.startActivity(intent_temp);
-                } else
-                {
-                    Toast.makeText(context,"Check your connection",Toast.LENGTH_SHORT).show();
-                }
             }
         });
         courseListViewHolder.exams_count_container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-                activeNetwork =  cm.getActiveNetworkInfo();
-                isConnected= activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-                if(isConnected) {
                     Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
                     intent_temp.putExtra("TAB", 2);
                     String id = mCourses.get(i).getCourseId();
                     intent_temp.putExtra("courseId", id);
                     intent_temp.putExtra("courseColor", color);
                     context.startActivity(intent_temp);
-                } else
-                {
-                    Toast.makeText(context,"Check your connection",Toast.LENGTH_SHORT).show();
-                }
-
             }
         });
 
