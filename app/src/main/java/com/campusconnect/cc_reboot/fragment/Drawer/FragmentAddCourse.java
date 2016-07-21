@@ -154,8 +154,9 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
             public void onResponse(Call<ModelBranchList> call, Response<ModelBranchList> response) {
                 final ModelBranchList modelBranchList = response.body();
                 if (modelBranchList != null) {
-                    courseBranch.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, modelBranchList.getBranchList()));
-                    branches.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    if(getActivity()!=null) {
+                        courseBranch.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, modelBranchList.getBranchList()));
+                    }branches.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                             if (isChecked) {
@@ -220,7 +221,8 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
                                 }
                                 if(hourOfDay <10) {
                                     startTime.setText("0"+startTime.getText().toString());
-                                    endTime.setText("0" + endTime.getText().toString());
+                                    if(hourOfDay==9) endTime.setText(endTime.getText().toString());
+                                    else endTime.setText("0" + endTime.getText().toString());
                                 }
 
 

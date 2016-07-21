@@ -1,25 +1,37 @@
 package com.campusconnect.cc_reboot;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.v4.app.NotificationCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
+import com.campusconnect.cc_reboot.fragment.NotesSliderPageFragment;
 import com.google.firebase.analytics.FirebaseAnalytics;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,6 +50,8 @@ import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 
 public class AddEventActivity extends AppCompatActivity {
@@ -64,6 +78,7 @@ public class AddEventActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_event);
         final int mode = getIntent().getIntExtra("Mode",3);
         course = (AutoCompleteTextView) findViewById(R.id.course);
+        course.setHint("Pick Course");
         date = (EditText) findViewById(R.id.noteDate);
         dueDate = (EditText) findViewById(R.id.noteDueDate);
         description = (EditText) findViewById(R.id.noteDescription);
@@ -98,6 +113,7 @@ public class AddEventActivity extends AppCompatActivity {
             courseId = getIntent().getStringExtra("courseId");
             if(!courseName.equals("")) {
                 course.setText(courseName + "");
+                course.setFocusable(false);
             }
 
         }
@@ -105,8 +121,34 @@ public class AddEventActivity extends AppCompatActivity {
         {
             ArrayList<String> temp = FragmentCourses.courseNames;
             Log.i("sw32",""+FragmentCourses.courseNames.size() + ":" + FragmentCourses.courseIds.size());
-            ArrayAdapter<String> courseNames = new ArrayAdapter<>(AddEventActivity.this,android.R.layout.simple_list_item_1,FragmentCourses.courseNames);
-            course.setAdapter(courseNames);
+            final ArrayAdapter<String> courseNames = new ArrayAdapter<>(AddEventActivity.this,android.R.layout.simple_list_item_1,FragmentCourses.courseNames);
+            //course.setAdapter(courseNames);
+            final AlertDialog.Builder builderCourseList = new AlertDialog.Builder(AddEventActivity.this);
+            builderCourseList.setTitle("Select your course");
+            builderCourseList.setNegativeButton(
+                    "cancel",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            builderCourseList.setAdapter(
+                    courseNames,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String courseName = courseNames.getItem(which);
+                            course.setText(courseName);
+                        }
+                    });
+            course.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    builderCourseList.show();
+                }
+            });
+
         }
         progressDialog = new ProgressDialog(this);
         name = (EditText) findViewById(R.id.noteName);
@@ -143,8 +185,15 @@ public class AddEventActivity extends AppCompatActivity {
                 submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    courseId = FragmentCourses.courseIds.get(FragmentCourses.courseNames.indexOf(course.getText().toString()));
-                    new doStuff().execute("exam",description.getText().toString(),date.getText().toString(),dueDate.getText().toString());
+                    int index = FragmentCourses.courseNames.indexOf(course.getText().toString());
+                    if(index<0){
+                        course.setError("Select valid course");
+                        course.requestFocus();
+                        return;
+                    }
+                    else {courseId = FragmentCourses.courseIds.get(index);
+                        new doStuff().execute("exam",description.getText().toString(),date.getText().toString(),dueDate.getText().toString());
+                    }
                 }
             });break;
             case 2: name.setText("Assignment");
@@ -152,8 +201,15 @@ public class AddEventActivity extends AppCompatActivity {
                 submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    courseId = FragmentCourses.courseIds.get(FragmentCourses.courseNames.indexOf(course.getText().toString()));
-                    new doStuff().execute("assignment",description.getText().toString(),date.getText().toString(),dueDate.getText().toString());
+                    int index = FragmentCourses.courseNames.indexOf(course.getText().toString());
+                    if(index<0){
+                        course.setError("Select valid course");
+                        course.requestFocus();
+                        return;
+                    }
+                    else {courseId = FragmentCourses.courseIds.get(index);
+                        new doStuff().execute("assignment",description.getText().toString(),date.getText().toString(),dueDate.getText().toString());
+                    }
                 }
             });break;
             case 3:
@@ -163,8 +219,17 @@ public class AddEventActivity extends AppCompatActivity {
                 submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    courseId = FragmentCourses.courseIds.get(FragmentCourses.courseNames.indexOf(course.getText().toString()));
-                    new doStuff().execute("notes",description.getText().toString(),date.getText().toString(),"");
+                    int index = FragmentCourses.courseNames.indexOf(course.getText().toString());
+                    if(index<0){
+                        course.setError("Select valid course");
+                        course.requestFocus();
+                        return;
+                    }
+                    else {
+                        courseId = FragmentCourses.courseIds.get(index);
+                        new doStuff().execute("notes",description.getText().toString(),date.getText().toString(),"");
+                    }
+
                 }
             });break;
         }
@@ -190,6 +255,8 @@ public class AddEventActivity extends AppCompatActivity {
     class doStuff extends AsyncTask<String, String, String> {
 
         List<String> urls;
+        String type;
+        String profileId;
 
         @Override
         protected void onPreExecute() {
@@ -201,6 +268,7 @@ public class AddEventActivity extends AppCompatActivity {
                 if (dueDate.getText().toString().equals("")) {
                 dueDate.setError("Enter due date");dueDate.requestFocus();return;}
                 }
+            profileId = getSharedPreferences("CC",MODE_PRIVATE).getString("profileId","");
             urls =  getIntent().getStringArrayListExtra("urls");
             Intent intent = new Intent();
             intent.putExtra("courseId",courseId);
@@ -210,6 +278,7 @@ public class AddEventActivity extends AppCompatActivity {
             mBuilder.setProgress(0,0,true);
             mBuilder.setSmallIcon(R.mipmap.ccnoti);
             mBuilder.setOngoing(true);
+            mBuilder.setContentIntent(null);
             mNotifyManager.notify(1,mBuilder.build());
         }
 
@@ -219,11 +288,12 @@ public class AddEventActivity extends AppCompatActivity {
             String path;
             OkHttpClient client = new OkHttpClient();
             RequestBody requestBody;
+            type = params[0];
             MultipartBody.Builder body = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
-                    .addFormDataPart("profileId", getSharedPreferences("CC",MODE_PRIVATE).getString("profileId",""))
+                    .addFormDataPart("profileId",profileId )
                     .addFormDataPart("courseId",courseId)
-                    .addFormDataPart("type",params[0])
+                    .addFormDataPart("type",type)
                     .addFormDataPart("desc",params[1]+"")
                     .addFormDataPart("title","Test Title")
                     .addFormDataPart("date",params[2]);
@@ -257,19 +327,46 @@ public class AddEventActivity extends AppCompatActivity {
                     int size = original.getRowBytes() * original.getHeight();
                     Log.i("sw32size", size + "");
                     if (size > 10000000)
-                        original.compress(Bitmap.CompressFormat.JPEG, 20, out);
+                        original.compress(Bitmap.CompressFormat.JPEG, 40, out);
                     else
-                        original.compress(Bitmap.CompressFormat.JPEG, 50, out);
+                        original.compress(Bitmap.CompressFormat.JPEG, 80, out);
                     body.addFormDataPart("file", "test.jpg", RequestBody.create(MediaType.parse("image/*"), file));
                 }
             }
             requestBody = body.build();
             Request request = new Request.Builder()
-                    .url("https://uploadnotes-2016.appspot.com/img")
+                    //.url("https://uploadnotes-2016.appspot.com/img")
+                    .url("http://campusconnect.pythonanywhere.com/android")
                     .post(requestBody)
                     .build();
+            Response response = null;
             try {
-                client.newCall(request).execute();
+                response = client.newCall(request).execute();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                ResponseBody res = response.body();
+                String jsonresponse=null;
+                        if(res!=null)
+                        {
+                            jsonresponse = res.string();
+                        }
+                else
+                        {
+                            mBuilder.setContentText("Upload failed!");
+                            mBuilder.setProgress(0,0,false);
+                            mNotifyManager.notify(1,mBuilder.build());
+                        }
+                Log.i("sw32response",res + " :////");
+                JSONObject jsonObject = new JSONObject(jsonresponse);
+                switch (type){
+                    case "notes":return jsonObject.getString("noteBookId");
+                    case "assignment":return jsonObject.getString("assignmentId");
+                    case "exam":return jsonObject.getString("examId");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -278,10 +375,22 @@ public class AddEventActivity extends AppCompatActivity {
             @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-                mBuilder.setProgress(100,100,false);
-                mBuilder.setContentText("Operation completed!");
+                mBuilder.setContentText("Uploading completed! Check it out!");
                 mBuilder.setOngoing(false);
+                Intent intent;
+                switch (type){
+                    case "notes":intent = new Intent(getApplicationContext(), NotePageActivity.class); intent.putExtra("noteBookId",s); break;
+                    case "assignment":intent = new Intent(getApplicationContext(), AssignmentPageActivity.class); intent.putExtra("assignmentId",s);break;
+                    case "exam": intent = new Intent(getApplicationContext(), ExamPageActivity.class); intent.putExtra("testId",s);break;
+                    default: intent = new Intent(getApplicationContext(), HomeActivity2.class);break;
+                }
+                PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0 /* Request code */, intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
+                mBuilder.setContentIntent(pendingIntent);
+                mBuilder.setAutoCancel(true);
+                mBuilder.setProgress(0,0,false);
             mNotifyManager.notify(1,mBuilder.build());
+                Toast.makeText(getApplicationContext(),"Your upload has completed",Toast.LENGTH_SHORT).show();
         }
     }
 }

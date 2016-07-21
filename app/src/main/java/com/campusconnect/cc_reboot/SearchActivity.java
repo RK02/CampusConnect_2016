@@ -145,7 +145,7 @@ public class SearchActivity extends AppCompatActivity {
                         case KeyEvent.KEYCODE_ENTER:
                             if (searchBar.getText().toString().equals("")) {searchBar.setError("Enter search text");searchBar.requestFocus();return true;}
                             searchapi(searchBar.getText().toString());
-                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                             imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
                             return true;
                         default:
@@ -159,7 +159,7 @@ public class SearchActivity extends AppCompatActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
                 if(!searchBar.hasFocus()) {
                     searchBar.requestFocus();

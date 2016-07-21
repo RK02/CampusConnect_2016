@@ -37,6 +37,7 @@ import android.widget.ToggleButton;
 
 import com.campusconnect.cc_reboot.adapter.CourseListAdapter;
 import com.campusconnect.cc_reboot.adapter.StudentsListAdapter;
+import com.campusconnect.cc_reboot.adapter.TimetableAdapter;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentAbout;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentAddCourse;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentFeedback;
@@ -60,6 +61,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -215,6 +219,16 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
         //Listener to define layouts for FAB expanded and collapsed modes
         fabMenu.setOnFloatingActionsMenuUpdateListener(this);
         //OnClickListener Header View
+        ImageView imageView = (ImageView) headerView.findViewById(R.id.profile_image);
+
+        Picasso.with(CoursePageActivity.this)
+                .load(getSharedPreferences("CC",MODE_PRIVATE).getString("photourl","fakedesu")).error(R.mipmap.ic_launcher)
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
+                .placeholder(R.mipmap.ccnoti)
+                .into(imageView);
+        ((TextView)headerView.findViewById(R.id.tv_username)).setText(getSharedPreferences("CC",MODE_PRIVATE).getString("profileName","PLACEHOLDER"));
+        ((TextView)headerView.findViewById(R.id.tv_points)).setText(FragmentCourses.profilePoints);
         headerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -224,7 +238,6 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
         });
 
         //Drawer ends
-
         //Setting FAB container's background to be fully transparent by default
         fab_menu_container.getBackground().setAlpha(0);
 
@@ -409,11 +422,12 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
 
                     new unsub().execute();
                     FirebaseMessaging.getInstance().unsubscribeFromTopic(courseId);
-//                    for(String viewId : FragmentCourses.timeTableViews.get(courseId)){
-//                        LinearLayout a = ((LinearLayout)FragmentTimetable.v.findViewById(Integer.parseInt(viewId)));
-//                                a.removeAllViews();
-//                        a.setBackgroundColor(Color.rgb(223,223,223));
-//                    }
+                    for (String viewId : FragmentCourses.timeTableViews.get(courseId)) {
+                        LinearLayout a = ((LinearLayout) TimetableAdapter.itemView.findViewById(Integer.parseInt(viewId)));
+                        a.removeAllViews();
+                        a.setBackgroundColor(Color.rgb(223, 223, 223));
+                    }
+                    FragmentCourses.timeTableViews.remove(courseId);
                     SubscribedCourseList.find(SubscribedCourseList.class,"course_id = ?",courseId).get(0).delete();
                     finish();
                 }
@@ -563,7 +577,8 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                     .build();
 
             MyApi myApi = retrofit.create(MyApi.class);
-            MyApi.getStudentListRequest body = new MyApi.getStudentListRequest(getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""),courseId);
+            final String profileId=getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId","");
+            MyApi.getStudentListRequest body = new MyApi.getStudentListRequest(profileId,courseId);
             Call<ModelStudentList> call = myApi.getStudentList(body);
             call.enqueue(new Callback<ModelStudentList>() {
                 @Override
@@ -573,7 +588,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                         Boolean isAdmin=false;
                         if(studentList.getIsAdmin().equals("1")) isAdmin = true;
                         studentList.getStudentList();
-                        mStudentsAdapter = new StudentsListAdapter(CoursePageActivity.this,studentList.getStudentList(),isAdmin,courseId);
+                        mStudentsAdapter = new StudentsListAdapter(CoursePageActivity.this,studentList.getStudentList(),isAdmin,courseId,profileId);
                         students_list.setAdapter(mStudentsAdapter);
                     }
                 }
@@ -597,11 +612,13 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
 
     //Function for fragment selection and commits
     public void displayView(int viewId){
+        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         switch (viewId) {
             case R.id.item_timetable:
                 at_home=true;
-                Intent intent_home = new Intent(CoursePageActivity.this,HomeActivity2.class);
-                startActivity(intent_home);
+//                Intent intent_home = new Intent(CoursePageActivity.this,HomeActivity2.class);
+//                startActivity(intent_home);
+                finish();
                 break;
             case R.id.item_add_course:
                 fragment = new FragmentAddCourse();
@@ -611,7 +628,9 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
             case R.id.item_bookmark:
                 Intent intent_profile = new Intent(CoursePageActivity.this,ProfilePageActivity.class);
                 startActivity(intent_profile);
-                at_home=false;
+                fragment = null;
+                frag_title = "Course";
+                at_home=true;
                 break;
             case R.id.item_getting_points:
                 fragment = new FragmentPointsInfo();
@@ -636,6 +655,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                 FirebaseAuth.getInstance().signOut();
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.item_t_and_c:
                 fragment = new FragmentTerms();
@@ -668,7 +688,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                 fabMenu.setVisibility(View.VISIBLE);
 
             home_title.setText(frag_title);
-            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            //android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             //fragmentTransaction.remove(getSupportFragmentManager().findFragmentById(R.id.frame));
             Fragment temp  = getSupportFragmentManager().findFragmentById(R.id.frame);
 
@@ -679,19 +699,28 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                 }
             }
             else
-            {
-                if(!at_home) {
+            { if(temp!=null) {
+                if (!at_home) {
                     fragmentTransaction.remove(temp);
                     fragmentTransaction.add(R.id.frame, fragment);
                     fragmentTransaction.commit();
-                }
-                else
-                {
+                } else {
                     fragmentTransaction.remove(temp);
                     fragmentTransaction.commit();
                 }
             }
+            }
 
+        }
+        else
+        {
+            Fragment temp  = getSupportFragmentManager().findFragmentById(R.id.frame);
+            if(temp!=null)
+            {
+                fragmentTransaction.remove(temp).commit();
+                home_title.setText(frag_title);
+
+            }
         }
     }
     @Override

@@ -104,7 +104,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edittext_rounded"
-                    android:scrollbars="none">
+                    android:scrollbars="none"
+                    android:fillViewport="false"
+                    >
                     <TextView
                         android:id="@+id/et_college_name"
                         android:layout_width="wrap_content"

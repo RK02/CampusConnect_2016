@@ -42,6 +42,9 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.w3c.dom.Text;
@@ -128,7 +131,16 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
         //Setting up Header View
         headerView = getLayoutInflater().inflate(R.layout.header, navigationView, false);
         navigationView.addHeaderView(headerView);
-        ImageView view = (ImageView) headerView.findViewById(R.id.profile_image);
+        ImageView imageView = (ImageView) headerView.findViewById(R.id.profile_image);
+
+        Picasso.with(AssignmentPageActivity.this)
+                .load(getSharedPreferences("CC",MODE_PRIVATE).getString("photourl","fakedesu")).error(R.mipmap.ic_launcher)
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
+                .placeholder(R.mipmap.ccnoti)
+                .into(imageView);
+        ((TextView)headerView.findViewById(R.id.tv_username)).setText(getSharedPreferences("CC",MODE_PRIVATE).getString("profileName","PLACEHOLDER"));
+        ((TextView)headerView.findViewById(R.id.tv_points)).setText(FragmentCourses.profilePoints);
 
         //Unchecking all the drawer menu items before going back to home in case the app crashes
         int size = navigationView.getMenu().size();
@@ -298,11 +310,14 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
 
     //Function for fragment selection and commits
     public void displayView(int viewId) {
+        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
         switch (viewId) {
             case R.id.item_timetable:
                 at_home = true;
                 Intent intent_home = new Intent(AssignmentPageActivity.this, HomeActivity2.class);
                 startActivity(intent_home);
+                finish();
                 break;
             case R.id.item_add_course:
                 fragment = new FragmentAddCourse();
@@ -312,7 +327,9 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
             case R.id.item_bookmark:
                 Intent intent_profile = new Intent(AssignmentPageActivity.this, ProfilePageActivity.class);
                 startActivity(intent_profile);
-                at_home = false;
+                fragment=null;
+                frag_title = "Assignment";
+                at_home = true;
                 break;
             case R.id.item_getting_points:
                 fragment = new FragmentPointsInfo();
@@ -337,6 +354,7 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
                 FirebaseAuth.getInstance().signOut();
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.item_t_and_c:
                 fragment = new FragmentTerms();
@@ -364,7 +382,6 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
         }
         if (fragment != null) {
             home_title.setText(frag_title);
-            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             //fragmentTransaction.remove(getSupportFragmentManager().findFragmentById(R.id.frame));
             Fragment temp = getSupportFragmentManager().findFragmentById(R.id.frame);
 
@@ -382,6 +399,15 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
                     fragmentTransaction.remove(temp);
                     fragmentTransaction.commit();
                 }
+            }
+
+        }
+        else{
+            Fragment temp = getSupportFragmentManager().findFragmentById(R.id.frame);
+            if(temp!=null)
+            {
+                fragmentTransaction.remove(temp).commit();
+                home_title.setText(frag_title);
             }
 
         }
