@@ -144,7 +144,7 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
 
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("CC", Context.MODE_PRIVATE);
-        String branchName = sharedPreferences.getString("branchName", "");
+        final String branchName = sharedPreferences.getString("branchName", "");
         String batchName = sharedPreferences.getString("batchName", "");
         String sectionName = sharedPreferences.getString("sectionName", "");
         profileId = sharedPreferences.getString("profileId", "");
@@ -158,14 +158,15 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
                     create.setOnClickListener(FragmentAddCourse.this);
                     create.setEnabled(true);
                     Log.i("sw32branches","done");
+                    branchNames = modelBranchList.getBranchList();
                     if(getActivity()!=null) {
-                        courseBranch.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, modelBranchList.getBranchList()));
+                        courseBranch.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, branchNames));
                     }branches.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                             if (isChecked) {
                                 String temp = "";
-                                branchNames = modelBranchList.getBranchList();
+
                                 for (String branch : branchNames) {
                                     temp += branch + ",";
                                 }
