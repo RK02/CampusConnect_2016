@@ -92,6 +92,8 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
     @Bind(R.id.tv_due_date)
     TextView dueDate;
 
+    @Bind(R.id.ib_back)
+    ImageButton back_button;
     @Bind(R.id.ib_edit_note)
     ImageButton edit_note_button;
     @Bind(R.id.ib_fullscreen)
@@ -232,6 +234,7 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
         });
 
         //OnClickListeners
+        back_button.setOnClickListener(this);
         edit_note_button.setOnClickListener(this);
         fullscreen_button.setOnClickListener(this);
         share_note_button.setOnClickListener(this);
@@ -259,6 +262,10 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
     public void onClick(View view) {
 
         switch (view.getId()) {
+
+            case R.id.ib_back:
+                finish();
+                break;
 
             case R.id.ib_edit_note:
                 //intent = new Intent(getApplicationContext(), EditNoteActivity.class);

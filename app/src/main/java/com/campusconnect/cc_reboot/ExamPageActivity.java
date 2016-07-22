@@ -89,6 +89,9 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
     @Bind(R.id.tv_due_date)
     TextView due;
 
+    @Bind(R.id.ib_back)
+    ImageButton back_button;
+
     @Bind(R.id.ib_edit)
     ImageButton edit_note_button;
 
@@ -200,6 +203,7 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
 
 
         //OnClickListeners
+        back_button.setOnClickListener(this);
         edit_note_button.setOnClickListener(this);
         share_note_button.setOnClickListener(this);
         exam_last_page.setOnClickListener(this);
@@ -227,6 +231,10 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
 
         switch (view.getId()){
+
+            case R.id.ib_back:
+                finish();
+                break;
 
             case R.id.ib_edit_note:
 //                intent = new Intent(getApplicationContext(), EditNoteActivity.class);

@@ -1,5 +1,7 @@
 package com.campusconnect.cc_reboot.fragment.CoursePage;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.campusconnect.cc_reboot.CoursePageActivity;
 import com.campusconnect.cc_reboot.POJO.ModelTest;
@@ -32,6 +35,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class FragmentExam extends Fragment {
 
+    ImageView no_exam;
     RecyclerView exams_list;
     ExamsListAdapter mExamsAdapter;
     LinearLayoutManager mLayoutManager;
@@ -44,8 +48,14 @@ public class FragmentExam extends Fragment {
 
         fragArgs = getArguments();
 
+        no_exam = (ImageView) v.findViewById (R.id.iv_no_exam);
         exams_list = (RecyclerView) v.findViewById (R.id.rv_exams);
         mModelTests = new ArrayList<>();
+
+        BitmapFactory.Options bm_opts = new BitmapFactory.Options();
+        bm_opts.inScaled = false;
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.no_value_exams, bm_opts);
+        no_exam.setImageBitmap(bitmap);
 
         //Setting the recyclerView
         mLayoutManager = new LinearLayoutManager(getActivity());

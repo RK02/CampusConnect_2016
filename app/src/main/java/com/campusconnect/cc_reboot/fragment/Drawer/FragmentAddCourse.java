@@ -140,10 +140,11 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
                 .build();
         MyApi myApi = retrofit.create(MyApi.class);
         Call<ModelBranchList> call;
+        create.setEnabled(false);
 
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("CC", Context.MODE_PRIVATE);
-        String branchName = sharedPreferences.getString("branchName", "");
+        final String branchName = sharedPreferences.getString("branchName", "");
         String batchName = sharedPreferences.getString("batchName", "");
         String sectionName = sharedPreferences.getString("sectionName", "");
         profileId = sharedPreferences.getString("profileId", "");
@@ -154,17 +155,22 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
             public void onResponse(Call<ModelBranchList> call, Response<ModelBranchList> response) {
                 final ModelBranchList modelBranchList = response.body();
                 if (modelBranchList != null) {
+                    create.setOnClickListener(FragmentAddCourse.this);
+                    create.setEnabled(true);
+                    Log.i("sw32branches","done");
+                    branchNames = modelBranchList.getBranchList();
                     if(getActivity()!=null) {
-                        courseBranch.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, modelBranchList.getBranchList()));
+                        courseBranch.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, branchNames));
                     }branches.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                             if (isChecked) {
                                 String temp = "";
-                                branchNames = modelBranchList.getBranchList();
+
                                 for (String branch : branchNames) {
                                     temp += branch + ",";
                                 }
+
                                 temp = temp.substring(0, temp.lastIndexOf(","));
                                 courseBranch.setText(temp);
                             } else {
@@ -276,7 +282,7 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
 
         courseColorPicker.setOnClickListener(this);
         cancel.setOnClickListener(this);
-        create.setOnClickListener(this);
+
 
         return v;
     }
@@ -298,7 +304,6 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
         if(courseSem.getText().toString().equals("")){courseSem.setError("Enter Semester");courseSem.requestFocus();return;}
         if(courseBatch.getText().toString().equals("")){courseBatch.setError("Enter Batch");courseBatch.requestFocus();return;}
         if(courseBranch.getText().toString().equals("")){courseBranch.setError("Enter Branch");courseBranch.requestFocus();return;}
-        if(days_selected.size()==0){Toast.makeText(getActivity(),"Select appropriate times for this course",Toast.LENGTH_SHORT).show();return;}
         String[] selected = courseBranch.getText().toString().split(",");
         for(String branch : selected) {
             if (branchNames.indexOf(branch) < 0) {

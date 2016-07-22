@@ -64,6 +64,11 @@
         android:checkableBehavior="single">
 
         <item
+            android:id="@+id/item_faq"
+            android:checked="false"
+            android:title="FAQ's" />
+
+        <item
             android:id="@+id/item_t_and_c"
             android:checked="false"
             android:title="Terms and Conditions" />

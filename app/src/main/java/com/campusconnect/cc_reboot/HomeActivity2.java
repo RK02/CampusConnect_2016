@@ -1,23 +1,15 @@
 package com.campusconnect.cc_reboot;
-import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -31,9 +23,7 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -43,7 +33,6 @@ import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,17 +41,15 @@ import com.campusconnect.cc_reboot.POJO.ModelNotification;
 import com.campusconnect.cc_reboot.POJO.ModelNotificationList;
 import com.campusconnect.cc_reboot.POJO.MyApi;
 import com.campusconnect.cc_reboot.adapter.NotificationAdapter;
-import com.campusconnect.cc_reboot.adapter.TimetableAdapter;
 import com.campusconnect.cc_reboot.auxiliary.AlphaAdapter_reverse;
 import com.campusconnect.cc_reboot.auxiliary.AlphaInAnimationAdapter;
 import com.campusconnect.cc_reboot.auxiliary.FastBlur;
-import com.campusconnect.cc_reboot.auxiliary.NetworkDownDialog;
 import com.campusconnect.cc_reboot.auxiliary.ScaleAdapter_reverse;
 import com.campusconnect.cc_reboot.auxiliary.ScaleInAnimationAdapter;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentAbout;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentAddCourse;
+import com.campusconnect.cc_reboot.fragment.Drawer.FragmentFAQ;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentFeedback;
-import com.campusconnect.cc_reboot.fragment.Drawer.FragmentGifts;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentHome;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentInvite;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentPointsInfo;
@@ -81,7 +68,6 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -154,7 +140,6 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_true);
         ButterKnife.bind(this);
-
 //Setting FAB container's background to be fully transparent by default
         home_title = (TextView) findViewById(R.id.tv_title);
         fab_menu_container.getBackground().setAlpha(0);
@@ -227,6 +212,7 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
 
         //Setting the actionbarToggle to drawer layout
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
+        //calling sync state is necessary or else the hamburger icon won't show up
         //calling sync state is necessary or else the hamburger icon won't show up
         actionBarDrawerToggle.syncState();
         //Listener to define layouts for FAB expanded and collapsed modes
@@ -513,6 +499,11 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 getSharedPreferences("CC",MODE_PRIVATE).edit().clear().commit();
                 startActivity(intent);
+                break;
+            case R.id.item_faq:
+                fragment = new FragmentFAQ();
+                frag_title = "FAQ's";
+                at_home=false;
                 break;
             case R.id.item_t_and_c:
                 fragment = new FragmentTerms();

@@ -2,6 +2,8 @@ package com.campusconnect.cc_reboot.fragment.Home;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -16,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +30,7 @@ import com.campusconnect.cc_reboot.POJO.*;
 import com.campusconnect.cc_reboot.R;
 import com.campusconnect.cc_reboot.adapter.CourseListAdapter;
 import com.campusconnect.cc_reboot.adapter.TimetableAdapter;
+import com.google.android.gms.plus.model.people.Person;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -34,6 +38,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import butterknife.Bind;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -46,6 +51,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class FragmentCourses extends Fragment{
 
+    ImageView no_course_view;
     RecyclerView course_list;
     Boolean resumeHasRun = false;
     CourseListAdapter mCourseAdapter;
@@ -78,6 +84,7 @@ public class FragmentCourses extends Fragment{
     public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_courses, container, false);
         myApi = retrofit.create(MyApi.class);
+
         swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swiperefresh);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -87,7 +94,14 @@ public class FragmentCourses extends Fragment{
         });
         courseNames = new ArrayList<>();
         courseIds = new ArrayList<>();
+        no_course_view = (ImageView) v.findViewById(R.id.iv_no_course);
         course_list = (RecyclerView) v.findViewById (R.id.rv_courses);
+
+        BitmapFactory.Options bm_opts = new BitmapFactory.Options();
+        bm_opts.inScaled = false;
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.no_value_courses, bm_opts);
+        no_course_view.setImageBitmap(bitmap);
+
         ArrayList<SubscribedCourseList> courses = new ArrayList<>();
         timeTableViews = new HashMap<>();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
