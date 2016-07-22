@@ -25,12 +25,14 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -40,6 +42,8 @@ import butterknife.ButterKnife;
 
 import android.util.Log;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -139,6 +143,7 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
     @Bind(R.id.b_rate)
     Button rate_note_button;
 
+    ReportDetailsDialog  getReportsDetailsDialog;
     String noteBookId;
     int courseColor;
     Retrofit retrofit;
@@ -388,6 +393,16 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
             case R.id.ib_edit_note:
 //                intent = new Intent(getApplicationContext(), EditNoteActivity.class);
 //                startActivity(intent);
+                getReportsDetailsDialog = new ReportDetailsDialog(this);
+                getReportsDetailsDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                Window getReportsDetailsDialogWindow =  getReportsDetailsDialog.getWindow();
+                getReportsDetailsDialogWindow.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                getReportsDetailsDialog.show();
+
+
+
+
+                /**
                 Retrofit retrofit = new Retrofit.
                         Builder()
                         .baseUrl(MyApi.BASE_URL)
@@ -407,6 +422,7 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
 
                     }
                 });
+                 */
                 break;
 
             case R.id.ib_fullscreen:
@@ -729,5 +745,122 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
         else
             drawerLayout.closeDrawers();
     }
+
+   public class ReportDetailsDialog extends  Dialog implements View.OnClickListener {
+
+       public Activity c;
+       public Dialog d;
+           @Bind(R.id.btn_submit)
+            Button btn_submit;
+            @Bind(R.id.radio_group)
+            RadioGroup radioGroup;
+
+            @Bind(R.id.btn_radio_inapproriate)
+            RadioButton btn_radio_inapproriate;
+
+       @Bind(R.id.btn_radio_falseContent)
+       RadioButton btn_radio_falseContent;
+
+       @Bind(R.id.btn_radio_other)
+       RadioButton btn_radio_other;
+
+       @Bind(R.id.btn_radio_copyrighted)
+       RadioButton btn_radio_copyrighted;
+
+       @Bind(R.id.et_feedback)
+       EditText et_feedback;
+       public ReportDetailsDialog(Activity a) {
+           super(a);
+           // TODO Auto-generated constructor stub
+           this.c = a;
+           this.c = a;
+       }
+
+       @Override
+       protected void onCreate(Bundle savedInstanceState) {
+           super.onCreate(savedInstanceState);
+           setContentView(R.layout.dialog_get_reports);
+           ButterKnife.bind(this);
+
+        //   et_feedback.setEnabled(false);
+          // et_feedback.setInputType(InputType.TYPE_NULL);
+           //et_feedback.setFocusable(false);
+
+
+           radioGroup.clearCheck();
+           //attach check handler
+           btn_submit.setOnClickListener(this);
+
+           radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+               @Override
+               public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                   switch (i){
+                       case R.id.btn_radio_inapproriate:
+                               btn_radio_other.setChecked(false);
+                               btn_radio_copyrighted.setChecked(false);
+                                et_feedback.setVisibility(View.GONE);
+                            break;
+                       case R.id.btn_radio_falseContent:
+                           btn_radio_inapproriate.setChecked(false);
+                           btn_radio_other.setChecked(false);
+                           btn_radio_copyrighted.setChecked(false);
+                           et_feedback.setVisibility(View.GONE);
+                           break;
+                       case R.id.btn_radio_copyrighted:
+                           btn_radio_inapproriate.setChecked(false);
+                           btn_radio_other.setChecked(false);
+                           btn_radio_falseContent.setChecked(false);
+                           et_feedback.setVisibility(View.GONE);
+                           break;
+                       case R.id.btn_radio_other:
+                           btn_radio_inapproriate.setChecked(false);
+                           btn_radio_falseContent.setChecked(false);
+                           btn_radio_copyrighted.setChecked(false);
+                           et_feedback.setVisibility(View.VISIBLE);
+                           break;
+                   }
+               }
+           });
+       }
+       /**
+       public void enableEdit(boolean state){
+           et_feedback.setEnabled(true);
+           et_feedback.setEnabled(true);
+           Log.d("enable edit","called");
+           if(state){ et_feedback.setInputType(InputType.TYPE_CLASS_TEXT); }
+           else { et_feedback.setInputType(InputType.TYPE_NULL); }
+       }
+*/
+
+       @Override
+       public void onClick(View view) {
+           if (view == btn_submit){
+
+               Retrofit retrofit = new Retrofit.
+                       Builder()
+                       .baseUrl(MyApi.BASE_URL)
+                       .addConverterFactory(GsonConverterFactory.create())
+                       .build();
+
+               MyApi myApi = retrofit.create(MyApi.class);
+               MyApi.reportRequest body= new MyApi.reportRequest(getSharedPreferences("CC",MODE_PRIVATE).getString("profileId",""),noteBookId,"");
+               Call<Void> call = myApi.report(body);
+               call.enqueue(new Callback<Void>() {
+                   @Override
+                   public void onResponse(Call<Void> call, Response<Void> response) {
+                       Toast.makeText(NotePageActivity.this,"Thank you for the feedback. We will get back to you shortly",Toast.LENGTH_SHORT).show();
+                    getReportsDetailsDialog.dismiss();
+                   }
+
+                   @Override
+                   public void onFailure(Call<Void> call, Throwable t) {
+                    Log.d("dialog get reports","failed");
+                   }
+               });
+           }
+       }
+   }
+
+
 }
 
