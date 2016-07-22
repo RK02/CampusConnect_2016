@@ -134,6 +134,9 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
     @Bind(R.id.fab_menu)
     FloatingActionsMenu fabMenu;
 
+    @Bind(R.id.ib_flag_course)
+    ImageButton flagCourse;
+
     //Flags
     boolean doubleBackToExitPressedOnce = false;
     boolean at_home=true;
@@ -166,6 +169,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
         setContentView(R.layout.activity_course);
         ButterKnife.bind(this);
         editCourse.setVisibility(View.GONE);
+        flagCourse.setOnClickListener(this);
 
         //Drawer stuff
         home_title = (TextView) findViewById(R.id.tv_title);
@@ -470,6 +474,13 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                 Window window = viewStudentsDialog.getWindow();
                 window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
+                break;
+            case R.id.ib_flag_course:
+                reportCourseDetailsDialog = new ReportCourseDetailsDialog(this);
+                reportCourseDetailsDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                Window getReportsDetailsDialogWindow =  reportCourseDetailsDialog.getWindow();
+                getReportsDetailsDialogWindow.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                reportCourseDetailsDialog.show();
                 break;
 
             default:

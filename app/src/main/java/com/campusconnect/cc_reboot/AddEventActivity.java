@@ -1,5 +1,6 @@
 package com.campusconnect.cc_reboot;
 
+import android.app.DatePickerDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -53,7 +55,7 @@ public class AddEventActivity extends AppCompatActivity {
     EditText name;
     EditText description;
     AutoCompleteTextView course;
-    EditText date;
+    EditText title;
     EditText dueDate;
     Button submit;
     Button upload;
@@ -66,6 +68,7 @@ public class AddEventActivity extends AppCompatActivity {
     ArrayList<String> uris;
     ArrayList<String> courseNamesList;
     ArrayList<String> courseIdsList;
+    DatePickerDialog datePickerDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,15 +79,27 @@ public class AddEventActivity extends AppCompatActivity {
         course.setHint("Pick Course");
         courseNamesList = new ArrayList<>();
         courseIdsList = new ArrayList<>();
-        date = (EditText) findViewById(R.id.noteDate);
+        Calendar a = Calendar.getInstance();
+        title = (EditText) findViewById(R.id.noteTitle);
         dueDate = (EditText) findViewById(R.id.noteDueDate);
+        dueDate.setFocusable(false);
+        datePickerDialog = new DatePickerDialog(AddEventActivity.this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                if(dayOfMonth<10)
+                dueDate.setText("0"+dayOfMonth + "-" + monthOfYear + "-" + year);
+                else dueDate.setText(+dayOfMonth + "-" + monthOfYear + "-" + year);
+                if(monthOfYear<10) dueDate.setText(dayOfMonth + "-0" + monthOfYear + "-" + year);
+                else dueDate.setText(dayOfMonth + "-" + monthOfYear + "-" + year);
+            }
+        },a.get(Calendar.YEAR),a.get(Calendar.MONTH),a.get(Calendar.DAY_OF_MONTH));
+        dueDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                datePickerDialog.show();
+            }
+        });
         description = (EditText) findViewById(R.id.noteDescription);
-        Calendar c = Calendar.getInstance();
-        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-        String formattedDate = df.format(c.getTime());
-        date.setText(formattedDate);
-        dueDate.setText(formattedDate);
-        date.setFocusable(false);
          mNotifyManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
          mBuilder= new NotificationCompat.Builder(this);
@@ -197,7 +212,7 @@ public class AddEventActivity extends AppCompatActivity {
                         return;
                     }
                     else {courseId = courseIdsList.get(index);
-                        new doStuff().execute("exam",description.getText().toString(),date.getText().toString(),dueDate.getText().toString());
+                        new doStuff().execute("exam",description.getText().toString(),title.getText().toString(),dueDate.getText().toString());
                     }
                 }
             });break;
@@ -213,7 +228,7 @@ public class AddEventActivity extends AppCompatActivity {
                         return;
                     }
                     else {courseId =courseIdsList.get(index);
-                        new doStuff().execute("assignment",description.getText().toString(),date.getText().toString(),dueDate.getText().toString());
+                        new doStuff().execute("assignment",description.getText().toString(),title.getText().toString(),dueDate.getText().toString());
                     }
                 }
             });break;
@@ -232,7 +247,7 @@ public class AddEventActivity extends AppCompatActivity {
                     }
                     else {
                         courseId = courseIdsList.get(index);
-                        new doStuff().execute("notes",description.getText().toString(),date.getText().toString(),"");
+                        new doStuff().execute("notes",description.getText().toString(),title.getText().toString(),"");
                     }
 
                 }
@@ -300,8 +315,8 @@ public class AddEventActivity extends AppCompatActivity {
                     .addFormDataPart("courseId",courseId)
                     .addFormDataPart("type",type)
                     .addFormDataPart("desc",params[1]+"")
-                    .addFormDataPart("title","Test Title")
-                    .addFormDataPart("date",params[2]);
+                    .addFormDataPart("title",params[2]+"")
+                    .addFormDataPart("date","");
             File file;
             int i=1;
             if(!params[3].equals(""))
