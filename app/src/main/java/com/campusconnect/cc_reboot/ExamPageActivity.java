@@ -89,12 +89,12 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
 
     @Bind(R.id.ib_back)
     ImageButton back_button;
-
     @Bind(R.id.ib_edit)
     ImageButton edit_note_button;
-
     @Bind(R.id.ib_share)
     ImageButton share_note_button;
+    @Bind(R.id.ib_flag)
+    ImageButton flag_button;
 
     @Bind(R.id.exam_remind)
     Button remind_button;
@@ -195,6 +195,7 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
         back_button.setOnClickListener(this);
         edit_note_button.setOnClickListener(this);
         share_note_button.setOnClickListener(this);
+        flag_button.setOnClickListener(this);
         exam_last_page.setOnClickListener(this);
         remind_button.setOnClickListener(this);
 
@@ -226,8 +227,17 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
                 break;
 
             case R.id.ib_edit_note:
-//                intent = new Intent(getApplicationContext(), EditNoteActivity.class);
-//                startActivity(intent);
+                intent = new Intent(getApplicationContext(), EditNoteActivity.class);
+                startActivity(intent);
+
+                break;
+
+
+            case R.id.ib_share:
+                share_link();
+                break;
+
+            case R.id.ib_flag:
                 Retrofit retrofit = new Retrofit.
                         Builder()
                         .baseUrl(MyApi.BASE_URL)
@@ -247,11 +257,7 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
 
                     }
                 });
-                break;
 
-
-            case R.id.ib_share:
-                share_link();
                 break;
 
             case R.id.iv_exam:

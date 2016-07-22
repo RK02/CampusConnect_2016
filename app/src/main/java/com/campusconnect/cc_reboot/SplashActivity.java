@@ -1,9 +1,12 @@
 package com.campusconnect.cc_reboot;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -17,10 +20,19 @@ import io.branch.referral.BranchError;
  */
 public class SplashActivity extends AppCompatActivity {
 
+    ImageView splash_image;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        splash_image = (ImageView) findViewById(R.id.iv_splash);
+
+        BitmapFactory.Options bm_opts = new BitmapFactory.Options();
+        bm_opts.inScaled = false;
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.splash, bm_opts);
+        splash_image.setImageBitmap(bitmap);
 
     }
 

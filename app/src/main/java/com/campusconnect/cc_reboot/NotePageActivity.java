@@ -135,6 +135,8 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
     ImageButton fullscreen_button;
     @Bind(R.id.ib_share)
     ImageButton share_note_button;
+    @Bind(R.id.ib_flag)
+    ImageButton flag_button;
 
     @Bind(R.id.tb_bookmark)
     ToggleButton bookmark_note_button;
@@ -251,6 +253,7 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
         notes_last_page.setOnClickListener(this);
         bookmark_note_button.setOnClickListener(this);
         rate_note_button.setOnClickListener(this);
+        flag_button.setOnClickListener(this);
 
         //GoogleSignIn stuff
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -394,27 +397,8 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
                 break;
 
             case R.id.ib_edit_note:
-//                intent = new Intent(getApplicationContext(), EditNoteActivity.class);
-//                startActivity(intent);
-                Retrofit retrofit = new Retrofit.
-                        Builder()
-                        .baseUrl(MyApi.BASE_URL)
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-                MyApi myApi = retrofit.create(MyApi.class);
-                MyApi.reportRequest body= new MyApi.reportRequest(getSharedPreferences("CC",MODE_PRIVATE).getString("profileId",""),noteBookId,"");
-                Call<Void> call = myApi.report(body);
-                call.enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-                        Toast.makeText(NotePageActivity.this,"Thank you for the feedback. We will get back to you shortly",Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-
-                    }
-                });
+                intent = new Intent(getApplicationContext(), EditNoteActivity.class);
+                startActivity(intent);
                 break;
 
             case R.id.ib_fullscreen:
@@ -440,6 +424,29 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
                 rateNoteDialog.show();
                 Window window = rateNoteDialog.getWindow();
                 window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                break;
+
+            case R.id.ib_flag:
+                Retrofit retrofit = new Retrofit.
+                        Builder()
+                        .baseUrl(MyApi.BASE_URL)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+                MyApi myApi = retrofit.create(MyApi.class);
+                MyApi.reportRequest body= new MyApi.reportRequest(getSharedPreferences("CC",MODE_PRIVATE).getString("profileId",""),noteBookId,"");
+                Call<Void> call = myApi.report(body);
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        Toast.makeText(NotePageActivity.this,"Thank you for the feedback. We will get back to you shortly",Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+
+                    }
+                });
+
                 break;
 
             default:

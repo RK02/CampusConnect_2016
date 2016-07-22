@@ -97,6 +97,8 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
     ImageButton fullscreen_button;
     @Bind(R.id.ib_share)
     ImageButton share_note_button;
+    @Bind(R.id.ib_flag)
+    ImageButton flag_button;
 
     @Bind(R.id.tb_remind_me)
     Button remind_button;
@@ -226,6 +228,7 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
         edit_note_button.setOnClickListener(this);
         fullscreen_button.setOnClickListener(this);
         share_note_button.setOnClickListener(this);
+        flag_button.setOnClickListener(this);
         assignment_last_page.setOnClickListener(this);
         remind_button.setOnClickListener(this);
 
@@ -256,8 +259,21 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
                 break;
 
             case R.id.ib_edit_note:
-                //intent = new Intent(getApplicationContext(), EditNoteActivity.class);
-                //startActivity(intent);
+                intent = new Intent(getApplicationContext(), EditNoteActivity.class);
+                startActivity(intent);
+
+                break;
+
+            case R.id.ib_fullscreen:
+//                intent = new Intent(getApplicationContext(), NotesSliderActivity.class);
+//                startActivity(intent);
+                break;
+
+            case R.id.ib_share:
+                share_link();
+                break;
+
+            case R.id.ib_flag:
                 Retrofit retrofit = new Retrofit.
                         Builder()
                         .baseUrl(MyApi.BASE_URL)
@@ -277,15 +293,7 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
 
                     }
                 });
-                break;
 
-            case R.id.ib_fullscreen:
-//                intent = new Intent(getApplicationContext(), NotesSliderActivity.class);
-//                startActivity(intent);
-                break;
-
-            case R.id.ib_share:
-                share_link();
                 break;
 
             case R.id.iv_assignment:
