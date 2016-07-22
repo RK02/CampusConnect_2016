@@ -63,7 +63,13 @@ public class SplashActivity extends AppCompatActivity {
                                     super.run();
                                     try {
                                         sleep(2000);
-                                        Intent next = new Intent(SplashActivity.this, GoogleSignInActivity.class);
+                                        Intent next;
+                                        if(getSharedPreferences("CC",MODE_PRIVATE).contains("profileId")) {
+                                             next= new Intent(SplashActivity.this, GoogleSignInActivity.class);
+                                        }
+                                        else {
+                                             next = new Intent(SplashActivity.this, IntroActivity.class);
+                                        }
                                         startActivity(next);
                                         finish();
 

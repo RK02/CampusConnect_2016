@@ -48,12 +48,14 @@ public class StudentsListAdapter extends
     private List<ModelStudent> studentList;
     boolean isAdmin;
     String courseId;
+    String profileId;
 
-    public StudentsListAdapter(Context context,List<ModelStudent> students,boolean isAdmin,String courseId) {
+    public StudentsListAdapter(Context context,List<ModelStudent> students,boolean isAdmin,String courseId,String profileId) {
         this.context = context;
         this.studentList = students;
         this.isAdmin = isAdmin;
         this.courseId = courseId;
+        this.profileId = profileId;
     }
 
 
@@ -66,10 +68,6 @@ public class StudentsListAdapter extends
     @Override
     public void onBindViewHolder(final StudentsListViewHolder studentsListViewHolder, final int i)
     {
-
-        //Add your code here
-
-
         final ModelStudent student = studentList.get(i);
         studentsListViewHolder.student_name.setText(student.getProfileName());
 
@@ -83,6 +81,10 @@ public class StudentsListAdapter extends
             studentsListViewHolder.make_admin_button.setVisibility(View.VISIBLE);
             if(!isAdmin) {
                 studentsListViewHolder.make_admin_button.setEnabled(false);
+            }
+            else
+            {
+                if(student.getProfileId().equals(profileId)) studentsListViewHolder.make_admin_button.setEnabled(false);
             }
             studentsListViewHolder.make_admin_button.setChecked(true);
         }
@@ -114,6 +116,8 @@ public class StudentsListAdapter extends
                 call.enqueue(new Callback<ModelMakeAdmin>() {
                     @Override
                     public void onResponse(Call<ModelMakeAdmin> call, Response<ModelMakeAdmin> response) {
+
+
                     }
 
                     @Override
@@ -121,6 +125,8 @@ public class StudentsListAdapter extends
                     {
                     }
                 });
+                if(student.getIsAdmin().equals("1")){student.setIsAdmin("0");}
+                else if(student.getIsAdmin().equals("0")){student.setIsAdmin("1");}
 
 
             }

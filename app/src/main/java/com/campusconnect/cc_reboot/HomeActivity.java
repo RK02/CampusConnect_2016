@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.campusconnect.cc_reboot.slidingtab.SlidingTabLayout_home;
 import com.campusconnect.cc_reboot.viewpager.ViewPagerAdapter_home;
@@ -14,7 +15,7 @@ import com.campusconnect.cc_reboot.viewpager.ViewPagerAdapter_home;
 public class HomeActivity extends HomeActivity2 {
 
     ViewPagerAdapter_home home_adapter;
-    ViewPager home_pager;
+    public static ViewPager home_pager;
     public static SlidingTabLayout_home home_tabs;
     CharSequence Titles[] = {"Courses", "Timetable"};
     int Numboftabs = 2;
@@ -30,8 +31,12 @@ public class HomeActivity extends HomeActivity2 {
         home_pager.setCurrentItem(0);
         home_tabs.setDistributeEvenly(true);
         home_tabs.setViewPager(home_pager);
+    }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i("sw32HOME","resumeactivity");
     }
 }
 

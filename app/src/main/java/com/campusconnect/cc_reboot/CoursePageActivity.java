@@ -26,10 +26,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +41,7 @@ import android.widget.ToggleButton;
 
 import com.campusconnect.cc_reboot.adapter.CourseListAdapter;
 import com.campusconnect.cc_reboot.adapter.StudentsListAdapter;
+import com.campusconnect.cc_reboot.adapter.TimetableAdapter;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentAbout;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentAddCourse;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentFeedback;
@@ -60,6 +65,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -134,6 +142,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
     private Fragment fragment = null;
     Fragment homefrag;
     View headerView;
+    ReportCourseDetailsDialog reportCourseDetailsDialog;
     public static TextView home_title;
     GoogleApiClient mGoogleApiClient;
 
@@ -164,6 +173,15 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
         setSupportActionBar(toolbar);
 //        homefrag = new FragmentHome();
         //Setting up Header View
+
+        course_timetable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(1);
+                finish();
+            }
+        });
+
         headerView = getLayoutInflater().inflate(R.layout.header, navigationView, false);
         navigationView.addHeaderView(headerView);
         ImageView view = (ImageView) headerView.findViewById(R.id.profile_image);
@@ -217,6 +235,16 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
         //Listener to define layouts for FAB expanded and collapsed modes
         fabMenu.setOnFloatingActionsMenuUpdateListener(this);
         //OnClickListener Header View
+        ImageView imageView = (ImageView) headerView.findViewById(R.id.profile_image);
+
+        Picasso.with(CoursePageActivity.this)
+                .load(getSharedPreferences("CC",MODE_PRIVATE).getString("photourl","fakedesu")).error(R.mipmap.ccnoti)
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
+                .placeholder(R.mipmap.ccnoti)
+                .into(imageView);
+        ((TextView)headerView.findViewById(R.id.tv_username)).setText(getSharedPreferences("CC",MODE_PRIVATE).getString("profileName","PLACEHOLDER"));
+        ((TextView)headerView.findViewById(R.id.tv_points)).setText(FragmentCourses.profilePoints);
         headerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -226,7 +254,6 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
         });
 
         //Drawer ends
-
         //Setting FAB container's background to be fully transparent by default
         fab_menu_container.getBackground().setAlpha(0);
 
@@ -252,6 +279,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
 
         //OnClickListeners
         back_button.setOnClickListener(this);
+        sort_button.setVisibility(View.GONE);
         sort_button.setOnClickListener(this);
         search_button.setOnClickListener(this);
         notification_button.setOnClickListener(this);
@@ -299,6 +327,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
     @Override
     protected void onResume() {
         super.onResume();
+        course_details.setText("");
         course_info_container.setBackgroundColor(courseColor);
         course_adapter = new ViewPagerAdapter_course(getSupportFragmentManager(), Titles, Numboftabs, courseColor, this);
         Retrofit retrofit = new Retrofit.
@@ -321,10 +350,9 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                 }
                 final ModelCoursePage modelCoursePage = response.body();
                 if(modelCoursePage != null) {
-                    course_title.setText(modelCoursePage.getCourseName());
-                    courseTitle = course_title.getText().toString();
+                    courseTitle = modelCoursePage.getCourseName();
+                    course_title.setText(courseTitle);
                     course_prof.setText(modelCoursePage.getProfessorName());
-                    course_details.setText(modelCoursePage.getDescription());
                     if(modelCoursePage.getIsAdmin().equals("1"))
                     {
                         editCourse.setVisibility(View.VISIBLE);
@@ -386,6 +414,9 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                 startActivity(intent_notification);
                 break;
 
+
+
+
             case R.id.tb_subscribe:
                 if(subscribe_button.isChecked())
                 {
@@ -403,6 +434,10 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                         @Override
                         public void onResponse(Call<ModelSubscribe> call, Response<ModelSubscribe> response) {
                             FirebaseMessaging.getInstance().subscribeToTopic(courseId);
+                            SubscribedCourseList subscribedCourseList = new SubscribedCourseList();
+                            subscribedCourseList.setCourseId(courseId);
+                            subscribedCourseList.setCourseName(courseTitle);
+                            subscribedCourseList.save();
                         }
 
                         @Override
@@ -416,11 +451,12 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
 
                     new unsub().execute();
                     FirebaseMessaging.getInstance().unsubscribeFromTopic(courseId);
-//                    for(String viewId : FragmentCourses.timeTableViews.get(courseId)){
-//                        LinearLayout a = ((LinearLayout)FragmentTimetable.v.findViewById(Integer.parseInt(viewId)));
-//                                a.removeAllViews();
-//                        a.setBackgroundColor(Color.rgb(223,223,223));
-//                    }
+                    for (String viewId : FragmentCourses.timeTableViews.get(courseId)) {
+                        LinearLayout a = ((LinearLayout) TimetableAdapter.itemView.findViewById(Integer.parseInt(viewId)));
+                        a.removeAllViews();
+                        a.setBackgroundColor(Color.rgb(223, 223, 223));
+                    }
+                    FragmentCourses.timeTableViews.remove(courseId);
                     SubscribedCourseList.find(SubscribedCourseList.class,"course_id = ?",courseId).get(0).delete();
                     finish();
                 }
@@ -570,7 +606,8 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                     .build();
 
             MyApi myApi = retrofit.create(MyApi.class);
-            MyApi.getStudentListRequest body = new MyApi.getStudentListRequest(getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""),courseId);
+            final String profileId=getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId","");
+            MyApi.getStudentListRequest body = new MyApi.getStudentListRequest(profileId,courseId);
             Call<ModelStudentList> call = myApi.getStudentList(body);
             call.enqueue(new Callback<ModelStudentList>() {
                 @Override
@@ -580,7 +617,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                         Boolean isAdmin=false;
                         if(studentList.getIsAdmin().equals("1")) isAdmin = true;
                         studentList.getStudentList();
-                        mStudentsAdapter = new StudentsListAdapter(CoursePageActivity.this,studentList.getStudentList(),isAdmin,courseId);
+                        mStudentsAdapter = new StudentsListAdapter(CoursePageActivity.this,studentList.getStudentList(),isAdmin,courseId,profileId);
                         students_list.setAdapter(mStudentsAdapter);
                     }
                 }
@@ -604,11 +641,13 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
 
     //Function for fragment selection and commits
     public void displayView(int viewId){
+        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         switch (viewId) {
             case R.id.item_timetable:
                 at_home=true;
-                Intent intent_home = new Intent(CoursePageActivity.this,HomeActivity2.class);
-                startActivity(intent_home);
+//                Intent intent_home = new Intent(CoursePageActivity.this,HomeActivity2.class);
+//                startActivity(intent_home);
+                finish();
                 break;
             case R.id.item_add_course:
                 fragment = new FragmentAddCourse();
@@ -618,7 +657,9 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
             case R.id.item_bookmark:
                 Intent intent_profile = new Intent(CoursePageActivity.this,ProfilePageActivity.class);
                 startActivity(intent_profile);
-                at_home=false;
+                fragment = null;
+                frag_title = "Course";
+                at_home=true;
                 break;
             case R.id.item_getting_points:
                 fragment = new FragmentPointsInfo();
@@ -643,6 +684,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                 FirebaseAuth.getInstance().signOut();
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.item_t_and_c:
                 fragment = new FragmentTerms();
@@ -675,7 +717,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                 fabMenu.setVisibility(View.VISIBLE);
 
             home_title.setText(frag_title);
-            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            //android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             //fragmentTransaction.remove(getSupportFragmentManager().findFragmentById(R.id.frame));
             Fragment temp  = getSupportFragmentManager().findFragmentById(R.id.frame);
 
@@ -686,19 +728,28 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                 }
             }
             else
-            {
-                if(!at_home) {
+            { if(temp!=null) {
+                if (!at_home) {
                     fragmentTransaction.remove(temp);
                     fragmentTransaction.add(R.id.frame, fragment);
                     fragmentTransaction.commit();
-                }
-                else
-                {
+                } else {
                     fragmentTransaction.remove(temp);
                     fragmentTransaction.commit();
                 }
             }
+            }
 
+        }
+        else
+        {
+            Fragment temp  = getSupportFragmentManager().findFragmentById(R.id.frame);
+            if(temp!=null)
+            {
+                fragmentTransaction.remove(temp).commit();
+                home_title.setText(frag_title);
+
+            }
         }
     }
     @Override
@@ -721,11 +772,113 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
             at_home = true;
         }else if(at_home==true && !drawerLayout.isDrawerOpen(GravityCompat.START)){
 //Implementation of "Click back again to exit"
-
+            setResult(2);
            super.onBackPressed();
         }
         else
             drawerLayout.closeDrawers();
     }
-}
+
+    public class ReportCourseDetailsDialog extends  Dialog implements View.OnClickListener{
+
+        public Activity c;
+        @Bind(R.id.btn_submit)
+        Button btn_submit;
+        @Bind(R.id.radio_group)
+        RadioGroup radioGroup;
+
+        @Bind(R.id.btn_radio_inapproriate)
+        RadioButton btn_radio_inapproriate;
+
+        @Bind(R.id.btn_radio_falseContent)
+        RadioButton btn_radio_falseContent;
+
+        @Bind(R.id.btn_radio_other)
+        RadioButton btn_radio_other;
+
+        @Bind(R.id.btn_radio_copyrighted)
+        RadioButton btn_radio_copyrighted;
+
+        @Bind(R.id.et_feedback)
+        EditText et_feedback;
+
+        public ReportCourseDetailsDialog(Activity a) {
+            super(a);
+            // TODO Auto-generated constructor stub
+            this.c = a;
+            this.c = a;
+        }
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.dialog_get_reports_course);
+            ButterKnife.bind(this);
+            radioGroup.clearCheck();
+            btn_submit.setOnClickListener(this);
+            radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                    switch (i){
+                        case R.id.btn_radio_inapproriate:
+                            btn_radio_other.setChecked(false);
+                            btn_radio_copyrighted.setChecked(false);
+                            et_feedback.setVisibility(View.GONE);
+                            break;
+                        case R.id.btn_radio_falseContent:
+                            btn_radio_inapproriate.setChecked(false);
+                            btn_radio_other.setChecked(false);
+                            btn_radio_copyrighted.setChecked(false);
+                            et_feedback.setVisibility(View.GONE);
+                            break;
+                        case R.id.btn_radio_copyrighted:
+                            btn_radio_inapproriate.setChecked(false);
+                            btn_radio_other.setChecked(false);
+                            btn_radio_falseContent.setChecked(false);
+                            et_feedback.setVisibility(View.GONE);
+                            break;
+                        case R.id.btn_radio_other:
+                            btn_radio_inapproriate.setChecked(false);
+                            btn_radio_falseContent.setChecked(false);
+                            btn_radio_copyrighted.setChecked(false);
+                            et_feedback.setVisibility(View.VISIBLE);
+                            break;
+                    }
+                }
+            });
+
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (view == btn_submit){
+
+                Retrofit retrofit = new Retrofit.
+                        Builder()
+                        .baseUrl(MyApi.BASE_URL)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+
+                MyApi myApi = retrofit.create(MyApi.class);
+                MyApi.reportRequest body= new MyApi.reportRequest(getSharedPreferences("CC",MODE_PRIVATE).getString("profileId",""),courseId,"");
+                Call<Void> call = myApi.report(body);
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        Toast.makeText(CoursePageActivity.this,"Thank you for the feedback. We will get back to you shortly",Toast.LENGTH_SHORT).show();
+                        reportCourseDetailsDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Log.d("dialog get reports","failed");
+                    }
+                });
+            }
+        }
+        }
+    }
+
+
+
 
