@@ -15,7 +15,10 @@ import com.campusconnect.cc_reboot.CoursePageActivity;
 import com.campusconnect.cc_reboot.POJO.AssList;
 import com.campusconnect.cc_reboot.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -49,18 +52,46 @@ public class AssignmentsListAdapter extends
 
     @Override
     public void onBindViewHolder(AssignmentsListViewHolder assignmentsListViewHolder,int i) {
-        final AssList a = mAssignments.get(i);
-        assignmentsListViewHolder.assignment_name.setText(a.getCourseName());
-        assignmentsListViewHolder.assignment_description.setText(a.getAssignmentDesc());
-        assignmentsListViewHolder.assignment_due_date.setText(a.getDueDate());
-        assignmentsListViewHolder.assignment_posted_on.setText(a.getLastUpdated().substring(0,10));
-        assignmentsListViewHolder.assignment_views.setText(a.getViews());
-        assignmentsListViewHolder.assignment_uploader.setText(a.getUploaderName());
+        final AssList assList = mAssignments.get(i);
+        assignmentsListViewHolder.assignment_name.setText(assList.getCourseName());
+        assignmentsListViewHolder.assignment_description.setText(assList.getAssignmentDesc());
+        assignmentsListViewHolder.assignment_due_date.setText(assList.getDueDate());
+        assignmentsListViewHolder.assignment_posted_on.setText(assList.getLastUpdated().substring(0,10));
+        assignmentsListViewHolder.assignment_views.setText(assList.getViews());
+        assignmentsListViewHolder.assignment_uploader.setText(assList.getUploaderName());
+        String time = assList.getLastUpdated().substring(0,10);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        int days = 0,hours=0,minutes=0,seconds=0;
+        try {
+            Calendar a = Calendar.getInstance();
+            Calendar b = Calendar.getInstance();
+            b.setTime(df.parse(time));
+            long difference = a.getTimeInMillis() - b.getTimeInMillis();
+            days = (int) (difference/ (1000*60*60*24));
+            hours = (int) (difference/ (1000*60*60));
+            minutes = (int) (difference/ (1000*60));
+            seconds = (int) (difference/1000);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        days = Math.abs(days);
+        hours = Math.abs(hours);
+        minutes = Math.abs(minutes);
+        seconds = Math.abs(seconds);
+        if(days==0) {if(hours==0) {if(minutes==0) {if(seconds==0) {assignmentsListViewHolder.assignment_posted_on.setText("Just now");}
+        else {if(seconds==1) assignmentsListViewHolder.assignment_posted_on.setText(seconds + " second ago");
+        else assignmentsListViewHolder.assignment_posted_on.setText(seconds + " seconds ago");}}
+        else {if(minutes==1) assignmentsListViewHolder.assignment_posted_on.setText(minutes + " minute ago");
+        else assignmentsListViewHolder.assignment_posted_on.setText(minutes + " minutes ago");}}
+        else {if(hours==1)assignmentsListViewHolder.assignment_posted_on.setText(hours + " hour ago");
+        else assignmentsListViewHolder.assignment_posted_on.setText(hours + " hours ago");}}
+        else {if(days==1)assignmentsListViewHolder.assignment_posted_on.setText(days + " day ago");
+        else assignmentsListViewHolder.assignment_posted_on.setText(days + " days ago");}
         assignmentsListViewHolder.assignment_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent_temp = new Intent(v.getContext(), AssignmentPageActivity.class);
-                intent_temp.putExtra("assignmentId",a.getAssignmentId());
+                intent_temp.putExtra("assignmentId",assList.getAssignmentId());
                 context.startActivity(intent_temp);
             }
         });
