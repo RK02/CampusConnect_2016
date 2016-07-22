@@ -418,6 +418,10 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                         @Override
                         public void onResponse(Call<ModelSubscribe> call, Response<ModelSubscribe> response) {
                             FirebaseMessaging.getInstance().subscribeToTopic(courseId);
+                            SubscribedCourseList subscribedCourseList = new SubscribedCourseList();
+                            subscribedCourseList.setCourseId(courseId);
+                            subscribedCourseList.setCourseName(courseTitle);
+                            subscribedCourseList.save();
                         }
 
                         @Override

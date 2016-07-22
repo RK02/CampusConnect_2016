@@ -75,6 +75,7 @@ public class NotificationAdapter extends
             case "exam":intent = new Intent(context, ExamPageActivity.class);intent.putExtra("testId",key);break;
             case "admin":intent = new Intent(context, CoursePageActivity.class);intent.putExtra("courseId",key);break;
             case "rated":intent = new Intent(context, NotePageActivity.class);intent.putExtra("noteBookId",key);break;
+            default: intent = null;
         }
 
 
@@ -82,7 +83,7 @@ public class NotificationAdapter extends
         notificationHolder.notificationCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(key==null)
+                if(key==null || finalIntent==null)
                 {
                     Toast.makeText(context,"Oops! Something went wrong!",Toast.LENGTH_SHORT).show();
                 }

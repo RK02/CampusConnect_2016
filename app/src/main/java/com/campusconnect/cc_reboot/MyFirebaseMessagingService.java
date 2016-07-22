@@ -101,12 +101,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             i++;
             inboxStyle.addLine(customNotification.getTitle() + " - " + customNotification.getMessageBody());
         }
-        inboxStyle.setBigContentTitle(i + " New notifications");
         inboxStyle.setSummaryText("Campus Connect");
         notificationBuilder
                 .setSmallIcon(R.mipmap.ccnoti)
                 .setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.mipmap.ccnoti))
-                .setContentTitle(i+ " New notifications from Campus Connect")
+                .setContentTitle("Campus Connect")
+                .setContentText(i+ " New notifications")
                 .setStyle(inboxStyle)
                 .setGroup(CC)
                 .setGroupSummary(true)

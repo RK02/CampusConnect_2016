@@ -1,10 +1,7 @@
 package com.campusconnect.cc_reboot;
 
-import android.app.Activity;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,18 +13,15 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
-import com.campusconnect.cc_reboot.fragment.NotesSliderPageFragment;
+import com.campusconnect.cc_reboot.POJO.SubscribedCourseList;
+
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.json.JSONException;
@@ -68,9 +62,10 @@ public class AddEventActivity extends AppCompatActivity {
     NotificationManager mNotifyManager;
     NotificationCompat.Builder mBuilder;
     private FirebaseAnalytics firebaseAnalytics;
-    private ProgressDialog progressDialog;
     ArrayList<String> urls;
     ArrayList<String> uris;
+    ArrayList<String> courseNamesList;
+    ArrayList<String> courseIdsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +74,8 @@ public class AddEventActivity extends AppCompatActivity {
         final int mode = getIntent().getIntExtra("Mode",3);
         course = (AutoCompleteTextView) findViewById(R.id.course);
         course.setHint("Pick Course");
+        courseNamesList = new ArrayList<>();
+        courseIdsList = new ArrayList<>();
         date = (EditText) findViewById(R.id.noteDate);
         dueDate = (EditText) findViewById(R.id.noteDueDate);
         description = (EditText) findViewById(R.id.noteDescription);
@@ -119,10 +116,14 @@ public class AddEventActivity extends AppCompatActivity {
         }
         else
         {
-            ArrayList<String> temp = FragmentCourses.courseNames;
-            //Log.i("sw32",""+FragmentCourses.courseNames.size() + ":" + FragmentCourses.courseIds.size());
-            final ArrayAdapter<String> courseNames = new ArrayAdapter<>(AddEventActivity.this,android.R.layout.simple_list_item_1,temp);
-            //course.setAdapter(courseNames);
+            List<SubscribedCourseList> temp = SubscribedCourseList.listAll(SubscribedCourseList.class);
+            for(SubscribedCourseList course : temp)
+            {
+                courseNamesList.add(course.getCourseName());
+                courseIdsList.add(course.getCourseId());
+            }
+
+            final ArrayAdapter<String> courseNames = new ArrayAdapter<>(AddEventActivity.this,android.R.layout.simple_list_item_1,courseNamesList);
             final AlertDialog.Builder builderCourseList = new AlertDialog.Builder(AddEventActivity.this);
             builderCourseList.setTitle("Select your course");
             builderCourseList.setNegativeButton(
@@ -150,7 +151,6 @@ public class AddEventActivity extends AppCompatActivity {
             });
 
         }
-        progressDialog = new ProgressDialog(this);
         name = (EditText) findViewById(R.id.noteName);
         description = (EditText) findViewById(R.id.noteDescription);
         upload = (Button) findViewById(R.id.uploadPhotos);
@@ -186,13 +186,13 @@ public class AddEventActivity extends AppCompatActivity {
                 submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int index = FragmentCourses.courseNames.indexOf(course.getText().toString());
+                    int index = courseNamesList.indexOf(course.getText().toString());
                     if(index<0){
                         course.setError("Select valid course");
                         course.requestFocus();
                         return;
                     }
-                    else {courseId = FragmentCourses.courseIds.get(index);
+                    else {courseId = courseIdsList.get(index);
                         new doStuff().execute("exam",description.getText().toString(),date.getText().toString(),dueDate.getText().toString());
                     }
                 }
@@ -202,13 +202,13 @@ public class AddEventActivity extends AppCompatActivity {
                 submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int index = FragmentCourses.courseNames.indexOf(course.getText().toString());
+                    int index = courseNamesList.indexOf(course.getText().toString());
                     if(index<0){
                         course.setError("Select valid course");
                         course.requestFocus();
                         return;
                     }
-                    else {courseId = FragmentCourses.courseIds.get(index);
+                    else {courseId =courseIdsList.get(index);
                         new doStuff().execute("assignment",description.getText().toString(),date.getText().toString(),dueDate.getText().toString());
                     }
                 }
@@ -220,21 +220,14 @@ public class AddEventActivity extends AppCompatActivity {
                 submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int index=-1;
-                    try {
-                        index = FragmentCourses.courseNames.indexOf(course.getText().toString());
-                    }
-                    catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
+                    int index = courseNamesList.indexOf(course.getText().toString());
                     if(index<0){
                         course.setError("Select valid course");
                         course.requestFocus();
                         return;
                     }
                     else {
-                        courseId = FragmentCourses.courseIds.get(index);
+                        courseId = courseIdsList.get(index);
                         new doStuff().execute("notes",description.getText().toString(),date.getText().toString(),"");
                     }
 
@@ -310,7 +303,7 @@ public class AddEventActivity extends AppCompatActivity {
             if(!params[3].equals(""))
             {
                 body.addFormDataPart("dueDate",params[3]);
-                body.addFormDataPart("dueTime","08:00:00");
+                body.addFormDataPart("dueTime","12:00");
             }
 
             if(urls!=null)
