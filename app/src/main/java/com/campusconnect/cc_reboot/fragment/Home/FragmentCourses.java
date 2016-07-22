@@ -53,6 +53,7 @@ public class FragmentCourses extends Fragment{
 
     ImageView no_course_view;
     RecyclerView course_list;
+    Boolean resumeHasRun = false;
     CourseListAdapter mCourseAdapter;
     LinearLayoutManager mLayoutManager;
     SwipeRefreshLayout swipeRefreshLayout;
@@ -104,7 +105,6 @@ public class FragmentCourses extends Fragment{
         ArrayList<SubscribedCourseList> courses = new ArrayList<>();
         timeTableViews = new HashMap<>();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
-
         //Setting the recyclerView
 
         mLayoutManager = new LinearLayoutManager(v.getContext());
@@ -118,10 +118,6 @@ public class FragmentCourses extends Fragment{
         isConnected= activeNetwork != null && activeNetwork.isConnectedOrConnecting();
         Log.i("sw32call","create");
         if(isConnected) {
-            SubscribedCourseList a = new SubscribedCourseList();
-            a.save();a.delete();
-            CustomNotification aa = new CustomNotification();
-            aa.save();aa.delete();
             swipeRefreshLayout.post(new Runnable() {
                 @Override public void run() {
                     swipeRefreshLayout.setRefreshing(true);
@@ -140,58 +136,84 @@ public class FragmentCourses extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
-        Log.i("sw32call","resume");
+
+        if(!resumeHasRun)
+        {
+            resumeHasRun = true;
+            return;
+        }
+        Log.i("sw32call","onresume");
         cm = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         activeNetwork = cm.getActiveNetworkInfo();
         isConnected= activeNetwork != null && activeNetwork.isConnected();
-
         List<SubscribedCourseList> aa = SubscribedCourseList.listAll(SubscribedCourseList.class);
-        if(aa.size() < courseIds.size())
+        if(!isConnected)
         {
-            courseNames.clear();
-            courseIds.clear();
-            mCourseAdapter.clear();
-            for (SubscribedCourseList x : aa) {
-                courseNames.add(x.getCourseName());
-                courseIds.add(x.getCourseId());
-                mCourseAdapter.add(x);
-                Log.i("sw32cache",x.getCourseName());
-                x.save();
-                FirebaseMessaging.getInstance().subscribeToTopic(x.getCourseId());
+
+
+        }
+        else {
+
+            if (aa.size() < courseIds.size()) {
+                courseNames.clear();
+                courseIds.clear();
+                mCourseAdapter.clear();
+                for (SubscribedCourseList x : aa) {
+                    courseNames.add(x.getCourseName());
+                    courseIds.add(x.getCourseId());
+                    mCourseAdapter.add(x);
+                    x.save();
+                    FirebaseMessaging.getInstance().subscribeToTopic(x.getCourseId());
+                }
+            } else if (aa.size() > courseIds.size()) {
+                Log.i("sw32onresume", aa.size() + " : " + courseIds.size());
+                refreshPage();
             }
         }
-        else if (aa.size() > courseIds.size()){refreshPage();}
 
 
     }
 
     void resumePage()
     {
+
         List<SubscribedCourseList> aa = SubscribedCourseList.listAll(SubscribedCourseList.class);
+        courseNames.clear();
+        courseIds.clear();
+        mCourseAdapter.clear();
         for (SubscribedCourseList x : aa) {
             courseNames.add(x.getCourseName());
             courseIds.add(x.getCourseId());
             mCourseAdapter.add(x);
-            Log.i("sw32cache",x.getCourseName());
             x.save();
             FirebaseMessaging.getInstance().subscribeToTopic(x.getCourseId());
         }
     }
 
     void refreshPage(){
-        cm = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        activeNetwork = cm.getActiveNetworkInfo();
-        isConnected= activeNetwork != null && activeNetwork.isConnected();
+
+        isConnected= activeNetwork != null && activeNetwork.isConnectedOrConnecting();
         Log.i("sw32","callonrefresh");
         if(isConnected){
+            SubscribedCourseList.deleteAll(SubscribedCourseList.class);
+            for(String key : timeTableViews.keySet())
+            {
+                ArrayList<String> viewIds = timeTableViews.get(key);
+                for(String viewId : viewIds)
+                {
+                    LinearLayout a = ((LinearLayout)TimetableAdapter.itemView.findViewById(Integer.parseInt(viewId)));
+                    a.removeAllViews();
+                    a.setBackgroundColor(Color.rgb(223, 223, 223));
+                }
+            }
         courseNames.clear();
         courseIds.clear();
+        timeTableViews = new HashMap<>();
         mCourseAdapter.clear();
         call= myApi.getFeed(getActivity().getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""));
         call.enqueue(new Callback<ModelFeed>() {
             @Override
             public void onResponse(Call<ModelFeed> call, Response<ModelFeed> response) {
-                Log.i("sw32",""+response.code());
                 ModelFeed modelFeed = response.body();
                 new FragmentTimetable();
                 if(modelFeed !=null) {
@@ -207,35 +229,36 @@ public class FragmentCourses extends Fragment{
                         x.save();
                         int i = x.getDate().size()-1;
                         while(i>=0) {
-                            View cell = LayoutInflater.from(getContext()).inflate(R.layout.timetable_cell_layout, cell_container, false);
-                            String viewId = x.getDate().get(i) + "" + (Integer.parseInt(x.getStartTime().get(i).substring(0, 2)) - 6);
-                            if(timeTableViews.containsKey(x.getCourseId()))
-                            {
-                                timeTableViews.get(x.getCourseId()).add(viewId);
-                            }
-                            else
-                            {
-                                ArrayList<String> temp = new ArrayList<>();
-                                temp.add(viewId);
-                                timeTableViews.put(x.getCourseId(),temp);
-                            }
-                            cell_container = (LinearLayout) TimetableAdapter.itemView.findViewById(Integer.parseInt(viewId));
-                            cell_container.setBackgroundColor(Color.parseColor(x.getColour()));
-                            ((TextView)cell.findViewById(R.id.cellText)).setText(x.getCourseName());
-                            cell.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Intent coursePage = new Intent(getActivity(), CoursePageActivity.class);
-                                    coursePage.putExtra("courseId",x.getCourseId());
-                                    coursePage.putExtra("courseColor",Color.parseColor(x.getColour()));
-                                    startActivity(coursePage);
+                            int start = Integer.parseInt(x.getStartTime().get(i).substring(0, 2));
+                            int end = Integer.parseInt(x.getEndTime().get(i).substring(0, 2));
+                            String date = x.getDate().get(i);
+                            for (int ii = start; ii < end; ii++) {
+                                View cell = LayoutInflater.from(getContext()).inflate(R.layout.timetable_cell_layout, cell_container, false);
+                                String viewId =  date + "" + (ii - 6);
+                                if (timeTableViews.containsKey(x.getCourseId())) {
+                                    timeTableViews.get(x.getCourseId()).add(viewId);
+                                } else {
+                                    ArrayList<String> temp = new ArrayList<>();
+                                    temp.add(viewId);
+                                    timeTableViews.put(x.getCourseId(), temp);
                                 }
-                            });
-                            cell_container.removeAllViews();
-                            cell_container.addView(cell);
+                                cell_container = (LinearLayout) TimetableAdapter.itemView.findViewById(Integer.parseInt(viewId));
+                                cell_container.setBackgroundColor(Color.parseColor(x.getColour()));
+                                ((TextView) cell.findViewById(R.id.cellText)).setText(x.getCourseName());
+                                cell.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Intent coursePage = new Intent(getActivity(), CoursePageActivity.class);
+                                        coursePage.putExtra("courseId", x.getCourseId());
+                                        coursePage.putExtra("courseColor", Color.parseColor(x.getColour()));
+                                        startActivity(coursePage);
+                                    }
+                                });
+                                cell_container.removeAllViews();
+                                cell_container.addView(cell);
+                            }
                             i--;
                         }
-
                         FirebaseMessaging.getInstance().subscribeToTopic(x.getCourseId());
                     }
                     swipeRefreshLayout.setRefreshing(false);
@@ -246,7 +269,6 @@ public class FragmentCourses extends Fragment{
             public void onFailure(Call<ModelFeed> call, Throwable t) {
                 Toast.makeText(getActivity(),"Oops! Something went wrong!",Toast.LENGTH_SHORT).show();
                 swipeRefreshLayout.setRefreshing(false);
-
             }
         });
 

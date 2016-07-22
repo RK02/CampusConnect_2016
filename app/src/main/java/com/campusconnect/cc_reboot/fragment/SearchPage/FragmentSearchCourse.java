@@ -3,6 +3,7 @@ package com.campusconnect.cc_reboot.fragment.SearchPage;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,6 +33,7 @@ public class FragmentSearchCourse extends Fragment {
     public static ArrayList<String> courseNames;
     public static ArrayList<String> courseIds;
     public static ArrayList<CourseList> courses = new ArrayList<>();
+    public static SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -39,6 +41,7 @@ public class FragmentSearchCourse extends Fragment {
         no_course = (ImageView) v.findViewById (R.id.iv_no_course);
         course_list = (RecyclerView) v.findViewById (R.id.rv_courses);
         no_course.setVisibility(View.GONE);
+        swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swiperefresh);
         //Setting the recyclerView
         courseNames = new ArrayList<>();
         courseIds = new ArrayList<>();

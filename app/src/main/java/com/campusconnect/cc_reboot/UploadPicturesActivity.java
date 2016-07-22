@@ -104,11 +104,13 @@ public class UploadPicturesActivity extends AppCompatActivity {
             urls = getIntent().getStringArrayListExtra("urls");
             uris = getIntent().getStringArrayListExtra("uris");
             imageAdapter.notifyDataSetChanged();
+            Log.i("sw32adapter","checking");
         }
         else {
             urls = new ArrayList<>();
             uris = new ArrayList<>();
             imageAdapter.notifyDataSetChanged();
+            Log.i("sw32adapter","checkingnew");
         }
         if (Build.VERSION.SDK_INT >= 23) {
             //do your check here
@@ -176,9 +178,11 @@ public class UploadPicturesActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        uris.clear();
-                        urls.clear();
-                        imageAdapter.notifyDataSetChanged();
+                        if(uris!=null) {
+                            uris.clear();
+                            urls.clear();
+                            imageAdapter.notifyDataSetChanged();
+                        }
                         finish();                    }
                 });
                 alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -504,7 +508,10 @@ class ImageAdapter extends BaseAdapter {
     }
 
     public int getCount() {
+        if(UploadPicturesActivity.uris!=null)
             return UploadPicturesActivity.uris.size();
+        else
+            return 0;
     }
 
     public Object getItem(int position) {
