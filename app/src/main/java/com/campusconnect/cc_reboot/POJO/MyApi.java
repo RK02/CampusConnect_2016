@@ -23,7 +23,24 @@ public interface MyApi {
 
     @GET("getNot/ahJzfnVwbG9hZG5vdGVzLTIwMTZyFAsSB0NvbGxlZ2UYgICAgKKqkQoM")
     Call<ModelNotificationList> getNotifications(@Query("profileId") String profileId);
+    @POST("collegeDetails")
+    Call<Void> addCollege(@Body addCollegeRequest body);
+    class addCollegeRequest {
+        private String name;
+        private String collegeName;
+        private String EmailId;
+        private String phoneNumber;
+        private String location;
 
+        public addCollegeRequest(String _name, String _collegeName, String _emailId, String _phoneNumber, String _location) {
+            this.name = _name;
+            this.collegeName = _collegeName;
+            this.EmailId = _emailId;
+            this.phoneNumber = _phoneNumber;
+            this.location = _location;
+        }
+
+    }
     @POST("coursePage")
     Call<ModelCoursePage> getCourse(@Body getCourseRequest body);
     class getCourseRequest{
