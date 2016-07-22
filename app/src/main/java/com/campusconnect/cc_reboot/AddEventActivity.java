@@ -93,6 +93,12 @@ public class AddEventActivity extends AppCompatActivity {
                 .setSmallIcon(R.mipmap.ccnoti);
 // Start a lengthy operation in a background thread
         firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        List<SubscribedCourseList> temp = SubscribedCourseList.listAll(SubscribedCourseList.class);
+        for(SubscribedCourseList course : temp)
+        {
+            courseNamesList.add(course.getCourseName());
+            courseIdsList.add(course.getCourseId());
+        }
         if(getIntent().hasExtra("courseName"))
         {
             courseName = getIntent().getStringExtra("courseName");
@@ -108,21 +114,14 @@ public class AddEventActivity extends AppCompatActivity {
         {
             courseName = getIntent().getStringExtra("courseTitle");
             courseId = getIntent().getStringExtra("courseId");
+            course.setFocusable(false);
             if(!courseName.equals("")) {
                 course.setText(courseName + "");
-                course.setFocusable(false);
             }
 
         }
         else
         {
-            List<SubscribedCourseList> temp = SubscribedCourseList.listAll(SubscribedCourseList.class);
-            for(SubscribedCourseList course : temp)
-            {
-                courseNamesList.add(course.getCourseName());
-                courseIdsList.add(course.getCourseId());
-            }
-
             final ArrayAdapter<String> courseNames = new ArrayAdapter<>(AddEventActivity.this,android.R.layout.simple_list_item_1,courseNamesList);
             final AlertDialog.Builder builderCourseList = new AlertDialog.Builder(AddEventActivity.this);
             builderCourseList.setTitle("Select your course");
@@ -187,6 +186,11 @@ public class AddEventActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     int index = courseNamesList.indexOf(course.getText().toString());
+                    for(String course : courseNamesList)
+                    {
+                        Log.i("sw32courses", course +"");
+                    }
+                    Log.i("sw32checking",course.getText().toString()+"  :  " + index);
                     if(index<0){
                         course.setError("Select valid course");
                         course.requestFocus();

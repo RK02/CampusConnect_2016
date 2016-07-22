@@ -345,8 +345,8 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                 }
                 final ModelCoursePage modelCoursePage = response.body();
                 if(modelCoursePage != null) {
-                    course_title.setText(modelCoursePage.getCourseName());
-                    courseTitle = course_title.getText().toString();
+                    courseTitle = modelCoursePage.getCourseName();
+                    course_title.setText(courseTitle);
                     course_prof.setText(modelCoursePage.getProfessorName());
                     if(modelCoursePage.getIsAdmin().equals("1"))
                     {
