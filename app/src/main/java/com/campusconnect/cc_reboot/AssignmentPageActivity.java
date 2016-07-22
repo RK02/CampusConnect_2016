@@ -41,6 +41,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -306,7 +307,7 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
                 break;
 
             case R.id.tb_remind_me:
-
+                FirebaseMessaging.getInstance().subscribeToTopic(assignmentId);
                 break;
 
             default:

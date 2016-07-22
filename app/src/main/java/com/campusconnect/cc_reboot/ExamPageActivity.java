@@ -40,6 +40,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -271,7 +272,7 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
 //                startActivity(intent);
                 break;
             case R.id.tb_remind_me:
-
+                FirebaseMessaging.getInstance().subscribeToTopic(testId);
                 break;
 
             default:
