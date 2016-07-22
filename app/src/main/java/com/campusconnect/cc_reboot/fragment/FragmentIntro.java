@@ -11,17 +11,15 @@ import com.campusconnect.cc_reboot.R;
 /**
  * Created by RK on 18/07/2016.
  */
-public class IntroFragment extends Fragment {
+public class FragmentIntro extends Fragment {
 
-    private static final String BACKGROUND_COLOR = "backgroundColor";
     private static final String PAGE = "page";
 
     private int mBackgroundColor, mPage;
 
-    public static IntroFragment newInstance(int backgroundColor, int page) {
-        IntroFragment frag = new IntroFragment();
+    public static FragmentIntro newInstance(int page) {
+        FragmentIntro frag = new FragmentIntro();
         Bundle b = new Bundle();
-        b.putInt(BACKGROUND_COLOR, backgroundColor);
         b.putInt(PAGE, page);
         frag.setArguments(b);
         return frag;
@@ -31,9 +29,6 @@ public class IntroFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (!getArguments().containsKey(BACKGROUND_COLOR))
-            throw new RuntimeException("Fragment must contain a \"" + BACKGROUND_COLOR + "\" argument!");
-        mBackgroundColor = getArguments().getInt(BACKGROUND_COLOR);
 
         if (!getArguments().containsKey(PAGE))
             throw new RuntimeException("Fragment must contain a \"" + PAGE + "\" argument!");
@@ -49,8 +44,14 @@ public class IntroFragment extends Fragment {
             case 0:
                 layoutResId = R.layout.fragment_intro_1;
                 break;
-            default:
+            case 1:
                 layoutResId = R.layout.fragment_intro_2;
+                break;
+            case 3:
+                layoutResId = R.layout.fragment_intro_3;
+                break;
+            default:
+                layoutResId = R.layout.fragment_intro_4;
         }
 
         // Inflate the layout resource file

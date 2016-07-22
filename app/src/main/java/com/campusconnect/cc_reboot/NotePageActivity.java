@@ -127,6 +127,8 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
     @Bind(R.id.tv_last_updated)
     TextView lastPosted;
 
+    @Bind(R.id.ib_back)
+    ImageButton back_button;
     @Bind(R.id.ib_edit_note)
     ImageButton edit_note_button;
     @Bind(R.id.ib_fullscreen)
@@ -242,6 +244,7 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
         dates = new ArrayList<>();
 
         //OnClickListeners
+        back_button.setOnClickListener(this);
         edit_note_button.setOnClickListener(this);
         fullscreen_button.setOnClickListener(this);
         share_note_button.setOnClickListener(this);
@@ -324,6 +327,7 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
                         .load(last)
                         .fit()
                         .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                        .placeholder(R.drawable.default_portrait)
                         .into(notes_last_page);
                 courseName.setText(noteBook.getCourseName());
                 views.setText(noteBook.getViews());
@@ -384,6 +388,10 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
 
         switch (view.getId()) {
+
+            case R.id.ib_back:
+                finish();
+                break;
 
             case R.id.ib_edit_note:
 //                intent = new Intent(getApplicationContext(), EditNoteActivity.class);

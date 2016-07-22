@@ -1,6 +1,8 @@
 package com.campusconnect.cc_reboot.fragment.Profile;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.campusconnect.cc_reboot.POJO.ModelNoteBookList;
 import com.campusconnect.cc_reboot.POJO.MyApi;
@@ -32,6 +35,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class FragmentBookmarkedNotes extends Fragment {
 
+    ImageView no_bookmarks;
     RecyclerView boomarked_notes_list;
     BookmarkedNotesListAdapter mBookmarkedNotesAdapter;
     LinearLayoutManager mLayoutManager;
@@ -41,8 +45,14 @@ public class FragmentBookmarkedNotes extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_notes, container, false);
 
+        no_bookmarks = (ImageView) v.findViewById (R.id.iv_no_notes);
         boomarked_notes_list = (RecyclerView) v.findViewById (R.id.rv_notes);
         mNotes = new ArrayList<>();
+
+        BitmapFactory.Options bm_opts = new BitmapFactory.Options();
+        bm_opts.inScaled = false;
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.no_value_bookmarks, bm_opts);
+        no_bookmarks.setImageBitmap(bitmap);
 
         //Setting the recyclerView
         mLayoutManager = new LinearLayoutManager(getActivity());

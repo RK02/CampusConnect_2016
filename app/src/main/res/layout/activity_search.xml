@@ -40,6 +40,13 @@
             android:layout_weight="1"
             android:background="#ffffff"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        <ImageView
+            android:id="@+id/iv_no_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:visibility="gone"
+            android:background="@android:color/transparent" />
 
     </android.support.design.widget.CoordinatorLayout>
 

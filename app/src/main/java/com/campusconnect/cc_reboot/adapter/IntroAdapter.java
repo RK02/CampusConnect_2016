@@ -4,9 +4,8 @@ import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerAdapter;
 
-import com.campusconnect.cc_reboot.fragment.IntroFragment;
+import com.campusconnect.cc_reboot.fragment.FragmentIntro;
 
 /**
  * Created by RK on 18/07/2016.
@@ -21,15 +20,19 @@ public class IntroAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return IntroFragment.newInstance(Color.parseColor("#03A9F4"), position); // blue
+                return FragmentIntro.newInstance(position);
+            case 1:
+                return FragmentIntro.newInstance(position);
+            case 2:
+                return FragmentIntro.newInstance(position);
             default:
-                return IntroFragment.newInstance(Color.parseColor("#4CAF50"), position); // green
+                return FragmentIntro.newInstance(position);
         }
     }
 
     @Override
     public int getCount() {
-        return 2;
+        return 4;
     }
 
 }

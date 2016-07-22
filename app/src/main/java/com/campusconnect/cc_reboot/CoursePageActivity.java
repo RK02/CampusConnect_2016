@@ -91,6 +91,8 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
     @Bind(R.id.frame)
     FrameLayout fragment_frame;
 
+    @Bind(R.id.ib_back)
+    ImageButton back_button;
     @Bind(R.id.ib_sort)
     ImageButton sort_button;
     @Bind(R.id.ib_search)
@@ -249,6 +251,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
         fabMenu.setOnFloatingActionsMenuUpdateListener(this);
 
         //OnClickListeners
+        back_button.setOnClickListener(this);
         sort_button.setOnClickListener(this);
         search_button.setOnClickListener(this);
         notification_button.setOnClickListener(this);
@@ -363,6 +366,10 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
     public void onClick(View view) {
 
         switch (view.getId()){
+
+            case R.id.ib_back:
+                finish();
+                break;
 
             case R.id.ib_sort:
                 Intent intent_sort = new Intent(getApplicationContext(), SortActivity.class);

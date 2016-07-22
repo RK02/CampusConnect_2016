@@ -10,11 +10,11 @@
     android:paddingRight="@dimen/activity_vertical_margin">
 
     <ImageButton
-        android:id="@+id/ib_menu"
+        android:id="@+id/ib_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:src="@mipmap/ic_menu_24" />
+        android:src="@mipmap/ic_back_24_white" />
 
     <RelativeLayout
         android:layout_width="match_parent"

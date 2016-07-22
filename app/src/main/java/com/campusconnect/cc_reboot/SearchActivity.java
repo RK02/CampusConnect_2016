@@ -2,6 +2,8 @@ package com.campusconnect.cc_reboot;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.campusconnect.cc_reboot.POJO.CourseList;
 import com.campusconnect.cc_reboot.POJO.ModelCourseSearch;
@@ -39,6 +42,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class SearchActivity extends AppCompatActivity {
 
+    ImageButton back_button;
+    ImageView no_search_view;
     ViewPagerAdapter_search search_adapter;
     ViewPager search_pager;
     public static SlidingTabLayout_home search_tabs;
@@ -61,7 +66,16 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
+
+        back_button = (ImageButton) findViewById(R.id.ib_back);
+        no_search_view = (ImageView) findViewById(R.id.iv_no_search);
         searchBar = (EditText) findViewById(R.id.et_search);
+
+        BitmapFactory.Options bm_opts = new BitmapFactory.Options();
+        bm_opts.inScaled = false;
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.no_value_search, bm_opts);
+        no_search_view.setImageBitmap(bitmap);
+
         retrofit = new Retrofit.
                 Builder()
                 .baseUrl(MyApi.BASE_URL)
@@ -179,7 +193,14 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
-    }
+        back_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+            }
     public static void hideKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         //Find the currently focused view, so we can grab the correct window token from it.

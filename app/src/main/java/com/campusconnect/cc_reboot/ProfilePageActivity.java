@@ -78,12 +78,12 @@ public class ProfilePageActivity extends AppCompatActivity implements FloatingAc
     @Bind(R.id.tabs_course)
     SlidingTabLayout_home profile_tabs;
 
+    @Bind(R.id.ib_back)
+    ImageButton back_button;
     @Bind(R.id.ib_gifts)
     ImageButton gifts_button;
     @Bind(R.id.ib_edit_profile)
     ImageButton edit_profile_button;
-
-
 
     @Bind(R.id.container_fab)
     FrameLayout fab_menu_container;
@@ -227,6 +227,7 @@ public class ProfilePageActivity extends AppCompatActivity implements FloatingAc
 
 
         //OnClickListeners
+        back_button.setOnClickListener(this);
         gifts_button.setOnClickListener(this);
         edit_profile_button.setOnClickListener(this);
 
@@ -252,6 +253,10 @@ public class ProfilePageActivity extends AppCompatActivity implements FloatingAc
     public void onClick(View view) {
 
         switch (view.getId()){
+
+            case R.id.ib_back:
+                finish();
+                break;
 
             case R.id.ib_gifts:
                 Intent intent_gifts = new Intent(getApplicationContext(), GiftsActivity.class);

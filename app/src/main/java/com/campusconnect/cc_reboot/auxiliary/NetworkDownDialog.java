@@ -89,7 +89,7 @@ public class NetworkDownDialog extends Dialog {
 
     private void applyBlur() {
         Bitmap icon = BitmapFactory.decodeResource(c.getResources(),
-                R.drawable.flash);
+                R.drawable.splash);
 
 //        bk_blur_dialog.getViewTreeObserver().addOnPreDrawListener(
 //                new ViewTreeObserver.OnPreDrawListener() {
