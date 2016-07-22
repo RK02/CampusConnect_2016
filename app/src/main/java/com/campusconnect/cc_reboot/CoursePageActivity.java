@@ -26,10 +26,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -138,6 +142,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
     private Fragment fragment = null;
     Fragment homefrag;
     View headerView;
+    ReportCourseDetailsDialog reportCourseDetailsDialog;
     public static TextView home_title;
     GoogleApiClient mGoogleApiClient;
 
@@ -408,6 +413,9 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                 Intent intent_notification = new Intent(getApplicationContext(), NotificationActivity.class);
                 startActivity(intent_notification);
                 break;
+
+
+
 
             case R.id.tb_subscribe:
                 if(subscribe_button.isChecked())
@@ -770,5 +778,107 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
         else
             drawerLayout.closeDrawers();
     }
-}
+
+    public class ReportCourseDetailsDialog extends  Dialog implements View.OnClickListener{
+
+        public Activity c;
+        @Bind(R.id.btn_submit)
+        Button btn_submit;
+        @Bind(R.id.radio_group)
+        RadioGroup radioGroup;
+
+        @Bind(R.id.btn_radio_inapproriate)
+        RadioButton btn_radio_inapproriate;
+
+        @Bind(R.id.btn_radio_falseContent)
+        RadioButton btn_radio_falseContent;
+
+        @Bind(R.id.btn_radio_other)
+        RadioButton btn_radio_other;
+
+        @Bind(R.id.btn_radio_copyrighted)
+        RadioButton btn_radio_copyrighted;
+
+        @Bind(R.id.et_feedback)
+        EditText et_feedback;
+
+        public ReportCourseDetailsDialog(Activity a) {
+            super(a);
+            // TODO Auto-generated constructor stub
+            this.c = a;
+            this.c = a;
+        }
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.dialog_get_reports_course);
+            ButterKnife.bind(this);
+            radioGroup.clearCheck();
+            btn_submit.setOnClickListener(this);
+            radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                    switch (i){
+                        case R.id.btn_radio_inapproriate:
+                            btn_radio_other.setChecked(false);
+                            btn_radio_copyrighted.setChecked(false);
+                            et_feedback.setVisibility(View.GONE);
+                            break;
+                        case R.id.btn_radio_falseContent:
+                            btn_radio_inapproriate.setChecked(false);
+                            btn_radio_other.setChecked(false);
+                            btn_radio_copyrighted.setChecked(false);
+                            et_feedback.setVisibility(View.GONE);
+                            break;
+                        case R.id.btn_radio_copyrighted:
+                            btn_radio_inapproriate.setChecked(false);
+                            btn_radio_other.setChecked(false);
+                            btn_radio_falseContent.setChecked(false);
+                            et_feedback.setVisibility(View.GONE);
+                            break;
+                        case R.id.btn_radio_other:
+                            btn_radio_inapproriate.setChecked(false);
+                            btn_radio_falseContent.setChecked(false);
+                            btn_radio_copyrighted.setChecked(false);
+                            et_feedback.setVisibility(View.VISIBLE);
+                            break;
+                    }
+                }
+            });
+
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (view == btn_submit){
+
+                Retrofit retrofit = new Retrofit.
+                        Builder()
+                        .baseUrl(MyApi.BASE_URL)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+
+                MyApi myApi = retrofit.create(MyApi.class);
+                MyApi.reportRequest body= new MyApi.reportRequest(getSharedPreferences("CC",MODE_PRIVATE).getString("profileId",""),courseId,"");
+                Call<Void> call = myApi.report(body);
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        Toast.makeText(CoursePageActivity.this,"Thank you for the feedback. We will get back to you shortly",Toast.LENGTH_SHORT).show();
+                        reportCourseDetailsDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Log.d("dialog get reports","failed");
+                    }
+                });
+            }
+        }
+        }
+    }
+
+
+
 
