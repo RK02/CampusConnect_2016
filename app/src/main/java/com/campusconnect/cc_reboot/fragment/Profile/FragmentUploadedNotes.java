@@ -3,6 +3,7 @@ package com.campusconnect.cc_reboot.fragment.Profile;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -80,6 +81,21 @@ public class FragmentUploadedNotes extends Fragment {
                     for (NoteBookList x : noteBookLists) {
                         mUploadedNotesAdapter.add(x);
                         mUploadedNotesAdapter.notifyDataSetChanged();
+                    }
+                    if(noteBookLists.isEmpty())
+                    {
+                        if(Build.VERSION.SDK_INT>=21)
+                        {
+                            uploaded_notes_list.setBackground(getActivity().getDrawable(R.drawable.no_value_uploads));
+                        }
+                        else
+                        {
+                            uploaded_notes_list.setBackground(getResources().getDrawable(R.drawable.no_value_uploads));
+                        }
+                    }
+                    else
+                    {
+                        uploaded_notes_list.setBackgroundColor(getResources().getColor(R.color.ColorRecyclerBackground));
                     }
                 }
             }

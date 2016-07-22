@@ -79,7 +79,6 @@ public class CourseListAdapter extends
     @Override
     public void onBindViewHolder(CourseListViewHolder courseListViewHolder, final int i) {
         cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        activeNetwork =  cm.getActiveNetworkInfo();
        SubscribedCourseList a =  mCourses.get(i);
         courseListViewHolder.notes_unseen_count.setText(a.getRecentNotes());
         courseListViewHolder.exams_count.setText(a.getDueExams());
@@ -120,6 +119,7 @@ public class CourseListAdapter extends
         courseListViewHolder.course_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                activeNetwork =  cm.getActiveNetworkInfo();
                 isConnected= activeNetwork != null && activeNetwork.isConnectedOrConnecting();
                     if(isConnected) {
                         Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
@@ -146,6 +146,7 @@ public class CourseListAdapter extends
         courseListViewHolder.notes_count_container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                activeNetwork =  cm.getActiveNetworkInfo();
                 isConnected= activeNetwork != null && activeNetwork.isConnectedOrConnecting();
                 if(isConnected) {
                     Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
@@ -164,6 +165,7 @@ public class CourseListAdapter extends
         courseListViewHolder.assignments_count_container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                activeNetwork =  cm.getActiveNetworkInfo();
                 isConnected= activeNetwork != null && activeNetwork.isConnectedOrConnecting();
                 if(isConnected) {
                     Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);
@@ -182,6 +184,7 @@ public class CourseListAdapter extends
         courseListViewHolder.exams_count_container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                activeNetwork =  cm.getActiveNetworkInfo();
                 isConnected= activeNetwork != null && activeNetwork.isConnectedOrConnecting();
                 if(isConnected) {
                     Intent intent_temp = new Intent(v.getContext(), CoursePageActivity.class);

@@ -274,6 +274,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
 
         //OnClickListeners
         back_button.setOnClickListener(this);
+        sort_button.setVisibility(View.GONE);
         sort_button.setOnClickListener(this);
         search_button.setOnClickListener(this);
         notification_button.setOnClickListener(this);

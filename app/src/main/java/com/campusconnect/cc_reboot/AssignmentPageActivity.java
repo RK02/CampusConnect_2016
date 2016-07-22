@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -116,6 +115,7 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
     private Fragment fragment = null;
     Fragment homefrag;
     View headerView;
+    String courseNamePlaceHolder = "";
     public static TextView home_title;
     GoogleApiClient mGoogleApiClient;
 
@@ -446,6 +446,16 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
     }
 
     void share_link() {
+        /*
+
+        Share text
+1) Hey, check out the notes for Course_name by Person_name on Campus Connect! link
+2) Hey, check out the assignment for Course_name on Campus Connect! link
+3) Hey, check out the exam for Course_name on Campus Connect! link
+4) Hey, check out my notes for Course_name on Campus Connect! link
+
+         */
+
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.show();
         BranchUniversalObject branchUniversalObject = new BranchUniversalObject()
@@ -458,16 +468,16 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
                 .addControlParameter("$desktop_url", "http://campusconnect-2016.herokuapp.com/assignment?id=" + assignmentId);
 
         final Intent sendIntent = new Intent();
+        final String shareText = " Hey, check out the assignment for" + courseNamePlaceHolder+ "on Campus Connect!\n";
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.setType("text/plain");
         branchUniversalObject.generateShortUrl(this, linkProperties, new Branch.BranchLinkCreateListener() {
             @Override
             public void onLinkCreate(String url, BranchError error) {
                 if (error == null) {
-                    Log.i("MyApp", "got my Branch link to share: " + url);
+                    Log.i("MyApp", "got my Branch link to share: " +shareText +  url);
                     sendIntent.putExtra(Intent.EXTRA_TEXT,url);
                     progressDialog.dismiss();
-                    startActivityForResult(sendIntent,1);
                     startActivityForResult(Intent.createChooser(sendIntent, "Share with..."),1);
                 }
             }
@@ -506,6 +516,7 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
             public void onResponse(Call<ModelAssignment> call, Response<ModelAssignment> response) {
                 ModelAssignment assignment = response.body();
                 if(assignment!=null){
+                courseNamePlaceHolder = assignment.getCourseName();
                 assignment_name.setText(assignment.getAssignmentTitle());
                 uploader.setText(assignment.getUploaderName());
                 date_posted.setText(assignment.getLastUpdated().substring(0, 10));

@@ -26,6 +26,7 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:text="Exam"
+            android:textColor="@color/ColorTextHeading"
             android:textSize="22sp" />
 
 

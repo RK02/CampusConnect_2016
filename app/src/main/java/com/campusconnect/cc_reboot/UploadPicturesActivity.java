@@ -80,7 +80,6 @@ public class UploadPicturesActivity extends AppCompatActivity {
     public static Button camera;
     Button cancel;
     private  String pictureImagePath="";
-    GridView gridView;
     ImageAdapter imageAdapter;
     public static ArrayList<String> urls;
     public static ArrayList<String> uris;
@@ -91,6 +90,7 @@ public class UploadPicturesActivity extends AppCompatActivity {
     public static int action;
     final int READ_EXTERNAL=69;
     final int WRITE_EXTERNAL=70;
+    public static GridView gridView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +98,7 @@ public class UploadPicturesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_upload_pictures);
 
         ButterKnife.bind(this);
+        gridView= (GridView) findViewById(R.id.imageGrid);
         imageAdapter = new ImageAdapter(this);
         if(getIntent().hasExtra("urls"))
         {
@@ -260,7 +261,20 @@ public class UploadPicturesActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             }
         });
+        if(uris.isEmpty())
+        {
+
+            if(Build.VERSION.SDK_INT>=21) {
+                gridView.setBackground(getDrawable(R.drawable.upload_photo_default));
+            }
+            else
+            {
+                gridView.setBackground(getResources().getDrawable(R.drawable.upload_photo_default));
+            }
+        }
     }
+
+
 
     @Override
     public void onBackPressed() {
@@ -508,10 +522,19 @@ class ImageAdapter extends BaseAdapter {
     }
 
     public int getCount() {
-        if(UploadPicturesActivity.uris!=null)
-            return UploadPicturesActivity.uris.size();
+        if(UploadPicturesActivity.uris!=null){
+            if(UploadPicturesActivity.uris.size()==0) {
+                    return 0;
+                }
+            else {
+                callbackgridview();
+                return UploadPicturesActivity.uris.size();
+            }}
         else
+        {
             return 0;
+        }
+
     }
 
     public Object getItem(int position) {
@@ -519,6 +542,8 @@ class ImageAdapter extends BaseAdapter {
         return UploadPicturesActivity.uris.get(position);
 
     }
+
+
 
 
 
@@ -625,19 +650,14 @@ class ImageAdapter extends BaseAdapter {
             return convertView;
     }
 
+
     public long getItemId(int position) {
         return position;
     }
 
-    protected Bitmap ConvertToBitmap(RelativeLayout layout) {
-
-        layout.setDrawingCacheEnabled(true);
-
-        layout.buildDrawingCache();
-
-        return layout.getDrawingCache();
-
-
+    public void callbackgridview()
+    {
+       UploadPicturesActivity.gridView.setBackgroundColor(mContext.getResources().getColor(R.color.ColorRecyclerBackground));
     }
 }
 class ViewHolder {

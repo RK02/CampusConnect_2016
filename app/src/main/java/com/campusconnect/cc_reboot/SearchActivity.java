@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -222,6 +223,18 @@ public class SearchActivity extends AppCompatActivity {
                         FragmentSearchCourse.courseIds.add(x.getCourseId());
                         FragmentSearchCourse.mCourseAdapter.notifyDataSetChanged();
                     }
+                    if(courseLists.isEmpty()) {
+                        if (Build.VERSION.SDK_INT >= 21) {
+                            FragmentSearchCourse.fragment_search_course.setBackground(getDrawable(R.drawable.no_value_search));
+                        } else {
+                            FragmentSearchCourse.fragment_search_course.setBackground(getResources().getDrawable(R.drawable.no_value_search));
+                        }
+                    }
+                    else
+                    {
+                            FragmentSearchCourse.fragment_search_course.setBackgroundColor(getResources().getColor(R.color.ColorRecyclerBackground));
+
+                    }
                 }
 
             }
@@ -248,6 +261,19 @@ public class SearchActivity extends AppCompatActivity {
                     for(NoteBookList x : noteBookLists){
                         FragmentSearchNotes.noteBookLists.add(x);
                         FragmentSearchNotes.mSearchNotesAdapter.notifyDataSetChanged();
+                    }
+                    if(noteBookLists.isEmpty())
+                    {
+                        if(Build.VERSION.SDK_INT>=21) {
+                        FragmentSearchNotes.fragment_search_notes.setBackground(getDrawable(R.drawable.no_value_search));
+                    }else
+                    {
+                        FragmentSearchNotes.fragment_search_notes.setBackground(getResources().getDrawable(R.drawable.no_value_search));
+                    }
+                    }
+                    else
+                    {
+                        FragmentSearchNotes.fragment_search_notes.setBackgroundColor(getResources().getColor(R.color.ColorRecyclerBackground));
                     }
                 }
             }

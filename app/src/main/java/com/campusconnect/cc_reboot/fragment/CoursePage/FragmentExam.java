@@ -2,6 +2,7 @@ package com.campusconnect.cc_reboot.fragment.CoursePage;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -80,6 +81,21 @@ public class FragmentExam extends Fragment {
                     List<ModelTest> modelTests = testList.getExamList();
                     for (ModelTest modelTest : modelTests) {
                         mExamsAdapter.add(modelTest);
+                    }
+                    if(modelTests.isEmpty())
+                    {
+                        if(Build.VERSION.SDK_INT>=21)
+                        {
+                            exams_list.setBackground(getActivity().getDrawable(R.drawable.no_value_exams));
+                        }
+                        else
+                        {
+                            exams_list.setBackground(getResources().getDrawable(R.drawable.no_value_exams));
+                        }
+                    }
+                    else
+                    {
+                        exams_list.setBackgroundColor(getResources().getColor(R.color.ColorRecyclerBackground));
                     }
                 }
                 else

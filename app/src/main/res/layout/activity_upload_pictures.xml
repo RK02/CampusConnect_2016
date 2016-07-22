@@ -89,7 +89,9 @@
         android:numColumns="2"
         android:layout_above="@+id/container_action_buttons_more"
         android:verticalSpacing="8dp"
-        android:paddingBottom="16dp"/>
+        android:paddingBottom="16dp"
+        />
+
 
     <LinearLayout
         android:id="@+id/container_action_buttons_more"

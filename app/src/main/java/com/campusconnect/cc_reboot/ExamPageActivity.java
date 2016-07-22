@@ -115,6 +115,7 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
     View headerView;
     public static TextView home_title;
     GoogleApiClient mGoogleApiClient;
+    String courseNamePlaceHolder = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -294,14 +295,14 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
         final Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.setType("text/plain");
+        final String shareText = "Hey, check out the exam for " + courseNamePlaceHolder + " on Campus Connect!\n";
         branchUniversalObject.generateShortUrl(this, linkProperties, new Branch.BranchLinkCreateListener() {
             @Override
             public void onLinkCreate(String url, BranchError error) {
                 if (error == null) {
                     Log.i("MyApp", "got my Branch link to share: " + url);
-                    sendIntent.putExtra(Intent.EXTRA_TEXT,url);
+                    sendIntent.putExtra(Intent.EXTRA_TEXT,shareText + url);
                     progressDialog.dismiss();
-                    startActivityForResult(sendIntent,1);
                     startActivityForResult(Intent.createChooser(sendIntent, "Share with..."),1);
                 }
             }

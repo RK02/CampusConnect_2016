@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.campusconnect.cc_reboot.POJO.CourseList;
 import com.campusconnect.cc_reboot.POJO.NoteBookList;
@@ -33,6 +34,7 @@ public class FragmentSearchNotes extends Fragment {
     LinearLayoutManager mLayoutManager;
     public static ArrayList<NoteBookList> noteBookLists = new ArrayList<>();
     public static SwipeRefreshLayout swipeRefreshLayout;
+    public static RecyclerView fragment_search_notes;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -41,7 +43,7 @@ public class FragmentSearchNotes extends Fragment {
         no_course = (ImageView) v.findViewById (R.id.iv_no_course);
         swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swiperefresh);
         course_list = (RecyclerView) v.findViewById (R.id.rv_courses);
-
+        fragment_search_notes = (RecyclerView) v.findViewById(R.id.rv_courses);
         no_course.setVisibility(View.GONE);
 
         //Setting the recyclerView

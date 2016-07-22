@@ -23,6 +23,8 @@ public class ModelAssignment {
     private String dueTime;
     private String kind;
     private String etag;
+    private String courseName;
+
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
@@ -267,4 +269,11 @@ public class ModelAssignment {
         this.additionalProperties.put(name, value);
     }
 
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
 }

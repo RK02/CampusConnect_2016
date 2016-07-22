@@ -151,6 +151,7 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
     public static ArrayList<String> descriptions;
     public static ArrayList<String> dates;
     Intent intent;
+    int prevRate;
 
     //Flags
     boolean doubleBackToExitPressedOnce = false;
@@ -162,6 +163,10 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
     View headerView;
     public static TextView home_title;
     GoogleApiClient mGoogleApiClient;
+    String my = "my";
+    String personNamePlaceHolder="";
+    String courseNamePlaceHolder ="";
+    String sharetext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -309,6 +314,16 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onResponse(Call<ModelNoteBook> call, Response<ModelNoteBook> response) {
                 ModelNoteBook noteBook = response.body();
+                if(noteBook.getIsAuthor().equals("0"))
+                {
+                    sharetext = "Hey, check out the notes for "+ noteBook.getCourseName()+ " by "+noteBook.getUploaderName()+" on Campus Connect!\n";
+                }
+                else
+                {
+                    rate_note_button.setEnabled(false);
+                    sharetext = "Hey, check out my notes for "+ noteBook.getCourseName()+ " on Campus Connect!\n";
+                }
+                prevRate = Integer.parseInt(noteBook.getRated());
                 if (noteBook.getBookmarkStatus().equals("0")) {
                     bookmark_note_button.setChecked(false);
                 } else {
@@ -473,14 +488,14 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
         final Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.setType("text/plain");
+
         branchUniversalObject.generateShortUrl(this, linkProperties, new Branch.BranchLinkCreateListener() {
             @Override
             public void onLinkCreate(String url, BranchError error) {
                 if (error == null) {
                     Log.i("MyApp", "got my Branch link to share: " + url);
-                    sendIntent.putExtra(Intent.EXTRA_TEXT,url);
+                    sendIntent.putExtra(Intent.EXTRA_TEXT,sharetext+url);
                     progressDialog.dismiss();
-                    startActivityForResult(sendIntent,1);
                     startActivityForResult(Intent.createChooser(sendIntent, "Share with..."),1);
                 }
             }
@@ -570,10 +585,16 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
             LayerDrawable stars = (LayerDrawable) rating.getProgressDrawable();
             LayerDrawable progress = (LayerDrawable)rating.getProgressDrawable();
 //            DrawableCompat.setTint(progress.getDrawable(0),Color.WHITE);
-            DrawableCompat.setTint(progress.getDrawable(1),Color.YELLOW);
-            DrawableCompat.setTint(progress.getDrawable(2),Color.YELLOW);
-//            stars.getDrawable(2).setColorFilter(Color.rgb(255,247,151), PorterDuff.Mode.SRC_ATOP);
+//            DrawableCompat.setTint(progress.getDrawable(1),Color.YELLOW);
+//            DrawableCompat.setTint(progress.getDrawable(2),Color.YELLOW);
 
+//            stars.getDrawable(2).setColorFilter(Color.rgb(255,247,151), PorterDuff.Mode.SRC_ATOP);
+            if(prevRate>=0)
+            {
+                rating.setRating(prevRate);
+            }
+            progress.getDrawable(1).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_IN);
+            progress.getDrawable(2).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_IN);
             submit_rate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -590,6 +611,7 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
                             @Override
                             public void onResponse(Call<ModelRate> call, Response<ModelRate> response) {
                                 Log.i("sw32rate",response.code()+"");
+                                Toast.makeText(NotePageActivity.this,"Thank you for rating!",Toast.LENGTH_SHORT).show();
                             }
 
                             @Override

@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,6 +68,7 @@ public class FragmentCourses extends Fragment{
     MyApi myApi;
     Call<ModelFeed> call;
     ConnectivityManager cm;
+    RecyclerView fragment_courses;
     NetworkInfo activeNetwork;
     private FirebaseAnalytics mFirebaseAnalytics;
     boolean isConnected;
@@ -84,7 +87,7 @@ public class FragmentCourses extends Fragment{
     public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_courses, container, false);
         myApi = retrofit.create(MyApi.class);
-
+        fragment_courses = (RecyclerView) v.findViewById(R.id.rv_courses);
         swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swiperefresh);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -222,6 +225,21 @@ public class FragmentCourses extends Fragment{
                     profilePoints = modelFeed.getPoints();
                     List<AvailableCourseList> availableCourseList = modelFeed.getAvailableCourseList();
                     List<SubscribedCourseList> subscribedCourseList = modelFeed.getSubscribedCourseList();
+                    if(subscribedCourseList.isEmpty())
+                    {
+                        if(Build.VERSION.SDK_INT>=21) {
+
+                            fragment_courses.setBackground(getActivity().getDrawable(R.drawable.no_value_courses));
+                        }
+                        else
+                        {
+                            fragment_courses.setBackground(getResources().getDrawable(R.drawable.no_value_courses));
+                        }
+                    }
+                    else
+                    {
+                        fragment_courses.setBackgroundColor(getResources().getColor(R.color.ColorRecyclerBackground));
+                    }
                     for (final SubscribedCourseList x : subscribedCourseList) {
                         courseNames.add(x.getCourseName());
                         courseIds.add(x.getCourseId());
@@ -261,6 +279,8 @@ public class FragmentCourses extends Fragment{
                         }
                         FirebaseMessaging.getInstance().subscribeToTopic(x.getCourseId());
                     }
+                    Log.i("sw32",""+subscribedCourseList.size() + " : " + subscribedCourseList.isEmpty());
+
                     swipeRefreshLayout.setRefreshing(false);
                 }
 
