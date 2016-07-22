@@ -140,6 +140,7 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
                 .build();
         MyApi myApi = retrofit.create(MyApi.class);
         Call<ModelBranchList> call;
+        create.setEnabled(false);
 
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("CC", Context.MODE_PRIVATE);
@@ -154,6 +155,9 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
             public void onResponse(Call<ModelBranchList> call, Response<ModelBranchList> response) {
                 final ModelBranchList modelBranchList = response.body();
                 if (modelBranchList != null) {
+                    create.setOnClickListener(FragmentAddCourse.this);
+                    create.setEnabled(true);
+                    Log.i("sw32branches","done");
                     if(getActivity()!=null) {
                         courseBranch.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, modelBranchList.getBranchList()));
                     }branches.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -165,6 +169,7 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
                                 for (String branch : branchNames) {
                                     temp += branch + ",";
                                 }
+
                                 temp = temp.substring(0, temp.lastIndexOf(","));
                                 courseBranch.setText(temp);
                             } else {
@@ -276,7 +281,7 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
 
         courseColorPicker.setOnClickListener(this);
         cancel.setOnClickListener(this);
-        create.setOnClickListener(this);
+
 
         return v;
     }
@@ -298,7 +303,6 @@ public class FragmentAddCourse extends Fragment implements View.OnClickListener{
         if(courseSem.getText().toString().equals("")){courseSem.setError("Enter Semester");courseSem.requestFocus();return;}
         if(courseBatch.getText().toString().equals("")){courseBatch.setError("Enter Batch");courseBatch.requestFocus();return;}
         if(courseBranch.getText().toString().equals("")){courseBranch.setError("Enter Branch");courseBranch.requestFocus();return;}
-        if(days_selected.size()==0){Toast.makeText(getActivity(),"Select appropriate times for this course",Toast.LENGTH_SHORT).show();return;}
         String[] selected = courseBranch.getText().toString().split(",");
         for(String branch : selected) {
             if (branchNames.indexOf(branch) < 0) {
