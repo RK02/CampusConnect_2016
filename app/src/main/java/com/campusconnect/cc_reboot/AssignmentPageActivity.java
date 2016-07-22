@@ -17,12 +17,14 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.campusconnect.cc_reboot.POJO.ModelAssignment;
 import com.campusconnect.cc_reboot.POJO.MyApi;
@@ -102,7 +104,7 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
     ImageButton share_note_button;
 
     @Bind(R.id.tb_remind_me)
-    Button remind_button;
+    ToggleButton remind_button;
 
     String assignmentId;
     int courseColor;
@@ -240,7 +242,20 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
         fullscreen_button.setOnClickListener(this);
         share_note_button.setOnClickListener(this);
         assignment_last_page.setOnClickListener(this);
-        remind_button.setOnClickListener(this);
+
+        remind_button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                {
+                    FirebaseMessaging.getInstance().subscribeToTopic(assignmentId);
+                }
+                else
+                {
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic(assignmentId);
+                }
+            }
+        });
 
         //GoogleSignIn stuff
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -306,9 +321,7 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
 //                startActivity(intent);
                 break;
 
-            case R.id.tb_remind_me:
-                FirebaseMessaging.getInstance().subscribeToTopic(assignmentId);
-                break;
+
 
             default:
                 break;

@@ -17,12 +17,14 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.campusconnect.cc_reboot.POJO.ModelTest;
 import com.campusconnect.cc_reboot.POJO.MyApi;
@@ -100,7 +102,7 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
     ImageButton share_note_button;
 
     @Bind(R.id.exam_remind)
-    Button remind_button;
+    ToggleButton remind_button;
 
     private String testId;
     int courseColor;
@@ -209,8 +211,19 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
         edit_note_button.setOnClickListener(this);
         share_note_button.setOnClickListener(this);
         exam_last_page.setOnClickListener(this);
-        remind_button.setOnClickListener(this);
-
+        remind_button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                {
+                    FirebaseMessaging.getInstance().subscribeToTopic(testId);
+                }
+                else
+                {
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic(testId);
+                }
+            }
+        });
         //GoogleSignIn stuff
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -271,10 +284,6 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
 //                intent = new Intent(getApplicationContext(), NotesSliderActivity.class);
 //                startActivity(intent);
                 break;
-            case R.id.tb_remind_me:
-                FirebaseMessaging.getInstance().subscribeToTopic(testId);
-                break;
-
             default:
                 break;
         }
