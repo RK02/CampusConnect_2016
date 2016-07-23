@@ -47,8 +47,6 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
     @Bind(R.id.ib_trial)
     ImageButton trial_button;
 
-
-
     private ViewPagerDisable mNotesPager;
     private PagerAdapter mNotesPagerAdapter;
     ArrayList<String> Titles;
@@ -57,6 +55,10 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
     ArrayList<String> dates;
     int NumPages;
     public static ArrayList<ArrayList<String>> urls;
+
+    String curr, class_, total;
+
+    int class_pos;
 
 
     @Override
@@ -90,7 +92,6 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
         NumPages = Titles.size();
 
 
-
         // Instantiate a ViewPager and a PagerAdapter.
         mNotesPager = (ViewPagerDisable) findViewById(R.id.pager);
         mNotesPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(),Titles,urls,NumPages,this);
@@ -107,6 +108,12 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
                 Log.i("sw32externviewpager",position+"");
                 page_description.setText(descriptions.get(position));
                 page_date.setText(dates.get(position));
+
+                class_pos=position+1;
+
+                book_title.setText("Class "+class_pos);
+//                page_number.setText(curr+"/"+total);
+
             }
 
             @Override
@@ -180,9 +187,12 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
 
     @Override
     public void notePageInfo(String class_no, String curr_page, String total_pages) {
+        class_ = class_no;
+        curr = curr_page;
+        total = total_pages;
         book_title.setText(class_no);
         page_number.setText(curr_page+"/"+total_pages);
-       // page_description.setText(descriptions.get(Integer.parseInt(class_no.split(" ")[1])));
+//        page_description.setText(descriptions.get(Integer.parseInt(class_no.split(" ")[1])));
     }
 
     @Override
