@@ -3,6 +3,7 @@ package com.campusconnect.cc_reboot.fragment.Profile;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -49,6 +50,7 @@ public class FragmentBookmarkedNotes extends Fragment {
         boomarked_notes_list = (RecyclerView) v.findViewById (R.id.rv_notes);
         mNotes = new ArrayList<>();
 
+
         BitmapFactory.Options bm_opts = new BitmapFactory.Options();
         bm_opts.inScaled = false;
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.no_value_bookmarks, bm_opts);
@@ -81,6 +83,17 @@ public class FragmentBookmarkedNotes extends Fragment {
                         Log.i("sw32","bookhere");
                         mBookmarkedNotesAdapter.add(x);
                         mBookmarkedNotesAdapter.notifyDataSetChanged();
+                    }
+                    if(noteBookLists.isEmpty()){
+                        if(Build.VERSION.SDK_INT>=21)
+                        {
+                            boomarked_notes_list.setBackground(getActivity().getDrawable(R.drawable.no_value_bookmarks));
+                        }
+                        else{
+                            boomarked_notes_list.setBackground(getResources().getDrawable(R.drawable.no_value_bookmarks));
+                        }
+                    }else{
+                        boomarked_notes_list.setBackgroundColor(getResources().getColor(R.color.ColorRecyclerBackground));
                     }
                 }
             }

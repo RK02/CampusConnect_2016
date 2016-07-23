@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -18,29 +17,35 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.campusconnect.cc_reboot.POJO.ModelTest;
 import com.campusconnect.cc_reboot.POJO.MyApi;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentAbout;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentAddCourse;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentFeedback;
-import com.campusconnect.cc_reboot.fragment.Drawer.FragmentGifts;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentInvite;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentPointsInfo;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentRate;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentSettings;
 import com.campusconnect.cc_reboot.fragment.Drawer.FragmentTerms;
+import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 
@@ -97,7 +102,7 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
     ImageButton flag_button;
 
     @Bind(R.id.exam_remind)
-    Button remind_button;
+    ToggleButton remind_button;
 
     private String testId;
     int courseColor;
@@ -113,6 +118,7 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
     View headerView;
     public static TextView home_title;
     GoogleApiClient mGoogleApiClient;
+    String courseNamePlaceHolder = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +134,16 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
         //Setting up Header View
         headerView = getLayoutInflater().inflate(R.layout.header, navigationView, false);
         navigationView.addHeaderView(headerView);
-        ImageView view = (ImageView) headerView.findViewById(R.id.profile_image);
+        ImageView imageView = (ImageView) headerView.findViewById(R.id.profile_image);
+
+        Picasso.with(ExamPageActivity.this)
+                .load(getSharedPreferences("CC",MODE_PRIVATE).getString("photourl","fakedesu")).error(R.mipmap.ic_launcher)
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
+                .placeholder(R.mipmap.ccnoti)
+                .into(imageView);
+        ((TextView)headerView.findViewById(R.id.tv_username)).setText(getSharedPreferences("CC",MODE_PRIVATE).getString("profileName","PLACEHOLDER"));
+        ((TextView)headerView.findViewById(R.id.tv_points)).setText(FragmentCourses.profilePoints);
 
         //Unchecking all the drawer menu items before going back to home in case the app crashes
         int size = navigationView.getMenu().size();
@@ -197,8 +212,19 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
         share_note_button.setOnClickListener(this);
         flag_button.setOnClickListener(this);
         exam_last_page.setOnClickListener(this);
-        remind_button.setOnClickListener(this);
-
+        remind_button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                {
+                    FirebaseMessaging.getInstance().subscribeToTopic(testId);
+                }
+                else
+                {
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic(testId);
+                }
+            }
+        });
         //GoogleSignIn stuff
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -264,10 +290,6 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
 //                intent = new Intent(getApplicationContext(), NotesSliderActivity.class);
 //                startActivity(intent);
                 break;
-            case R.id.tb_remind_me:
-
-                break;
-
             default:
                 break;
         }
@@ -289,15 +311,15 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
         final Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.setType("text/plain");
-        sendIntent.setPackage("com.whatsapp");
+        final String shareText = "Hey, check out the exam for " + courseNamePlaceHolder + " on Campus Connect!\n";
         branchUniversalObject.generateShortUrl(this, linkProperties, new Branch.BranchLinkCreateListener() {
             @Override
             public void onLinkCreate(String url, BranchError error) {
                 if (error == null) {
                     Log.i("MyApp", "got my Branch link to share: " + url);
-                    sendIntent.putExtra(Intent.EXTRA_TEXT,url);
+                    sendIntent.putExtra(Intent.EXTRA_TEXT,shareText + url);
                     progressDialog.dismiss();
-                    startActivityForResult(sendIntent,1);
+                    startActivityForResult(Intent.createChooser(sendIntent, "Share with..."),1);
                 }
             }
         });
@@ -305,11 +327,14 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
 
     //Function for fragment selection and commits
     public void displayView(int viewId){
+        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
         switch (viewId) {
             case R.id.item_timetable:
                 at_home=true;
                 Intent intent_home = new Intent(ExamPageActivity.this,HomeActivity2.class);
                 startActivity(intent_home);
+                finish();
                 break;
             case R.id.item_add_course:
                 fragment = new FragmentAddCourse();
@@ -319,7 +344,9 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
             case R.id.item_bookmark:
                 Intent intent_profile = new Intent(ExamPageActivity.this,ProfilePageActivity.class);
                 startActivity(intent_profile);
-                at_home=false;
+                at_home=true;
+                fragment = null;
+                frag_title = "Exam";
                 break;
             case R.id.item_getting_points:
                 fragment = new FragmentPointsInfo();
@@ -371,7 +398,6 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
         }
         if (fragment != null) {
             home_title.setText(frag_title);
-            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             //fragmentTransaction.remove(getSupportFragmentManager().findFragmentById(R.id.frame));
             Fragment temp  = getSupportFragmentManager().findFragmentById(R.id.frame);
 
@@ -394,7 +420,15 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
                     fragmentTransaction.commit();
                 }
             }
-
+        }
+        else
+        {
+            Fragment temp  = getSupportFragmentManager().findFragmentById(R.id.frame);
+            if(temp!=null)
+            {
+                fragmentTransaction.remove(temp).commit();
+                home_title.setText(frag_title);
+            }
         }
     }
 

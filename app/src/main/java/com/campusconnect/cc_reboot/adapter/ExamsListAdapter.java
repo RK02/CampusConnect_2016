@@ -14,7 +14,10 @@ import com.campusconnect.cc_reboot.ExamPageActivity;
 import com.campusconnect.cc_reboot.POJO.ModelTest;
 import com.campusconnect.cc_reboot.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -46,11 +49,37 @@ public class ExamsListAdapter extends
         final ModelTest temp = mModelTests.get(i);
         examsListViewHolder.exam_date.setText(temp.getDueDate());
         examsListViewHolder.exam_description.setText(temp.getExamDesc());
-        examsListViewHolder.exam_posted_on.setText(temp.getLastUpdated().substring(0,10));
         examsListViewHolder.exam_uploader.setText(temp.getUploaderName());
         examsListViewHolder.exam_views.setText(temp.getViews());
         examsListViewHolder.exam_name.setText(temp.getCourseName());
-
+        String time = temp.getLastUpdated().substring(0,10);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        int days = 0,hours=0,minutes=0,seconds=0;
+        try {
+            Calendar a = Calendar.getInstance();
+            Calendar b = Calendar.getInstance();
+            b.setTime(df.parse(time));
+            long difference = a.getTimeInMillis() - b.getTimeInMillis();
+            days = (int) (difference/ (1000*60*60*24));
+            hours = (int) (difference/ (1000*60*60));
+            minutes = (int) (difference/ (1000*60));
+            seconds = (int) (difference/1000);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        days = Math.abs(days);
+        hours = Math.abs(hours);
+        minutes = Math.abs(minutes);
+        seconds = Math.abs(seconds);
+        if(days==0) {if(hours==0) {if(minutes==0) {if(seconds==0) {examsListViewHolder.exam_posted_on.setText("Just now");}
+        else {if(seconds==1) examsListViewHolder.exam_posted_on.setText(seconds + " second ago");
+        else examsListViewHolder.exam_posted_on.setText(seconds + " seconds ago");}}
+        else {if(minutes==1) examsListViewHolder.exam_posted_on.setText(minutes + " minute ago");
+        else examsListViewHolder.exam_posted_on.setText(minutes + " minutes ago");}}
+        else {if(hours==1)examsListViewHolder.exam_posted_on.setText(hours + " hour ago");
+        else examsListViewHolder.exam_posted_on.setText(hours + " hours ago");}}
+        else {if(days==1)examsListViewHolder.exam_posted_on.setText(days + " day ago");
+        else examsListViewHolder.exam_posted_on.setText(days + " days ago");}
         examsListViewHolder.exam_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

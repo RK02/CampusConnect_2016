@@ -47,7 +47,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMsgService";
     final static String CC = "CCNOTIFS";
-    int notifyId =1;
+    int notifyId =6969;
     /**
      * Called when message is received.
      *
@@ -86,11 +86,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void sendNotification(String title, String messageBody,String type, String id) {
         Intent intent = new Intent(this,HomeActivity2.class);
         Log.i("sw32notification",id + ":"+type+ ":" + messageBody);
-//        switch(type){
-//            case "notes":intent = new Intent(this,NotePageActivity.class); intent.putExtra("noteBookId",id); break;
-//            case "assignment":intent = new Intent(this,AssignmentPageActivity.class); intent.putExtra("assignmentId",id);break;
-//            case "exam":intent = new Intent(this,ExamPageActivity.class); intent.putExtra("testId",id);break;
-//        }
+
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.setAction(Long.toString(System.currentTimeMillis()));
         intent.putExtra("pendingIntentAction","Clear Notifications");
@@ -105,12 +101,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             i++;
             inboxStyle.addLine(customNotification.getTitle() + " - " + customNotification.getMessageBody());
         }
-        inboxStyle.setBigContentTitle(i + " New notifications");
         inboxStyle.setSummaryText("Campus Connect");
         notificationBuilder
                 .setSmallIcon(R.mipmap.ccnoti)
                 .setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.mipmap.ccnoti))
                 .setContentTitle("Campus Connect")
+                .setContentText(i+ " New notifications")
                 .setStyle(inboxStyle)
                 .setGroup(CC)
                 .setGroupSummary(true)
