@@ -4,7 +4,7 @@
     android:background="@android:color/transparent"
     android:layout_height="match_parent">
 
-    <com.campusconnect.cc_reboot.auxiliary.ViewPagerDisable
+    <com.campusconnect.auxiliary.ViewPagerDisable
         android:id="@+id/pager"
         android:background="@android:color/transparent"
         android:layout_width="match_parent"

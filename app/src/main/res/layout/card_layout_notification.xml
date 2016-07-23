@@ -25,7 +25,7 @@
         android:paddingBottom="4dp"
         android:weightSum="3">
 
-        <com.campusconnect.cc_reboot.auxiliary.CircularImageView
+        <com.campusconnect.auxiliary.CircularImageView
             xmlns:app="http://schemas.android.com/tools"
             android:id="@+id/group_icon_notification"
             android:layout_width="50dp"

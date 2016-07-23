@@ -75,7 +75,7 @@
                                     app:layout_collapseParallaxMultiplier="0"
                                     app:layout_collapseMode="parallax">
 
-                                    <com.campusconnect.cc_reboot.auxiliary.CircularImageView
+                                    <com.campusconnect.auxiliary.CircularImageView
                                         android:id="@+id/profile_image"
                                         android:layout_width="100dp"
                                         android:layout_height="100dp"
@@ -174,7 +174,7 @@
 
                             </android.support.design.widget.CollapsingToolbarLayout>
 
-                            <com.campusconnect.cc_reboot.slidingtab.SlidingTabLayout_home
+                            <com.campusconnect.slidingtab.SlidingTabLayout_home
                                 android:id="@+id/tabs_course"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"

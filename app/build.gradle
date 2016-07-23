@@ -8,16 +8,22 @@ android {
             storeFile file('cckeystore.jks')
             storePassword 'password'
         }
+        release {
+            keyAlias 'canopus'
+            keyPassword 'canopus'
+            storeFile file('/Users/sarthak/keystore.jks')
+            storePassword 'canopus'
+        }
     }
     dexOptions {
         javaMaxHeapSize "4g"
     }
-    compileSdkVersion 23
+    compileSdkVersion 24
     buildToolsVersion "23.0.2"
     defaultConfig {
         applicationId "com.campusconnect.cc_reboot"
         minSdkVersion 16
-        targetSdkVersion 23
+        targetSdkVersion 24
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -26,6 +32,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
         debug {
             signingConfig signingConfigs.config
@@ -36,8 +43,8 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.google.android.gms:play-services-basement:9.2.0'
-    compile 'com.google.android.gms:play-services-plus:9.2.0'
+    compile 'com.google.android.gms:play-services-basement:9.2.1'
+    compile 'com.google.android.gms:play-services-plus:9.2.1'
     compile 'com.android.support:design:23.4.0'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:recyclerview-v7:23.1.1'
@@ -50,12 +57,14 @@ dependencies {
     compile 'com.getbase:floatingactionbutton:1.10.1'
     compile 'com.squareup.okhttp3:okhttp:3.3.1'
     compile 'com.google.firebase:firebase-auth:9.2.0'
-    compile 'com.google.android.gms:play-services-auth:9.2.0'
+    compile 'com.google.android.gms:play-services-auth:9.2.1'
     compile 'com.google.firebase:firebase-core:9.0.0'
     compile 'com.android.support:multidex:1.0.0'
     compile 'com.google.firebase:firebase-messaging:9.2.0'
+    compile 'com.google.firebase:firebase-crash:9.2.1'
     compile 'com.github.satyan:sugar:1.4'
     compile 'io.branch.sdk.android:library:1.+'
+    compile 'io.doorbell:android-sdk:0.2.6@aar'
     compile('com.crashlytics.sdk.android:crashlytics:2.5.7@aar') { transitive = true }
 }
 

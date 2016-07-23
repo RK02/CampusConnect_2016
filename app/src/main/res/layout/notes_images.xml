@@ -5,7 +5,7 @@
     android:background="@android:color/transparent"
     android:orientation="vertical">
 
-    <com.campusconnect.cc_reboot.auxiliary.PinchToZoom.GestureImageView
+    <com.campusconnect.auxiliary.PinchToZoom.GestureImageView
         android:id="@+id/iv_notes_fullscreen"
         android:layout_width="match_parent"
         android:background="@android:color/transparent"

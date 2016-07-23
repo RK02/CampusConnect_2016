@@ -9,7 +9,7 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp">
 
-    <com.campusconnect.cc_reboot.auxiliary.CircularImageView
+    <com.campusconnect.auxiliary.CircularImageView
         android:id="@+id/profile_image"
         android:layout_width="100dp"
         android:layout_height="100dp"

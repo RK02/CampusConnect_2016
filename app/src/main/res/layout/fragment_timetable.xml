@@ -5,7 +5,7 @@
     android:paddingBottom="54dp">
 
 
-    <com.campusconnect.cc_reboot.auxiliary.ObservableScrollView
+    <com.campusconnect.auxiliary.ObservableScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/scroll_horizontal_header"
         android:layout_width="wrap_content"
@@ -123,14 +123,14 @@
             </TableRow>
         </TableLayout>
 
-    </com.campusconnect.cc_reboot.auxiliary.ObservableScrollView>
+    </com.campusconnect.auxiliary.ObservableScrollView>
 
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:paddingTop="50dp">
 
-        <com.campusconnect.cc_reboot.auxiliary.ObservableScrollView
+        <com.campusconnect.auxiliary.ObservableScrollView
             android:id="@+id/scroll_horizontal_body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -1534,6 +1534,6 @@
                 </TableRow>
 
             </TableLayout>
-        </com.campusconnect.cc_reboot.auxiliary.ObservableScrollView>
+        </com.campusconnect.auxiliary.ObservableScrollView>
     </ScrollView>
 </RelativeLayout>

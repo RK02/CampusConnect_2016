@@ -196,7 +196,7 @@
 
                             </android.support.design.widget.CollapsingToolbarLayout>
 
-                            <com.campusconnect.cc_reboot.slidingtab.SlidingTabLayout_home
+                            <com.campusconnect.slidingtab.SlidingTabLayout_home
                                 android:id="@+id/tabs_course"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"

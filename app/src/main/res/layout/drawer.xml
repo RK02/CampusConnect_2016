@@ -32,11 +32,7 @@
         android:id="@+id/mid_part"
         android:checkableBehavior="single">
 
-        <item
-            android:id="@+id/item_getting_points"
-            android:checked="false"
-            android:icon="@mipmap/ic_help_24"
-            android:title="How to Get Points" />
+
 
         <item
             android:id="@+id/item_invite"
@@ -44,11 +40,7 @@
             android:icon="@mipmap/ic_share_24_black"
             android:title="Invite" />
 
-        <item
-            android:id="@+id/item_settings"
-            android:checked="false"
-            android:icon="@mipmap/ic_settings_24"
-            android:title="Settings" />
+
 
         <item
             android:id="@+id/item_logout"
