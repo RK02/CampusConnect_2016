@@ -231,7 +231,6 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
         menu_button.setOnClickListener(this);
         search_button.setOnClickListener(this);
         notification_button.setOnClickListener(this);
-        ((TextView)headerView.findViewById(R.id.tv_points)).setText(FragmentCourses.profilePoints);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -264,7 +263,6 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
                 .networkPolicy(NetworkPolicy.NO_CACHE)
                 .placeholder(R.mipmap.ccnoti)
                 .into(view);
-        ((TextView)headerView.findViewById(R.id.tv_points)).setText(FragmentCourses.profilePoints);
 
 
     }
@@ -473,7 +471,7 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
             case R.id.item_bookmark:
                 Intent intent_profile = new Intent(HomeActivity2.this,ProfilePageActivity.class);
                 startActivity(intent_profile);
-                fragment = null;
+                fragment = new FragmentHome();
                 frag_title = "Home";
                 at_home=true;
                 break;
@@ -481,9 +479,29 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
                 fragment = new FragmentHome();
                 frag_title = "Home";
                 at_home=true;
-                Intent contactPickerIntent = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
-                contactPickerIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                startActivityForResult(contactPickerIntent, 1001);
+                BranchUniversalObject branchUniversalObject = new BranchUniversalObject()
+                        .setContentIndexingMode(BranchUniversalObject.CONTENT_INDEX_MODE.PUBLIC);
+
+                LinkProperties linkProperties = new LinkProperties()
+                        .setChannel("Invite")
+                        .setFeature("Invite")
+                        .addControlParameter("$desktop_url", "http://campusconnect.cc")
+                        .addControlParameter("$android_url", "bit.ly/campusconnectandroid");
+                final Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.setType("text/plain");
+
+                final String shareText = " Hey, check out this cool app called Campus Connect!\n";
+                branchUniversalObject.generateShortUrl(this, linkProperties, new Branch.BranchLinkCreateListener() {
+                    @Override
+                    public void onLinkCreate(String url, BranchError error) {
+                        if (error == null) {
+                            sendIntent.putExtra(Intent.EXTRA_TEXT,shareText+url);
+                            Log.i("MyApp", "got my Branch link to share: " + url);
+                            startActivityForResult(Intent.createChooser(sendIntent, "Invite through..."),666);
+                        }
+                    }
+                });
                 break;
             case R.id.item_logout:
                 at_home=true;
@@ -504,7 +522,7 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
                 frag_title = "Home";
                 at_home=true;
                 fragment = new FragmentHome();
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://campusconnect.cc/terms"));
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://campusconnect.cc/faq#terms"));
                 startActivity(browserIntent);
                 break;
             case R.id.item_rate:
@@ -527,7 +545,7 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
                 doorbellDialog.addProperty("loggedIn", true); // Optionally add some properties
                 doorbellDialog.setEmailFieldVisibility(View.GONE); // Hide the email field, since we've filled it in already
                 doorbellDialog.setPoweredByVisibility(View.GONE);
-                doorbellDialog.setMessageHint("");
+                doorbellDialog.setMessageHint("Feel free to tell us anything!");
                 // TODO:
                 doorbellDialog.setOnFeedbackSentCallback(new io.doorbell.android.callbacks.OnFeedbackSentCallback() {
                     @Override
@@ -540,11 +558,7 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
                 frag_title = "Home";
                 at_home=true;
                 break;
-            case R.id.item_about:
-                fragment = new FragmentAbout();
-                frag_title = "About Us";
-                at_home=false;
-                break;
+
             default:
                 Toast.makeText(getApplicationContext(), "Something's Wrong", Toast.LENGTH_SHORT).show();
                 break;
@@ -753,55 +767,14 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==69)
-
         {if(resultCode==1)
         {
             Log.i("sw32","activityresult");
             FragmentHome.home_pager.setCurrentItem(1);
         }
         }
-        if(requestCode==1001)
-        {
-            Uri contactUri = data.getData();
-            // We only need the NUMBER column, because there will be only one row in the result
-            String[] projection = {ContactsContract.CommonDataKinds.Phone.NUMBER};
 
-            // Perform the query on the contact to get the NUMBER column
-            // We don't need a selection or sort order (there's only one result for the given URI)
-            // CAUTION: The query() method should be called from a separate thread to avoid blocking
-            // your app's UI thread. (For simplicity of the sample, this code doesn't do that.)
-            // Consider using CursorLoader to perform the query.
-            Cursor cursor = getContentResolver()
-                    .query(contactUri, projection, null, null, null);
-            cursor.moveToFirst();
 
-            // Retrieve the phone number from the NUMBER column
-            int column = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-            final String number = cursor.getString(column);
-            BranchUniversalObject branchUniversalObject = new BranchUniversalObject()
-                    .setContentIndexingMode(BranchUniversalObject.CONTENT_INDEX_MODE.PUBLIC);
-
-            LinkProperties linkProperties = new LinkProperties()
-                    .setChannel("SMS")
-                    .setFeature("Invite")
-                    .addControlParameter("$desktop_url", "http://campusconnect.cc" )
-                    .addControlParameter("$android_url","bit.ly/campusconnectandroid");
-
-            final String shareText = " Hey, check out this cool app called Campus Connect!\n";
-            branchUniversalObject.generateShortUrl(this, linkProperties, new Branch.BranchLinkCreateListener() {
-                @Override
-                public void onLinkCreate(String url, BranchError error) {
-                    if (error == null) {
-                        Uri uri = Uri.parse("smsto:"+number);
-                        Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
-                        intent.putExtra("sms_body", shareText+url);
-                        startActivity(intent);
-                        Log.i("MyApp", "got my Branch link to share: "+ url);
-                    }
-                }
-            });
-
-        }
     }
 
 }

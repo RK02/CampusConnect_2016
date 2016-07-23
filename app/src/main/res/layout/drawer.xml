@@ -75,10 +75,6 @@
             android:checked="false"
             android:title="Feedback" />
 
-        <item
-            android:id="@+id/item_about"
-            android:checked="false"
-            android:title="About CampusConnect" />
 
     </group>
 

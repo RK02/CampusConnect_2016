@@ -18,6 +18,7 @@ public class SubscribedCourseList extends SugarRecord {
     private String courseName;
     private String recentNotes;
     private String timetable;
+    private String courseCode;
 
     @Unique
     private String courseId;
@@ -247,5 +248,13 @@ public class SubscribedCourseList extends SugarRecord {
 
     public void setTimetable(String timetable) {
         this.timetable = timetable;
+    }
+
+    public String getCourseCode() {
+        return courseCode;
+    }
+
+    public void setCourseCode(String courseCode) {
+        this.courseCode = courseCode;
     }
 }

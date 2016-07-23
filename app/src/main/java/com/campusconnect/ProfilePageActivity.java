@@ -2,6 +2,7 @@ package com.campusconnect;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -26,6 +27,7 @@ import com.campusconnect.POJO.ModelFeed;
 import com.campusconnect.POJO.MyApi;
 import com.campusconnect.fragment.Drawer.FragmentAbout;
 import com.campusconnect.fragment.Drawer.FragmentAddCourse;
+import com.campusconnect.fragment.Drawer.FragmentHome;
 import com.campusconnect.fragment.Drawer.FragmentInvite;
 import com.campusconnect.fragment.Drawer.FragmentRate;
 import com.campusconnect.fragment.Drawer.FragmentTerms;
@@ -37,6 +39,7 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
@@ -71,16 +74,13 @@ public class ProfilePageActivity extends AppCompatActivity implements FloatingAc
      @Bind(R.id.tv_username)
     TextView profile_name;
 
-    @Bind(R.id.tv_points)
-    TextView profile_points;
 
     @Bind(R.id.tabs_course)
     SlidingTabLayout_home profile_tabs;
 
     @Bind(R.id.ib_back)
     ImageButton back_button;
-    @Bind(R.id.ib_gifts)
-    ImageButton gifts_button;
+
     @Bind(R.id.ib_edit_profile)
     ImageButton edit_profile_button;
 
@@ -106,12 +106,14 @@ public class ProfilePageActivity extends AppCompatActivity implements FloatingAc
     View headerView;
     public static TextView home_title;
     GoogleApiClient mGoogleApiClient;
+    FirebaseAnalytics firebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         ButterKnife.bind(this);
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         //Drawer stuff
         home_title = (TextView) findViewById(R.id.tv_title);
@@ -130,7 +132,6 @@ public class ProfilePageActivity extends AppCompatActivity implements FloatingAc
                 .placeholder(R.mipmap.ccnoti)
                 .into(imageView);
         ((TextView)headerView.findViewById(R.id.tv_username)).setText(getSharedPreferences("CC",MODE_PRIVATE).getString("profileName","PLACEHOLDER"));
-        ((TextView)headerView.findViewById(R.id.tv_points)).setText(FragmentCourses.profilePoints);
 
         //Unchecking all the drawer menu items before going back to home in case the app crashes
         int size = navigationView.getMenu().size();
@@ -222,7 +223,6 @@ public class ProfilePageActivity extends AppCompatActivity implements FloatingAc
                             .networkPolicy(NetworkPolicy.NO_CACHE)
                             .into(profile_image);
                     profile_name.setText(modelFeed.getProfileName());
-                    profile_points.setText(modelFeed.getPoints());
                 }
             }
 
@@ -236,7 +236,6 @@ public class ProfilePageActivity extends AppCompatActivity implements FloatingAc
 
         //OnClickListeners
         back_button.setOnClickListener(this);
-        gifts_button.setOnClickListener(this);
         edit_profile_button.setOnClickListener(this);
 
         //GoogleSignIn stuff
@@ -266,11 +265,6 @@ public class ProfilePageActivity extends AppCompatActivity implements FloatingAc
                 finish();
                 break;
 
-            case R.id.ib_gifts:
-                Intent intent_gifts = new Intent(getApplicationContext(), GiftsActivity.class);
-                startActivity(intent_gifts);
-                break;
-
             case R.id.ib_edit_profile:
                 Intent intent_edit_profile = new Intent(getApplicationContext(), EditProfileActivity.class);
                 startActivity(intent_edit_profile);
@@ -285,6 +279,38 @@ public class ProfilePageActivity extends AppCompatActivity implements FloatingAc
     //Layout definition when FAB is expanded
     @Override
     public void onMenuExpanded() {
+        Bundle params = new Bundle();
+        params.putString("open_menu","yay");
+        firebaseAnalytics.logEvent("fab_pressed_event", params);
+
+        fabMenu.findViewById(R.id.fab_event).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent exam = new Intent(ProfilePageActivity.this,AddEventActivity.class);
+                exam.putExtra("Mode",1);
+                startActivity(exam);
+                fabMenu.collapse();
+            }
+        });
+        fabMenu.findViewById(R.id.fab_photo).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent assignment = new Intent(ProfilePageActivity.this,AddEventActivity.class);
+                assignment.putExtra("Mode",2);
+                startActivity(assignment);
+                fabMenu.collapse();
+            }
+        });
+        fabMenu.findViewById(R.id.fab_others).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle params = new Bundle();
+                params.putString("event","notes");
+                firebaseAnalytics.logEvent("notes_upload_start",params);
+                startActivity(new Intent(ProfilePageActivity.this,UploadPicturesActivity.class));
+                fabMenu.collapse();
+            }
+        });
         fab_menu_container.getBackground().setAlpha(230);
         fab_menu_container.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -351,14 +377,23 @@ public class ProfilePageActivity extends AppCompatActivity implements FloatingAc
                 startActivity(intent);
                 break;
             case R.id.item_t_and_c:
-                fragment = new FragmentTerms();
-                frag_title = "Terms and Conditions";
-                at_home=false;
+                frag_title = "Profile";
+                at_home=true;
+                fragment = null;
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://campusconnect.cc/faq#terms"));
+                startActivity(browserIntent);
                 break;
             case R.id.item_rate:
-                fragment = new FragmentRate();
-                frag_title = "Rate App";
-                at_home=false;
+                fragment = null;
+                frag_title = "Profile";
+                //final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+                final String appPackageName = "com.campusconnect";
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                } catch (android.content.ActivityNotFoundException anfe) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + appPackageName)));
+                }
+                at_home=true;
                 break;
             case R.id.item_feedback:
                 Doorbell doorbellDialog = new Doorbell(this, 2764, "czPslyxNo9JTzQog5JcrWBlRbHVSQKyqnieLG8QDVZNK1hesEJtPD9E0MRuBbeW0");
@@ -368,6 +403,7 @@ public class ProfilePageActivity extends AppCompatActivity implements FloatingAc
                 doorbellDialog.addProperty("loggedIn", true); // Optionally add some properties
                 doorbellDialog.setEmailFieldVisibility(View.GONE); // Hide the email field, since we've filled it in already
                 doorbellDialog.setPoweredByVisibility(View.GONE);
+                doorbellDialog.setMessageHint("Feel free to tell us anything!");
                 doorbellDialog.setOnFeedbackSentCallback(new io.doorbell.android.callbacks.OnFeedbackSentCallback() {
                     @Override
                     public void handle(String message) {
@@ -379,11 +415,7 @@ public class ProfilePageActivity extends AppCompatActivity implements FloatingAc
                 frag_title = "Profile";
                 at_home=true;
                 break;
-            case R.id.item_about:
-                fragment = new FragmentAbout();
-                frag_title = "About Us";
-                at_home=false;
-                break;
+
             default:
                 Toast.makeText(getApplicationContext(), "Something's Wrong", Toast.LENGTH_SHORT).show();
                 break;

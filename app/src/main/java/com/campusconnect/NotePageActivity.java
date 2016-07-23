@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -43,6 +44,7 @@ import com.campusconnect.POJO.MyApi;
 import com.campusconnect.POJO.Note;
 import com.campusconnect.fragment.Drawer.FragmentAbout;
 import com.campusconnect.fragment.Drawer.FragmentAddCourse;
+import com.campusconnect.fragment.Drawer.FragmentHome;
 import com.campusconnect.fragment.Drawer.FragmentInvite;
 import com.campusconnect.fragment.Drawer.FragmentRate;
 import com.campusconnect.fragment.Drawer.FragmentTerms;
@@ -119,8 +121,7 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
 
     @Bind(R.id.ib_back)
     ImageButton back_button;
-    @Bind(R.id.ib_edit_note)
-    ImageButton edit_note_button;
+
     @Bind(R.id.ib_fullscreen)
     ImageButton fullscreen_button;
     @Bind(R.id.ib_share)
@@ -184,7 +185,6 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
                 .placeholder(R.mipmap.ccnoti)
                 .into(imageView);
         ((TextView)headerView.findViewById(R.id.tv_username)).setText(getSharedPreferences("CC",MODE_PRIVATE).getString("profileName","PLACEHOLDER"));
-        ((TextView)headerView.findViewById(R.id.tv_points)).setText(FragmentCourses.profilePoints);
 
         //Unchecking all the drawer menu items before going back to home in case the app crashes
         int size = navigationView.getMenu().size();
@@ -252,7 +252,6 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
 
         //OnClickListeners
         back_button.setOnClickListener(this);
-        edit_note_button.setOnClickListener(this);
         fullscreen_button.setOnClickListener(this);
         share_note_button.setOnClickListener(this);
         notes_last_page.setOnClickListener(this);
@@ -411,13 +410,8 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
                 finish();
                 break;
 
-            case R.id.ib_edit_note:
-                intent = new Intent(getApplicationContext(), EditNoteActivity.class);
-                startActivity(intent);
-                break;
+
             case R.id.ib_flag:
-//                intent = new Intent(getApplicationContext(), EditNoteActivity.class);
-//                startActivity(intent);
                 getReportsDetailsDialog = new ReportDetailsDialog(this);
                 getReportsDetailsDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 Window getReportsDetailsDialogWindow =  getReportsDetailsDialog.getWindow();
@@ -655,9 +649,32 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
                 at_home=true;
                 break;
             case R.id.item_invite:
-                fragment = new FragmentInvite();
-                frag_title = "Invite";
-                at_home=false;
+                fragment = null;
+                frag_title = "Note";
+                at_home=true;
+                BranchUniversalObject branchUniversalObject = new BranchUniversalObject()
+                        .setContentIndexingMode(BranchUniversalObject.CONTENT_INDEX_MODE.PUBLIC);
+
+                LinkProperties linkProperties = new LinkProperties()
+                        .setChannel("Invite")
+                        .setFeature("Invite")
+                        .addControlParameter("$desktop_url", "http://campusconnect.cc")
+                        .addControlParameter("$android_url", "bit.ly/campusconnectandroid");
+                final Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.setType("text/plain");
+
+                final String shareText = " Hey, check out this cool app called Campus Connect!\n";
+                branchUniversalObject.generateShortUrl(this, linkProperties, new Branch.BranchLinkCreateListener() {
+                    @Override
+                    public void onLinkCreate(String url, BranchError error) {
+                        if (error == null) {
+                            sendIntent.putExtra(Intent.EXTRA_TEXT,shareText+url);
+                            Log.i("MyApp", "got my Branch link to share: " + url);
+                            startActivityForResult(Intent.createChooser(sendIntent, "Invite through..."),666);
+                        }
+                    }
+                });
                 break;
             case R.id.item_logout:
                 at_home=true;
@@ -669,14 +686,23 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
                 startActivity(intent);
                 break;
             case R.id.item_t_and_c:
-                fragment = new FragmentTerms();
-                frag_title = "Terms and Conditions";
-                at_home=false;
+                frag_title = "Note";
+                at_home=true;
+                fragment = null;
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://campusconnect.cc/faq#terms"));
+                startActivity(browserIntent);
                 break;
             case R.id.item_rate:
-                fragment = new FragmentRate();
-                frag_title = "Rate App";
-                at_home=false;
+                fragment = null;
+                frag_title = "Note";
+                //final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+                final String appPackageName = "com.campusconnect";
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                } catch (android.content.ActivityNotFoundException anfe) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + appPackageName)));
+                }
+                at_home=true;
                 break;
             case R.id.item_feedback:
                 Doorbell doorbellDialog = new Doorbell(this, 2764, "czPslyxNo9JTzQog5JcrWBlRbHVSQKyqnieLG8QDVZNK1hesEJtPD9E0MRuBbeW0");
@@ -686,6 +712,7 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
                 doorbellDialog.addProperty("loggedIn", true); // Optionally add some properties
                 doorbellDialog.setEmailFieldVisibility(View.GONE); // Hide the email field, since we've filled it in already
                 doorbellDialog.setPoweredByVisibility(View.GONE);
+                doorbellDialog.setMessageHint("Feel free to tell us anything!");
                 doorbellDialog.setOnFeedbackSentCallback(new io.doorbell.android.callbacks.OnFeedbackSentCallback() {
                     @Override
                     public void handle(String message) {
@@ -697,11 +724,7 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
                 frag_title = "Note";
                 at_home=true;
                 break;
-            case R.id.item_about:
-                fragment = new FragmentAbout();
-                frag_title = "About Us";
-                at_home=false;
-                break;
+
             default:
                 Toast.makeText(getApplicationContext(), "Something's Wrong", Toast.LENGTH_SHORT).show();
                 break;

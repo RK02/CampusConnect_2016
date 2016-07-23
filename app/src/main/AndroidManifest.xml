@@ -34,7 +34,7 @@
 
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="f36cb93f6f4460b768644db9ecbc2b70feabb4d7" />
+            android:value="8cf76229d4e405b251e3faf3108413ac418be0da" />
         <meta-data
             android:name="io.branch.sdk.BranchKey"
             android:value="key_live_jgl6YTLmWFUWqekOmqpuomdbwDlaAuaB" />
@@ -49,7 +49,7 @@
             android:value="true" />
         <meta-data
             android:name="DOMAIN_PACKAGE_NAME"
-            android:value="com.campusconnect.cc_reboot.POJO" />
+            android:value="com.campusconnect.POJO" />
         <!-- [START firebase_service] -->
         <service android:name="com.campusconnect.MyFirebaseMessagingService">
             <intent-filter>
@@ -148,18 +148,10 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.campusconnect.GiftsActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait" />
-        <activity
             android:name="com.campusconnect.EditProfileActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name="com.campusconnect.EditNoteActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait" />
         <activity
             android:name="com.campusconnect.DummyActivity"
             android:label="@string/app_name"

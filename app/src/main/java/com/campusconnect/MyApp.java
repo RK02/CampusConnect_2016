@@ -3,6 +3,8 @@ package com.campusconnect;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
+import com.campusconnect.POJO.SubscribedCourseList;
+import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
 import com.orm.SugarApp;
 import com.orm.SugarContext;
@@ -26,7 +28,7 @@ public class MyApp extends SugarApp {
         super.onCreate();
         SugarContext.init(this);
         Branch.getAutoInstance(this);
-        Fabric.with(this, new Answers());
+        Fabric.with(this, new Answers(), new Crashlytics());
     }
 
     @Override

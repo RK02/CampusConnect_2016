@@ -296,6 +296,7 @@ public class AddEventActivity extends AppCompatActivity {
             mBuilder.setOngoing(true);
             mBuilder.setContentIntent(null);
             mNotifyManager.notify(1,mBuilder.build());
+            Toast.makeText(AddEventActivity.this,"Check the notification bar for upload status...",Toast.LENGTH_SHORT).show();
         }
 
         @Override

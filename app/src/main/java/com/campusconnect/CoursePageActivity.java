@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -47,6 +48,7 @@ import com.campusconnect.adapter.StudentsListAdapter;
 import com.campusconnect.adapter.TimetableAdapter;
 import com.campusconnect.fragment.Drawer.FragmentAbout;
 import com.campusconnect.fragment.Drawer.FragmentAddCourse;
+import com.campusconnect.fragment.Drawer.FragmentHome;
 import com.campusconnect.fragment.Drawer.FragmentInvite;
 import com.campusconnect.fragment.Drawer.FragmentRate;
 import com.campusconnect.fragment.Drawer.FragmentTerms;
@@ -74,6 +76,10 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.branch.indexing.BranchUniversalObject;
+import io.branch.referral.Branch;
+import io.branch.referral.BranchError;
+import io.branch.referral.util.LinkProperties;
 import io.doorbell.android.Doorbell;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -242,7 +248,6 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                 .placeholder(R.mipmap.ccnoti)
                 .into(imageView);
         ((TextView)headerView.findViewById(R.id.tv_username)).setText(getSharedPreferences("CC",MODE_PRIVATE).getString("profileName","PLACEHOLDER"));
-        ((TextView)headerView.findViewById(R.id.tv_points)).setText(FragmentCourses.profilePoints);
         headerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -668,9 +673,32 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                 break;
 
             case R.id.item_invite:
-                fragment = new FragmentInvite();
-                frag_title = "Invite";
-                at_home=false;
+                fragment = null;
+                frag_title = "Course";
+                at_home=true;
+                BranchUniversalObject branchUniversalObject = new BranchUniversalObject()
+                        .setContentIndexingMode(BranchUniversalObject.CONTENT_INDEX_MODE.PUBLIC);
+
+                LinkProperties linkProperties = new LinkProperties()
+                        .setChannel("Invite")
+                        .setFeature("Invite")
+                        .addControlParameter("$desktop_url", "http://campusconnect.cc")
+                        .addControlParameter("$android_url", "bit.ly/campusconnectandroid");
+                final Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.setType("text/plain");
+
+                final String shareText = " Hey, check out this cool app called Campus Connect!\n";
+                branchUniversalObject.generateShortUrl(this, linkProperties, new Branch.BranchLinkCreateListener() {
+                    @Override
+                    public void onLinkCreate(String url, BranchError error) {
+                        if (error == null) {
+                            sendIntent.putExtra(Intent.EXTRA_TEXT,shareText+url);
+                            Log.i("MyApp", "got my Branch link to share: " + url);
+                            startActivityForResult(Intent.createChooser(sendIntent, "Invite through..."),666);
+                        }
+                    }
+                });
                 break;
 
             case R.id.item_logout:
@@ -684,14 +712,23 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                 finish();
                 break;
             case R.id.item_t_and_c:
-                fragment = new FragmentTerms();
-                frag_title = "Terms and Conditions";
-                at_home=false;
+                frag_title = "Course";
+                at_home=true;
+                fragment = null;
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://campusconnect.cc/faq#terms"));
+                startActivity(browserIntent);
                 break;
             case R.id.item_rate:
-                fragment = new FragmentRate();
-                frag_title = "Rate App";
-                at_home=false;
+                fragment = null;
+                frag_title = "Course";
+                //final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+                final String appPackageName = "com.campusconnect";
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                } catch (android.content.ActivityNotFoundException anfe) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + appPackageName)));
+                }
+                at_home=true;
                 break;
             case R.id.item_feedback:
                 Doorbell doorbellDialog = new Doorbell(this, 2764, "czPslyxNo9JTzQog5JcrWBlRbHVSQKyqnieLG8QDVZNK1hesEJtPD9E0MRuBbeW0");
@@ -701,6 +738,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                 doorbellDialog.addProperty("loggedIn", true); // Optionally add some properties
                 doorbellDialog.setEmailFieldVisibility(View.GONE); // Hide the email field, since we've filled it in already
                 doorbellDialog.setPoweredByVisibility(View.GONE);
+                doorbellDialog.setMessageHint("Feel free to tell us anything!");
                 doorbellDialog.setOnFeedbackSentCallback(new io.doorbell.android.callbacks.OnFeedbackSentCallback() {
                     @Override
                     public void handle(String message) {
@@ -712,11 +750,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                 frag_title = "Course";
                 at_home=true;
                 break;
-            case R.id.item_about:
-                fragment = new FragmentAbout();
-                frag_title = "About Us";
-                at_home=false;
-                break;
+
             default:
                 Toast.makeText(getApplicationContext(), "Something's Wrong", Toast.LENGTH_SHORT).show();
                 break;

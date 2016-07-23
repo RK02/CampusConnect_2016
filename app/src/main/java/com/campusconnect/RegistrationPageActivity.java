@@ -333,12 +333,10 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
             if(batchName.getText().toString().equals("")){batchName.setError("Enter Batch Name");batchName.requestFocus();return;}
             if(branchName.getText().toString().equals("")){branchName.setError("Enter Branch Name");branchName.requestFocus();return;}
             progressDialog = new ProgressDialog(RegistrationPageActivity.this);
-            progressDialog.show();
         }
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            progressDialog.dismiss();
         }
         @Override
         protected String doInBackground(String... params) {

@@ -260,7 +260,7 @@ public class FragmentCourses extends Fragment{
                                 }
                                 cell_container = (LinearLayout) TimetableAdapter.itemView.findViewById(Integer.parseInt(viewId));
                                 cell_container.setBackgroundColor(Color.parseColor(x.getColour()));
-                                ((TextView) cell.findViewById(R.id.cellText)).setText(x.getCourseName());
+                                ((TextView) cell.findViewById(R.id.cellText)).setText(x.getCourseCode());
                                 cell.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {

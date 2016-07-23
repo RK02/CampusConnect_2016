@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -44,6 +45,10 @@ import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -140,7 +145,6 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
                 .placeholder(R.mipmap.ccnoti)
                 .into(imageView);
         ((TextView)headerView.findViewById(R.id.tv_username)).setText(getSharedPreferences("CC",MODE_PRIVATE).getString("profileName","PLACEHOLDER"));
-        ((TextView)headerView.findViewById(R.id.tv_points)).setText(FragmentCourses.profilePoints);
 
         //Unchecking all the drawer menu items before going back to home in case the app crashes
         int size = navigationView.getMenu().size();
@@ -249,13 +253,6 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
                 finish();
                 break;
 
-            case R.id.ib_edit_note:
-                intent = new Intent(getApplicationContext(), EditNoteActivity.class);
-                startActivity(intent);
-
-                break;
-
-
             case R.id.ib_share:
                 share_link();
                 break;
@@ -347,9 +344,32 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
                 break;
 
             case R.id.item_invite:
-                fragment = new FragmentInvite();
-                frag_title = "Invite";
-                at_home=false;
+                fragment = null;
+                frag_title = "Exam";
+                at_home=true;
+                BranchUniversalObject branchUniversalObject = new BranchUniversalObject()
+                        .setContentIndexingMode(BranchUniversalObject.CONTENT_INDEX_MODE.PUBLIC);
+
+                LinkProperties linkProperties = new LinkProperties()
+                        .setChannel("Invite")
+                        .setFeature("Invite")
+                        .addControlParameter("$desktop_url", "http://campusconnect.cc")
+                        .addControlParameter("$android_url", "bit.ly/campusconnectandroid");
+                final Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.setType("text/plain");
+
+                final String shareText = " Hey, check out this cool app called Campus Connect!\n";
+                branchUniversalObject.generateShortUrl(this, linkProperties, new Branch.BranchLinkCreateListener() {
+                    @Override
+                    public void onLinkCreate(String url, BranchError error) {
+                        if (error == null) {
+                            sendIntent.putExtra(Intent.EXTRA_TEXT,shareText+url);
+                            Log.i("MyApp", "got my Branch link to share: " + url);
+                            startActivityForResult(Intent.createChooser(sendIntent, "Invite through..."),666);
+                        }
+                    }
+                });
                 break;
             case R.id.item_logout:
                 at_home=true;
@@ -361,14 +381,23 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
                 startActivity(intent);
                 break;
             case R.id.item_t_and_c:
-                fragment = new FragmentTerms();
-                frag_title = "Terms and Conditions";
-                at_home=false;
+                frag_title = "Exam";
+                at_home=true;
+                fragment = null;
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://campusconnect.cc/faq#terms"));
+                startActivity(browserIntent);
                 break;
             case R.id.item_rate:
-                fragment = new FragmentRate();
-                frag_title = "Rate App";
-                at_home=false;
+                fragment = null;
+                frag_title = "Exam";
+                //final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+                final String appPackageName = "com.campusconnect";
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                } catch (android.content.ActivityNotFoundException anfe) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + appPackageName)));
+                }
+                at_home=true;
                 break;
             case R.id.item_feedback:
                 Doorbell doorbellDialog = new Doorbell(this, 2764, "czPslyxNo9JTzQog5JcrWBlRbHVSQKyqnieLG8QDVZNK1hesEJtPD9E0MRuBbeW0");
@@ -378,6 +407,7 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
                 doorbellDialog.addProperty("loggedIn", true); // Optionally add some properties
                 doorbellDialog.setEmailFieldVisibility(View.GONE); // Hide the email field, since we've filled it in already
                 doorbellDialog.setPoweredByVisibility(View.GONE);
+                doorbellDialog.setMessageHint("Feel free to tell us anything!");
                 doorbellDialog.setOnFeedbackSentCallback(new io.doorbell.android.callbacks.OnFeedbackSentCallback() {
                     @Override
                     public void handle(String message) {
@@ -389,11 +419,7 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
                 frag_title = "Exam";
                 at_home=true;
                 break;
-            case R.id.item_about:
-                fragment = new FragmentAbout();
-                frag_title = "About Us";
-                at_home=false;
-                break;
+
             default:
                 Toast.makeText(getApplicationContext(), "Something's Wrong", Toast.LENGTH_SHORT).show();
                 break;
@@ -495,9 +521,44 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
                 testName.setText(modelTest.getExamTitle());
                 desc.setText(modelTest.getExamDesc());
                 uploader.setText(modelTest.getUploaderName());
-                date.setText(modelTest.getLastUpdated());
                 due.setText(modelTest.getDueDate());
                 views.setText(modelTest.getViews());
+                String time = modelTest.getLastUpdated();
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+                int days = 0, hours = 0, minutes = 0, seconds = 0;
+                try {
+                    Calendar a = Calendar.getInstance();
+                    Calendar b = Calendar.getInstance();
+                    b.setTime(df.parse(time));
+                    long difference = a.getTimeInMillis() - b.getTimeInMillis();
+                    days = (int) (difference / (1000 * 60 * 60 * 24));
+                    hours = (int) (difference / (1000 * 60 * 60));
+                    minutes = (int) (difference / (1000 * 60));
+                    seconds = (int) (difference / 1000);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                if (days == 0) {
+                    if (hours == 0) {
+                        if (minutes == 0) {
+                            if (seconds == 0) {
+                                date.setText("Just now");
+                            } else {
+                                if (seconds == 1) date.setText(seconds + " second ago");
+                                else date.setText(seconds + " seconds ago");
+                            }
+                        } else {
+                            if (minutes == 1) date.setText(minutes + " minute ago");
+                            date.setText(minutes + " minutes ago");
+                        }
+                    } else {
+                        if (hours == 1) date.setText(hours + " hour ago");
+                        else date.setText(hours + " hours ago");
+                    }
+                } else {
+                    if (days == 1) date.setText(days + " day ago");
+                    else date.setText(days + " days ago");
+                }
             }
 
             @Override

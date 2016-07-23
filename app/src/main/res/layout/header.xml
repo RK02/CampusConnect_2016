@@ -32,14 +32,4 @@
         android:textSize="20sp"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/tv_points"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_username"
-        android:layout_centerHorizontal="true"
-        android:text="Points"
-        android:textColor="@color/ColorTextHeading"
-        android:textSize="18sp" />
-
 </RelativeLayout>

@@ -1,6 +1,7 @@
 package com.campusconnect.adapter;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -44,7 +45,7 @@ public class CourseSelectionListAdapter extends
     }
 
     @Override
-    public void onBindViewHolder(CourseSelectionListViewHolder courseSelectionListViewHolder, int i) {
+    public void onBindViewHolder(final CourseSelectionListViewHolder courseSelectionListViewHolder, int i) {
         final int a = i;
         courseSelectionListViewHolder.course_title.setText(courses.get(i).getCourseName());
         courseSelectionListViewHolder.course_prof.setText(courses.get(i).getProfessorName());
@@ -54,9 +55,12 @@ public class CourseSelectionListAdapter extends
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked) {
                     subbed.add(courses.get(a).getCourseId());
+                    courseSelectionListViewHolder.course_subscribe.setBackgroundColor(context.getResources().getColor(R.color.ColorPrimary));
+
                 }
                 else {
                     subbed.remove(courses.get(a).getCourseId());
+                    courseSelectionListViewHolder.course_subscribe.setBackgroundColor(context.getResources().getColor(R.color.ColorKeyStatContainer));
                 }
             }
         });
