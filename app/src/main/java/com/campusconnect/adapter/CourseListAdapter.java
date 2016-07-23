@@ -78,7 +78,7 @@ public class CourseListAdapter extends
         courseListViewHolder.exams_count.setText(a.getDueExams());
         courseListViewHolder.assignments_count.setText(a.getDueAssignments());
         courseListViewHolder.course_title.setText(a.getCourseName());
-        courseListViewHolder.courseProfessor.setText(a.getProfessorName());
+        courseListViewHolder.courseProfessor.setText("Prof "+a.getProfessorName());
         List<String> days = a.getDate();
         if(days!=null) {
             String tt = "";

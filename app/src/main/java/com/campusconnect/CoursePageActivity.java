@@ -355,7 +355,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                 if(modelCoursePage != null) {
                     courseTitle = modelCoursePage.getCourseName();
                     course_title.setText(courseTitle);
-                    course_prof.setText(modelCoursePage.getProfessorName());
+                    course_prof.setText("Prof "+modelCoursePage.getProfessorName());
                     if(modelCoursePage.getIsAdmin().equals("1"))
                     {
                         editCourse.setVisibility(View.VISIBLE);
