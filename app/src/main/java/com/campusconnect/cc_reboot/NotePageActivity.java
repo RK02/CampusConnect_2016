@@ -564,12 +564,14 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
             setContentView(R.layout.rate_note_dialog);
             ButterKnife.bind(this);
 
-            LayerDrawable stars = (LayerDrawable) rating.getProgressDrawable();
+//            LayerDrawable stars = (LayerDrawable) rating.getProgressDrawable();
             LayerDrawable progress = (LayerDrawable)rating.getProgressDrawable();
+
 //            DrawableCompat.setTint(progress.getDrawable(0),Color.WHITE);
-            DrawableCompat.setTint(progress.getDrawable(1),Color.YELLOW);
-            DrawableCompat.setTint(progress.getDrawable(2),Color.YELLOW);
-//            stars.getDrawable(2).setColorFilter(Color.rgb(255,247,151), PorterDuff.Mode.SRC_ATOP);
+//            DrawableCompat.setTint(progress.getpr,Color.YELLOW);
+//            DrawableCompat.setTint(progress.getDrawable(2),Color.YELLOW);
+//            progress.getDrawable(1).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_IN);
+//            progress.getDrawable(2).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_IN);
 
             submit_rate.setOnClickListener(new View.OnClickListener() {
                 @Override

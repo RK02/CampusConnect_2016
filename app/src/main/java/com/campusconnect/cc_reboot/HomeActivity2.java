@@ -266,7 +266,7 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
         headerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent_temp = new Intent(getApplicationContext(), ProfilePageActivity.class);
+                Intent intent_temp = new Intent(getApplicationContext(), SelectCourseActivity.class);
                 startActivity(intent_temp);
             }
         });
