@@ -379,6 +379,7 @@ public class UploadPicturesActivity extends AppCompatActivity {
     private void onCaptureImageResult(Intent data) {
         File imgFile = new File(pictureImagePath);
         urls.add(pictureImagePath);
+
         if(imageAdapter.getCount()==0) {
 
             uris.add(Uri.fromFile(imgFile).toString());
@@ -388,6 +389,7 @@ public class UploadPicturesActivity extends AppCompatActivity {
         {
             uris.add(uris.indexOf("add"),Uri.fromFile(imgFile).toString());
         }
+        Log.i("sw32uri",Uri.fromFile(imgFile).toString() +"  sw32 uri");
         imageAdapter.notifyDataSetChanged();
 
     }
@@ -567,14 +569,6 @@ class ImageAdapter extends BaseAdapter {
 
             //Bitmap to drawable conversion
             drawable = new BitmapDrawable(mContext.getResources(), bm_default_upload);
-
-            //Random shit I was trying to experiment with - keep it or delete it based on your needs bro
-//            iv_default_upload = new ImageView(mContext);
-//            iv_default_upload.setImageDrawable(drawable);
-//            Log.d("HAHA",""+iv_default_upload);
-//            Uri imgUri=Uri.parse("android.resource.com.campusconnect.cc.reboot."+drawable);
-//            iv_default_upload.setImageURI(null);
-//            iv_default_upload.setImageURI(imgUri);
 
         }
         else {
