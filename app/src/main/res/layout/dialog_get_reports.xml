@@ -10,15 +10,16 @@
     android:layout_height="wrap_content"
     android:id="@+id/tv_dialog"
     android:text="Report Content"
-    android:textSize="25sp"
+    android:textSize="20sp"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingBottom="18dp"
     android:padding="18dp"
     android:background="#000000"
-    android:textColor="#ffffff"
+    android:textColor="@color/ColorTextHeading"
    android:gravity="center_vertical"
-    />
+    android:fontFamily="sans-serif"
+    android:textStyle="bold"/>
     <RadioGroup
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,53 +29,54 @@
         android:layout_marginTop="60dp"
         android:paddingTop="30dp">
 
-
-
     <RadioButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btn_radio_inapproriate"
         android:checked="false"
         android:text="Inappropriate content"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:layout_below="@+id/radio_group"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:fontFamily="sans-serif"/>
 
     <RadioButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btn_radio_falseContent"
         android:text="False Information on the content"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:layout_below="@+id/btn_radio_inapproriate"
         android:layout_alignLeft="@+id/btn_radio_inapproriate"
         android:layout_alignStart="@+id/btn_radio_inapproriate"
         android:layout_marginTop="26dp"
         android:checked="false"
-        />
+        android:fontFamily="sans-serif" />
     <RadioButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btn_radio_copyrighted"
         android:text="Copyrighted Content"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:checked="false"
         android:layout_marginTop="26dp"
         android:layout_below="@+id/btn_radio_falseContent"
         android:layout_alignLeft="@+id/btn_radio_falseContent"
-        android:layout_alignStart="@+id/btn_radio_falseContent" />
+        android:layout_alignStart="@+id/btn_radio_falseContent"
+        android:fontFamily="sans-serif" />
 
     <RadioButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Other"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:layout_marginTop="43dp"
         android:checked="false"
         android:layout_below="@+id/btn_radio_copyrighted"
         android:layout_alignLeft="@+id/btn_radio_copyrighted"
         android:layout_alignStart="@+id/btn_radio_copyrighted"
-        android:id="@+id/btn_radio_other" />
+        android:id="@+id/btn_radio_other"
+        android:fontFamily="sans-serif" />
     </RadioGroup>
 
 <EditText
@@ -84,22 +86,32 @@
     android:inputType="textMultiLine"
     android:lines="10"
     android:id="@+id/et_feedback"
-    android:background="@drawable/input_border_feedback_form"
+    android:background="@drawable/edittext_rounded_border_visible"
     android:layout_below="@+id/radio_group"
     android:layout_centerHorizontal="true"
     android:visibility="gone"
     android:layout_marginTop="20dp"
-  />
+    android:gravity="left|top"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:fontFamily="sans-serif" />
 
     <Button
+        android:id="@+id/btn_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/btn_submit"
-        android:layout_marginTop="29dp"
+        android:background="#EAEBEC"
+        android:layout_marginTop="16dp"
+        style="?android:attr/borderlessButtonStyle"
+        android:text="Submit"
+        android:textColor="#000000"
+        android:alpha="0.7"
+        android:textSize="16sp"
         android:layout_below="@+id/et_feedback"
-        android:text="SUBMIT"
-        android:layout_centerHorizontal="true"
-        android:textColor="#000"
-        />
+        android:fontFamily="sans-serif" />
 
 </RelativeLayout>

@@ -54,7 +54,8 @@
                     android:layout_height="wrap_content"
                     android:text="Ankit Desh"
                     android:textColor="@color/ColorTextInfo"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:fontFamily="sans-serif"/>
             </RelativeLayout>
 
             <ToggleButton
@@ -75,7 +76,8 @@
                 android:textColor="@color/ColorTextInfo"
                 android:textOff="Make Admin"
                 android:textOn="Admin"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:fontFamily="sans-serif-light"/>
         </RelativeLayout>
 
         <View

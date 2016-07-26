@@ -30,7 +30,8 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
-            android:textSize="24sp"/>
+            android:textSize="26sp"
+            android:fontFamily="sans-serif" />
 
         <TextView
             android:id="@+id/description"
@@ -44,7 +45,8 @@
             android:layout_marginRight="16dp"
             android:layout_marginBottom="16dp"
             android:layout_marginTop="8dp"
-            android:textSize="16sp"/>
+            android:textSize="18sp"
+            android:fontFamily="sans-serif"/>
 
     </LinearLayout>
 

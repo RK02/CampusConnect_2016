@@ -113,7 +113,8 @@
             android:paddingTop="12dp"
             android:text="CANCEL"
             android:textColor="@color/ColorTextHeading"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:fontFamily="sans-serif"/>
 
         <View
             android:layout_width="1dp"
@@ -132,7 +133,8 @@
             android:paddingTop="12dp"
             android:text="NEXT"
             android:textColor="@color/ColorTextHeading"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:fontFamily="sans-serif"/>
 
     </LinearLayout>
 

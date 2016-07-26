@@ -8,6 +8,7 @@
         android:layout_height="match_parent"
         android:text="EDIT NOTE"
         android:textSize="22sp"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:fontFamily="sans-serif"/>
 
 </LinearLayout>

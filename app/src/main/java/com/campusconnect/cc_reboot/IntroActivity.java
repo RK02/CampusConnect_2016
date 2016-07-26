@@ -12,13 +12,14 @@ import android.widget.TextView;
 
 import com.campusconnect.cc_reboot.adapter.IntroAdapter;
 import com.campusconnect.cc_reboot.auxiliary.IntroPageTransformer;
+import com.campusconnect.cc_reboot.auxiliary.VerticalViewPager;
 
 /**
  * Created by RK on 18/07/2016.
  */
 public class IntroActivity extends AppCompatActivity {
 
-    private ViewPager mViewPager;
+    private VerticalViewPager mVerticalViewPager;
     Integer[] colors = {Color.parseColor("#9BCB65"), Color.parseColor("#25A599"), Color.parseColor("#9BCB65"), Color.parseColor("#25A599")};
     ArgbEvaluator argbEvaluator = new ArgbEvaluator();
     TextView next;
@@ -29,30 +30,30 @@ public class IntroActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_intro);
         next = (TextView)findViewById(R.id.tv_finish_intro);
-        mViewPager = (ViewPager) findViewById(R.id.viewpager);
+        mVerticalViewPager = (VerticalViewPager) findViewById(R.id.viewpager);
 
         // Set an Adapter on the ViewPager
-        mViewPager.setAdapter(new IntroAdapter(getSupportFragmentManager()));
+        mVerticalViewPager.setAdapter(new IntroAdapter(getSupportFragmentManager()));
 
         // Set a PageTransformer
-        mViewPager.setPageTransformer(false, new IntroPageTransformer());
+        mVerticalViewPager.setPageTransformer(false, new IntroPageTransformer());
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mViewPager.setCurrentItem(1);
+                mVerticalViewPager.setCurrentItem(1);
             }
         });
 
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mVerticalViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if(position < (4 -1) && position < (4 - 1)) {
 
-                    mViewPager.setBackgroundColor((Integer) argbEvaluator.evaluate(positionOffset, colors[position], colors[position + 1]));
+                    mVerticalViewPager.setBackgroundColor((Integer) argbEvaluator.evaluate(positionOffset, colors[position], colors[position + 1]));
 
                 } else {
 
-                    mViewPager.setBackgroundColor(colors[colors.length - 1]);
+                    mVerticalViewPager.setBackgroundColor(colors[colors.length - 1]);
 
                 }
             }
@@ -75,7 +76,7 @@ public class IntroActivity extends AppCompatActivity {
                     next.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            mViewPager.setCurrentItem(position+1);
+                            mVerticalViewPager.setCurrentItem(position+1);
                         }
                     });
                 }

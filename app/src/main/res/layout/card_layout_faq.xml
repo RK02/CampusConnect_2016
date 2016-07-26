@@ -41,7 +41,8 @@
                 android:paddingLeft="6dp"
                 android:text="Default?"
                 android:textColor="#383838"
-                android:textSize="17sp" />
+                android:textSize="17sp"
+                android:fontFamily="sans-serif"/>
         </RelativeLayout>
 
         <View
@@ -77,7 +78,8 @@
             android:paddingTop="4dp"
             android:textColor="#383838"
             android:text="abcdabcd?abcd?abcd?abcd?abcd?abcd?abcd?abcd?abcd?abcd?abcd?abcd?abcd?abcd?abcd?abcd?abcd?abcd??"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:fontFamily="sans-serif-light"/>
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

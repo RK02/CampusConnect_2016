@@ -14,7 +14,8 @@
         android:gravity="center"
         android:text="More about You"
         android:textColor="@color/ColorTextHeading"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:fontFamily="sans-serif"/>
 
     <ScrollView
         android:id="@+id/sv_registration"
@@ -42,7 +43,8 @@
                     android:layout_height="wrap_content"
                     android:text="Hi! What's your name?"
                     android:textColor="@color/ColorTextInfo"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:fontFamily="sans-serif-light"/>
 
                 <EditText
                     android:id="@+id/et_name"
@@ -54,7 +56,8 @@
                     android:maxLines="1"
                     android:padding="4dp"
                     android:textColor="@color/ColorTextInfo"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:fontFamily="sans-serif"/>
             </LinearLayout>
 
             <LinearLayout
@@ -71,7 +74,8 @@
                     android:layout_height="wrap_content"
                     android:text="Add your picture."
                     android:textColor="@color/ColorTextInfo"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:fontFamily="sans-serif-light"/>
 
                 <ImageView
                     android:id="@+id/iv_profile_picture"
@@ -97,7 +101,8 @@
                     android:layout_height="wrap_content"
                     android:text="Which college do you go to?"
                     android:textColor="@color/ColorTextInfo"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:fontFamily="sans-serif-light"/>
 
                 <HorizontalScrollView
                     android:id="@+id/hsv_college_name"
@@ -123,7 +128,8 @@
                         android:padding="4dp"
                         android:scrollHorizontally="true"
                         android:textColor="@color/ColorTextInfo"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:fontFamily="sans-serif"/>
                 </HorizontalScrollView>
             </LinearLayout>
 
@@ -141,7 +147,8 @@
                     android:layout_height="wrap_content"
                     android:text="Which batch are you part of?"
                     android:textColor="@color/ColorTextInfo"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:fontFamily="sans-serif-light"/>
 
                 <EditText
                     android:id="@+id/et_batch"
@@ -154,7 +161,8 @@
                     android:maxLines="1"
                     android:padding="4dp"
                     android:textColor="@color/ColorTextInfo"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:fontFamily="sans-serif"/>
             </LinearLayout>
 
             <LinearLayout
@@ -171,7 +179,8 @@
                     android:layout_height="wrap_content"
                     android:text="What's your specialisation?"
                     android:textColor="@color/ColorTextInfo"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:fontFamily="sans-serif-light"/>
 
                 <AutoCompleteTextView
                     android:id="@+id/et_specialisation"
@@ -183,7 +192,8 @@
                     android:maxLines="1"
                     android:padding="4dp"
                     android:textColor="@color/ColorTextInfo"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:fontFamily="sans-serif"/>
             </LinearLayout>
 
             <LinearLayout
@@ -200,7 +210,8 @@
                     android:layout_height="wrap_content"
                     android:text="Which section are you in?"
                     android:textColor="@color/ColorTextInfo"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:fontFamily="sans-serif-light"/>
 
                 <AutoCompleteTextView
                     android:id="@+id/et_section"
@@ -212,7 +223,8 @@
                     android:maxLines="1"
                     android:padding="4dp"
                     android:textColor="@color/ColorTextInfo"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:fontFamily="sans-serif"/>
             </LinearLayout>
 
 
@@ -232,7 +244,8 @@
         android:paddingTop="12dp"
         android:text="CONTINUE"
         android:textColor="@color/ColorTextHeading"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:fontFamily="sans-serif"/>
 
 
 </RelativeLayout>

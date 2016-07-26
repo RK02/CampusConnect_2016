@@ -19,7 +19,8 @@
             android:paddingTop="4dp"
             android:text="PH:"
             android:textColor="@color/ColorTextInfo"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:fontFamily="sans-serif-light"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -43,7 +44,8 @@
                 android:text="08:00"
                 android:textColor="@color/ColorTextInfo"
                 android:textColorHint="#A0A0A0"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:fontFamily="sans-serif"/>
 
             <EditText
                 android:id="@+id/et_endTime"
@@ -61,7 +63,8 @@
                 android:paddingTop="4dp"
                 android:textColor="@color/ColorTextInfo"
                 android:textColorHint="#A0A0A0"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:fontFamily="sans-serif"/>
 
         </LinearLayout>
     </LinearLayout>

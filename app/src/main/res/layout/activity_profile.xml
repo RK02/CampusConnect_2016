@@ -95,7 +95,8 @@
                                         android:layout_centerHorizontal="true"
                                         android:textSize="20sp"
                                         android:textStyle="bold"
-                                        android:textColor="@color/ColorTextHeading"/>
+                                        android:textColor="@color/ColorTextHeading"
+                                        android:fontFamily="sans-serif"/>
                                     <TextView
                                         android:id="@+id/tv_points"
                                         android:layout_width="wrap_content"
@@ -104,7 +105,8 @@
                                         android:layout_centerHorizontal="true"
                                         android:text="Points"
                                         android:textSize="18sp"
-                                        android:textColor="@color/ColorTextHeading"/>
+                                        android:textColor="@color/ColorTextHeading"
+                                        android:fontFamily="sans-serif-light"/>
                                     <TextView
                                         android:id="@+id/tv_rank"
                                         android:layout_width="wrap_content"
@@ -113,7 +115,8 @@
                                         android:layout_centerHorizontal="true"
                                         android:text="Rank"
                                         android:textSize="18sp"
-                                        android:textColor="@color/ColorTextHeading"/>
+                                        android:textColor="@color/ColorTextHeading"
+                                        android:fontFamily="sans-serif"/>
 
                                     <LinearLayout
                                         android:id="@+id/container_stats_views"
@@ -139,7 +142,8 @@
                                             android:text="345"
                                             android:maxLines="1"
                                             android:ellipsize="end"
-                                            android:textColor="@color/ColorTextHeading"/>
+                                            android:textColor="@color/ColorTextHeading"
+                                            android:fontFamily="sans-serif"/>
                                     </LinearLayout>
 
                                     <LinearLayout
@@ -166,7 +170,8 @@
                                             android:text="4.3"
                                             android:maxLines="1"
                                             android:ellipsize="end"
-                                            android:textColor="@color/ColorTextHeading"/>
+                                            android:textColor="@color/ColorTextHeading"
+                                            android:fontFamily="sans-serif"/>
                                     </LinearLayout>
 
 

@@ -40,7 +40,9 @@
                 android:gravity="center_vertical|left"
                 android:text="Students in this course"
                 android:textColor="@color/ColorTextHeading"
-                android:textSize="18sp"></TextView>
+                android:textSize="18sp"
+                android:fontFamily="sans-serif"
+                android:textStyle="bold"/>
         </LinearLayout>
 
         <LinearLayout
