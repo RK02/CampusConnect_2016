@@ -124,13 +124,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/container_course_info_all"
-            android:background="@drawable/selector_subscribe_course_selection"
             android:gravity="center"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
             android:textOff="SUBSCRIBE"
             android:textOn="SUBSCRIBED"
-            android:textColor="@drawable/selector_subscribe_text_course_selection"
             android:textSize="16sp"
             android:fontFamily="sans-serif"/>
 

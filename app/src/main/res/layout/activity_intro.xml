@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.campusconnect.cc_reboot.auxiliary.VerticalViewPager
+    <com.campusconnect.auxiliary.VerticalViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
