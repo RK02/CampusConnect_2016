@@ -2,6 +2,7 @@ package com.campusconnect.cc_reboot.fragment.CoursePage;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -79,6 +80,21 @@ public class FragmentAssignment extends Fragment {
                     List<AssList> modelAssignmentAssList = modelAssignmentList.getAssList();
                     for (AssList i : modelAssignmentAssList) {
                         mAssignmentsAdapter.add(i);
+                    }
+                    if(modelAssignmentAssList.isEmpty())
+                    {
+                        if(Build.VERSION.SDK_INT>=21)
+                        {
+                            assignments_list.setBackground(getActivity().getDrawable(R.drawable.no_value_assignments));
+                        }
+                        else
+                        {
+                            assignments_list.setBackground(getResources().getDrawable(R.drawable.no_value_assignments));
+                        }
+                    }
+                    else
+                    {
+                        assignments_list.setBackgroundColor(getResources().getColor(R.color.ColorRecyclerBackground));
                     }
                 }
             }

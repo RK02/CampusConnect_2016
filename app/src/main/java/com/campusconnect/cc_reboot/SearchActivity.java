@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
@@ -15,6 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.campusconnect.cc_reboot.POJO.CourseList;
 import com.campusconnect.cc_reboot.POJO.ModelCourseSearch;
@@ -110,43 +113,7 @@ public class SearchActivity extends AppCompatActivity {
         });
         search_tabs.setDistributeEvenly(true);
         search_tabs.setViewPager(search_pager);
-        searchBar.setImeActionLabel(">>", KeyEvent.KEYCODE_ENTER);
         searchBar.setInputType(InputType.TYPE_CLASS_TEXT);
-//        searchBar.setOnKeyListener(new View.OnKeyListener() {
-//            public boolean onKey(View v, int keyCode, KeyEvent event) {
-//                // If the event is a key-down event on the "enter" button
-//                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
-//                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
-//                    // Perform action on key press
-//                    if (searchBar.getText().toString().equals("")) {searchBar.setError("Enter search text");searchBar.requestFocus();return false;}
-//                    hideKeyboard(SearchActivity.this);
-//                    String searchString = searchBar.getText().toString();
-//                    searchapi(searchString);
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
-
-
-
-//        searchBar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//
-//            @Override
-//            public boolean onEditorAction(TextView v, int actionId,
-//                                          KeyEvent event) {
-//                if (event != null&& (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-//                    if (searchBar.getText().toString().equals("")) {searchBar.setError("Enter search text");searchBar.requestFocus();}
-//
-//                    searchButton.performClick();
-//                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-//
-//                }
-//                return false;
-//            }
-//        });
-
         searchBar.setOnKeyListener(new View.OnKeyListener()
         {
             public boolean onKey(View v, int keyCode, KeyEvent event)
@@ -159,7 +126,7 @@ public class SearchActivity extends AppCompatActivity {
                         case KeyEvent.KEYCODE_ENTER:
                             if (searchBar.getText().toString().equals("")) {searchBar.setError("Enter search text");searchBar.requestFocus();return true;}
                             searchapi(searchBar.getText().toString());
-                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                             imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
                             return true;
                         default:
@@ -173,7 +140,7 @@ public class SearchActivity extends AppCompatActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
                 if(!searchBar.hasFocus()) {
                     searchBar.requestFocus();
@@ -192,7 +159,6 @@ public class SearchActivity extends AppCompatActivity {
                 }
             }
         });
-
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -210,8 +176,36 @@ public class SearchActivity extends AppCompatActivity {
             view = new View(activity);
         }
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
     }
+
     void searchCourse(final String searchString){
+        FragmentSearchCourse.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                String searchText= searchBar.getText().toString();
+                if(searchText.equals("")){
+                    searchBar.setError("Enter valid search string");
+                    searchBar.requestFocus();
+                    FragmentSearchCourse.swipeRefreshLayout.setRefreshing(false);
+                    return;}
+                searchapi(searchText);
+                FragmentSearchCourse.swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+        FragmentSearchNotes.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                String searchText= searchBar.getText().toString();
+                if(searchText.equals("")){
+                    searchBar.setError("Enter valid search string");
+                    searchBar.requestFocus();
+                    FragmentSearchNotes.swipeRefreshLayout.setRefreshing(false);
+                    return;}
+                searchapi(searchText);
+                FragmentSearchNotes.swipeRefreshLayout.setRefreshing(false);
+            }
+        });
         FragmentSearchCourse.mCourseAdapter.clear();
         callCourse= myApi.searchCourse(new MyApi.courseSearch(searchString));
         callCourse.enqueue(new Callback<ModelCourseSearch>() {
@@ -228,6 +222,18 @@ public class SearchActivity extends AppCompatActivity {
                         FragmentSearchCourse.courseNames.add(x.getCourseName());
                         FragmentSearchCourse.courseIds.add(x.getCourseId());
                         FragmentSearchCourse.mCourseAdapter.notifyDataSetChanged();
+                    }
+                    if(courseLists.isEmpty()) {
+                        if (Build.VERSION.SDK_INT >= 21) {
+                            FragmentSearchCourse.fragment_search_course.setBackground(getDrawable(R.drawable.no_value_search));
+                        } else {
+                            FragmentSearchCourse.fragment_search_course.setBackground(getResources().getDrawable(R.drawable.no_value_search));
+                        }
+                    }
+                    else
+                    {
+                            FragmentSearchCourse.fragment_search_course.setBackgroundColor(getResources().getColor(R.color.ColorRecyclerBackground));
+
                     }
                 }
 
@@ -249,23 +255,52 @@ public class SearchActivity extends AppCompatActivity {
                 ModelNotesSearch modelNotesSearch = response.body();
                 if(modelNotesSearch!=null)
                 {
+                    FragmentSearchCourse.swipeRefreshLayout.setRefreshing(false);
+                    FragmentSearchNotes.swipeRefreshLayout.setRefreshing(false);
                     List<NoteBookList> noteBookLists = modelNotesSearch.getNoteBookList();
                     for(NoteBookList x : noteBookLists){
                         FragmentSearchNotes.noteBookLists.add(x);
                         FragmentSearchNotes.mSearchNotesAdapter.notifyDataSetChanged();
+                    }
+                    if(noteBookLists.isEmpty())
+                    {
+                        if(Build.VERSION.SDK_INT>=21) {
+                        FragmentSearchNotes.fragment_search_notes.setBackground(getDrawable(R.drawable.no_value_search));
+                    }else
+                    {
+                        FragmentSearchNotes.fragment_search_notes.setBackground(getResources().getDrawable(R.drawable.no_value_search));
+                    }
+                    }
+                    else
+                    {
+                        FragmentSearchNotes.fragment_search_notes.setBackgroundColor(getResources().getColor(R.color.ColorRecyclerBackground));
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<ModelNotesSearch> call, Throwable t) {
-
+                FragmentSearchCourse.swipeRefreshLayout.setRefreshing(false);
+                FragmentSearchNotes.swipeRefreshLayout.setRefreshing(false);
+                Toast.makeText(SearchActivity.this,"Oops! Something went wrong!", Toast.LENGTH_LONG).show();
             }
         });
     }
 
     void searchapi(String searchString)
     {
+        FragmentSearchNotes.swipeRefreshLayout.post(new Runnable() {
+            @Override public void run() {
+                FragmentSearchNotes.swipeRefreshLayout.setRefreshing(true);
+                // directly call onRefresh() method
+            }
+        });
+        FragmentSearchCourse.swipeRefreshLayout.post(new Runnable() {
+            @Override public void run() {
+                FragmentSearchCourse.swipeRefreshLayout.setRefreshing(true);
+                // directly call onRefresh() method
+            }
+        });
         searchCourse(searchString);
         searchNotes(searchString);
         Bundle params = new Bundle();

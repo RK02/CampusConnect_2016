@@ -1,5 +1,6 @@
 package com.campusconnect.cc_reboot;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -139,54 +140,8 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_true);
         ButterKnife.bind(this);
-
-        Retrofit retrofit = new Retrofit.
-                Builder()
-                .baseUrl(MyApi.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        MyApi myApi = retrofit.create(MyApi.class);
-        Call<ModelNotificationList> call = myApi.getNotifications(getSharedPreferences("CC",MODE_PRIVATE).getString("profileId",""));
-        call.enqueue(new Callback<ModelNotificationList>() {
-            @Override
-            public void onResponse(Call<ModelNotificationList> call, Response<ModelNotificationList> response) {
-                if(response!=null) {
-                    Log.i("sw32notifications",response.code()+"");
-                    ModelNotificationList modelNotificationList = response.body();
-                    if(modelNotificationList!=null)
-                           notifications= modelNotificationList.getNotificationList();
-
-                    layout_notification.setVisibility(View.GONE);
-                    mNotificationAdapter = new NotificationAdapter(HomeActivity2.this, notifications);
-
-                    mLayoutManager = new LinearLayoutManager(HomeActivity2.this);
-
-                    notification_list.setLayoutManager(mLayoutManager);
-                    notification_list.setItemAnimator(new DefaultItemAnimator());
-
-                    alphaAdapter = new AlphaInAnimationAdapter(mNotificationAdapter);
-                    scaleAdapter = new ScaleInAnimationAdapter(
-                            alphaAdapter);
-                    scale_back = new ScaleAdapter_reverse(
-                            mNotificationAdapter);
-                    alpha_back = new AlphaAdapter_reverse(scale_back);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ModelNotificationList> call, Throwable t) {
-
-            }
-        });
-
 //Setting FAB container's background to be fully transparent by default
         home_title = (TextView) findViewById(R.id.tv_title);
-        if(getIntent().getExtras()!=null){
-            String type = getIntent().getExtras().getString("type");
-            String id = getIntent().getExtras().getString("id");
-            Log.i("sw32notif", type + "::" +id);
-        }
-
         fab_menu_container.getBackground().setAlpha(0);
         toolbar = (Toolbar) findViewById (R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -298,6 +253,7 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
         if(getIntent().hasExtra("pendingIntentAction"))
         {
             CustomNotification.deleteAll(CustomNotification.class);
+            notification_button.performClick();
         }
         ImageView view = (ImageView) headerView.findViewById(R.id.profile_image);
         Picasso.with(HomeActivity2.this).
@@ -325,85 +281,122 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
                 startActivity(intent_search);
                 break;
             case R.id.ib_notification:
+                Retrofit retrofit = new Retrofit.
+                        Builder()
+                        .baseUrl(MyApi.BASE_URL)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+                MyApi myApi = retrofit.create(MyApi.class);
+                Call<ModelNotificationList> call = myApi.getNotifications(getSharedPreferences("CC",MODE_PRIVATE).getString("profileId",""));
+                call.enqueue(new Callback<ModelNotificationList>() {
+                    @Override
+                    public void onResponse(Call<ModelNotificationList> call, Response<ModelNotificationList> response) {
+                        if(response!=null) {
+                            Log.i("sw32notifications",response.code()+"");
+                            ModelNotificationList modelNotificationList = response.body();
+                            if(modelNotificationList!=null)
+                                notifications= modelNotificationList.getNotificationList();
 
-                if (layout_notification.getVisibility() == View.VISIBLE) {
+                            layout_notification.setVisibility(View.GONE);
+                            mNotificationAdapter = new NotificationAdapter(HomeActivity2.this, notifications);
 
-                    some_function();
-                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-                }else{
-                    layout_notification.setVisibility(View.VISIBLE);
-                    notification_title.setVisibility(View.VISIBLE);
-                    close_button.setVisibility(View.VISIBLE);
+                            mLayoutManager = new LinearLayoutManager(HomeActivity2.this);
+
+                            notification_list.setLayoutManager(mLayoutManager);
+                            notification_list.setItemAnimator(new DefaultItemAnimator());
+
+                            alphaAdapter = new AlphaInAnimationAdapter(mNotificationAdapter);
+                            scaleAdapter = new ScaleInAnimationAdapter(
+                                    alphaAdapter);
+                            scale_back = new ScaleAdapter_reverse(
+                                    mNotificationAdapter);
+                            alpha_back = new AlphaAdapter_reverse(scale_back);
+                            if (layout_notification.getVisibility() == View.VISIBLE) {
+                                some_function();
+                                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                            }else{
+                                layout_notification.setVisibility(View.VISIBLE);
+                                notification_title.setVisibility(View.VISIBLE);
+                                close_button.setVisibility(View.VISIBLE);
 //                    notificationCount = 0;
 //                    tv_notification_count.setText("");
 //                    tv_notification_count.setVisibility(View.INVISIBLE);
 
-                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                    fragment_frame.setVisibility(View.GONE);
+                                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                                fragment_frame.setVisibility(View.GONE);
 
-                    Animation animation = new TranslateAnimation(0, 0, -100, 0);
-                    animation.setInterpolator(interpolator_notification);
-                    animation.setDuration(650);
-                    notification_title.startAnimation(animation);
+                                Animation animation = new TranslateAnimation(0, 0, -100, 0);
+                                animation.setInterpolator(interpolator_notification);
+                                animation.setDuration(650);
+                                notification_title.startAnimation(animation);
 
 
-                    Animation animate_close_button = new TranslateAnimation(
-                            -100, 0, 0, 0);
-                    animate_close_button
-                            .setInterpolator(interpolator_notification);
-                    animate_close_button.setStartOffset(500);
-                    animate_close_button.setDuration(650);
-                    animate_close_button.setFillAfter(true);
-                    close_button.startAnimation(animate_close_button);
+                                Animation animate_close_button = new TranslateAnimation(
+                                        -100, 0, 0, 0);
+                                animate_close_button
+                                        .setInterpolator(interpolator_notification);
+                                animate_close_button.setStartOffset(500);
+                                animate_close_button.setDuration(650);
+                                animate_close_button.setFillAfter(true);
+                                close_button.startAnimation(animate_close_button);
 
-                    Animation fadeOut = new AlphaAnimation(1, 0);
-                    fadeOut.setInterpolator(new DecelerateInterpolator());
-                    fadeOut.setDuration(300);
-                    fadeOut.setFillAfter(true);
+                                Animation fadeOut = new AlphaAnimation(1, 0);
+                                fadeOut.setInterpolator(new DecelerateInterpolator());
+                                fadeOut.setDuration(300);
+                                fadeOut.setFillAfter(true);
 
-                    fragment_frame.startAnimation(fadeOut);
+                                fragment_frame.startAnimation(fadeOut);
 
-                    Animation fadeIn = new AlphaAnimation(0, 1);
-                    fadeIn.setInterpolator(new DecelerateInterpolator());
-                    fadeIn.setFillAfter(true);
-                    fadeIn.setStartOffset(100);
-                    fadeIn.setDuration(300);
+                                Animation fadeIn = new AlphaAnimation(0, 1);
+                                fadeIn.setInterpolator(new DecelerateInterpolator());
+                                fadeIn.setFillAfter(true);
+                                fadeIn.setStartOffset(100);
+                                fadeIn.setDuration(300);
 
 
 //                    notification_title.setVisibility(View.VISIBLE);
 
-                    home_title.setVisibility(View.GONE);
-                    bk_blur.setVisibility(View.VISIBLE);
-                    menu_button.setVisibility(View.GONE);
-                    bk_blur.startAnimation(fadeIn);
-                    //notification_clicked = true;
+                                home_title.setVisibility(View.GONE);
+                                bk_blur.setVisibility(View.VISIBLE);
+                                menu_button.setVisibility(View.GONE);
+                                bk_blur.startAnimation(fadeIn);
+                                //notification_clicked = true;
 
-                    applyBlur();
+                                applyBlur();
 
-                    Handler handler_new = new Handler();
-                    handler_new.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
+                                Handler handler_new = new Handler();
+                                handler_new.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
 
-                            notification_list.setVisibility(View.VISIBLE);
-                            alphaAdapter.setStartPosition(-1);
-                            scaleAdapter.setStartPosition(-1);
-                            notification_list.setAdapter(scaleAdapter);
+                                        notification_list.setVisibility(View.VISIBLE);
+                                        alphaAdapter.setStartPosition(-1);
+                                        scaleAdapter.setStartPosition(-1);
+                                        notification_list.setAdapter(scaleAdapter);
 
+                                    }
+                                }, 500);
+
+
+
+
+                                close_button.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        some_function();
+                                        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                                    }
+                                });
+                            }
                         }
-                    }, 500);
+                    }
 
+                    @Override
+                    public void onFailure(Call<ModelNotificationList> call, Throwable t) {
 
+                    }
+                });
 
-
-                    close_button.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            some_function();
-                            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-                        }
-                    });
-                }
 
                 break;
             default:
@@ -463,6 +456,7 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
     }
     //Function for fragment selection and commits
     public void displayView(int viewId){
+        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         switch (viewId) {
             case R.id.item_timetable:
                 at_home=true;
@@ -477,7 +471,9 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
             case R.id.item_bookmark:
                 Intent intent_profile = new Intent(HomeActivity2.this,ProfilePageActivity.class);
                 startActivity(intent_profile);
-                at_home=false;
+                fragment = null;
+                frag_title = "Home";
+                at_home=true;
                 break;
             case R.id.item_getting_points:
                 fragment = new FragmentPointsInfo();
@@ -501,6 +497,7 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
                 intent.putExtra("logout","temp");
                 FirebaseAuth.getInstance().signOut();
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                getSharedPreferences("CC",MODE_PRIVATE).edit().clear().commit();
                 startActivity(intent);
                 break;
             case R.id.item_faq:
@@ -543,7 +540,6 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
                 fabMenu.setVisibility(View.VISIBLE);
 
             home_title.setText(frag_title);
-            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             //fragmentTransaction.remove(getSupportFragmentManager().findFragmentById(R.id.frame));
             Fragment temp  = getSupportFragmentManager().findFragmentById(R.id.frame);
 
@@ -567,6 +563,15 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
                 }
             }
 
+        }
+        else
+        {
+            Fragment temp  = getSupportFragmentManager().findFragmentById(R.id.frame);
+            if(temp!=null)
+            {
+                fragmentTransaction.remove(temp).commit();
+                home_title.setText(frag_title);
+            }
         }
     }
     @Override
@@ -728,5 +733,16 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
 
         view.setImageDrawable(new BitmapDrawable(getResources(), overlay));
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==69)
 
+        {if(resultCode==1)
+        {
+            Log.i("sw32","activityresult");
+            FragmentHome.home_pager.setCurrentItem(1);
+        }
+        }
+    }
 }

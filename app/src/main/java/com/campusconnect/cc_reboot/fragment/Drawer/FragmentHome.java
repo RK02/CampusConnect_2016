@@ -1,6 +1,7 @@
 package com.campusconnect.cc_reboot.fragment.Drawer;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -30,13 +31,12 @@ import butterknife.ButterKnife;
  */
 public class FragmentHome extends Fragment{
 
-    @Bind(R.id.pager_home)
-    ViewPager home_pager;
+    public static ViewPager home_pager;
 
     @Bind(R.id.tabs_home)
     SlidingTabLayout_home home_tabs;
 
-    ViewPagerAdapter_home home_adapter;
+    public static ViewPagerAdapter_home home_adapter;
     CharSequence Titles[] = {"Courses", "Timetable"};
     int Numboftabs = 2;
 
@@ -45,7 +45,7 @@ public class FragmentHome extends Fragment{
         View v = inflater.inflate(R.layout.activity_home,container,false);
 
         ButterKnife.bind(this,v);
-
+        home_pager = (ViewPager) v.findViewById(R.id.pager_home);
         //Setting the ViewPager adapter
         home_adapter = new ViewPagerAdapter_home(getChildFragmentManager(), Titles, Numboftabs, v.getContext());
         //Binding the ViewPager and the Adapter
@@ -58,6 +58,7 @@ public class FragmentHome extends Fragment{
 
         return v;
     }
+
 
 }
 

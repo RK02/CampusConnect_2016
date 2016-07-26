@@ -26,9 +26,9 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:text="Exam"
-            android:textSize="22sp" />
-
-
+            android:textColor="@color/ColorTextHeading"
+            android:textSize="22sp"
+            android:fontFamily="sans-serif" />
 
         <ImageButton
             android:id="@+id/ib_edit"

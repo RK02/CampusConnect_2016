@@ -28,6 +28,7 @@ import com.campusconnect.cc_reboot.auxiliary.ScrollViewListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.zip.Inflater;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,35 +38,39 @@ import butterknife.ButterKnife;
  */
 public class FragmentTimetable extends Fragment{
 
-    @Bind(R.id.rv_timetable)
-    RecyclerView timetable;
+    //@Bind(R.id.rv_timetable)
+    static RecyclerView timetable;
 
-    @Bind(R.id.scroll_horizontal_header)
-    ObservableScrollView header_scroll_horizontal;
+    //@Bind(R.id.scroll_horizontal_header)
+    static ObservableScrollView header_scroll_horizontal;
 
-    TimetableAdapter mTimetableAdapter;
-    LinearLayoutManager mLayoutManager;
+    public static TimetableAdapter mTimetableAdapter;
+    static LinearLayoutManager mLayoutManager;
 
     String courseCode[] = {"ECO"};
     String date[] = {"1","2"};
     String startTime[]={"13:00","14:00"};
     String endTime[]={"14:00","15:00"};
 
-    ArrayList<SubscribedCourseList> subscribedCourseListList;
+    static ArrayList<SubscribedCourseList> subscribedCourseListList;
 
     public static View v;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_timetable_final, container, false);
-        ButterKnife.bind(this,v);
+        invalidate();
+        return v;
+    }
 
+    public static void invalidate()
+    {
+        timetable = (RecyclerView) v.findViewById(R.id.rv_timetable);
+        header_scroll_horizontal = (ObservableScrollView) v.findViewById(R.id.scroll_horizontal_header);
         mLayoutManager = new LinearLayoutManager(v.getContext());
         mTimetableAdapter = new TimetableAdapter(v.getContext(),subscribedCourseListList,header_scroll_horizontal);
         timetable.setLayoutManager(mLayoutManager);
         timetable.setItemAnimator(new DefaultItemAnimator());
         timetable.setAdapter(mTimetableAdapter);
-
-        return v;
     }
 }

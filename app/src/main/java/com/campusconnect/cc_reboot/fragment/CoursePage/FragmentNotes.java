@@ -2,6 +2,7 @@ package com.campusconnect.cc_reboot.fragment.CoursePage;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -87,6 +88,21 @@ public class FragmentNotes extends Fragment {
                     for (NoteBookList x : noteBookLists) {
                         mNotesAdapter.add(x);
                         mNotesAdapter.notifyDataSetChanged();
+                    }
+                    if(noteBookLists.isEmpty())
+                    {
+                        if(Build.VERSION.SDK_INT>=21)
+                        {
+                            notes_list.setBackground(getActivity().getDrawable(R.drawable.no_value_notebooks));
+                        }
+                        else
+                        {
+                            notes_list.setBackground(getResources().getDrawable(R.drawable.no_value_notebooks));
+                        }
+                    }
+                    else
+                    {
+                        notes_list.setBackgroundColor(getResources().getColor(R.color.ColorRecyclerBackground));
                     }
                 }
                 Log.i("sw32","herenotelist");

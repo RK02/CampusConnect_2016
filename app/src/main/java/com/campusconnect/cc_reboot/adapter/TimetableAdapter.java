@@ -67,8 +67,6 @@ public class TimetableAdapter extends
     }
 
     public void clear() {
-        mCourses.clear();
-        notifyDataSetChanged();
     }
 
     @Override

@@ -12,7 +12,7 @@
             android:id="@+id/item_timetable"
             android:checked="false"
             android:icon="@mipmap/ic_home_24_black"
-            android:title="Home" />
+            android:title="Home"/>
 
         <item
             android:id="@+id/item_add_course"

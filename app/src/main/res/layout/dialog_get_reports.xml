@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/confirmation_dialog_background"
+   >
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/tv_dialog"
+    android:text="Report Content"
+    android:textSize="25sp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingBottom="18dp"
+    android:padding="18dp"
+    android:background="#000000"
+    android:textColor="#ffffff"
+   android:gravity="center_vertical"
+    />
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/radio_group"
+        android:layout_alignTop="@+id/tv_dialog"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:paddingTop="30dp">
+
+
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_radio_inapproriate"
+        android:checked="false"
+        android:text="Inappropriate content"
+        android:textSize="20sp"
+        android:layout_below="@+id/radio_group"
+        android:layout_centerHorizontal="true" />
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_radio_falseContent"
+        android:text="False Information on the content"
+        android:textSize="20sp"
+        android:layout_below="@+id/btn_radio_inapproriate"
+        android:layout_alignLeft="@+id/btn_radio_inapproriate"
+        android:layout_alignStart="@+id/btn_radio_inapproriate"
+        android:layout_marginTop="26dp"
+        android:checked="false"
+        />
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_radio_copyrighted"
+        android:text="Copyrighted Content"
+        android:textSize="20sp"
+        android:checked="false"
+        android:layout_marginTop="26dp"
+        android:layout_below="@+id/btn_radio_falseContent"
+        android:layout_alignLeft="@+id/btn_radio_falseContent"
+        android:layout_alignStart="@+id/btn_radio_falseContent" />
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Other"
+        android:textSize="20sp"
+        android:layout_marginTop="43dp"
+        android:checked="false"
+        android:layout_below="@+id/btn_radio_copyrighted"
+        android:layout_alignLeft="@+id/btn_radio_copyrighted"
+        android:layout_alignStart="@+id/btn_radio_copyrighted"
+        android:id="@+id/btn_radio_other" />
+    </RadioGroup>
+
+<EditText
+    android:layout_height="100dp"
+    android:layout_width="match_parent"
+    android:hint="Your text here"
+    android:inputType="textMultiLine"
+    android:lines="10"
+    android:id="@+id/et_feedback"
+    android:background="@drawable/input_border_feedback_form"
+    android:layout_below="@+id/radio_group"
+    android:layout_centerHorizontal="true"
+    android:visibility="gone"
+    android:layout_marginTop="20dp"
+  />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_submit"
+        android:layout_marginTop="29dp"
+        android:layout_below="@+id/et_feedback"
+        android:text="SUBMIT"
+        android:layout_centerHorizontal="true"
+        android:textColor="#000"
+        />
+
+</RelativeLayout>

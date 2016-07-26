@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.campusconnect.cc_reboot.auxiliary.ViewPagerDisable;
 import com.campusconnect.cc_reboot.fragment.NotesSliderPageFragment;
 
 import java.util.ArrayList;
@@ -19,13 +20,15 @@ public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
     ArrayList<ArrayList<String>> urls;
     int NumPages;
     private Context mContext;
+    ViewPagerDisable parent_pager;
 
-    public ScreenSlidePagerAdapter(FragmentManager fm, ArrayList<String> mTitles,ArrayList<ArrayList<String>> urls, int mNumPages, Context context) {
+    public ScreenSlidePagerAdapter(FragmentManager fm, ArrayList<String> mTitles,ArrayList<ArrayList<String>> urls, int mNumPages, Context context, ViewPagerDisable parent) {
         super(fm);
         this.Titles = mTitles;
         this.urls = urls;
         this.NumPages = mNumPages;
         this.mContext = context;
+        this.parent_pager = parent;
     }
 
     @Override

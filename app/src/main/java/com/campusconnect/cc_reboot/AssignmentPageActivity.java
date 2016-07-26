@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -18,12 +17,14 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.campusconnect.cc_reboot.POJO.ModelAssignment;
 import com.campusconnect.cc_reboot.POJO.MyApi;
@@ -42,6 +43,10 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.campusconnect.cc_reboot.fragment.Home.FragmentCourses;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.w3c.dom.Text;
@@ -101,7 +106,7 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
     ImageButton flag_button;
 
     @Bind(R.id.tb_remind_me)
-    Button remind_button;
+    ToggleButton remind_button;
 
     String assignmentId;
     int courseColor;
@@ -115,6 +120,7 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
     private Fragment fragment = null;
     Fragment homefrag;
     View headerView;
+    String courseNamePlaceHolder = "";
     public static TextView home_title;
     GoogleApiClient mGoogleApiClient;
 
@@ -132,7 +138,16 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
         //Setting up Header View
         headerView = getLayoutInflater().inflate(R.layout.header, navigationView, false);
         navigationView.addHeaderView(headerView);
-        ImageView view = (ImageView) headerView.findViewById(R.id.profile_image);
+        ImageView imageView = (ImageView) headerView.findViewById(R.id.profile_image);
+
+        Picasso.with(AssignmentPageActivity.this)
+                .load(getSharedPreferences("CC",MODE_PRIVATE).getString("photourl","fakedesu")).error(R.mipmap.ic_launcher)
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
+                .placeholder(R.mipmap.ccnoti)
+                .into(imageView);
+        ((TextView)headerView.findViewById(R.id.tv_username)).setText(getSharedPreferences("CC",MODE_PRIVATE).getString("profileName","PLACEHOLDER"));
+        ((TextView)headerView.findViewById(R.id.tv_points)).setText(FragmentCourses.profilePoints);
 
         //Unchecking all the drawer menu items before going back to home in case the app crashes
         int size = navigationView.getMenu().size();
@@ -230,7 +245,20 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
         share_note_button.setOnClickListener(this);
         flag_button.setOnClickListener(this);
         assignment_last_page.setOnClickListener(this);
-        remind_button.setOnClickListener(this);
+
+        remind_button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                {
+                    FirebaseMessaging.getInstance().subscribeToTopic(assignmentId);
+                }
+                else
+                {
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic(assignmentId);
+                }
+            }
+        });
 
         //GoogleSignIn stuff
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -301,9 +329,7 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
 //                startActivity(intent);
                 break;
 
-            case R.id.tb_remind_me:
 
-                break;
 
             default:
                 break;
@@ -313,11 +339,14 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
 
     //Function for fragment selection and commits
     public void displayView(int viewId) {
+        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
         switch (viewId) {
             case R.id.item_timetable:
                 at_home = true;
                 Intent intent_home = new Intent(AssignmentPageActivity.this, HomeActivity2.class);
                 startActivity(intent_home);
+                finish();
                 break;
             case R.id.item_add_course:
                 fragment = new FragmentAddCourse();
@@ -327,7 +356,9 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
             case R.id.item_bookmark:
                 Intent intent_profile = new Intent(AssignmentPageActivity.this, ProfilePageActivity.class);
                 startActivity(intent_profile);
-                at_home = false;
+                fragment=null;
+                frag_title = "Assignment";
+                at_home = true;
                 break;
             case R.id.item_getting_points:
                 fragment = new FragmentPointsInfo();
@@ -352,6 +383,7 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
                 FirebaseAuth.getInstance().signOut();
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.item_t_and_c:
                 fragment = new FragmentTerms();
@@ -379,7 +411,6 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
         }
         if (fragment != null) {
             home_title.setText(frag_title);
-            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             //fragmentTransaction.remove(getSupportFragmentManager().findFragmentById(R.id.frame));
             Fragment temp = getSupportFragmentManager().findFragmentById(R.id.frame);
 
@@ -397,6 +428,15 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
                     fragmentTransaction.remove(temp);
                     fragmentTransaction.commit();
                 }
+            }
+
+        }
+        else{
+            Fragment temp = getSupportFragmentManager().findFragmentById(R.id.frame);
+            if(temp!=null)
+            {
+                fragmentTransaction.remove(temp).commit();
+                home_title.setText(frag_title);
             }
 
         }
@@ -428,6 +468,16 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
     }
 
     void share_link() {
+        /*
+
+        Share text
+1) Hey, check out the notes for Course_name by Person_name on Campus Connect! link
+2) Hey, check out the assignment for Course_name on Campus Connect! link
+3) Hey, check out the exam for Course_name on Campus Connect! link
+4) Hey, check out my notes for Course_name on Campus Connect! link
+
+         */
+
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.show();
         BranchUniversalObject branchUniversalObject = new BranchUniversalObject()
@@ -440,17 +490,17 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
                 .addControlParameter("$desktop_url", "http://campusconnect-2016.herokuapp.com/assignment?id=" + assignmentId);
 
         final Intent sendIntent = new Intent();
+        final String shareText = " Hey, check out the assignment for" + courseNamePlaceHolder+ "on Campus Connect!\n";
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.setType("text/plain");
-        sendIntent.setPackage("com.whatsapp");
         branchUniversalObject.generateShortUrl(this, linkProperties, new Branch.BranchLinkCreateListener() {
             @Override
             public void onLinkCreate(String url, BranchError error) {
                 if (error == null) {
-                    Log.i("MyApp", "got my Branch link to share: " + url);
-                    sendIntent.putExtra(Intent.EXTRA_TEXT, url);
+                    Log.i("MyApp", "got my Branch link to share: " +shareText +  url);
+                    sendIntent.putExtra(Intent.EXTRA_TEXT,url);
                     progressDialog.dismiss();
-                    startActivityForResult(sendIntent, 1);
+                    startActivityForResult(Intent.createChooser(sendIntent, "Share with..."),1);
                 }
             }
         });
@@ -487,12 +537,15 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
             @Override
             public void onResponse(Call<ModelAssignment> call, Response<ModelAssignment> response) {
                 ModelAssignment assignment = response.body();
+                if(assignment!=null){
+                courseNamePlaceHolder = assignment.getCourseName();
                 assignment_name.setText(assignment.getAssignmentTitle());
                 uploader.setText(assignment.getUploaderName());
                 date_posted.setText(assignment.getLastUpdated().substring(0, 10));
                 dueDate.setText(assignment.getDueDate());
                 views.setText(assignment.getViews());
                 description.setText(assignment.getAssignmentDesc());
+                }
             }
 
             @Override

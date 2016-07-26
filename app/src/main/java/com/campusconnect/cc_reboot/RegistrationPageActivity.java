@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,7 +90,7 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
 
     @Bind(R.id.sv_registration)
     ScrollView scrollViewReg;
-
+    CollegeNotFoundDialog getdetailsDialog;
     String personName;
     String personEmail;
     String personPhoto;
@@ -147,7 +148,6 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
                     }
                     data = new ArrayAdapter<String>(RegistrationPageActivity.this,android.R.layout.simple_list_item_1,collegeNames);
                     data.add("Request new college");
-//                    collegeName.setAdapter(data);
 
                 }
             }
@@ -190,6 +190,7 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
 
         scrollViewReg.setOnTouchListener(this);
         collegeName.setOnClickListener(this);
+        collegeName_container.setOnClickListener(this);
     }
     public void SignUp()
     {
@@ -258,7 +259,7 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
     public void onClick(View view) {
 
         switch (view.getId()){
-
+            case R.id.hsv_college_name:
             case R.id.et_college_name:
                 AlertDialog.Builder builderCollegeList = new AlertDialog.Builder(RegistrationPageActivity.this);
                 builderCollegeList.setTitle("Select your college");
@@ -282,7 +283,7 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
                                     collegeName.setMinEms(0);
                                 }
                                 else{
-                                    CollegeNotFoundDialog getdetailsDialog = new CollegeNotFoundDialog((Activity) RegistrationPageActivity.this);
+                                   getdetailsDialog = new CollegeNotFoundDialog((Activity) RegistrationPageActivity.this);
                                     Window window = getdetailsDialog.getWindow();
                                     window.setLayout(450, ViewGroup.LayoutParams.WRAP_CONTENT);
                                     getdetailsDialog.show();
@@ -411,7 +412,7 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
 
         public CollegeNotFoundDialog(Activity a) {
             super(a);
-// TODO Auto-generated constructor stub
+            // TODO Auto-generated constructor stub
             this.c = a;
             this.context = context;
         }
@@ -422,7 +423,77 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
             requestWindowFeature(Window.FEATURE_NO_TITLE);
             setContentView(R.layout.dialog_get_college_details);
             ButterKnife.bind(this);
+            submit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d("onClick", "clicked");
+                    if (client_name.getText().toString().equals("")) {
+                        client_name.setText("Enter Name");
+                        client_name.requestFocus();
+                        return;
+                    }
+                    if (college_name.getText().toString().equals("")) {
+                        college_name.setText("Enter College Name");
+                        college_name.requestFocus();
+                        return;
+                    }
+                    if (isValidEmail(email_ID.getText().toString())) {
+                        Log.d("email id ", "valid");
+                    } else {
+                        email_ID.setText("Enter a valid Email Id");
+                        email_ID.requestFocus();
+                    }
+                    if (isValidMobile(phone_no.getText().toString())) {
+                        Log.d("phone nos", "valid");
+                    } else {
+                        phone_no.setText("Enter a valid nos");
+                        phone_no.requestFocus();
+                    }
+                    if (location.getText().toString().equals("")) {
+                        location.setText("Enter a location");
+                        phone_no.requestFocus();
+                        return;
+                    }
+
+                    MyApi.addCollegeRequest body = new MyApi.addCollegeRequest(
+                            client_name.getText().toString(),
+                            college_name.getText().toString(),
+                            email_ID.getText().toString(),
+                            phone_no.getText().toString(),
+                            location.getText().toString()
+                    );
+                    Retrofit retrofit = new Retrofit.
+                            Builder()
+                            .baseUrl(MyApi.BASE_URL)
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+                    MyApi myApi = retrofit.create(MyApi.class);
+                    Call<Void> call = myApi.addCollege(body);
+                    call.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            Log.d("College details", "success");
+                            getdetailsDialog.dismiss();
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Log.d("College details", "failed");
+                        }
+                    });
+                }
+            });
+        }
+        private boolean isValidEmail(String Email){
+            return Patterns.EMAIL_ADDRESS.matcher(personEmail).matches();
+        }
+        private boolean isValidMobile(String mobileNos){
+            return Patterns.PHONE.matcher(mobileNos).matches();
+        }
+
+
+
         }
     }
-}
+
 

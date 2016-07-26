@@ -7,12 +7,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.campusconnect.cc_reboot.NotesSliderActivity;
 import com.campusconnect.cc_reboot.R;
@@ -32,17 +34,18 @@ public class NotesSliderPageFragment extends Fragment implements View.OnTouchLis
     @Bind(R.id.view_touch_handler)
     View touch_handling_view;
 
+    int page_selected, prev_state_parent;
     String class_no, total_pages, curr_page;
 
     ArrayList<ArrayList<String>> urls = NotesSliderActivity.urls;
     int page_pos;
     int totalPages=0;
-    ViewPagerDisable pager_img;
+    ViewPagerDisable pager_img, parent_pager;
+    TextView page_desc;
     Bundle fragArgs;
 
-
     public interface NotePageInfoToActivity{
-        public void notePageInfo(String class_no, String curr_page, String total_pages);
+        public void notePageInfo(String class_no, String curr_page, String total_pages, ViewPagerDisable child);
         public void pageInfoVisibility(boolean flag);
     }
     NotePageInfoToActivity notePageInfoToActivity;
@@ -60,6 +63,11 @@ public class NotesSliderPageFragment extends Fragment implements View.OnTouchLis
                 R.layout.fragment_notes_slider_page, container, false);
         ButterKnife.bind(this,rootView);
 
+        prev_state_parent = parent_pager.SCROLL_STATE_IDLE;
+
+        parent_pager = (ViewPagerDisable) getActivity().findViewById(R.id.pager);
+        page_desc = (TextView) getActivity().findViewById(R.id.tv_note_page_description);
+
         fragArgs = getArguments();
         pager_img = (ViewPagerDisable) rootView.findViewById(R.id.viewpager_images);
 
@@ -71,18 +79,20 @@ public class NotesSliderPageFragment extends Fragment implements View.OnTouchLis
         pager_img.setAdapter(new CustomPagerAdapter(getActivity(),urls.get(page_pos),page_pos));
         total_pages = Integer.toString(pager_img.getAdapter().getCount());
         curr_page = Integer.toString(1);
-        notePageInfoToActivity.notePageInfo(class_no,curr_page,total_pages);
+        notePageInfoToActivity.notePageInfo(class_no,curr_page,total_pages,pager_img);
         pager_img.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageSelected(int index) {
                 // TODO Auto-generated method stub
                 curr_page = Integer.toString(index+1);
-                notePageInfoToActivity.notePageInfo(class_no,curr_page,total_pages);
+                notePageInfoToActivity.notePageInfo(class_no,curr_page,total_pages,pager_img);
 
             }
             @Override
             public void onPageScrolled(int arg0, float arg1, int arg2) {
                 // TODO Auto-generated method stub
+                if(pager_img.getCurrentItem()!=1)
+                    pager_img.setCurrentItem(pager_img.getAdapter().getCount(),false);
 
             }
             @Override
@@ -91,6 +101,42 @@ public class NotesSliderPageFragment extends Fragment implements View.OnTouchLis
 
             }
         });
+
+
+        parent_pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                pager_img.getAdapter().notifyDataSetChanged();
+
+                parent_pager.setOffscreenPageLimit(1);
+
+                if(pager_img.getCurrentItem()!=1)
+                pager_img.setCurrentItem(pager_img.getAdapter().getCount(),false);
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Log.i("sw32externviewpager",position+"");
+//                page_desc.setText(descriptions.get(position));
+//                page_date.setText(dates.get(position));
+
+//                class_pos=position+1;
+//
+//                book_title.setText("Class "+class_pos);
+//                page_number.setText(curr+"/"+total);
+//                mChildPager.setCurrentItem(mChildPager.getAdapter().getCount());
+                page_selected = position;
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
         pager_img.setCurrentItem(0);
 
         touch_handling_view.setOnTouchListener(this);

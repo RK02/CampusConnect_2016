@@ -30,7 +30,7 @@
         android:text="Guest_"
         android:textColor="@color/ColorTextHeading"
         android:textSize="20sp"
-        android:textStyle="bold" />
+        android:fontFamily="sans-serif"/>
 
     <TextView
         android:id="@+id/tv_points"
@@ -40,6 +40,7 @@
         android:layout_centerHorizontal="true"
         android:text="Points"
         android:textColor="@color/ColorTextHeading"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:fontFamily="sans-serif-light" />
 
 </RelativeLayout>

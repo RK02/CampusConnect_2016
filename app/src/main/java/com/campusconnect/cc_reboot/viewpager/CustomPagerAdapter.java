@@ -14,6 +14,7 @@ import com.campusconnect.cc_reboot.R;
 import com.campusconnect.cc_reboot.auxiliary.PinchToZoom.GestureImageView;
 import com.campusconnect.cc_reboot.fragment.NotesSliderPageFragment;
 import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

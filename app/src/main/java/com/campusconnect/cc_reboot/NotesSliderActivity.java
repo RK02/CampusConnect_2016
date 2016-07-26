@@ -47,7 +47,7 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
     @Bind(R.id.ib_trial)
     ImageButton trial_button;
 
-    private ViewPagerDisable mNotesPager;
+    private ViewPagerDisable mNotesPager, mChildPager;
     private PagerAdapter mNotesPagerAdapter;
     ArrayList<String> Titles;
     ArrayList<String> pages;
@@ -94,33 +94,10 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
 
         // Instantiate a ViewPager and a PagerAdapter.
         mNotesPager = (ViewPagerDisable) findViewById(R.id.pager);
-        mNotesPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(),Titles,urls,NumPages,this);
+        mNotesPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(),Titles,urls,NumPages,this,mNotesPager);
         mNotesPager.setAdapter(mNotesPagerAdapter);
         mNotesPager.setPageTransformer(true, new ZoomOutPageTransformer());
-        mNotesPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                Log.i("sw32externviewpager",position+"");
-                page_description.setText(descriptions.get(position));
-                page_date.setText(dates.get(position));
-
-                class_pos=position+1;
-
-                book_title.setText("Class "+class_pos);
-//                page_number.setText(curr+"/"+total);
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
         mNotesPager.setCurrentItem(NotePageActivity.jsonNoteList.length()-1);
         //Hiding the notepage info
         Animation fadeOut = new AlphaAnimation(1, 0.4f);
@@ -186,11 +163,12 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
     }
 
     @Override
-    public void notePageInfo(String class_no, String curr_page, String total_pages) {
+    public void notePageInfo(String class_no, String curr_page, String total_pages, ViewPagerDisable child) {
         class_ = class_no;
         curr = curr_page;
         total = total_pages;
         book_title.setText(class_no);
+        mChildPager = child;
         page_number.setText(curr_page+"/"+total_pages);
 //        page_description.setText(descriptions.get(Integer.parseInt(class_no.split(" ")[1])));
     }

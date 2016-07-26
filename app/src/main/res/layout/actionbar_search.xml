@@ -22,15 +22,12 @@
         android:layout_centerVertical="true"
         android:paddingLeft="@dimen/activity_vertical_margin">
 
-
-
-
             <EditText
                 android:id="@+id/et_search"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical|left"
-                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
                 android:maxLines="1"
                 android:inputType="text"
                 android:imeOptions="actionSearch"
@@ -38,15 +35,14 @@
                 android:hint="Search CampusConnect"
                 android:layout_toLeftOf="@id/ib_search"
                 android:textColorHint="#aaffffff"
-                android:textSize="16sp" />
-
-
+                android:textSize="16sp"
+                android:fontFamily="sans-serif" />
 
         <ImageButton
             android:id="@+id/ib_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:paddingLeft="@dimen/activity_vertical_margin"
             android:background="@android:color/transparent"

@@ -30,7 +30,8 @@
             android:layout_marginTop="-2dp"
             android:gravity="center"
             android:textColor="@color/ColorTextHeading"
-            android:textSize="22sp" />
+            android:textSize="22sp"
+            android:fontFamily="sans-serif" />
 
         <ImageButton
             android:id="@+id/ib_edit_note"

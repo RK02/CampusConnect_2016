@@ -3,13 +3,18 @@ package com.campusconnect.cc_reboot.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.LightingColorFilter;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -47,10 +52,13 @@ public class NotificationAdapter extends
     NetworkInfo activeNetwork;
     boolean isConnected;
     List<ModelNotification> notifications;
+    ColorFilter filter;
+    Drawable drawable;
 
     public NotificationAdapter(Context context,List<ModelNotification> notifications) {
         this.context = context;
         this.notifications = notifications;
+        filter = new LightingColorFilter(Color.rgb(0, 0, 0), Color.rgb(247, 151, 29));
     }
 
     @Override
@@ -70,11 +78,27 @@ public class NotificationAdapter extends
         Log.i("sw32Notifications",type + " : " + key);
         Intent intent = new Intent();
         switch(type){
-            case "notes": intent = new Intent(context, NotePageActivity.class);intent.putExtra("noteBookId",key); break;
-            case "assignment":intent = new Intent(context, AssignmentPageActivity.class);intent.putExtra("assignmentId",key);break;
-            case "exam":intent = new Intent(context, ExamPageActivity.class);intent.putExtra("testId",key);break;
-            case "admin":intent = new Intent(context, CoursePageActivity.class);intent.putExtra("courseId",key);break;
-            case "rated":intent = new Intent(context, NotePageActivity.class);intent.putExtra("noteBookId",key);break;
+            case "notes":
+                intent = new Intent(context, NotePageActivity.class);intent.putExtra("noteBookId",key);
+                notificationHolder.notification_icon.setImageResource(R.mipmap.ic_note_added_24);
+                break;
+            case "assignment":
+                intent = new Intent(context, AssignmentPageActivity.class);intent.putExtra("assignmentId",key);
+                notificationHolder.notification_icon.setImageResource(R.mipmap.ic_assignment_added_24);
+                break;
+            case "exam":
+                intent = new Intent(context, ExamPageActivity.class);intent.putExtra("testId",key);
+                notificationHolder.notification_icon.setImageResource(R.mipmap.ic_exam_added_24);
+                break;
+            case "admin":
+                intent = new Intent(context, CoursePageActivity.class);intent.putExtra("courseId",key);
+                notificationHolder.notification_icon.setImageResource(R.mipmap.ic_edit_24_black);
+                break;
+            case "rated":
+                intent = new Intent(context, NotePageActivity.class);intent.putExtra("noteBookId",key);
+                notificationHolder.notification_icon.setImageResource(R.mipmap.ic_rate_notification_24);
+                break;
+            default: intent = null;
         }
 
 
@@ -82,7 +106,7 @@ public class NotificationAdapter extends
         notificationHolder.notificationCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(key==null)
+                if(key==null || finalIntent==null)
                 {
                     Toast.makeText(context,"Oops! Something went wrong!",Toast.LENGTH_SHORT).show();
                 }
@@ -142,6 +166,9 @@ public class NotificationAdapter extends
         TextView notificationMessage;
         @Bind(R.id.tv_notification_timestamp)
         TextView timestamp;
+        @Bind(R.id.iv_icon_notification)
+        ImageView notification_icon;
+
         public NotificationHolder(View v) {
             super(v);
             ButterKnife.bind(this, v);
