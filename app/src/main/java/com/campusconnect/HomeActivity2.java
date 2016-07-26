@@ -250,6 +250,7 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
     protected void onResume() {
         super.onResume();
         MyApp.activityResumed();
+        ConnectionChangeReceiver.broadcast(this);
         if(getIntent().hasExtra("pendingIntentAction"))
         {
             CustomNotification.deleteAll(CustomNotification.class);

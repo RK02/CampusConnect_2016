@@ -332,6 +332,7 @@ public class ProfilePageActivity extends AppCompatActivity implements FloatingAc
     protected void onResume() {
         super.onResume();
         MyApp.activityResumed();
+        ConnectionChangeReceiver.broadcast(this);
         Picasso.with(ProfilePageActivity.this)
                 .load(getSharedPreferences("CC",MODE_PRIVATE).getString("photourl","fakedesu"))
                 .memoryPolicy(MemoryPolicy.NO_CACHE)

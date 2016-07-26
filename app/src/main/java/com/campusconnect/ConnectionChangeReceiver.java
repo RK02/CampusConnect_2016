@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 
 /**
@@ -12,26 +13,38 @@ import android.net.NetworkInfo;
  */
 public class ConnectionChangeReceiver extends BroadcastReceiver
 {
+    public static boolean connected=true;
+
     @Override
     public void onReceive( Context context, Intent intent )
     {
-        if(MyApp.isActivityVisible()) {
+
         ConnectivityManager cm =
                 (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null &&
-                activeNetwork.isConnected();
-
+                activeNetwork.isConnectedOrConnecting();
             if (!isConnected) {
-                Intent networkNotFoundIntent = new Intent(context, NetworkNotFoundActivity.class);
-                networkNotFoundIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(networkNotFoundIntent);
+                if(MyApp.isActivityVisible()) {
+                    Intent networkNotFoundIntent = new Intent(context, NetworkNotFoundActivity.class);
+                    networkNotFoundIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(networkNotFoundIntent);
+                }
+                    connected = false;
             } else {
-
+                connected = true;
             }
         }
+    static void broadcast(Context context)
+    {
+        if(!connected){
+            Intent networkNotFoundIntent = new Intent(context, NetworkNotFoundActivity.class);
+            networkNotFoundIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(networkNotFoundIntent);
+        }
+    }
 
     }
 
-}
+

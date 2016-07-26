@@ -188,6 +188,7 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
     protected void onResume() {
         super.onResume();
         MyApp.activityResumed();
+        ConnectionChangeReceiver.broadcast(this);
     }
 
     @Override

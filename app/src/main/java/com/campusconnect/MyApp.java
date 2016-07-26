@@ -2,6 +2,7 @@ package com.campusconnect;
 
 import android.content.Context;
 import android.support.multidex.MultiDex;
+import android.util.Log;
 
 import com.campusconnect.POJO.SubscribedCourseList;
 import com.crashlytics.android.Crashlytics;

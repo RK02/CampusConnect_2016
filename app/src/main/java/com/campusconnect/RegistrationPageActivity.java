@@ -495,6 +495,7 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
     protected void onResume() {
         super.onResume();
         MyApp.activityResumed();
+        ConnectionChangeReceiver.broadcast(this);
     }
 
     @Override

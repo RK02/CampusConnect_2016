@@ -574,6 +574,7 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
     protected void onResume() {
         super.onResume();
         MyApp.activityResumed();
+        ConnectionChangeReceiver.broadcast(this);
 
         if (Branch.isAutoDeepLinkLaunch(this)) {
             try {

@@ -150,6 +150,7 @@ public class CreateCourseActivity extends Activity{
     protected void onResume() {
         super.onResume();
         MyApp.activityResumed();
+        ConnectionChangeReceiver.broadcast(this);
     }
 
     @Override

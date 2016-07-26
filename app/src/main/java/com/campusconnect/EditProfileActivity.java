@@ -529,6 +529,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnTou
     protected void onResume() {
         super.onResume();
         MyApp.activityResumed();
+        ConnectionChangeReceiver.broadcast(this);
     }
 
     @Override
