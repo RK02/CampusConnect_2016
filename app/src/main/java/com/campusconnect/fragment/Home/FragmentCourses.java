@@ -208,10 +208,7 @@ public class FragmentCourses extends Fragment{
                     a.setBackgroundColor(Color.rgb(223, 223, 223));
                 }
             }
-        courseNames.clear();
-        courseIds.clear();
-        timeTableViews = new HashMap<>();
-        mCourseAdapter.clear();
+
         call= myApi.getFeed(getActivity().getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""));
         call.enqueue(new Callback<ModelFeed>() {
             @Override
@@ -219,6 +216,9 @@ public class FragmentCourses extends Fragment{
                 ModelFeed modelFeed = response.body();
                 new FragmentTimetable();
                 if(modelFeed !=null) {
+                    courseNames.clear();
+                    courseIds.clear();
+                    timeTableViews = new HashMap<>();
                     mCourseAdapter.clear();
                     profileName = modelFeed.getProfileName();
                     profilePoints = modelFeed.getPoints();
