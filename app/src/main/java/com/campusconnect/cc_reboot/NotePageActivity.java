@@ -25,12 +25,14 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -40,6 +42,8 @@ import butterknife.ButterKnife;
 
 import android.util.Log;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -79,6 +83,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -143,6 +148,7 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
     @Bind(R.id.b_rate)
     Button rate_note_button;
 
+    ReportDetailsDialog  getReportsDetailsDialog;
     String noteBookId;
     int courseColor;
     Retrofit retrofit;
@@ -152,6 +158,7 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
     public static ArrayList<String> descriptions;
     public static ArrayList<String> dates;
     Intent intent;
+    int prevRate;
 
     //Flags
     boolean doubleBackToExitPressedOnce = false;
@@ -163,6 +170,10 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
     View headerView;
     public static TextView home_title;
     GoogleApiClient mGoogleApiClient;
+    String my = "my";
+    String personNamePlaceHolder="";
+    String courseNamePlaceHolder ="";
+    String sharetext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,7 +190,16 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
         //Setting up Header View
         headerView = getLayoutInflater().inflate(R.layout.header, navigationView, false);
         navigationView.addHeaderView(headerView);
-        ImageView view = (ImageView) headerView.findViewById(R.id.profile_image);
+        ImageView imageView = (ImageView) headerView.findViewById(R.id.profile_image);
+
+        Picasso.with(NotePageActivity.this)
+                .load(getSharedPreferences("CC",MODE_PRIVATE).getString("photourl","fakedesu")).error(R.mipmap.ic_launcher)
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
+                .placeholder(R.mipmap.ccnoti)
+                .into(imageView);
+        ((TextView)headerView.findViewById(R.id.tv_username)).setText(getSharedPreferences("CC",MODE_PRIVATE).getString("profileName","PLACEHOLDER"));
+        ((TextView)headerView.findViewById(R.id.tv_points)).setText(FragmentCourses.profilePoints);
 
         //Unchecking all the drawer menu items before going back to home in case the app crashes
         int size = navigationView.getMenu().size();
@@ -302,6 +322,16 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onResponse(Call<ModelNoteBook> call, Response<ModelNoteBook> response) {
                 ModelNoteBook noteBook = response.body();
+                if(noteBook.getIsAuthor().equals("0"))
+                {
+                    sharetext = "Hey, check out the notes for "+ noteBook.getCourseName()+ " by "+noteBook.getUploaderName()+" on Campus Connect!\n";
+                }
+                else
+                {
+                    rate_note_button.setEnabled(false);
+                    sharetext = "Hey, check out my notes for "+ noteBook.getCourseName()+ " on Campus Connect!\n";
+                }
+                prevRate = Integer.parseInt(noteBook.getRated());
                 if (noteBook.getBookmarkStatus().equals("0")) {
                     bookmark_note_button.setChecked(false);
                 } else {
@@ -400,6 +430,15 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
                 intent = new Intent(getApplicationContext(), EditNoteActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.ib_flag:
+//                intent = new Intent(getApplicationContext(), EditNoteActivity.class);
+//                startActivity(intent);
+                getReportsDetailsDialog = new ReportDetailsDialog(this);
+                getReportsDetailsDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                Window getReportsDetailsDialogWindow =  getReportsDetailsDialog.getWindow();
+                getReportsDetailsDialogWindow.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                getReportsDetailsDialog.show();
+                break;
 
             case R.id.ib_fullscreen:
                 intent = new Intent(getApplicationContext(), NotesSliderActivity.class);
@@ -425,30 +464,6 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
                 Window window = rateNoteDialog.getWindow();
                 window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 break;
-
-            case R.id.ib_flag:
-                Retrofit retrofit = new Retrofit.
-                        Builder()
-                        .baseUrl(MyApi.BASE_URL)
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-                MyApi myApi = retrofit.create(MyApi.class);
-                MyApi.reportRequest body= new MyApi.reportRequest(getSharedPreferences("CC",MODE_PRIVATE).getString("profileId",""),noteBookId,"");
-                Call<Void> call = myApi.report(body);
-                call.enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-                        Toast.makeText(NotePageActivity.this,"Thank you for the feedback. We will get back to you shortly",Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-
-                    }
-                });
-
-                break;
-
             default:
                 break;
         }
@@ -470,15 +485,15 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
         final Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.setType("text/plain");
-        sendIntent.setPackage("com.whatsapp");
+
         branchUniversalObject.generateShortUrl(this, linkProperties, new Branch.BranchLinkCreateListener() {
             @Override
             public void onLinkCreate(String url, BranchError error) {
                 if (error == null) {
                     Log.i("MyApp", "got my Branch link to share: " + url);
-                    sendIntent.putExtra(Intent.EXTRA_TEXT,url);
+                    sendIntent.putExtra(Intent.EXTRA_TEXT,sharetext+url);
                     progressDialog.dismiss();
-                    startActivityForResult(sendIntent,1);
+                    startActivityForResult(Intent.createChooser(sendIntent, "Share with..."),1);
                 }
             }
         });
@@ -572,7 +587,16 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
 //            DrawableCompat.setTint(progress.getDrawable(2),Color.YELLOW);
 //            progress.getDrawable(1).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_IN);
 //            progress.getDrawable(2).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_IN);
+//            DrawableCompat.setTint(progress.getDrawable(1),Color.YELLOW);
+//            DrawableCompat.setTint(progress.getDrawable(2),Color.YELLOW);
 
+//            stars.getDrawable(2).setColorFilter(Color.rgb(255,247,151), PorterDuff.Mode.SRC_ATOP);
+            if(prevRate>=0)
+            {
+                rating.setRating(prevRate);
+            }
+            progress.getDrawable(1).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_IN);
+            progress.getDrawable(2).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_IN);
             submit_rate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -589,6 +613,7 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
                             @Override
                             public void onResponse(Call<ModelRate> call, Response<ModelRate> response) {
                                 Log.i("sw32rate",response.code()+"");
+                                Toast.makeText(NotePageActivity.this,"Thank you for rating!",Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
@@ -628,11 +653,14 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
 
     //Function for fragment selection and commits
     public void displayView(int viewId){
+        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
         switch (viewId) {
             case R.id.item_timetable:
                 at_home=true;
                 Intent intent_home = new Intent(NotePageActivity.this,HomeActivity2.class);
                 startActivity(intent_home);
+                finish();
                 break;
             case R.id.item_add_course:
                 fragment = new FragmentAddCourse();
@@ -642,7 +670,9 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
             case R.id.item_bookmark:
                 Intent intent_profile = new Intent(NotePageActivity.this,ProfilePageActivity.class);
                 startActivity(intent_profile);
-                at_home=false;
+                frag_title = "Notes";
+                fragment = null;
+                at_home=true;
                 break;
             case R.id.item_getting_points:
                 fragment = new FragmentPointsInfo();
@@ -694,7 +724,6 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
         }
         if (fragment != null) {
             home_title.setText(frag_title);
-            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             //fragmentTransaction.remove(getSupportFragmentManager().findFragmentById(R.id.frame));
             Fragment temp  = getSupportFragmentManager().findFragmentById(R.id.frame);
 
@@ -716,6 +745,16 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
                     fragmentTransaction.remove(temp);
                     fragmentTransaction.commit();
                 }
+            }
+
+        }
+        else
+        {
+            Fragment temp  = getSupportFragmentManager().findFragmentById(R.id.frame);
+            if(temp!=null)
+            {
+                fragmentTransaction.remove(temp).commit();
+                home_title.setText(frag_title);
             }
 
         }
@@ -746,5 +785,122 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
         else
             drawerLayout.closeDrawers();
     }
+
+   public class ReportDetailsDialog extends  Dialog implements View.OnClickListener {
+
+       public Activity c;
+       public Dialog d;
+           @Bind(R.id.btn_submit)
+            Button btn_submit;
+            @Bind(R.id.radio_group)
+            RadioGroup radioGroup;
+
+            @Bind(R.id.btn_radio_inapproriate)
+            RadioButton btn_radio_inapproriate;
+
+       @Bind(R.id.btn_radio_falseContent)
+       RadioButton btn_radio_falseContent;
+
+       @Bind(R.id.btn_radio_other)
+       RadioButton btn_radio_other;
+
+       @Bind(R.id.btn_radio_copyrighted)
+       RadioButton btn_radio_copyrighted;
+
+       @Bind(R.id.et_feedback)
+       EditText et_feedback;
+       public ReportDetailsDialog(Activity a) {
+           super(a);
+           // TODO Auto-generated constructor stub
+           this.c = a;
+           this.c = a;
+       }
+
+       @Override
+       protected void onCreate(Bundle savedInstanceState) {
+           super.onCreate(savedInstanceState);
+           setContentView(R.layout.dialog_get_reports);
+           ButterKnife.bind(this);
+
+        //   et_feedback.setEnabled(false);
+          // et_feedback.setInputType(InputType.TYPE_NULL);
+           //et_feedback.setFocusable(false);
+
+
+           radioGroup.clearCheck();
+           //attach check handler
+           btn_submit.setOnClickListener(this);
+
+           radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+               @Override
+               public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                   switch (i){
+                       case R.id.btn_radio_inapproriate:
+                               btn_radio_other.setChecked(false);
+                               btn_radio_copyrighted.setChecked(false);
+                                et_feedback.setVisibility(View.GONE);
+                            break;
+                       case R.id.btn_radio_falseContent:
+                           btn_radio_inapproriate.setChecked(false);
+                           btn_radio_other.setChecked(false);
+                           btn_radio_copyrighted.setChecked(false);
+                           et_feedback.setVisibility(View.GONE);
+                           break;
+                       case R.id.btn_radio_copyrighted:
+                           btn_radio_inapproriate.setChecked(false);
+                           btn_radio_other.setChecked(false);
+                           btn_radio_falseContent.setChecked(false);
+                           et_feedback.setVisibility(View.GONE);
+                           break;
+                       case R.id.btn_radio_other:
+                           btn_radio_inapproriate.setChecked(false);
+                           btn_radio_falseContent.setChecked(false);
+                           btn_radio_copyrighted.setChecked(false);
+                           et_feedback.setVisibility(View.VISIBLE);
+                           break;
+                   }
+               }
+           });
+       }
+       /**
+       public void enableEdit(boolean state){
+           et_feedback.setEnabled(true);
+           et_feedback.setEnabled(true);
+           Log.d("enable edit","called");
+           if(state){ et_feedback.setInputType(InputType.TYPE_CLASS_TEXT); }
+           else { et_feedback.setInputType(InputType.TYPE_NULL); }
+       }
+*/
+
+       @Override
+       public void onClick(View view) {
+           if (view == btn_submit){
+
+               Retrofit retrofit = new Retrofit.
+                       Builder()
+                       .baseUrl(MyApi.BASE_URL)
+                       .addConverterFactory(GsonConverterFactory.create())
+                       .build();
+
+               MyApi myApi = retrofit.create(MyApi.class);
+               MyApi.reportRequest body= new MyApi.reportRequest(getSharedPreferences("CC",MODE_PRIVATE).getString("profileId",""),noteBookId,"");
+               Call<Void> call = myApi.report(body);
+               call.enqueue(new Callback<Void>() {
+                   @Override
+                   public void onResponse(Call<Void> call, Response<Void> response) {
+                       Toast.makeText(NotePageActivity.this,"Thank you for the feedback. We will get back to you shortly",Toast.LENGTH_SHORT).show();
+                    getReportsDetailsDialog.dismiss();
+                   }
+
+                   @Override
+                   public void onFailure(Call<Void> call, Throwable t) {
+                    Log.d("dialog get reports","failed");
+                   }
+               });
+           }
+       }
+   }
+
+
 }
 
