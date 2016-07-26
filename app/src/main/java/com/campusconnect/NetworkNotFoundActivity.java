@@ -55,4 +55,15 @@ public class NetworkNotFoundActivity extends AppCompatActivity {
         startActivity(home);
         finish();
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MyApp.activityResumed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MyApp.activityPaused();
+    }
 }

@@ -525,5 +525,16 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnTou
             ButterKnife.bind(this);
         }
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MyApp.activityResumed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MyApp.activityPaused();
+    }
 }
 

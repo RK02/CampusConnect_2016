@@ -18,6 +18,7 @@ import io.fabric.sdk.android.Fabric;
  */
 public class MyApp extends SugarApp {
     private static boolean activityVisible;
+
     public static boolean isActivityVisible() {
         return activityVisible;
     }

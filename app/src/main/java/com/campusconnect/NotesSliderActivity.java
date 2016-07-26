@@ -184,6 +184,17 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
             trial_button.startAnimation(fadeOut);
         }
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MyApp.activityResumed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MyApp.activityPaused();
+    }
 
 }
 

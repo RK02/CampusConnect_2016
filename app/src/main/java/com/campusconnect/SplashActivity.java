@@ -91,5 +91,16 @@ public class SplashActivity extends AppCompatActivity {
     public void onNewIntent(Intent intent) {
         this.setIntent(intent);
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MyApp.activityResumed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MyApp.activityPaused();
+    }
 }
 

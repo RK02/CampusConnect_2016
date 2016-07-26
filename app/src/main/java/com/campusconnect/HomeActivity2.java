@@ -249,7 +249,7 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
     @Override
     protected void onResume() {
         super.onResume();
-
+        MyApp.activityResumed();
         if(getIntent().hasExtra("pendingIntentAction"))
         {
             CustomNotification.deleteAll(CustomNotification.class);
@@ -777,4 +777,10 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
 
     }
 
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MyApp.activityPaused();
+    }
 }

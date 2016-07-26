@@ -377,4 +377,15 @@ public class GoogleSignInActivity extends BaseActivity implements
             progressBar.dismiss();
         }
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MyApp.activityResumed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MyApp.activityPaused();
+    }
 }

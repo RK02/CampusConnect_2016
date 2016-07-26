@@ -330,6 +330,7 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
     @Override
     protected void onResume() {
         super.onResume();
+        MyApp.activityResumed();
         course_details.setText("");
         course_info_container.setBackgroundColor(courseColor);
         course_adapter = new ViewPagerAdapter_course(getSupportFragmentManager(), Titles, Numboftabs, courseColor, this);
@@ -922,6 +923,13 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
             }
         }
         }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MyApp.activityPaused();
+    }
     }
 
 

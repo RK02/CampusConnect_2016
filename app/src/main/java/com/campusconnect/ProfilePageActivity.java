@@ -331,6 +331,7 @@ public class ProfilePageActivity extends AppCompatActivity implements FloatingAc
     @Override
     protected void onResume() {
         super.onResume();
+        MyApp.activityResumed();
         Picasso.with(ProfilePageActivity.this)
                 .load(getSharedPreferences("CC",MODE_PRIVATE).getString("photourl","fakedesu"))
                 .memoryPolicy(MemoryPolicy.NO_CACHE)
@@ -483,6 +484,13 @@ public class ProfilePageActivity extends AppCompatActivity implements FloatingAc
         }
         else
             drawerLayout.closeDrawers();
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MyApp.activityPaused();
     }
 }
 

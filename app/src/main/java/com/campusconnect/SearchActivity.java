@@ -307,5 +307,16 @@ public class SearchActivity extends AppCompatActivity {
         firebaseAnalytics = FirebaseAnalytics.getInstance(this);
         firebaseAnalytics.logEvent("search_event",params);
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MyApp.activityResumed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MyApp.activityPaused();
+    }
 }
 

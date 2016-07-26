@@ -573,7 +573,7 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
     @Override
     protected void onResume() {
         super.onResume();
-
+        MyApp.activityResumed();
 
         if (Branch.isAutoDeepLinkLaunch(this)) {
             try {
@@ -589,6 +589,13 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
         }
         courseColor = getIntent().getIntExtra("CourseColor", Color.rgb(224, 224, 224));
         assignments_container.setBackgroundColor(courseColor);
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MyApp.activityPaused();
     }
 }
 

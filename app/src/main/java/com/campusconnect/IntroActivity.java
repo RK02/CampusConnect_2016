@@ -96,5 +96,16 @@ public class IntroActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MyApp.activityResumed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MyApp.activityPaused();
+    }
 
 }

@@ -334,6 +334,17 @@ public class UploadPicturesActivity extends AppCompatActivity {
             // permissions this app might request
         }
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MyApp.activityResumed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MyApp.activityPaused();
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

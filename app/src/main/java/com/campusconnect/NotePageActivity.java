@@ -279,6 +279,7 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onResume() {
         super.onResume();
+        MyApp.activityResumed();
 
         if (Branch.isAutoDeepLinkLaunch(this)) {
             try {
@@ -912,6 +913,13 @@ public class NotePageActivity extends AppCompatActivity implements View.OnClickL
            }
        }
    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MyApp.activityPaused();
+    }
 
 
 }

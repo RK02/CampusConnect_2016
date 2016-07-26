@@ -124,5 +124,16 @@ public class SelectCourseActivity extends AppCompatActivity{
         });
 
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MyApp.activityResumed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MyApp.activityPaused();
+    }
 }
 

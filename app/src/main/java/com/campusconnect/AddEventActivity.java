@@ -421,4 +421,15 @@ public class AddEventActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"Your upload has completed",Toast.LENGTH_SHORT).show();
         }
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MyApp.activityResumed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MyApp.activityPaused();
+    }
 }
