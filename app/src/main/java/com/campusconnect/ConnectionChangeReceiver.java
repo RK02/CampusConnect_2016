@@ -15,21 +15,21 @@ public class ConnectionChangeReceiver extends BroadcastReceiver
     @Override
     public void onReceive( Context context, Intent intent )
     {
+        if(MyApp.isActivityVisible()) {
         ConnectivityManager cm =
                 (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null &&
                 activeNetwork.isConnected();
-        if (!isConnected)
-        {
-            Intent networkNotFoundIntent = new Intent(context,NetworkNotFoundActivity.class);
-            networkNotFoundIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(networkNotFoundIntent);
-        }
-        else
-        {
 
+            if (!isConnected) {
+                Intent networkNotFoundIntent = new Intent(context, NetworkNotFoundActivity.class);
+                networkNotFoundIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(networkNotFoundIntent);
+            } else {
+
+            }
         }
 
     }

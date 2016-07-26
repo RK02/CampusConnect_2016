@@ -17,6 +17,18 @@ import io.fabric.sdk.android.Fabric;
  * Created by sarthak on 7/5/16.
  */
 public class MyApp extends SugarApp {
+    private static boolean activityVisible;
+    public static boolean isActivityVisible() {
+        return activityVisible;
+    }
+
+    public static void activityResumed() {
+        activityVisible = true;
+    }
+
+    public static void activityPaused() {
+        activityVisible = false;
+    }
         protected void attachBaseContext(Context base) {
             super.attachBaseContext(base);
             MultiDex.install(this);
