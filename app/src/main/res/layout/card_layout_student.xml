@@ -29,7 +29,7 @@
             android:orientation="horizontal"
             android:weightSum="3">
 
-            <com.campusconnect.cc_reboot.auxiliary.CircularImageView xmlns:app="http://schemas.android.com/tools"
+            <com.campusconnect.auxiliary.CircularImageView xmlns:app="http://schemas.android.com/tools"
                 android:id="@+id/iv_student_profile_picture"
                 android:layout_width="50dp"
                 android:layout_height="50dp"

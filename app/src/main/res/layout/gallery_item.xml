@@ -20,7 +20,7 @@
         android:elevation="4dp"
         android:orientation="vertical">
 
-        <com.campusconnect.cc_reboot.auxiliary.CustomGalleryImageView
+        <com.campusconnect.auxiliary.CustomGalleryImageView
             android:id="@+id/grid_item_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

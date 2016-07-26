@@ -3,7 +3,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <com.campusconnect.cc_reboot.auxiliary.ObservableScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.campusconnect.auxiliary.ObservableScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/scroll_horizontal_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -119,7 +119,7 @@
             </TableRow>
         </TableLayout>
 
-    </com.campusconnect.cc_reboot.auxiliary.ObservableScrollView>
+    </com.campusconnect.auxiliary.ObservableScrollView>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_timetable"

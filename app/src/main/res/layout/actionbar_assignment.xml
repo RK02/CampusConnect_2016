@@ -34,16 +34,6 @@
             android:fontFamily="sans-serif" />
 
         <ImageButton
-            android:id="@+id/ib_edit_note"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical|right"
-            android:layout_toLeftOf="@+id/ib_fullscreen"
-            android:background="@android:color/transparent"
-            android:paddingRight="@dimen/activity_vertical_margin"
-            android:src="@mipmap/ic_edit_24_white" />
-
-        <ImageButton
             android:id="@+id/ib_fullscreen"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

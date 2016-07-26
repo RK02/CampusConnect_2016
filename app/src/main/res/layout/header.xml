@@ -9,7 +9,7 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp">
 
-    <com.campusconnect.cc_reboot.auxiliary.CircularImageView
+    <com.campusconnect.auxiliary.CircularImageView
         android:id="@+id/profile_image"
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -31,16 +31,4 @@
         android:textColor="@color/ColorTextHeading"
         android:textSize="20sp"
         android:fontFamily="sans-serif"/>
-
-    <TextView
-        android:id="@+id/tv_points"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_username"
-        android:layout_centerHorizontal="true"
-        android:text="Points"
-        android:textColor="@color/ColorTextHeading"
-        android:textSize="18sp"
-        android:fontFamily="sans-serif-light" />
-
 </RelativeLayout>
