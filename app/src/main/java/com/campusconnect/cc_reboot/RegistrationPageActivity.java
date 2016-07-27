@@ -76,7 +76,7 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
     EditText batchName;
 
     @Bind(R.id.et_specialisation)
-    AutoCompleteTextView branchName;
+    TextView branchName;
 
     @Bind(R.id.et_section)
     AutoCompleteTextView sectionName;
@@ -100,6 +100,9 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
     String collegeNameString;
     int pos_college_selection;
     private FirebaseAnalytics mFirebaseAnalytics;
+    String branchNameString;
+    int pos_branch_name_selection;
+    public ArrayAdapter<String> branchNameList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,6 +157,39 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
 
             }
         });
+        branchName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builderBranchList = new AlertDialog.Builder(RegistrationPageActivity.this);
+                builderBranchList.setTitle("Select Your Specisalisation");
+                builderBranchList.setNegativeButton(
+                        "cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                builderBranchList.setAdapter(branchNameList,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.d("onClick",branchNameList.toString());
+                                branchNameString = branchNameList.getItem(which);
+                                pos_branch_name_selection = which;
+                                if (pos_branch_name_selection != branchNameList.getCount() - 1) ;
+                                branchName.setText(branchNameString);
+                            }
+                        });
+                String temp = collegeName.getText().toString();
+                int index = collegeNames.indexOf(temp);
+                branchNameList = new ArrayAdapter<String>(RegistrationPageActivity.this, android.R.layout.simple_list_item_1, colleges.get(index).getBranchNames());
+                builderBranchList.show();
+            }
+        });
+
+
+
+
         branchName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                                                 @Override
                                                 public void onFocusChange(View v, boolean hasFocus) {
@@ -161,7 +197,8 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
                                                         String temp = collegeName.getText().toString();
                                                         int index = collegeNames.indexOf(temp);
                                                         if(index < 0 ) {collegeName.setError("Select a valid college name");collegeName.requestFocus(); return;}
-                                                        branchName.setAdapter(new ArrayAdapter<String>(RegistrationPageActivity.this, android.R.layout.simple_list_item_1, colleges.get(index).getBranchNames()));
+                                                        branchNameList = new ArrayAdapter<String>(RegistrationPageActivity.this, android.R.layout.simple_list_item_1, colleges.get(index).getBranchNames());
+                                                        //     branchName.setAdapter(new ArrayAdapter<String>(RegistrationPageActivity.this, android.R.layout.simple_list_item_1, colleges.get(index).getBranchNames()));
                                                     }
                                                 }
                                             });
@@ -271,8 +308,10 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
                             public void onClick(DialogInterface dialog, int which) {
                                 collegeNameString = data.getItem(which);
                                 pos_college_selection=which;
+                                Log.d("regestraion page","called");
                                 if(pos_college_selection!=data.getCount()-1)
                                     collegeName.setText(collegeNameString);
+
                                 else{
                                    getdetailsDialog = new CollegeNotFoundDialog((Activity) RegistrationPageActivity.this);
                                     Window window = getdetailsDialog.getWindow();
