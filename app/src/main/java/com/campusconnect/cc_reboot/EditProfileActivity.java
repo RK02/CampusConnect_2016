@@ -91,7 +91,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnTou
     EditText batchName;
 
     @Bind(R.id.et_specialisation)
-    AutoCompleteTextView branchName;
+   TextView branchName;
 
     @Bind(R.id.et_section)
     EditText sectionName;
@@ -117,6 +117,9 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnTou
 
     String collegeNameString;
     int pos_college_selection;
+    String branchNameString;
+    int pos_branch_name_selection;
+   public ArrayAdapter<String> branchNameList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,6 +174,37 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnTou
 
             }
         });
+
+        branchName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builderBranchList = new AlertDialog.Builder(EditProfileActivity.this);
+                builderBranchList.setTitle("Select Your Specisalisation");
+                builderBranchList.setNegativeButton(
+                        "cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                builderBranchList.setAdapter(branchNameList,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.d("onClick",branchNameList.toString());
+                                branchNameString = branchNameList.getItem(which);
+                                pos_branch_name_selection = which;
+                                if (pos_branch_name_selection != branchNameList.getCount() - 1) ;
+                                branchName.setText(branchNameString);
+                            }
+                        });
+                String temp = collegeName.getText().toString();
+                int index = collegeNames.indexOf(temp);
+                branchNameList = new ArrayAdapter<String>(EditProfileActivity.this, android.R.layout.simple_list_item_1, colleges.get(index).getBranchNames());
+                builderBranchList.show();
+            }
+        });
+
         branchName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -182,7 +216,8 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnTou
                         collegeName.requestFocus();
                         return;
                     }
-                    branchName.setAdapter(new ArrayAdapter<String>(EditProfileActivity.this, android.R.layout.simple_list_item_1, colleges.get(index).getBranchNames()));
+                    branchNameList = new ArrayAdapter<String>(EditProfileActivity.this, android.R.layout.simple_list_item_1, colleges.get(index).getBranchNames());
+                    // branchName.setAdapter(new ArrayAdapter<String>(EditProfileActivity.this, android.R.layout.simple_list_item_1, colleges.get(index).getBranchNames()));
                 }
             }
         });
@@ -341,6 +376,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnTou
     public void onClick(View view) {
 
         switch (view.getId()){
+
             case R.id.et_college_name:
                 AlertDialog.Builder builderCollegeList = new AlertDialog.Builder(EditProfileActivity.this);
                 builderCollegeList.setTitle("Select your college");
@@ -357,6 +393,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnTou
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                Log.d("edit profilepage","called");
                                 collegeNameString = data.getItem(which);
                                 pos_college_selection=which;
                                 if(pos_college_selection!=data.getCount()-1)
@@ -366,6 +403,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnTou
                                     Window window = getdetailsDialog.getWindow();
                                     window.setLayout(450, ViewGroup.LayoutParams.WRAP_CONTENT);
                                     getdetailsDialog.show();
+
                                 }
                             }
                         });
@@ -383,9 +421,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnTou
                 InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
                 inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                 break;
-            case R.id.et_batch:
-            case R.id.et_specialisation:
-
+                case R.id.et_batch:
                 if (view.hasFocus()) {
                     view.getParent().requestDisallowInterceptTouchEvent(true);
                     switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
