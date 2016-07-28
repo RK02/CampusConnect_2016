@@ -58,6 +58,7 @@ public class FragmentCourses extends Fragment{
     LinearLayoutManager mLayoutManager;
     SwipeRefreshLayout swipeRefreshLayout;
     LinearLayout cell_container;
+    View course_indicator;
     Retrofit retrofit = new Retrofit.
             Builder()
             .baseUrl(BASE_URL)
@@ -100,9 +101,8 @@ public class FragmentCourses extends Fragment{
 
         BitmapFactory.Options bm_opts = new BitmapFactory.Options();
         bm_opts.inScaled = false;
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.no_value_courses, bm_opts);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.err_network_down, bm_opts);
         no_course_view.setImageBitmap(bitmap);
-        no_course_view.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
         ArrayList<SubscribedCourseList> courses = new ArrayList<>();
         timeTableViews = new HashMap<>();
@@ -226,17 +226,11 @@ public class FragmentCourses extends Fragment{
                     List<SubscribedCourseList> subscribedCourseList = modelFeed.getSubscribedCourseList();
                     if(subscribedCourseList.isEmpty())
                     {
-                        if(Build.VERSION.SDK_INT>=21) {
-
-                            fragment_courses.setBackground(getActivity().getDrawable(R.drawable.no_value_courses));
-                        }
-                        else
-                        {
-                            fragment_courses.setBackground(getResources().getDrawable(R.drawable.no_value_courses));
-                        }
+                        no_course_view.setVisibility(View.VISIBLE);
                     }
                     else
                     {
+                        no_course_view.setVisibility(View.GONE);
                         fragment_courses.setBackgroundColor(getResources().getColor(R.color.ColorRecyclerBackground));
                     }
                     for (final SubscribedCourseList x : subscribedCourseList) {
@@ -260,7 +254,8 @@ public class FragmentCourses extends Fragment{
                                     timeTableViews.put(x.getCourseId(), temp);
                                 }
                                 cell_container = (LinearLayout) TimetableAdapter.itemView.findViewById(Integer.parseInt(viewId));
-                                cell_container.setBackgroundColor(Color.parseColor(x.getColour()));
+                                cell_container.setBackgroundColor(Color.WHITE);
+                                ((View) cell.findViewById(R.id.course_indicator)).setBackgroundColor(Color.parseColor(x.getColour()));
                                 ((TextView) cell.findViewById(R.id.cellText)).setText(x.getCourseCode());
                                 cell.setOnClickListener(new View.OnClickListener() {
                                     @Override

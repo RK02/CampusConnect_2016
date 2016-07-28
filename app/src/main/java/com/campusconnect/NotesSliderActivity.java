@@ -17,6 +17,7 @@ import com.campusconnect.POJO.Note;
 import com.campusconnect.auxiliary.ViewPagerDisable;
 import com.campusconnect.auxiliary.ZoomOutPageTransformer;
 import com.campusconnect.fragment.NotesSliderPageFragment;
+import com.campusconnect.viewpager.CustomPagerAdapter;
 import com.campusconnect.viewpager.ScreenSlidePagerAdapter;
 
 import org.json.JSONException;
@@ -52,12 +53,15 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
     ArrayList<String> pages;
     ArrayList<String> descriptions;
     ArrayList<String> dates;
+    ArrayList<Integer> book_indicator_helper_array;
+    ArrayList<Integer> page_indicator_helper_array;
     int NumPages;
     public static ArrayList<ArrayList<String>> urls;
+    ArrayList<String> urls_single;
 
-    String curr, class_, total;
+    String curr, class_, total_pages;
 
-    int class_pos;
+    int class_pos, prev_class_pos, k=0;
 
 
     @Override
@@ -68,10 +72,12 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
 
         Titles = new ArrayList<>();
         urls = new ArrayList<>();
+        urls_single = new ArrayList<>();
         pages = new ArrayList<>();
         dates = new ArrayList<>();
         descriptions = new ArrayList<>();
-
+        book_indicator_helper_array = new ArrayList<>();
+        page_indicator_helper_array = new ArrayList<>();
 
         for(int i =1 ; i<=NotePageActivity.jsonNoteList.length(); i++)
         {
@@ -91,13 +97,52 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
         NumPages = Titles.size();
 
 
+        for(int i=0; i<NumPages; i++) {
+            k=0;
+            for (int j = 0; j < urls.get(i).size(); j++) {
+                urls_single.add(urls.get(i).get(j));
+                book_indicator_helper_array.add(i + 1);
+                page_indicator_helper_array.add(++k);
+            }
+        }
+
+
         // Instantiate a ViewPager and a PagerAdapter.
         mNotesPager = (ViewPagerDisable) findViewById(R.id.pager);
-        mNotesPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(),Titles,urls,NumPages,this,mNotesPager);
-        mNotesPager.setAdapter(mNotesPagerAdapter);
-        mNotesPager.setPageTransformer(true, new ZoomOutPageTransformer());
+//        mNotesPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(),Titles,urls,NumPages,this,mNotesPager);
+//        mNotesPager.setAdapter(mNotesPagerAdapter);
 
-        mNotesPager.setCurrentItem(NotePageActivity.jsonNoteList.length()-1);
+        mNotesPager.setAdapter(new CustomPagerAdapter(this,urls_single));
+
+        ///Setting the initial page stats
+        mNotesPager.setCurrentItem(urls_single.size()-urls.get(NumPages-1).size());
+        prev_class_pos = book_indicator_helper_array.get(urls_single.size()-1);
+        total_pages = urls.get(book_indicator_helper_array.get(urls_single.size()-1)-1).size()+"";
+        book_title.setText("Class "+book_indicator_helper_array.get(urls_single.size()-1).toString());
+        page_number.setText(""+1+"/"+total_pages);
+
+        mNotesPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                total_pages = urls.get(book_indicator_helper_array.get(position)-1).size()+"";
+                k=page_indicator_helper_array.get(position);
+                book_title.setText("Class "+book_indicator_helper_array.get(position).toString());
+                page_number.setText(""+k+"/"+total_pages);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+//            mNotesPager.setPageTransformer(true, new ZoomOutPageTransformer());
+
         //Hiding the notepage info
         Animation fadeOut = new AlphaAnimation(1, 0.4f);
         fadeOut.setInterpolator(new AccelerateInterpolator()); //and this
@@ -114,11 +159,11 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
 
     @Override
     public void onBackPressed() {
-        if (mNotesPager.getCurrentItem() == 0) {
+//        if (mNotesPager.getCurrentItem() == 0) {
             super.onBackPressed();
-        } else {
-            mNotesPager.setCurrentItem(mNotesPager.getCurrentItem() - 1);
-        }
+//        } else {
+//            mNotesPager.setCurrentItem(mNotesPager.getCurrentItem() - 1);
+//        }
     }
 
 
@@ -163,12 +208,12 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
 
     @Override
     public void notePageInfo(String class_no, String curr_page, String total_pages, ViewPagerDisable child) {
-        class_ = class_no;
-        curr = curr_page;
-        total = total_pages;
-        book_title.setText(class_no);
-        mChildPager = child;
-        page_number.setText(curr_page+"/"+total_pages);
+//        class_ = class_no;
+//        curr = curr_page;
+//        total = total_pages;
+//        book_title.setText(class_no);
+//        mChildPager = child;
+//        page_number.setText(curr_page+"/"+total_pages);
 //        page_description.setText(descriptions.get(Integer.parseInt(class_no.split(" ")[1])));
     }
 

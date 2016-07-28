@@ -108,7 +108,7 @@ public class CourseListAdapter extends
         }
         courseListViewHolder.timetableGlance.setText(a.getTimetable());
         final int color = Color.parseColor(a.getColour());
-        courseListViewHolder.course_card.setCardBackgroundColor(color);
+        courseListViewHolder.container_title.setBackgroundColor(color);
 
         courseListViewHolder.course_card.setOnClickListener(new View.OnClickListener() {
             @Override

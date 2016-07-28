@@ -81,18 +81,11 @@ public class FragmentUploadedNotes extends Fragment {
                     }
                     if(noteBookLists.isEmpty())
                     {
-                        if(Build.VERSION.SDK_INT>=21)
-                        {
-                            uploaded_notes_list.setBackground(getActivity().getDrawable(R.drawable.no_value_uploads));
-                        }
-                        else
-                        {
-                            uploaded_notes_list.setBackground(getResources().getDrawable(R.drawable.no_value_uploads));
-                        }
+                        no_uploads.setVisibility(View.VISIBLE);
                     }
                     else
                     {
-                        uploaded_notes_list.setBackgroundColor(getResources().getColor(R.color.ColorRecyclerBackground));
+                        no_uploads.setVisibility(View.GONE);
                     }
                 }
             }

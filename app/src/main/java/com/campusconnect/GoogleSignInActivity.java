@@ -19,11 +19,15 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,14 +76,24 @@ public class GoogleSignInActivity extends BaseActivity implements
     private FirebaseAuth.AuthStateListener mAuthListener;
     // [END declare_auth_listener]
     private GoogleApiClient mGoogleApiClient;
-    private TextView mStatusTextView;
-    private TextView mDetailTextView;
+    LinearLayout rootView;
+//    private TextView mStatusTextView;
+//    private TextView mDetailTextView;
     private FirebaseAnalytics firebaseAnalytics;
     String personName,personEmail,personId,personPhoto;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_google);
+
+        rootView = (LinearLayout)findViewById(R.id.main_layout);
+
+        BitmapFactory.Options bm_opts = new BitmapFactory.Options();
+        bm_opts.inScaled = false;
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.default_portrait_two, bm_opts);
+        BitmapDrawable background = new BitmapDrawable(bitmap);
+        rootView.setBackground(background);
+
         if(!getIntent().hasExtra("logout")){
             if(getSharedPreferences("CC",MODE_PRIVATE).contains("profileId")){
                 Intent home = new Intent(GoogleSignInActivity.this,HomeActivity2.class);
@@ -90,8 +104,8 @@ public class GoogleSignInActivity extends BaseActivity implements
         }
         firebaseAnalytics = FirebaseAnalytics.getInstance(this);
 // Views
-        mStatusTextView = (TextView) findViewById(R.id.status);
-        mDetailTextView = (TextView) findViewById(R.id.detail);
+//        mStatusTextView = (TextView) findViewById(R.id.status);
+//        mDetailTextView = (TextView) findViewById(R.id.detail);
 // Button listeners
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         findViewById(R.id.sign_out_button).setOnClickListener(this);
@@ -198,7 +212,7 @@ public class GoogleSignInActivity extends BaseActivity implements
                                 personPhoto = acct.getPhotoUrl().toString()+"";
                             else
                                 personPhoto = "shit";
-                            mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
+//                            mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
                             SharedPreferences sharedpreferences = getSharedPreferences("CC", Context.MODE_PRIVATE);
                             if (sharedpreferences.contains("profileId")) {
                                 Intent home = new Intent(GoogleSignInActivity.this, HomeActivity2.class);
@@ -249,13 +263,13 @@ public class GoogleSignInActivity extends BaseActivity implements
     private void updateUI(FirebaseUser user) {
         hideProgressDialog();
         if (user != null) {
-            mStatusTextView.setText(getString(R.string.google_status_fmt, user.getEmail()));
-            mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
+//            mStatusTextView.setText(getString(R.string.google_status_fmt, user.getEmail()));
+//            mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
             findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
         } else {
-            mStatusTextView.setText(R.string.signed_out);
-            mDetailTextView.setText(null);
+//            mStatusTextView.setText(R.string.signed_out);
+//            mDetailTextView.setText(null);
             findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
             findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
         }

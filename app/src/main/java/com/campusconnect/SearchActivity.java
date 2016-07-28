@@ -223,16 +223,11 @@ public class SearchActivity extends AppCompatActivity {
                         FragmentSearchCourse.mCourseAdapter.notifyDataSetChanged();
                     }
                     if(courseLists.isEmpty()) {
-                        if (Build.VERSION.SDK_INT >= 21) {
-                            FragmentSearchCourse.fragment_search_course.setBackground(getDrawable(R.drawable.no_value_search));
-                        } else {
-                            FragmentSearchCourse.fragment_search_course.setBackground(getResources().getDrawable(R.drawable.no_value_search));
-                        }
+                        no_search_view.setVisibility(View.VISIBLE);
                     }
                     else
                     {
-                            FragmentSearchCourse.fragment_search_course.setBackgroundColor(getResources().getColor(R.color.ColorRecyclerBackground));
-
+                        no_search_view.setVisibility(View.GONE);
                     }
                 }
 
@@ -264,10 +259,10 @@ public class SearchActivity extends AppCompatActivity {
                     if(noteBookLists.isEmpty())
                     {
                         if(Build.VERSION.SDK_INT>=21) {
-                        FragmentSearchNotes.fragment_search_notes.setBackground(getDrawable(R.drawable.no_value_search));
+//                        FragmentSearchNotes.fragment_search_notes.setBackground(getDrawable(R.drawable.no_value_search));
                     }else
                     {
-                        FragmentSearchNotes.fragment_search_notes.setBackground(getResources().getDrawable(R.drawable.no_value_search));
+//                        FragmentSearchNotes.fragment_search_notes.setBackground(getResources().getDrawable(R.drawable.no_value_search));
                     }
                     }
                     else

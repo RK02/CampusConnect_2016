@@ -92,6 +92,17 @@
         android:paddingBottom="16dp"
         />
 
+    <ImageView
+        android:id="@+id/iv_no_upload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:src="@android:color/transparent"
+        android:scaleType="fitCenter"
+        android:layout_above="@+id/container_action_buttons_more"
+        android:layout_below="@+id/container_action_buttons" />
+
 
     <LinearLayout
         android:id="@+id/container_action_buttons_more"
