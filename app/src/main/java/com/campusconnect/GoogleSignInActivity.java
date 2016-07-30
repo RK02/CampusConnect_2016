@@ -189,7 +189,7 @@ public class GoogleSignInActivity extends BaseActivity implements
                         {
                             Bundle params = new Bundle();
                             params.putString("firebaseauth","success");
-                            firebaseAnalytics.logEvent("firebase_auth",params);
+                            firebaseAnalytics.logEvent("login_firebase",params);
                             personName = acct.getDisplayName();
                             personEmail = acct.getEmail();
                             personId = acct.getId();

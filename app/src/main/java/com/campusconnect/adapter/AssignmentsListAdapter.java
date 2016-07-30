@@ -51,7 +51,7 @@ public class AssignmentsListAdapter extends
     @Override
     public void onBindViewHolder(AssignmentsListViewHolder assignmentsListViewHolder,int i) {
         final AssList assList = mAssignments.get(i);
-        assignmentsListViewHolder.assignment_name.setText(assList.getCourseName());
+        assignmentsListViewHolder.assignment_name.setText(assList.getAssignmentTitle());
         assignmentsListViewHolder.assignment_description.setText(assList.getAssignmentDesc());
         assignmentsListViewHolder.assignment_due_date.setText(assList.getDueDate());
         assignmentsListViewHolder.assignment_posted_on.setText(assList.getLastUpdated().substring(0,10));
