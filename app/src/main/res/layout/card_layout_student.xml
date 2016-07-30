@@ -29,7 +29,7 @@
             android:orientation="horizontal"
             android:weightSum="3">
 
-            <com.campusconnect.cc_reboot.auxiliary.CircularImageView xmlns:app="http://schemas.android.com/tools"
+            <com.campusconnect.auxiliary.CircularImageView xmlns:app="http://schemas.android.com/tools"
                 android:id="@+id/iv_student_profile_picture"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
@@ -54,7 +54,8 @@
                     android:layout_height="wrap_content"
                     android:text="Ankit Desh"
                     android:textColor="@color/ColorTextInfo"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:fontFamily="sans-serif"/>
             </RelativeLayout>
 
             <ToggleButton
@@ -75,7 +76,8 @@
                 android:textColor="@color/ColorTextInfo"
                 android:textOff="Make Admin"
                 android:textOn="Admin"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:fontFamily="sans-serif-light"/>
         </RelativeLayout>
 
         <View

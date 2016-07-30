@@ -40,7 +40,9 @@
                     android:layout_height="wrap_content"
                     android:text="ASSIGNMENT 1"
                     android:textColor="@color/ColorTextInfo"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:fontFamily="sans-serif"
+                    android:textStyle="bold"/>
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -60,9 +62,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="10dp"
-                        android:text="by Blah456"
+                        android:text="by XYZ"
                         android:textColor="@color/ColorTextInfo"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:fontFamily="sans-serif-light"/>
                 </RelativeLayout>
 
             </LinearLayout>
@@ -79,11 +82,12 @@
                     android:id="@+id/tv_posted_on_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Posted on"
+                    android:text="Posted"
                     android:paddingLeft="40dp"
                     android:gravity="center_vertical|right"
                     android:textColor="@color/ColorTextInfo"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:fontFamily="sans-serif" />
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -102,7 +106,8 @@
                         android:paddingRight="10dp"
                         android:text="21 May, 2016"
                         android:textColor="@color/ColorTextInfo"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:fontFamily="sans-serif-light"/>
 
                     <View
                         android:id="@+id/marker_posted_on"
@@ -125,7 +130,8 @@
             android:text="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout."
             android:layout_below="@+id/top_part_card"
             android:textColor="@color/ColorTextInfo"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:fontFamily="sans-serif"/>
 
         <LinearLayout
             android:id="@+id/container_stats"
@@ -159,7 +165,8 @@
                     android:text="5392"
                     android:maxLines="1"
                     android:ellipsize="end"
-                    android:textColor="@color/ColorTextInfo"/>
+                    android:textColor="@color/ColorTextInfo"
+                    android:fontFamily="sans-serif"/>
             </LinearLayout>
 
             <LinearLayout
@@ -184,7 +191,8 @@
                     android:maxLines="1"
                     android:ellipsize="end"
                     android:text="Due by 25 Sept, 2016"
-                    android:textColor="@color/ColorTextInfo"/>
+                    android:textColor="@color/ColorTextInfo"
+                    android:fontFamily="sans-serif"/>
             </LinearLayout>
 
         </LinearLayout>

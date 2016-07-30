@@ -10,11 +10,11 @@
     android:paddingRight="@dimen/activity_vertical_margin">
 
     <ImageButton
-        android:id="@+id/ib_menu"
+        android:id="@+id/ib_back"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:background="@android:color/transparent"
-        android:src="@mipmap/ic_menu_24" />
+        android:src="@mipmap/ic_back_24_white" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -30,7 +30,8 @@
             android:layout_marginTop="-2dp"
             android:gravity="center"
             android:textColor="@color/ColorTextHeading"
-            android:textSize="22sp"/>
+            android:textSize="22sp"
+            android:fontFamily="sans-serif"/>
 
         <ImageButton
             android:id="@+id/ib_sort"
@@ -41,6 +42,7 @@
             android:layout_toLeftOf="@+id/ib_edit_course"
             android:background="@android:color/transparent"
             android:paddingRight="@dimen/activity_vertical_margin"
+            android:visibility="gone"
             android:src="@mipmap/ic_sort_24" />
 
 
@@ -69,9 +71,17 @@
             android:layout_width="wrap_content"
             android:layout_centerVertical="true"
             android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/ib_flag_course"
+            android:background="@android:color/transparent"
+            android:paddingRight="@dimen/activity_vertical_margin"
+            android:src="@mipmap/ic_notifications_none_24" />
+        <ImageButton
+            android:id="@+id/ib_flag_course"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:background="@android:color/transparent"
-            android:src="@mipmap/ic_notifications_none_24" />
+            android:src="@mipmap/ic_flag_24_white" />
     </RelativeLayout>
 
 </LinearLayout>

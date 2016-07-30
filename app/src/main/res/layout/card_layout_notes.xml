@@ -41,7 +41,9 @@
                     android:layout_height="wrap_content"
                     android:text="LOGARITHMS"
                     android:textColor="@color/ColorTextInfo"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:fontFamily="sans-serif"
+                    android:textStyle="bold"/>
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -63,9 +65,10 @@
                         android:paddingLeft="10dp"
                         android:paddingTop="2dp"
                         android:paddingBottom="2dp"
-                        android:text="by Blah456"
+                        android:text="by XYZ"
                         android:textColor="@color/ColorTextInfo"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:fontFamily="sans-serif-light"/>
                 </RelativeLayout>
 
             </LinearLayout>
@@ -86,7 +89,8 @@
                     android:paddingLeft="36dp"
                     android:gravity="center_vertical|right"
                     android:textColor="@color/ColorTextInfo"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:fontFamily="sans-serif"/>
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -107,7 +111,8 @@
                         android:paddingTop="2dp"
                         android:paddingBottom="2dp"
                         android:textColor="@color/ColorTextInfo"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:fontFamily="sans-serif-light"/>
 
                     <View
                         android:id="@+id/marker_last_updated"
@@ -155,7 +160,8 @@
                     android:text="34567"
                     android:maxLines="1"
                     android:ellipsize="end"
-                    android:textColor="@color/ColorTextInfo"/>
+                    android:textColor="@color/ColorTextInfo"
+                    android:fontFamily="sans-serif"/>
             </LinearLayout>
 
             <LinearLayout
@@ -180,7 +186,8 @@
                     android:text="4.3"
                     android:maxLines="1"
                     android:ellipsize="end"
-                    android:textColor="@color/ColorTextInfo"/>
+                    android:textColor="@color/ColorTextInfo"
+                    android:fontFamily="sans-serif"/>
             </LinearLayout>
 
             <LinearLayout
@@ -205,7 +212,8 @@
                     android:maxLines="1"
                     android:ellipsize="end"
                     android:text="7"
-                    android:textColor="@color/ColorTextInfo"/>
+                    android:textColor="@color/ColorTextInfo"
+                    android:fontFamily="sans-serif"/>
             </LinearLayout>
 
         </LinearLayout>

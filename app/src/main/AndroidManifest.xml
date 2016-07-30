@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.campusconnect.cc_reboot">
+    package="com.campusconnect">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -10,21 +10,31 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <!-- Needed to check when the network connection changes -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <meta-data
         android:name="com.google.android.gms.version"
         android:value="@integer/google_play_services_version" />
 
     <application
-        android:name=".MyApp"
+        android:name="com.campusconnect.MyApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <receiver
+            android:name="com.campusconnect.ConnectionChangeReceiver"
+            android:label="NetworkConnection">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="f36cb93f6f4460b768644db9ecbc2b70feabb4d7" />
+            android:value="8cf76229d4e405b251e3faf3108413ac418be0da" />
         <meta-data
             android:name="io.branch.sdk.BranchKey"
             android:value="key_live_jgl6YTLmWFUWqekOmqpuomdbwDlaAuaB" />
@@ -39,38 +49,37 @@
             android:value="true" />
         <meta-data
             android:name="DOMAIN_PACKAGE_NAME"
-            android:value="com.campusconnect.cc_reboot.POJO" />
+            android:value="com.campusconnect.POJO" />
         <!-- [START firebase_service] -->
-        <service android:name=".MyFirebaseMessagingService">
+        <service android:name="com.campusconnect.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
         <!-- [END firebase_service] -->
         <!-- [START firebase_iid_service] -->
-        <service android:name=".MyFirebaseInstanceIDService">
+        <service android:name="com.campusconnect.MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
         <!-- [END firebase_iid_service] -->
         <activity
-            android:name=".UploadPicturesActivity"
+            android:name="com.campusconnect.UploadPicturesActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".RegistrationPageActivity"
+            android:name="com.campusconnect.RegistrationPageActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".SelectCourseActivity"
+            android:name="com.campusconnect.SelectCourseActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SplashActivity"
+            android:name="com.campusconnect.SplashActivity"
             android:label="@string/app_name"
-
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -82,6 +91,7 @@
                 <data
                     android:host="campusconnectreboot.app.link"
                     android:scheme="https" />
+
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -89,11 +99,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CoursePageActivity"
+            android:name="com.campusconnect.CoursePageActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".NotePageActivity"
+            android:name="com.campusconnect.NotePageActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
@@ -102,7 +112,7 @@
                 android:value="noteBookId" />
         </activity>
         <activity
-            android:name=".AssignmentPageActivity"
+            android:name="com.campusconnect.AssignmentPageActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <meta-data
@@ -110,7 +120,7 @@
                 android:value="assignmentId" />
         </activity>
         <activity
-            android:name=".ExamPageActivity"
+            android:name="com.campusconnect.ExamPageActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <meta-data
@@ -118,61 +128,60 @@
                 android:value="examId" />
         </activity>
         <activity
-            android:name=".SearchActivity"
+            android:name="com.campusconnect.SearchActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".NotesSliderActivity"
-            android:label="@string/app_name" />
-        <activity
-            android:name=".ProfilePageActivity"
+            android:name="com.campusconnect.NotesSliderActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".NotificationActivity"
+            android:name="com.campusconnect.ProfilePageActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SortActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"></activity>
-        <activity
-            android:name=".GiftsActivity"
+            android:name="com.campusconnect.NotificationActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".EditProfileActivity"
+            android:name="com.campusconnect.SortActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.campusconnect.EditProfileActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".EditNoteActivity"
+            android:name="com.campusconnect.DummyActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".DummyActivity"
+            android:name="com.campusconnect.RateNoteActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".RateNoteActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait" />
-        <activity android:name=".GoogleSignInActivity"
-            android:screenOrientation="portrait" />
-        <activity android:name=".AddEventActivity"
+            android:name="com.campusconnect.GoogleSignInActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".HomeActivity2"
+            android:name="com.campusconnect.AddEventActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.campusconnect.HomeActivity2"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"></activity>
-
-        <activity android:name=".CreateCourseActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.campusconnect.CreateCourseActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".EditCourseActivity"
+            android:name="com.campusconnect.EditCourseActivity"
             android:label="@string/title_activity_edit_course"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.campusconnect.IntroActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.campusconnect.NetworkNotFoundActivity" />
     </application>
 
 </manifest>

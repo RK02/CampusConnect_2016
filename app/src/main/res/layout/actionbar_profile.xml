@@ -10,11 +10,11 @@
     android:paddingRight="@dimen/activity_vertical_margin">
 
     <ImageButton
-        android:id="@+id/ib_menu"
+        android:id="@+id/ib_back"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:background="@android:color/transparent"
-        android:src="@mipmap/ic_menu_24" />
+        android:src="@mipmap/ic_back_24_white" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -30,17 +30,8 @@
             android:text="Profile"
             android:gravity="center"
             android:textColor="@color/ColorTextHeading"
-            android:textSize="22sp" />
-
-        <ImageButton
-            android:id="@+id/ib_gifts"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical|right"
-            android:layout_toLeftOf="@+id/ib_edit_profile"
-            android:background="@android:color/transparent"
-            android:padding="@dimen/activity_vertical_margin"
-            android:src="@mipmap/ic_gifts_24_white" />
+            android:textSize="22sp"
+            android:fontFamily="sans-serif" />
 
         <ImageButton
             android:id="@+id/ib_edit_profile"

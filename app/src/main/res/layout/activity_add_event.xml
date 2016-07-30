@@ -16,7 +16,8 @@
         android:gravity="center"
         android:text="Add a Description"
         android:textColor="@color/ColorTextHeading"
-        android:textSize="22sp" />
+        android:textSize="22sp"
+        android:fontFamily="sans-serif"/>
 
     <EditText
         android:id="@+id/noteName"
@@ -35,7 +36,8 @@
         android:paddingTop="4dp"
         android:textColor="@color/ColorTextInfo"
         android:textColorHint="#A0A0A0"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:fontFamily="sans-serif"/>
 
     <AutoCompleteTextView
         android:id="@+id/course"
@@ -53,10 +55,11 @@
         android:paddingTop="4dp"
         android:textColor="@color/ColorTextInfo"
         android:textColorHint="#A0A0A0"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:fontFamily="sans-serif"/>
 
     <EditText
-        android:id="@+id/noteDate"
+        android:id="@+id/noteTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/course"
@@ -64,19 +67,20 @@
         android:layout_marginRight="16dp"
         android:layout_marginTop="24dp"
         android:background="@drawable/edittext_rounded_upload"
-        android:hint="Date"
+        android:hint="Title"
         android:paddingBottom="4dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingTop="4dp"
         android:textColor="@color/ColorTextInfo"
         android:textColorHint="#A0A0A0"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:fontFamily="sans-serif"/>
     <EditText
         android:id="@+id/noteDueDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/noteDate"
+        android:layout_below="@+id/noteTitle"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="24dp"
@@ -88,7 +92,8 @@
         android:paddingTop="4dp"
         android:textColor="@color/ColorTextInfo"
         android:textColorHint="#A0A0A0"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:fontFamily="sans-serif"/>
 
     <EditText
         android:id="@+id/noteDescription"
@@ -108,7 +113,8 @@
         android:paddingTop="4dp"
         android:textColor="@color/ColorTextInfo"
         android:textColorHint="#A0A0A0"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:fontFamily="sans-serif"/>
 
     <LinearLayout
         android:id="@+id/container_action_buttons"
@@ -131,7 +137,8 @@
             android:paddingTop="12dp"
             android:text="UPLOAD PHOTOS"
             android:textColor="@color/ColorTextHeading"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:fontFamily="sans-serif"/>
 
         <View
             android:layout_width="1dp"
@@ -150,7 +157,8 @@
             android:paddingTop="12dp"
             android:text="SUBMIT"
             android:textColor="@color/ColorTextHeading"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:fontFamily="sans-serif"/>
 
     </LinearLayout>
 

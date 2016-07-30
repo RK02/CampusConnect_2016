@@ -6,6 +6,7 @@
         <item name="colorPrimaryDark">@color/ColorPrimaryDark</item>
         <item name="android:listDivider">@color/ColorKeyStatContainer</item>
         <item name="android:windowDrawsSystemBarBackgrounds">false</item>
+        <item name="android:rating">@color/ColorPrimary</item>
         <!-- Customize your theme here. -->
     </style>
 

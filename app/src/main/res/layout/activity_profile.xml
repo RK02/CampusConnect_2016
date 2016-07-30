@@ -75,7 +75,7 @@
                                     app:layout_collapseParallaxMultiplier="0"
                                     app:layout_collapseMode="parallax">
 
-                                    <com.campusconnect.cc_reboot.auxiliary.CircularImageView
+                                    <com.campusconnect.auxiliary.CircularImageView
                                         android:id="@+id/profile_image"
                                         android:layout_width="100dp"
                                         android:layout_height="100dp"
@@ -90,91 +90,17 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_below="@+id/profile_image"
-                                        android:text="Guest_"
+                                        android:text="User"
                                         android:paddingTop="16dp"
                                         android:layout_centerHorizontal="true"
                                         android:textSize="20sp"
                                         android:textStyle="bold"
                                         android:textColor="@color/ColorTextHeading"/>
-                                    <TextView
-                                        android:id="@+id/tv_points"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/tv_username"
-                                        android:layout_centerHorizontal="true"
-                                        android:text="Points"
-                                        android:textSize="18sp"
-                                        android:textColor="@color/ColorTextHeading"/>
-                                    <TextView
-                                        android:id="@+id/tv_rank"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/tv_points"
-                                        android:layout_centerHorizontal="true"
-                                        android:text="Rank"
-                                        android:textSize="18sp"
-                                        android:textColor="@color/ColorTextHeading"/>
-
-                                    <LinearLayout
-                                        android:id="@+id/container_stats_views"
-                                        android:layout_below="@+id/tv_rank"
-                                        android:layout_width="wrap_content"
-                                        android:layout_marginTop="16dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentLeft="true"
-                                        android:gravity="center"
-                                        android:orientation="horizontal">
-                                        <ImageButton
-                                            android:id="@+id/ib_views"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:background="@android:color/transparent"
-                                            android:src="@mipmap/ic_views_18_white"/>
-                                        <TextView
-                                            android:id="@+id/tv_views_count"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:paddingLeft="8dp"
-                                            android:textSize="16sp"
-                                            android:text="345"
-                                            android:maxLines="1"
-                                            android:ellipsize="end"
-                                            android:textColor="@color/ColorTextHeading"/>
-                                    </LinearLayout>
-
-                                    <LinearLayout
-                                        android:id="@+id/container_stats_rating"
-                                        android:layout_width="wrap_content"
-                                        android:layout_below="@+id/tv_rank"
-                                        android:layout_height="wrap_content"
-                                        android:gravity="center"
-                                        android:layout_marginTop="16dp"
-                                        android:layout_alignParentRight="true"
-                                        android:orientation="horizontal">
-                                        <ImageButton
-                                            android:id="@+id/ib_rating"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:background="@android:color/transparent"
-                                            android:src="@mipmap/ic_rating_18_white"/>
-                                        <TextView
-                                            android:id="@+id/tv_rating"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:paddingLeft="8dp"
-                                            android:textSize="16sp"
-                                            android:text="4.3"
-                                            android:maxLines="1"
-                                            android:ellipsize="end"
-                                            android:textColor="@color/ColorTextHeading"/>
-                                    </LinearLayout>
-
-
                                 </RelativeLayout>
 
                             </android.support.design.widget.CollapsingToolbarLayout>
 
-                            <com.campusconnect.cc_reboot.slidingtab.SlidingTabLayout_home
+                            <com.campusconnect.slidingtab.SlidingTabLayout_home
                                 android:id="@+id/tabs_course"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"

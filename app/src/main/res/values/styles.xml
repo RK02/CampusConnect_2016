@@ -5,6 +5,7 @@
         <item name="colorPrimary">@color/ColorPrimary</item>
         <item name="colorPrimaryDark">@color/ColorPrimaryDark</item>
         <item name="android:listDivider">@color/ColorKeyStatContainer</item>
+        <item name="android:ratingBarStyle">@style/MyRateBar</item>
         <!-- Customize your theme here. -->
     </style>
 
@@ -26,6 +27,10 @@
     <style name="menu_labels_style">
         <item name="android:background">@drawable/fab_label_background</item>
         <item name="android:textColor">#727272</item>
+    </style>
+
+    <style name="MyRateBar" parent="android:Widget.Holo.Light.RatingBar">
+        <item name="android:tint">@color/ColorPrimary</item>
     </style>
 
 

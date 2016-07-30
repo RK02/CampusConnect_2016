@@ -117,7 +117,9 @@
                                             android:layout_height="wrap_content"
                                             android:text="ALGEBRA TEST"
                                             android:textColor="@color/ColorTextInfo"
-                                            android:textSize="18sp" />
+                                            android:textSize="18sp"
+                                            android:fontFamily="sans-serif"
+                                            android:textStyle="bold"/>
 
                                         <RelativeLayout
                                             android:layout_width="wrap_content"
@@ -137,9 +139,10 @@
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:paddingLeft="10dp"
-                                                android:text="by Blah456"
+                                                android:text="by XYZ"
                                                 android:textColor="@color/ColorTextInfo"
-                                                android:textSize="14sp" />
+                                                android:textSize="14sp"
+                                                android:fontFamily="sans-serif-light"/>
                                         </RelativeLayout>
 
                                     </LinearLayout>
@@ -160,7 +163,8 @@
                                             android:paddingLeft="40dp"
                                             android:gravity="center_vertical|right"
                                             android:textColor="@color/ColorTextInfo"
-                                            android:textSize="18sp" />
+                                            android:textSize="18sp"
+                                            android:fontFamily="sans-serif"/>
 
                                         <RelativeLayout
                                             android:layout_width="wrap_content"
@@ -179,7 +183,8 @@
                                                 android:paddingRight="10dp"
                                                 android:text="1 Sept, 2016"
                                                 android:textColor="@color/ColorTextInfo"
-                                                android:textSize="14sp" />
+                                                android:textSize="14sp"
+                                                android:fontFamily="sans-serif-light"/>
 
                                             <View
                                                 android:layout_width="4dp"
@@ -201,7 +206,8 @@
                                     android:text="Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
                                     android:layout_below="@+id/top_part_card"
                                     android:textColor="@color/ColorTextInfo"
-                                    android:textSize="16sp" />
+                                    android:textSize="16sp"
+                                    android:fontFamily="sans-serif"/>
 
                             </RelativeLayout>
                         </android.support.v4.widget.NestedScrollView>
@@ -245,7 +251,8 @@
                     android:text="23864"
                     android:maxLines="1"
                     android:ellipsize="end"
-                    android:textColor="@color/ColorTextInfo"/>
+                    android:textColor="@color/ColorTextInfo"
+                    android:fontFamily="sans-serif"/>
             </LinearLayout>
 
             <LinearLayout
@@ -270,7 +277,8 @@
                     android:maxLines="1"
                     android:ellipsize="end"
                     android:text="Date : 14 Sept, 2016"
-                    android:textColor="@color/ColorTextInfo"/>
+                    android:textColor="@color/ColorTextInfo"
+                    android:fontFamily="sans-serif"/>
             </LinearLayout>
 
         </LinearLayout>
@@ -295,7 +303,8 @@
                 android:textOff="REMIND ME"
                 android:textOn="ADDED TO REMIND ME"
                 android:checked="false"
-                android:id="@+id/exam_remind" />
+                android:id="@+id/exam_remind"
+                android:fontFamily="sans-serif"/>
 
         </LinearLayout>
     </RelativeLayout>

@@ -24,7 +24,7 @@
                 android:layout_height="?attr/actionBarSize"
                 app:layout_scrollFlags="scroll"></include>
 
-            <com.campusconnect.cc_reboot.slidingtab.SlidingTabLayout_home
+            <com.campusconnect.slidingtab.SlidingTabLayout_home
                 android:id="@+id/tabs_home"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -40,6 +40,13 @@
             android:layout_weight="1"
             android:background="#ffffff"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        <ImageView
+            android:id="@+id/iv_no_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:visibility="gone"
+            android:background="@android:color/transparent" />
 
     </android.support.design.widget.CoordinatorLayout>
 

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.campusconnect.auxiliary.VerticalViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/container_dots"/>
+    <View
+        android:id="@+id/container_dots"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_above="@+id/container_bottom"
+        android:background="#FFFFFF"/>
+    <LinearLayout
+        android:id="@+id/container_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/ColorPrimary"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:weightSum="2">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="16sp"
+            android:textColor="@color/ColorTextHeading"
+            android:gravity="center"
+            android:text="SKIP"/>
+        <TextView
+            android:id="@+id/tv_finish_intro"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="16sp"
+            android:textColor="@color/ColorTextHeading"
+            android:gravity="center"
+            android:text="NEXT"/>
+
+    </LinearLayout>
+</RelativeLayout>

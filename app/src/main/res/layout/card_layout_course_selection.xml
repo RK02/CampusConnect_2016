@@ -34,7 +34,9 @@
                 android:paddingRight="64dp"
                 android:text="MATH"
                 android:textColor="#000000"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:fontFamily="sans-serif"
+                android:textStyle="bold"/>
         </RelativeLayout>
 
         <RelativeLayout
@@ -42,7 +44,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/top_part_card"
-            android:padding="16dp">
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="16dp"
+            android:paddingTop="8dp">
 
             <!--Course info container-->
             <LinearLayout
@@ -61,7 +66,8 @@
                     android:paddingRight="64dp"
                     android:text="Prof. XYZ"
                     android:textColor="#000000"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif"/>
 
                 <TextView
                     android:id="@+id/tv_sem"
@@ -70,7 +76,8 @@
                     android:layout_alignParentRight="true"
                     android:text="Semester 2"
                     android:textColor="#000000"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif-light"/>
 
             </LinearLayout>
 
@@ -91,7 +98,8 @@
                     android:gravity="center_vertical|right"
                     android:text="2016"
                     android:textColor="#000000"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:fontFamily="sans-serif"/>
 
                 <TextView
                     android:id="@+id/tv_section"
@@ -102,7 +110,8 @@
                     android:paddingLeft="16dp"
                     android:text="Chemical Engg. Section"
                     android:textColor="#000000"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif-light"/>
 
             </RelativeLayout>
 
@@ -115,15 +124,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/container_course_info_all"
-            android:background="@color/ColorKeyStatContainer"
             android:gravity="center"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
             android:textOff="SUBSCRIBE"
             android:textOn="SUBSCRIBED"
-            android:textColor="@color/ColorTextInfo"
-            android:textSize="16sp" />
-
+            android:textSize="16sp"
+            android:fontFamily="sans-serif"/>
 
     </RelativeLayout>
 

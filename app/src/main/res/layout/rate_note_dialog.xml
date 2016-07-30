@@ -23,7 +23,7 @@
             android:textSize="14sp"
             android:textColor="@color/ColorTextInfo"/>
 
-        <RatingBar
+        <android.widget.RatingBar
             android:id="@+id/ratingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -44,7 +44,8 @@
             android:visibility="gone"
             android:layout_below="@+id/ratingBar"
             android:layout_marginTop="16dp"
-            android:padding="12dp"/>
+            android:padding="12dp"
+            android:fontFamily="sans-serif"/>
 
 
     </RelativeLayout>

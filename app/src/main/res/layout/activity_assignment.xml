@@ -117,7 +117,9 @@
                                             android:layout_height="wrap_content"
                                             android:text="ASSIGNMENT 1"
                                             android:textColor="@color/ColorTextInfo"
-                                            android:textSize="18sp" />
+                                            android:textSize="18sp"
+                                            android:fontFamily="sans-serif"
+                                            android:textStyle="bold"/>
 
                                         <RelativeLayout
                                             android:layout_width="wrap_content"
@@ -137,9 +139,10 @@
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:paddingLeft="10dp"
-                                                android:text="by Blah456"
+                                                android:text="by XYZ"
                                                 android:textColor="@color/ColorTextInfo"
-                                                android:textSize="14sp" />
+                                                android:textSize="14sp"
+                                                android:fontFamily="sans-serif-light"/>
                                         </RelativeLayout>
 
                                     </LinearLayout>
@@ -160,7 +163,8 @@
                                             android:paddingLeft="40dp"
                                             android:text="Posted on"
                                             android:textColor="@color/ColorTextInfo"
-                                            android:textSize="18sp" />
+                                            android:textSize="18sp"
+                                            android:fontFamily="sans-serif"/>
 
                                         <RelativeLayout
                                             android:layout_width="wrap_content"
@@ -179,7 +183,8 @@
                                                 android:paddingRight="10dp"
                                                 android:text="21 May, 2016"
                                                 android:textColor="@color/ColorTextInfo"
-                                                android:textSize="14sp" />
+                                                android:textSize="14sp"
+                                                android:fontFamily="sans-serif-light"/>
 
                                             <View
                                                 android:id="@+id/marker_posted_on"
@@ -202,7 +207,8 @@
                                     android:padding="24dp"
                                     android:text="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout."
                                     android:textColor="@color/ColorTextInfo"
-                                    android:textSize="16sp" />
+                                    android:textSize="16sp"
+                                    android:fontFamily="sans-serif"/>
                             </RelativeLayout>
                         </android.support.v4.widget.NestedScrollView>
 
@@ -248,7 +254,8 @@
                     android:paddingLeft="8dp"
                     android:text="5392"
                     android:textColor="@color/ColorTextInfo"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif"/>
             </LinearLayout>
 
             <LinearLayout
@@ -275,7 +282,8 @@
                     android:paddingLeft="8dp"
                     android:text="DUE: 25 Sept, 2016"
                     android:textColor="@color/ColorTextInfo"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif"/>
             </LinearLayout>
 
         </LinearLayout>
@@ -299,7 +307,8 @@
                 android:textOff="REMIND ME"
                 android:textOn="ADDED TO REMIND ME"
                 android:textColor="@color/ColorTextHeading"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:fontFamily="sans-serif"/>
         </LinearLayout>
     </RelativeLayout>
 

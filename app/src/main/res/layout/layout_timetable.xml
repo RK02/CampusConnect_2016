@@ -16,7 +16,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.campusconnect.cc_reboot.auxiliary.ObservableScrollView
+    <com.campusconnect.auxiliary.ObservableScrollView
         android:id="@+id/scroll_horizontal_body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -377,6 +377,6 @@
             </TableRow>
 
         </TableLayout>
-    </com.campusconnect.cc_reboot.auxiliary.ObservableScrollView>
+    </com.campusconnect.auxiliary.ObservableScrollView>
 </RelativeLayout>
     </android.support.v7.widget.CardView>

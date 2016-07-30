@@ -48,7 +48,8 @@
                 android:gravity="center"
                 android:text="Home"
                 android:textColor="@color/ColorTextHeading"
-                android:textSize="22sp" />
+                android:textSize="22sp"
+                android:fontFamily="sans-serif"/>
 
             <TextView
                 android:id="@+id/tv_title_notification"
@@ -60,6 +61,7 @@
                 android:text="Notifications"
                 android:textColor="@color/ColorTextHeading"
                 android:textSize="22sp"
+                android:fontFamily="sans-serif"
                 android:visibility="gone" />
         </FrameLayout>
 

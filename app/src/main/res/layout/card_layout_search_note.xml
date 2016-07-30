@@ -41,11 +41,14 @@
                     android:layout_height="wrap_content"
                     android:text="LOGARITHMS"
                     android:textColor="#000000"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:fontFamily="sans-serif"
+                    android:textStyle="bold"/>
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp">
 
                     <View
                         android:layout_width="4dp"
@@ -59,9 +62,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="10dp"
-                        android:text="by Blah456"
+                        android:text="by XYZ"
                         android:textColor="#383838"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:fontFamily="sans-serif-light"/>
                 </RelativeLayout>
 
             </LinearLayout>
@@ -79,11 +83,13 @@
                     android:layout_height="wrap_content"
                     android:text="Posted on"
                     android:textColor="#000000"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:fontFamily="sans-serif" />
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp">
 
                     <View
                         android:layout_width="4dp"
@@ -99,7 +105,8 @@
                         android:paddingLeft="10dp"
                         android:text="21 May, 2016"
                         android:textColor="#383838"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:fontFamily="sans-serif-light" />
                 </RelativeLayout>
             </LinearLayout>
         </RelativeLayout>
@@ -136,7 +143,8 @@
                     android:text="34567"
                     android:maxLines="1"
                     android:ellipsize="end"
-                    android:textColor="@color/ColorTextInfo"/>
+                    android:textColor="@color/ColorTextInfo"
+                    android:fontFamily="sans-serif"/>
             </LinearLayout>
 
             <LinearLayout
@@ -161,7 +169,8 @@
                     android:text="4.3"
                     android:maxLines="1"
                     android:ellipsize="end"
-                    android:textColor="@color/ColorTextInfo"/>
+                    android:textColor="@color/ColorTextInfo"
+                    android:fontFamily="sans-serif"/>
             </LinearLayout>
 
             <LinearLayout
@@ -186,7 +195,8 @@
                     android:maxLines="1"
                     android:ellipsize="end"
                     android:text="7"
-                    android:textColor="@color/ColorTextInfo"/>
+                    android:textColor="@color/ColorTextInfo"
+                    android:fontFamily="sans-serif"/>
             </LinearLayout>
 
         </LinearLayout>

@@ -7,9 +7,9 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:id="@+id/relativeLayout"
-    tools:context="com.alamkanak.weekview.sample.CreateNewEvent">
-    <Button android:layout_alignParentBottom="true" android:id="@+id/done" android:layout_width="match_parent" android:layout_height="wrap_content"  android:text="Done"/>
+    android:id="@+id/relativeLayout">
+    <Button android:layout_alignParentBottom="true" android:id="@+id/done" android:layout_width="match_parent" android:layout_height="wrap_content"  android:text="Done"
+        android:fontFamily="sans-serif"/>
 
     <ScrollView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_above="@+id/done">
         <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:orientation="vertical" android:id="@+id/top">
@@ -29,6 +29,7 @@
                             android:layout_height="wrap_content"
                             android:inputType="text"
                             android:hint="Subject"
+                            android:fontFamily="sans-serif"
                             />
                     </android.support.design.widget.TextInputLayout>
                 </LinearLayout>
@@ -45,6 +46,7 @@
                             android:layout_height="wrap_content"
                             android:inputType="text"
                             android:hint="Abbreviation"
+                            android:fontFamily="sans-serif"
                             />
                     </android.support.design.widget.TextInputLayout>
                 </LinearLayout>
@@ -67,6 +69,7 @@
                             android:layout_height="wrap_content"
                             android:inputType="text"
                             android:hint="Place"
+                            android:fontFamily="sans-serif"
                             />
                     </android.support.design.widget.TextInputLayout>
                 </LinearLayout>
@@ -83,6 +86,7 @@
                             android:layout_height="wrap_content"
                             android:inputType="text"
                             android:hint="Type"
+                            android:fontFamily="sans-serif"
                             />
                     </android.support.design.widget.TextInputLayout>
                 </LinearLayout>
@@ -100,6 +104,7 @@
                             android:layout_height="wrap_content"
                             android:inputType="text"
                             android:hint="Teacher"
+                            android:fontFamily="sans-serif"
                             />
                     </android.support.design.widget.TextInputLayout>
                 </LinearLayout>
@@ -114,35 +119,41 @@
                     android:text="New ToggleButton"
                     android:id="@+id/mon"
                     android:checked="false"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-light"/>
 
                 <ToggleButton
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/tue"
-                    android:checked="false" android:layout_weight="1"/>
+                    android:checked="false" android:layout_weight="1"
+                    android:fontFamily="sans-serif-light"/>
 
                 <ToggleButton
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/wed"
-                    android:checked="false" android:layout_weight="1" />
+                    android:checked="false" android:layout_weight="1"
+                    android:fontFamily="sans-serif-light" />
 
                 <ToggleButton
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/thu"
-                    android:checked="false" android:layout_weight="1"/>
+                    android:checked="false" android:layout_weight="1"
+                    android:fontFamily="sans-serif-light"/>
                 <ToggleButton
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/fri"
-                    android:checked="false" android:layout_weight="1"/>
+                    android:checked="false" android:layout_weight="1"
+                    android:fontFamily="sans-serif-light"/>
                 <ToggleButton
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/sat"
-                    android:checked="false" android:layout_weight="1"/>
+                    android:checked="false" android:layout_weight="1"
+                    android:fontFamily="sans-serif-light"/>
 
             </LinearLayout>
             <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:orientation="vertical" android:id="@+id/list_events">

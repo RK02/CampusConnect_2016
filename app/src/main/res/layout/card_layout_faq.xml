@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/faq_card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:layout_marginBottom="8dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:orientation="vertical"
+    card_view:cardElevation="0dp"
+    card_view:cardMaxElevation="0dp"
+    card_view:cardPreventCornerOverlap="false"
+    card_view:cardUseCompatPadding="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
+
+        <RelativeLayout
+            android:id="@+id/question_container"
+            android:layout_width="wrap_content"
+            android:paddingLeft="12dp"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_bullet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tv_question"
+                android:layout_marginTop="5.5dp"
+                android:src="@mipmap/ic_bullet"/>
+
+            <TextView
+                android:id="@+id/tv_question"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/iv_bullet"
+                android:paddingLeft="6dp"
+                android:text="Default?"
+                android:textColor="#383838"
+                android:textSize="17sp"
+                android:fontFamily="sans-serif"/>
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/divider_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/question_container"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="5dp"
+            android:background="#a0a0a0" />
+
+        <View
+            android:id="@+id/divider_vertical"
+            android:layout_width="4dp"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/tv_answer"
+            android:layout_alignTop="@+id/tv_answer"
+            android:layout_below="@+id/divider_horizontal"
+            android:layout_marginLeft="44dp"
+            android:layout_marginRight="8dp"
+            android:background="#eaebec" />
+
+        <TextView
+            android:id="@+id/tv_answer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/divider_horizontal"
+            android:layout_toRightOf="@+id/divider_vertical"
+            android:paddingBottom="4dp"
+            android:paddingRight="16dp"
+            android:paddingTop="4dp"
+            android:textColor="#383838"
+            android:text="abcdabcd?abcd?abcd?abcd?abcd?abcd?abcd?abcd?abcd?abcd?abcd?abcd?abcd?abcd?abcd?abcd?abcd?abcd??"
+            android:textSize="15sp"
+            android:fontFamily="sans-serif-light"/>
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

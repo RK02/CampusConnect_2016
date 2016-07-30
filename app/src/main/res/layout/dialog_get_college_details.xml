@@ -17,7 +17,9 @@
         android:paddingBottom="18dp"
         android:background="#000000"
         android:textColor="#ffffff"
-        android:gravity="center_vertical"/>
+        android:gravity="center_vertical"
+        android:fontFamily="sans-serif"
+        android:textStyle="bold"/>
     <EditText
         android:id="@+id/et_name"
         android:layout_width="match_parent"
@@ -31,7 +33,8 @@
         android:padding="12dp"
         android:textSize="14sp"
         android:textColor="#383838"
-        android:textColorHint="#a0a0a0" />
+        android:textColorHint="#a0a0a0"
+        android:fontFamily="sans-serif" />
     <EditText
         android:id="@+id/et_college_name"
         android:layout_width="match_parent"
@@ -45,7 +48,8 @@
         android:padding="12dp"
         android:textSize="14sp"
         android:textColor="#383838"
-        android:textColorHint="#a0a0a0" />
+        android:textColorHint="#a0a0a0"
+        android:fontFamily="sans-serif" />
     <EditText
         android:id="@+id/et_email_id"
         android:layout_width="match_parent"
@@ -59,7 +63,8 @@
         android:padding="12dp"
         android:textSize="14sp"
         android:textColor="#383838"
-        android:textColorHint="#a0a0a0" />
+        android:textColorHint="#a0a0a0"
+        android:fontFamily="sans-serif" />
     <EditText
         android:id="@+id/et_phone_no"
         android:layout_width="match_parent"
@@ -73,7 +78,8 @@
         android:padding="12dp"
         android:textSize="14sp"
         android:textColor="#383838"
-        android:textColorHint="#a0a0a0" />
+        android:textColorHint="#a0a0a0"
+        android:fontFamily="sans-serif" />
     <EditText
         android:id="@+id/et_location"
         android:layout_width="match_parent"
@@ -87,7 +93,8 @@
         android:padding="12dp"
         android:textSize="14sp"
         android:textColor="#383838"
-        android:textColorHint="#a0a0a0" />
+        android:textColorHint="#a0a0a0"
+        android:fontFamily="sans-serif" />
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
@@ -108,6 +115,7 @@
         android:textColor="#000000"
         android:alpha="0.7"
         android:textSize="16sp"
-        android:layout_below="@+id/divider"/>
+        android:layout_below="@+id/divider"
+        android:fontFamily="sans-serif" />
 
 </RelativeLayout>
