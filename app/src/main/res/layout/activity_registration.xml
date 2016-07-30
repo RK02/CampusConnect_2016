@@ -150,14 +150,13 @@
                     android:textSize="14sp"
                     android:fontFamily="sans-serif-light"/>
 
-                <EditText
+                <TextView
                     android:id="@+id/et_batch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:background="@drawable/edittext_rounded"
                     android:ellipsize="end"
-                    android:inputType="number|numberDecimal"
                     android:maxLines="1"
                     android:padding="4dp"
                     android:textColor="@color/ColorTextInfo"
