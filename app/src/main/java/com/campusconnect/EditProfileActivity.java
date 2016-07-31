@@ -15,6 +15,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -83,10 +86,10 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnTou
     TextView collegeName;
 
     @Bind(R.id.et_batch)
-    EditText batchName;
+    TextView batchName;
 
     @Bind(R.id.et_specialisation)
-    AutoCompleteTextView branchName;
+   TextView branchName;
 
     @Bind(R.id.et_section)
     EditText sectionName;
@@ -96,7 +99,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnTou
 
     @Bind(R.id.sv_registration)
     ScrollView scrollViewReg;
-
+    BranchNotFoundDialog branchNotFoundDialog;
     String personName;
     String personEmail;
     String personPhoto;
@@ -112,6 +115,11 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnTou
 
     String collegeNameString;
     int pos_college_selection;
+    String branchNameString;
+    int pos_branch_name_selection;
+    AlertDialog.Builder  builderBatchList;
+    LayoutInflater inflater;
+   public ArrayAdapter<String> branchNameList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,6 +174,48 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnTou
 
             }
         });
+
+        branchName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builderBranchList = new AlertDialog.Builder(EditProfileActivity.this);
+                builderBranchList.setTitle("Select Your Specisalisation");
+                builderBranchList.setNegativeButton(
+                        "cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                builderBranchList.setPositiveButton("Request New Branch", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                branchNotFoundDialog = new BranchNotFoundDialog((Activity)EditProfileActivity.this);
+                        Window window = branchNotFoundDialog.getWindow();
+                       window.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+                        branchNotFoundDialog.show();
+                    }
+                });
+                builderBranchList.setAdapter(branchNameList,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.d("onClick",branchNameList.toString());
+                                branchNameString = branchNameList.getItem(which);
+                                pos_branch_name_selection = which;
+                                if (pos_branch_name_selection != branchNameList.getCount() - 1) ;
+                                branchName.setText(branchNameString);
+                            }
+                        });
+                String temp = collegeName.getText().toString();
+                int index = collegeNames.indexOf(temp);
+                if(index>=0) {
+                    branchNameList = new ArrayAdapter<String>(EditProfileActivity.this, android.R.layout.simple_list_item_1, colleges.get(index).getBranchNames());
+                    builderBranchList.show();
+                }
+            }
+        });
+
         branchName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -177,10 +227,86 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnTou
                         collegeName.requestFocus();
                         return;
                     }
-                    branchName.setAdapter(new ArrayAdapter<String>(EditProfileActivity.this, android.R.layout.simple_list_item_1, colleges.get(index).getBranchNames()));
+                    branchNameList = new ArrayAdapter<String>(EditProfileActivity.this, android.R.layout.simple_list_item_1, colleges.get(index).getBranchNames());
+                    // branchName.setAdapter(new ArrayAdapter<String>(EditProfileActivity.this, android.R.layout.simple_list_item_1, colleges.get(index).getBranchNames()));
                 }
             }
         });
+
+
+        batchName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                builderBatchList = new AlertDialog.Builder(EditProfileActivity.this);
+                //   builderBatchList.setTitle("Select Your Batch");
+                    inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+              final View dialogView= inflater.inflate(R.layout.custom_dialog_batch,null);
+                builderBatchList.setView(dialogView);
+                RadioGroup radioGroup = (RadioGroup)dialogView.findViewById(R.id.radio_group);
+                final AlertDialog alertDialog = builderBatchList.create();
+                //to hide the soft keyboard
+                View v = EditProfileActivity.this.getCurrentFocus();
+                if (v != null) {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+                builderBatchList.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                alertDialog.show();
+                radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                        switch (i){
+                            case R.id.btn_2020:
+                                alertDialog.dismiss();
+                                batchName.setText("2020");
+                                break;
+                            case R.id.btn_2019:
+                                alertDialog.dismiss();
+                                batchName.setText("2019");
+                                break;
+
+                            case R.id.btn_2018:
+                                alertDialog.dismiss();
+                                batchName.setText("2018");
+                                break;
+                            case R.id.btn_2017:
+                                alertDialog.dismiss();
+                                batchName.setText("2017");
+                                break;
+
+                            case R.id.btn_2016:
+                                alertDialog.dismiss();
+                                batchName.setText("2016");
+                                break;
+                            case R.id.btn_2015:
+                            alertDialog.dismiss();
+                                batchName.setText("2015");
+                                break;
+
+                            case R.id.btn_2014:
+                                alertDialog.dismiss();
+                                batchName.setText("2014");
+                                break;
+
+                            case R.id.btn_2013:
+                                alertDialog.dismiss();
+                                batchName.setText("2013");
+                                break;
+
+                        }
+                    }
+                });
+
+            }
+        });
+
+
+
         continue_to_course_selection_button.setText("Done");
         continue_to_course_selection_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -336,6 +462,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnTou
     public void onClick(View view) {
 
         switch (view.getId()){
+
             case R.id.et_college_name:
                 AlertDialog.Builder builderCollegeList = new AlertDialog.Builder(EditProfileActivity.this);
                 builderCollegeList.setTitle("Select your college");
@@ -361,6 +488,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnTou
                                     Window window = getdetailsDialog.getWindow();
                                     window.setLayout(450, ViewGroup.LayoutParams.WRAP_CONTENT);
                                     getdetailsDialog.show();
+
                                 }
                             }
                         });
@@ -378,9 +506,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnTou
                 InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
                 inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                 break;
-            case R.id.et_batch:
-            case R.id.et_specialisation:
-
+                case R.id.et_batch:
                 if (view.hasFocus()) {
                     view.getParent().requestDisallowInterceptTouchEvent(true);
                     switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
@@ -537,5 +663,77 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnTou
         super.onPause();
         MyApp.activityPaused();
     }
+    public class  BranchNotFoundDialog extends Dialog{
+        Activity c;
+        Context context;
+        @Bind(R.id.b_submit)
+        Button submit;
+        @Bind(R.id.et_branch)
+        EditText branch_name;
+        String collegeId;
+
+        public BranchNotFoundDialog(Activity a) {
+            super(a);
+// TODO Auto-generated constructor stub
+            this.c = a;
+            this.context = context;
+        }
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
+            setContentView(R.layout.dialog_branch_not_found);
+
+            ButterKnife.bind(this);
+            String temp = collegeName.getText().toString();
+            int index = collegeNames.indexOf(temp);
+            collegeId = collegeIds.get(index);
+            submit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Retrofit retrofit = new Retrofit.
+                            Builder()
+                            .baseUrl(MyApi.BASE_URL)
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+                    MyApi myApi = retrofit.create(MyApi.class);
+                    MyApi.addBranchRequest body = new MyApi.addBranchRequest(collegeId,
+                            branch_name.getText().toString()
+                    );
+                    Call<Void> call = myApi.addBranch(body);
+                    call.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                          Log.d("sucess","called");
+                            branchNotFoundDialog.dismiss();
+                            Toast.makeText(EditProfileActivity.this,"Your Request has been Sent",Toast.LENGTH_LONG).show();
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Log.d("failed","called");
+                        }
+                    });
+
+
+                }
+            });
+
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 }
 

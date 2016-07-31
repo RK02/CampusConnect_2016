@@ -1,4 +1,6 @@
 package com.campusconnect;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -15,6 +17,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,6 +25,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -135,6 +139,8 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
     GoogleApiClient mGoogleApiClient;
     Fragment homefrag;
     View headerView;
+    AlertDialog.Builder builderUpdateNow;
+    LayoutInflater updateNowInflater;
     private FirebaseAnalytics firebaseAnalytics;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,7 +150,7 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
 //Setting FAB container's background to be fully transparent by default
         home_title = (TextView) findViewById(R.id.tv_title);
         fab_menu_container.getBackground().setAlpha(0);
-        toolbar = (Toolbar) findViewById (R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         homefrag = new FragmentHome();
@@ -153,12 +159,12 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
         navigationView.addHeaderView(headerView);
         ImageView view = (ImageView) headerView.findViewById(R.id.profile_image);
         Picasso.with(HomeActivity2.this)
-                .load(getSharedPreferences("CC",MODE_PRIVATE).getString("photourl","fakedesu")).error(R.mipmap.ic_launcher)
+                .load(getSharedPreferences("CC", MODE_PRIVATE).getString("photourl", "fakedesu")).error(R.mipmap.ic_launcher)
                 .memoryPolicy(MemoryPolicy.NO_CACHE)
                 .networkPolicy(NetworkPolicy.NO_CACHE)
                 .placeholder(R.mipmap.ccnoti)
                 .into(view);
-        ((TextView)headerView.findViewById(R.id.tv_username)).setText(getSharedPreferences("CC",MODE_PRIVATE).getString("profileName","PLACEHOLDER"));
+        ((TextView) headerView.findViewById(R.id.tv_username)).setText(getSharedPreferences("CC", MODE_PRIVATE).getString("profileName", "PLACEHOLDER"));
         firebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         //Setting Home Fragment as default
@@ -197,11 +203,13 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
                 super.onDrawerClosed(drawerView);
 
             }
+
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
 
             }
+
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 super.onDrawerSlide(drawerView, slideOffset);
@@ -245,6 +253,35 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
                 .build();
         mGoogleApiClient.connect();
     }
+        public void UpdateNow(boolean b) {
+            if (b ) {
+                Context c = HomeActivity2.this;
+                builderUpdateNow = new AlertDialog.Builder(c);
+                final View viewUpdateNow = updateNowInflater.inflate(R.layout.dialog_update_now, null);
+                builderUpdateNow.setView(viewUpdateNow);
+                builderUpdateNow.show();
+                builderUpdateNow.setNegativeButton("Later", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                builderUpdateNow.setPositiveButton("Update Now", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    final String appPackageName = getPackageName();
+                        try {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                        }catch (android.content.ActivityNotFoundException ex){
+                            startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                        }
+
+
+                    }
+                });
+            }
+        }
+
 
     @Override
     protected void onResume() {

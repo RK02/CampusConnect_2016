@@ -41,6 +41,18 @@ public interface MyApi {
         }
 
     }
+
+@POST("addBranch")
+Call<Void> addBranch(@Body addBranchRequest body);
+    class addBranchRequest{
+        private String collegeId;
+        private String branchName;
+        public addBranchRequest(String _collegeId,String branchName){
+            this.collegeId = _collegeId;
+            this.branchName = branchName;
+        }
+    }
+
     @POST("coursePage")
     Call<ModelCoursePage> getCourse(@Body getCourseRequest body);
     class getCourseRequest{
