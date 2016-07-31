@@ -24,10 +24,10 @@ public class CustomPagerAdapter extends PagerAdapter {
     private int mlevel;
 
 
-    public CustomPagerAdapter(Context context, ArrayList<String> mImg, int level) {
+    public CustomPagerAdapter(Context context, ArrayList<String> mImg) {
         mContext = context;
         images = mImg;
-        mlevel = level;
+//        mlevel = level;
     }
 
     @Override
@@ -40,8 +40,9 @@ public class CustomPagerAdapter extends PagerAdapter {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View rootView = inflater.inflate(R.layout.notes_images, collection, false);
         GestureImageView notes_fullscreen = (GestureImageView) rootView.findViewById(R.id.iv_notes_fullscreen);
+
         Picasso.with(mContext).
-                load(NotesSliderActivity.urls.get(mlevel).get(position)).
+                load(images.get(position)).
                 fit().
                 noFade().
                 error(R.mipmap.ic_pages_18).

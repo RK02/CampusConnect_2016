@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <color name="ColorWhite">#FFFFFF</color>
+    <color name="ColorWhiteTransparent">#8cffffff</color>
+
    <!--App related-->
     <color name="ColorPrimary">#F7971d</color>
     <color name="ColorPrimaryDark">#F58B00</color>

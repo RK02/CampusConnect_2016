@@ -84,18 +84,11 @@ public class FragmentExam extends Fragment {
                     }
                     if(modelTests.isEmpty())
                     {
-                        if(Build.VERSION.SDK_INT>=21)
-                        {
-                            exams_list.setBackground(getActivity().getDrawable(R.drawable.no_value_exams));
-                        }
-                        else
-                        {
-                            exams_list.setBackground(getResources().getDrawable(R.drawable.no_value_exams));
-                        }
+                        no_exam.setVisibility(View.VISIBLE);
                     }
                     else
                     {
-                        exams_list.setBackgroundColor(getResources().getColor(R.color.ColorRecyclerBackground));
+                        no_exam.setVisibility(View.GONE);
                     }
                 }
                 else

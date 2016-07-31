@@ -89,18 +89,11 @@ public class FragmentNotes extends Fragment {
                     }
                     if(noteBookLists.isEmpty())
                     {
-                        if(Build.VERSION.SDK_INT>=21)
-                        {
-                            notes_list.setBackground(getActivity().getDrawable(R.drawable.no_value_notebooks));
-                        }
-                        else
-                        {
-                            notes_list.setBackground(getResources().getDrawable(R.drawable.no_value_notebooks));
-                        }
+                        no_notebook.setVisibility(View.VISIBLE);
                     }
                     else
                     {
-                        notes_list.setBackgroundColor(getResources().getColor(R.color.ColorRecyclerBackground));
+                        no_notebook.setVisibility(View.GONE);
                     }
                 }
                 Log.i("sw32","herenotelist");

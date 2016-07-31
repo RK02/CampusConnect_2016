@@ -2,6 +2,7 @@ package com.campusconnect.auxiliary;
 
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.campusconnect.R;
 
@@ -25,20 +26,21 @@ public class IntroPageTransformer implements ViewPager.PageTransformer {
 
         } else {
 
+            View root_layout = page.findViewById(R.id.intro_background);
+            root_layout.setTranslationX(-pageWidthTimesPosition);
+            root_layout.setTranslationY(pageWidthTimesPosition);
+
             View title = page.findViewById(R.id.title);
             title.setAlpha(1.0f - absPosition);
-            title.setTranslationX(-pageWidthTimesPosition);
             title.setTranslationY(pageWidthTimesPosition*1.2f);
 
             View description = page.findViewById(R.id.description);
-            description.setTranslationX(-pageWidthTimesPosition);
             description.setTranslationY(pageWidthTimesPosition*1.0f);
             description.setAlpha(1.0f - absPosition);
 
             View computer = page.findViewById(R.id.iv_walkthrough);
             computer.setAlpha(1.0f - absPosition);
-            computer.setTranslationX(-pageWidthTimesPosition);
-            computer.setTranslationY(pageWidthTimesPosition*1.5f);
+            computer.setTranslationY(pageWidthTimesPosition*1.4f);
 
             if (pagePosition == 0 && computer != null) {
             }

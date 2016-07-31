@@ -85,15 +85,9 @@ public class FragmentBookmarkedNotes extends Fragment {
                         mBookmarkedNotesAdapter.notifyDataSetChanged();
                     }
                     if(noteBookLists.isEmpty()){
-                        if(Build.VERSION.SDK_INT>=21)
-                        {
-                            boomarked_notes_list.setBackground(getActivity().getDrawable(R.drawable.no_value_bookmarks));
-                        }
-                        else{
-                            boomarked_notes_list.setBackground(getResources().getDrawable(R.drawable.no_value_bookmarks));
-                        }
+                        no_bookmarks.setVisibility(View.VISIBLE);
                     }else{
-                        boomarked_notes_list.setBackgroundColor(getResources().getColor(R.color.ColorRecyclerBackground));
+                        no_bookmarks.setVisibility(View.GONE);
                     }
                 }
             }

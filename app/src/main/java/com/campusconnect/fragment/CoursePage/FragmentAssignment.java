@@ -83,18 +83,11 @@ public class FragmentAssignment extends Fragment {
                     }
                     if(modelAssignmentAssList.isEmpty())
                     {
-                        if(Build.VERSION.SDK_INT>=21)
-                        {
-                            assignments_list.setBackground(getActivity().getDrawable(R.drawable.no_value_assignments));
-                        }
-                        else
-                        {
-                            assignments_list.setBackground(getResources().getDrawable(R.drawable.no_value_assignments));
-                        }
+                        no_assignment.setVisibility(View.VISIBLE);
                     }
                     else
                     {
-                        assignments_list.setBackgroundColor(getResources().getColor(R.color.ColorRecyclerBackground));
+                        no_assignment.setVisibility(View.GONE);
                     }
                 }
             }

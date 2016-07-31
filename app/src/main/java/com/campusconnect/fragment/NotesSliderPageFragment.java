@@ -17,8 +17,10 @@ import android.widget.TextView;
 import com.campusconnect.NotesSliderActivity;
 import com.campusconnect.R;
 import com.campusconnect.auxiliary.DepthPageTransformer;
+import com.campusconnect.auxiliary.PinchToZoom.GestureImageView;
 import com.campusconnect.auxiliary.ViewPagerDisable;
 import com.campusconnect.viewpager.CustomPagerAdapter;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -30,8 +32,8 @@ import butterknife.ButterKnife;
  */
 public class NotesSliderPageFragment extends Fragment implements View.OnTouchListener{
 
-    @Bind(R.id.view_touch_handler)
-    View touch_handling_view;
+//    @Bind(R.id.view_touch_handler)
+//    View touch_handling_view;
 
     int page_selected, prev_state_parent;
     String class_no, total_pages, curr_page;
@@ -39,8 +41,10 @@ public class NotesSliderPageFragment extends Fragment implements View.OnTouchLis
     ArrayList<ArrayList<String>> urls = NotesSliderActivity.urls;
     int page_pos;
     int totalPages=0;
-    ViewPagerDisable pager_img, parent_pager;
+//    ViewPagerDisable pager_img;
+    ViewPagerDisable parent_pager;
     TextView page_desc;
+    GestureImageView notes_fullscreen;
     Bundle fragArgs;
 
     public interface NotePageInfoToActivity{
@@ -59,7 +63,7 @@ public class NotesSliderPageFragment extends Fragment implements View.OnTouchLis
                              Bundle savedInstanceState) {
         Log.i("sw32","ONCREATE FIRED");
         ViewGroup rootView = (ViewGroup) inflater.inflate(
-                R.layout.fragment_notes_slider_page, container, false);
+                R.layout.fragment_notes_slider_page_trial, container, false);
         ButterKnife.bind(this,rootView);
 
         prev_state_parent = parent_pager.SCROLL_STATE_IDLE;
@@ -67,51 +71,66 @@ public class NotesSliderPageFragment extends Fragment implements View.OnTouchLis
         parent_pager = (ViewPagerDisable) getActivity().findViewById(R.id.pager);
         page_desc = (TextView) getActivity().findViewById(R.id.tv_note_page_description);
 
+        notes_fullscreen = (GestureImageView) rootView.findViewById(R.id.iv_notes_fullscreen);
+
+
+//        Picasso.with(getActivity()).
+//                load(NotesSliderActivity.urls.get(mlevel).get(position)).
+//                fit().
+//                noFade().
+//                error(R.mipmap.ic_pages_18).
+//                into(notes_fullscreen);
+
+
+
+
+
+
         fragArgs = getArguments();
-        pager_img = (ViewPagerDisable) rootView.findViewById(R.id.viewpager_images);
+//        pager_img = (ViewPagerDisable) rootView.findViewById(R.id.viewpager_images);
 
         page_pos = fragArgs.getInt("PagePos");
         Log.i("sw32",page_pos+" : Page pos");
-        pager_img.setPageTransformer(true, new DepthPageTransformer());
+//        pager_img.setPageTransformer(true, new DepthPageTransformer());
         class_no = fragArgs.getString("PageTitle");
         page_pos = fragArgs.getInt("PagePos");
-        pager_img.setAdapter(new CustomPagerAdapter(getActivity(),urls.get(page_pos),page_pos));
-        total_pages = Integer.toString(pager_img.getAdapter().getCount());
+//        pager_img.setAdapter(new CustomPagerAdapter(getActivity(),urls.get(page_pos),page_pos));
+//        total_pages = Integer.toString(pager_img.getAdapter().getCount());
         curr_page = Integer.toString(1);
-        notePageInfoToActivity.notePageInfo(class_no,curr_page,total_pages,pager_img);
-        pager_img.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageSelected(int index) {
-                // TODO Auto-generated method stub
-                curr_page = Integer.toString(index+1);
-                notePageInfoToActivity.notePageInfo(class_no,curr_page,total_pages,pager_img);
-
-            }
-            @Override
-            public void onPageScrolled(int arg0, float arg1, int arg2) {
-                // TODO Auto-generated method stub
-                if(pager_img.getCurrentItem()!=1)
-                    pager_img.setCurrentItem(pager_img.getAdapter().getCount(),false);
-
-            }
-            @Override
-            public void onPageScrollStateChanged(int arg0) {
-                // TODO Auto-generated method stub
-
-            }
-        });
+//        notePageInfoToActivity.notePageInfo(class_no,curr_page,total_pages,pager_img);
+//        pager_img.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//            @Override
+//            public void onPageSelected(int index) {
+//                // TODO Auto-generated method stub
+//                curr_page = Integer.toString(index+1);
+//                notePageInfoToActivity.notePageInfo(class_no,curr_page,total_pages,pager_img);
+//
+//            }
+//            @Override
+//            public void onPageScrolled(int arg0, float arg1, int arg2) {
+//                // TODO Auto-generated method stub
+//                if(pager_img.getCurrentItem()!=1)
+//                    pager_img.setCurrentItem(pager_img.getAdapter().getCount(),false);
+//
+//            }
+//            @Override
+//            public void onPageScrollStateChanged(int arg0) {
+//                // TODO Auto-generated method stub
+//
+//            }
+//        });
 
 
         parent_pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-                pager_img.getAdapter().notifyDataSetChanged();
+//                pager_img.getAdapter().notifyDataSetChanged();
 
                 parent_pager.setOffscreenPageLimit(1);
 
-                if(pager_img.getCurrentItem()!=1)
-                pager_img.setCurrentItem(pager_img.getAdapter().getCount(),false);
+//                if(pager_img.getCurrentItem()!=1)
+//                pager_img.setCurrentItem(pager_img.getAdapter().getCount(),false);
 
             }
 
@@ -136,9 +155,9 @@ public class NotesSliderPageFragment extends Fragment implements View.OnTouchLis
             }
         });
 
-        pager_img.setCurrentItem(0);
-
-        touch_handling_view.setOnTouchListener(this);
+//        pager_img.setCurrentItem(0);
+//
+//        touch_handling_view.setOnTouchListener(this);
 
         return rootView;
     }

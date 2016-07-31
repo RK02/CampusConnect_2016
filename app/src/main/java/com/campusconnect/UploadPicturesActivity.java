@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -58,8 +59,14 @@ public class UploadPicturesActivity extends AppCompatActivity {
     @Bind(R.id.container_action_buttons_more)
     LinearLayout action_buttons_bottom;
 
+    @Bind(R.id.ib_close)
+    ImageButton close;
+
     @Bind(R.id.for_height)
     View for_measure;
+
+    @Bind(R.id.iv_no_upload)
+    ImageView no_upload;
 
     View uploadDefaultActionView;
 
@@ -89,6 +96,12 @@ public class UploadPicturesActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         gridView= (GridView) findViewById(R.id.imageGrid);
         imageAdapter = new ImageAdapter(this);
+
+        BitmapFactory.Options bm_opts = new BitmapFactory.Options();
+        bm_opts.inScaled = false;
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.err_network_down, bm_opts);
+        no_upload.setImageBitmap(bitmap);
+
         if(getIntent().hasExtra("urls"))
         {
             urls = getIntent().getStringArrayListExtra("urls");
@@ -187,6 +200,36 @@ public class UploadPicturesActivity extends AppCompatActivity {
 
             }
         });
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(0);
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(UploadPicturesActivity.this);
+                alertDialog.setMessage("Are you sure?");
+                alertDialog.setCancelable(false);
+                alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        if(uris!=null) {
+                            uris.clear();
+                            urls.clear();
+                            imageAdapter.notifyDataSetChanged();
+                        }
+                        finish();                    }
+                });
+                alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                alertDialog.show();
+
+
+
+            }
+        });
 
         camera.setOnClickListener(new View.OnClickListener() {
 
@@ -252,15 +295,10 @@ public class UploadPicturesActivity extends AppCompatActivity {
         });
         if(uris.isEmpty())
         {
-
-            if(Build.VERSION.SDK_INT>=21) {
-                gridView.setBackground(getDrawable(R.drawable.upload_photo_default));
-            }
-            else
-            {
-                gridView.setBackground(getResources().getDrawable(R.drawable.upload_photo_default));
-            }
+            no_upload.setVisibility(View.VISIBLE);
         }
+        else
+            no_upload.setVisibility(View.GONE);
     }
 
 
@@ -350,6 +388,7 @@ public class UploadPicturesActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        no_upload.setVisibility(View.GONE);
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == SELECT_FILE){
                 onSelectFromGalleryResult(data);

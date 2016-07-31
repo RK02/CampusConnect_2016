@@ -17,11 +17,11 @@ public class ZoomOutPageTransformer implements ViewPager.PageTransformer {
         if (position < -1) {
             view.setAlpha(0);
 
-        } else if (position <= 1) {
+        } else if (position==1) {
             float scaleFactor = Math.max(MIN_SCALE, 1 - Math.abs(position));
             float vertMargin = pageHeight * (1 - scaleFactor) / 2;
             float horzMargin = pageWidth * (1 - scaleFactor) / 2;
-            if (position < 0) {
+            if (position ==1) {
                 view.setTranslationX(horzMargin - vertMargin / 2);
             } else {
                 view.setTranslationX(-horzMargin + vertMargin / 2);
@@ -35,7 +35,7 @@ public class ZoomOutPageTransformer implements ViewPager.PageTransformer {
 //                            (1 - MIN_SCALE) * (1 - MIN_ALPHA));
 
         } else {
-            view.setAlpha(0);
+            view.setAlpha(1);
         }
     }
 }

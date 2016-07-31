@@ -16,7 +16,6 @@
         android:paddingBottom="8dp"
         android:clipToPadding="false" />
     </android.support.v4.widget.SwipeRefreshLayout>
-
     <ImageView
         android:id="@+id/iv_no_course"
         android:layout_width="match_parent"
