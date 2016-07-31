@@ -240,7 +240,6 @@ public class UploadPicturesActivity extends AppCompatActivity {
         });
         gridView= (GridView) findViewById(R.id.imageGrid);
 
-
         next = (Button) findViewById(R.id.BtnNext);
         next.setOnClickListener(new View.OnClickListener() {
             @Override

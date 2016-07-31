@@ -120,6 +120,8 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
         total_pages = urls.get(book_indicator_helper_array.get(urls_single.size()-1)-1).size()+"";
         book_title.setText("Class "+book_indicator_helper_array.get(urls_single.size()-1).toString());
         page_number.setText(""+1+"/"+total_pages);
+        page_date.setText(dates.get(urls_single.size()-urls.get(NumPages-1).size()));
+        page_description.setText(descriptions.get(urls_single.size()-urls.get(NumPages-1).size()));
 
         mNotesPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -133,6 +135,8 @@ public class NotesSliderActivity extends AppCompatActivity  implements NotesSlid
                 k=page_indicator_helper_array.get(position);
                 book_title.setText("Class "+book_indicator_helper_array.get(position).toString());
                 page_number.setText(""+k+"/"+total_pages);
+                page_date.setText(dates.get(position));
+                page_description.setText(descriptions.get(position));
             }
 
             @Override

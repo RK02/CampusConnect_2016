@@ -19,12 +19,14 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -108,7 +110,6 @@ public class EditCourseActivity extends AppCompatActivity {
     ShapeDrawable drawable;
     List<String> branchNamesList;
 
-
     @Bind(R.id.b_cancel)
     Button cancel;
 
@@ -118,7 +119,6 @@ public class EditCourseActivity extends AppCompatActivity {
     String profileId;
     String collegeId;
     ProgressDialog progressDialog;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -469,14 +469,13 @@ public class EditCourseActivity extends AppCompatActivity {
 
     }
 
-    public class ColorPickerDialog extends Dialog {
+    public class ColorPickerDialog extends Dialog{
 
         public Activity c;
         public Dialog d;
 
-        RecyclerView course_colors_list;
+        GridView course_colors_list;
         CourseColorsListAdapter mCourseColorsAdapter;
-        GridLayoutManager mLayoutManager;
 
         public ColorPickerDialog(Activity a) {
             super(a);
@@ -489,16 +488,13 @@ public class EditCourseActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             requestWindowFeature(Window.FEATURE_NO_TITLE);
             setContentView(R.layout.color_picker_dialog);
-            course_colors_list = (RecyclerView) findViewById (R.id.rv_course_colors);
-            mLayoutManager = new GridLayoutManager(c,3);
+            course_colors_list = (GridView) findViewById (R.id.gv_course_colors);
             mCourseColorsAdapter = new CourseColorsListAdapter(c,courseColorPicker);
-            course_colors_list.setLayoutManager(mLayoutManager);
-            course_colors_list.setItemAnimator(new DefaultItemAnimator());
-            course_colors_list.setAdapter(mCourseColorsAdapter);
 
         }
 
     }
+
     @Override
     protected void onResume() {
         super.onResume();

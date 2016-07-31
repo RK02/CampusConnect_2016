@@ -101,7 +101,7 @@ public class FragmentCourses extends Fragment{
 
         BitmapFactory.Options bm_opts = new BitmapFactory.Options();
         bm_opts.inScaled = false;
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.err_network_down, bm_opts);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.no_value_courses, bm_opts);
         no_course_view.setImageBitmap(bitmap);
 
         ArrayList<SubscribedCourseList> courses = new ArrayList<>();
@@ -240,7 +240,6 @@ public class FragmentCourses extends Fragment{
                     else
                     {
                         no_course_view.setVisibility(View.GONE);
-                        fragment_courses.setBackgroundColor(getResources().getColor(R.color.ColorRecyclerBackground));
                     }
                     for (final SubscribedCourseList x : subscribedCourseList) {
                         courseNames.add(x.getCourseName());
