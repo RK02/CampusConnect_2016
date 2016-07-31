@@ -50,7 +50,7 @@ public class ExamsListAdapter extends
         examsListViewHolder.exam_description.setText(temp.getExamDesc());
         examsListViewHolder.exam_uploader.setText(temp.getUploaderName());
         examsListViewHolder.exam_views.setText(temp.getViews());
-        examsListViewHolder.exam_name.setText(temp.getCourseName());
+        examsListViewHolder.exam_name.setText(temp.getExamTitle());
         String time = temp.getLastUpdated();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         int days = 0,hours=0,minutes=0,seconds=0;
