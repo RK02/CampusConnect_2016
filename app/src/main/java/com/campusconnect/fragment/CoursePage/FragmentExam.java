@@ -77,6 +77,13 @@ public class FragmentExam extends Fragment {
             @Override
             public void onResponse(Call<ModelTestList> call, Response<ModelTestList> response) {
                 ModelTestList testList = response.body();
+                if(response.code() == 503){
+                    BitmapFactory.Options bm_opts = new BitmapFactory.Options();
+                    bm_opts.inScaled = false;
+                    Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.error_five_zero_three, bm_opts);
+                    no_exam.setImageBitmap(bitmap);
+                    no_exam.setVisibility(View.VISIBLE);
+                }
                 if(testList!=null) {
                     List<ModelTest> modelTests = testList.getExamList();
                     for (ModelTest modelTest : modelTests) {
@@ -84,6 +91,10 @@ public class FragmentExam extends Fragment {
                     }
                     if(modelTests.isEmpty())
                     {
+                        BitmapFactory.Options bm_opts = new BitmapFactory.Options();
+                        bm_opts.inScaled = false;
+                        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.no_value_exams, bm_opts);
+                        no_exam.setImageBitmap(bitmap);
                         no_exam.setVisibility(View.VISIBLE);
                     }
                     else

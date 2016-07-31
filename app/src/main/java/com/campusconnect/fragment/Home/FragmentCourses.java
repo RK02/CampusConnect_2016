@@ -204,8 +204,10 @@ public class FragmentCourses extends Fragment{
                 for(String viewId : viewIds)
                 {
                     LinearLayout a = ((LinearLayout)TimetableAdapter.itemView.findViewById(Integer.parseInt(viewId)));
-                    a.removeAllViews();
-                    a.setBackgroundColor(Color.rgb(223, 223, 223));
+                    if(a!=null) {
+                        a.removeAllViews();
+                        a.setBackgroundColor(Color.rgb(223, 223, 223));
+                    }
                 }
             }
 
@@ -215,6 +217,13 @@ public class FragmentCourses extends Fragment{
             public void onResponse(Call<ModelFeed> call, Response<ModelFeed> response) {
                 ModelFeed modelFeed = response.body();
                 new FragmentTimetable();
+                if(response.code() == 503){
+                    BitmapFactory.Options bm_opts = new BitmapFactory.Options();
+                    bm_opts.inScaled = false;
+                    Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.error_five_zero_three, bm_opts);
+                    no_course_view.setImageBitmap(bitmap);
+                    no_course_view.setVisibility(View.VISIBLE);
+                }
                 if(modelFeed !=null) {
                     courseNames.clear();
                     courseIds.clear();
@@ -244,7 +253,8 @@ public class FragmentCourses extends Fragment{
                             String date = x.getDate().get(i);
                             for (int ii = start; ii < end; ii++) {
                                 View cell = LayoutInflater.from(getContext()).inflate(R.layout.timetable_cell_layout, cell_container, false);
-                                String viewId =  date + "" + (ii - 6);
+                                if (cell != null){
+                                    String viewId = date + "" + (ii - 6);
                                 if (timeTableViews.containsKey(x.getCourseId())) {
                                     timeTableViews.get(x.getCourseId()).add(viewId);
                                 } else {
@@ -253,20 +263,23 @@ public class FragmentCourses extends Fragment{
                                     timeTableViews.put(x.getCourseId(), temp);
                                 }
                                 cell_container = (LinearLayout) TimetableAdapter.itemView.findViewById(Integer.parseInt(viewId));
-                                cell_container.setBackgroundColor(Color.WHITE);
-                                ((View) cell.findViewById(R.id.course_indicator)).setBackgroundColor(Color.parseColor(x.getColour()));
-                                ((TextView) cell.findViewById(R.id.cellText)).setText(x.getCourseCode());
-                                cell.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        Intent coursePage = new Intent(getActivity(), CoursePageActivity.class);
-                                        coursePage.putExtra("courseId", x.getCourseId());
-                                        coursePage.putExtra("courseColor", Color.parseColor(x.getColour()));
-                                        startActivity(coursePage);
-                                    }
-                                });
-                                cell_container.removeAllViews();
-                                cell_container.addView(cell);
+                                if (cell_container != null) {
+                                    cell_container.setBackgroundColor(Color.WHITE);
+                                    ((View) cell.findViewById(R.id.course_indicator)).setBackgroundColor(Color.parseColor(x.getColour()));
+                                    ((TextView) cell.findViewById(R.id.cellText)).setText(x.getCourseCode());
+                                    cell.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Intent coursePage = new Intent(getActivity(), CoursePageActivity.class);
+                                            coursePage.putExtra("courseId", x.getCourseId());
+                                            coursePage.putExtra("courseColor", Color.parseColor(x.getColour()));
+                                            startActivity(coursePage);
+                                        }
+                                    });
+                                    cell_container.removeAllViews();
+                                    cell_container.addView(cell);
+                                }
+                            }
                             }
                             i--;
                         }

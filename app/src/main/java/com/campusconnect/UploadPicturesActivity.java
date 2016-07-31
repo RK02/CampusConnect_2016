@@ -99,7 +99,7 @@ public class UploadPicturesActivity extends AppCompatActivity {
 
         BitmapFactory.Options bm_opts = new BitmapFactory.Options();
         bm_opts.inScaled = false;
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.err_network_down, bm_opts);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.upload_photo_default, bm_opts);
         no_upload.setImageBitmap(bitmap);
 
         if(getIntent().hasExtra("urls"))
@@ -614,9 +614,8 @@ class ImageAdapter extends BaseAdapter {
                     View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
             layout_default_upload.layout(0, 0, layout_default_upload.getMeasuredWidth(), layout_default_upload.getMeasuredHeight());
             layout_default_upload.buildDrawingCache(true);
-            bm_default_upload = Bitmap.createBitmap(layout_default_upload.getDrawingCache());  //Bitmap
+            bm_default_upload = Bitmap.createBitmap(layout_default_upload.getDrawingCache());
             layout_default_upload.setDrawingCacheEnabled(false); // clear drawing cache
-
             //Bitmap to drawable conversion
             drawable = new BitmapDrawable(mContext.getResources(), bm_default_upload);
 
@@ -674,7 +673,7 @@ class ImageAdapter extends BaseAdapter {
             Picasso.with(mContext)
                     .load(UploadPicturesActivity.uris.get(position))
                     .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                    .error(drawable)
+                    .error(mContext.getResources().getDrawable(R.drawable.upload_enhance))
                     .fit()
                     .centerInside()
                     .into(holder.imageview);

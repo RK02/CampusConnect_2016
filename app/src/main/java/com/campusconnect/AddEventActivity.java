@@ -101,6 +101,7 @@ public class AddEventActivity extends AppCompatActivity {
          mBuilder= new NotificationCompat.Builder(this);
         mBuilder.setContentTitle("CampusConnect")
                 .setContentText("Uploading...")
+                .setGroupSummary(true)
                 .setSmallIcon(com.campusconnect.R.mipmap.ccnoti);
 // Start a lengthy operation in a background thread
         firebaseAnalytics = FirebaseAnalytics.getInstance(this);

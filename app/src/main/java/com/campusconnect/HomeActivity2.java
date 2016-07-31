@@ -403,6 +403,7 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
                             ModelNotificationList modelNotificationList = response.body();
                             if(modelNotificationList!=null)
                                 notifications= modelNotificationList.getNotificationList();
+                            if(modelNotificationList.getTotal().equals("0")){ Toast.makeText(HomeActivity2.this,"No new notifications",Toast.LENGTH_SHORT).show();return;}
 
                             mNotificationAdapter = new NotificationAdapter(HomeActivity2.this, notifications);
                             alphaAdapter = new AlphaInAnimationAdapter(mNotificationAdapter);

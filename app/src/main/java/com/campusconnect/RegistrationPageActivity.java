@@ -101,7 +101,7 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
     ArrayList<String> collegeIds;
     ArrayAdapter<String> data;
     String profileId;
-public     String collegeId;
+    String collegeId;
     String collegeNameString;
     int pos_college_selection;
     private FirebaseAnalytics mFirebaseAnalytics;
@@ -155,7 +155,7 @@ public     String collegeId;
 
                     }
                     data = new ArrayAdapter<String>(RegistrationPageActivity.this, android.R.layout.simple_list_item_1, collegeNames);
-                    data.add("Unable to find college");
+                    data.add("Request to add college");
 //                    collegeName.setAdapter(data);
 
                 }
@@ -181,7 +181,7 @@ public     String collegeId;
                 builderBranchList.setPositiveButton("Request New Branch", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        branchNotFoundDialog = new BranchNotFoundDialog((Activity) RegistrationPageActivity.this);
+                        branchNotFoundDialog = new BranchNotFoundDialog(RegistrationPageActivity.this);
                         Window window = branchNotFoundDialog.getWindow();
                         window.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                         branchNotFoundDialog.show();
@@ -256,39 +256,39 @@ public     String collegeId;
                         switch (i) {
                             case R.id.btn_2020:
                                 alertDialog.dismiss();
-                                batchName.setText("2020");
+                                batchName.setText("2013");
                                 break;
                             case R.id.btn_2019:
-                                alertDialog.dismiss();
-                                batchName.setText("2019");
-                                break;
-
-                            case R.id.btn_2018:
-                                alertDialog.dismiss();
-                                batchName.setText("2018");
-                                break;
-                            case R.id.btn_2017:
-                                alertDialog.dismiss();
-                                batchName.setText("2017");
-                                break;
-
-                            case R.id.btn_2016:
-                                alertDialog.dismiss();
-                                batchName.setText("2016");
-                                break;
-                            case R.id.btn_2015:
-                                alertDialog.dismiss();
-                                batchName.setText("2015");
-                                break;
-
-                            case R.id.btn_2014:
                                 alertDialog.dismiss();
                                 batchName.setText("2014");
                                 break;
 
+                            case R.id.btn_2018:
+                                alertDialog.dismiss();
+                                batchName.setText("2015");
+                                break;
+                            case R.id.btn_2017:
+                                alertDialog.dismiss();
+                                batchName.setText("2016");
+                                break;
+
+                            case R.id.btn_2016:
+                                alertDialog.dismiss();
+                                batchName.setText("2017");
+                                break;
+                            case R.id.btn_2015:
+                                alertDialog.dismiss();
+                                batchName.setText("2018");
+                                break;
+
+                            case R.id.btn_2014:
+                                alertDialog.dismiss();
+                                batchName.setText("2019");
+                                break;
+
                             case R.id.btn_2013:
                                 alertDialog.dismiss();
-                                batchName.setText("2013");
+                                batchName.setText("2020");
                                 break;
 
                         }
@@ -351,7 +351,7 @@ public     String collegeId;
         MyApi myApi = retrofit.create(MyApi.class);
 
         MyApi.getProfileIdRequest request;
-        request = new MyApi.getProfileIdRequest(profileName.getText().toString(), collegeId, batchName.getText().toString(), branchName.getText().toString(), sectionName.getText().toString(), personPhoto, personEmail, FirebaseInstanceId.getInstance().getToken());
+        request = new MyApi.getProfileIdRequest(profileName.getText().toString(), collegeId, batchName.getText().toString(), branchName.getText().toString(), sectionName.getText().toString(), personPhoto, personEmail, FirebaseInstanceId.getInstance().getToken(),personId);
         Call<ModelSignUp> call = myApi.getProfileId(request);
         call.enqueue(new Callback<ModelSignUp>() {
             @Override
@@ -359,7 +359,6 @@ public     String collegeId;
                 ModelSignUp signUp = response.body();
                 if (signUp != null) {
                     profileId = signUp.getKey();
-                    new mobile_register().execute(personId, profileId, batchName.getText().toString(), branchName.getText().toString(), sectionName.getText().toString(), collegeName.getText().toString());
                     SharedPreferences sharedPreferences = getSharedPreferences("CC", MODE_PRIVATE);
                     sharedPreferences
                             .edit()
@@ -424,8 +423,10 @@ public     String collegeId;
                                 collegeNameString = data.getItem(which);
                                 pos_college_selection = which;
                                 Log.d("regestraion page", "called");
-                                if (pos_college_selection != data.getCount() - 1)
+                                if (pos_college_selection != data.getCount() - 1){
                                     collegeName.setText(collegeNameString);
+                                    collegeId = collegeIds.get(collegeNames.indexOf(collegeNameString));
+                                }
 
                                 else {
                                     getdetailsDialog = new CollegeNotFoundDialog((Activity) RegistrationPageActivity.this);
@@ -485,98 +486,6 @@ public     String collegeId;
             super.onPostExecute(s);
            // progressDialog.dismiss();
            dismissProgressDialog();
-        }
-    }
-
-
-    class mobile_register extends AsyncTask<String, String, String> {
-
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            if (profileName.getText().toString().equals("")) {
-                profileName.setError("Enter Name");
-                profileName.requestFocus();
-                return;
-            }
-            if (collegeName.getText().toString().equals("")) {
-                collegeName.setError("Enter College Name");
-                collegeName.requestFocus();
-                return;
-            }
-            if (batchName.getText().toString().equals("")) {
-                batchName.setError("Enter Batch Name");
-                batchName.requestFocus();
-                return;
-            }
-            if (branchName.getText().toString().equals("")) {
-                branchName.setError("Enter Branch Name");
-                branchName.requestFocus();
-                return;
-            }
-            progressDialog = new ProgressDialog(RegistrationPageActivity.this);
-         //   progressDialog.show();
-            showProgressDialog();
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            //progressDialog.dismiss();
-            dismissProgressDialog();
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            HttpURLConnection connection;
-            URL url;
-            JSONObject jsonObject = new JSONObject();
-            String response;
-
-            try {
-                url = new URL(FragmentCourses.django + "/mobile_sign_up");
-                connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("POST");
-                connection.setDoOutput(true);
-                connection.setRequestProperty("Content-Type", "application/json");
-                connection.connect();
-                DataOutputStream os = new DataOutputStream(connection.getOutputStream());
-                jsonObject.put("gprofileId", params[0]);
-                jsonObject.put("profileId", params[1]);
-                jsonObject.put("profileName", personName);
-                jsonObject.put("collegeName", params[5]);
-                jsonObject.put("collegeId", collegeId);
-                jsonObject.put("branchName", params[3]);
-                jsonObject.put("sectionName", params[4]);
-                jsonObject.put("batchName", params[2]);
-                jsonObject.put("imageUrl", personPhoto);
-                jsonObject.put("email", personEmail);
-                jsonObject.put("gcmId", FirebaseInstanceId.getInstance().getToken());
-                Log.i("sw32", params[0] + ":" + params[1] + ":" + personName);
-                os.write(jsonObject.toString().getBytes());
-                os.flush();
-                os.close();
-                InputStream is = connection.getInputStream();
-                BufferedReader br = new BufferedReader(new InputStreamReader(is));
-                StringBuilder sb = new StringBuilder();
-                String line = "";
-                while ((line = br.readLine()) != null) {
-                    sb.append(line);
-                }
-                response = sb.toString();
-                br.close();
-                return response;
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return null;
         }
     }
 
@@ -690,7 +599,7 @@ public     String collegeId;
         Button submit;
         @Bind(R.id.et_branch)
         EditText branch_name;
-        String collegeId;
+        //String collegeId;
 
         public BranchNotFoundDialog(Activity a) {
             super(a);
@@ -706,8 +615,6 @@ public     String collegeId;
             setContentView(R.layout.dialog_branch_not_found);
 
             ButterKnife.bind(this);
-         //   SharedPreferences sharedPreferences = getSharedPreferences("CC", MODE_PRIVATE);
-           // collegeId = sharedPreferences.getString("collegeId", "");
             submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -716,10 +623,6 @@ public     String collegeId;
                             .baseUrl(MyApi.BASE_URL)
                             .addConverterFactory(GsonConverterFactory.create())
                             .build();
-                    String temp = collegeName.getText().toString();
-                    int index = collegeNames.indexOf(temp);
-                    collegeId = collegeIds.get(index);
-
                     MyApi myApi = retrofit.create(MyApi.class);
                     if (collegeId != null) {
                         MyApi.addBranchRequest body = new MyApi.addBranchRequest(collegeId,
@@ -729,7 +632,7 @@ public     String collegeId;
                         call.enqueue(new Callback<Void>() {
                             @Override
                             public void onResponse(Call<Void> call, Response<Void> response) {
-                                Log.d("sucess", "called");
+                                Log.d("success", "called");
                                 Log.d("CollegeId",collegeId);
                                 branchNotFoundDialog.dismiss();
                                 Toast.makeText(RegistrationPageActivity.this, "Your Request has been Sent", Toast.LENGTH_LONG).show();
@@ -747,8 +650,6 @@ public     String collegeId;
             });
 
         }
-
-
     }
 }
 

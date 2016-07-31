@@ -78,8 +78,13 @@ public class FragmentNotes extends Fragment {
             @Override
             public void onResponse(Call<ModelNoteBookList> call, Response<ModelNoteBookList> response) {
                 ModelNoteBookList modelNoteBookList = response.body();
-                Log.i("sw32","herenotelist");
-                Log.i("sw32","herenotelist " + response.code());
+                if(response.code() == 503){
+                    BitmapFactory.Options bm_opts = new BitmapFactory.Options();
+                    bm_opts.inScaled = false;
+                    Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.error_five_zero_three, bm_opts);
+                    no_notebook.setImageBitmap(bitmap);
+                    no_notebook.setVisibility(View.VISIBLE);
+                }
                 if(modelNoteBookList != null) {
                     Log.i("sw32","herenotelist1");
                     List<NoteBookList> noteBookLists = modelNoteBookList.getNoteBookList();
@@ -89,6 +94,10 @@ public class FragmentNotes extends Fragment {
                     }
                     if(noteBookLists.isEmpty())
                     {
+                        BitmapFactory.Options bm_opts = new BitmapFactory.Options();
+                        bm_opts.inScaled = false;
+                        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.no_value_notebooks, bm_opts);
+                        no_notebook.setImageBitmap(bitmap);
                         no_notebook.setVisibility(View.VISIBLE);
                     }
                     else
