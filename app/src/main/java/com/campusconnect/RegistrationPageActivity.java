@@ -7,12 +7,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,10 +25,12 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.campusconnect.POJO.CollegeList;
 import com.campusconnect.POJO.ModelCollegeList;
@@ -61,7 +66,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by RK on 20/06/2016.
  */
-public class RegistrationPageActivity extends AppCompatActivity implements View.OnTouchListener, View.OnClickListener{
+public class RegistrationPageActivity extends AppCompatActivity implements View.OnTouchListener, View.OnClickListener {
 
     @Bind(R.id.b_continue_to_course_selection)
     Button continue_to_course_selection_button;
@@ -72,14 +77,11 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
     @Bind(R.id.et_college_name)
     TextView collegeName;
 
-    @Bind(R.id.hsv_college_name)
-    HorizontalScrollView collegeName_container;
-
     @Bind(R.id.et_batch)
-    EditText batchName;
+    TextView batchName;
 
     @Bind(R.id.et_specialisation)
-    AutoCompleteTextView branchName;
+    TextView branchName;
 
     @Bind(R.id.et_section)
     AutoCompleteTextView sectionName;
@@ -99,17 +101,25 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
     ArrayList<String> collegeIds;
     ArrayAdapter<String> data;
     String profileId;
-    String collegeId;
+public     String collegeId;
     String collegeNameString;
     int pos_college_selection;
     private FirebaseAnalytics mFirebaseAnalytics;
+    String branchNameString;
+    int pos_branch_name_selection;
+    public ArrayAdapter<String> branchNameList;
+    LayoutInflater inflater;
+    AlertDialog.Builder builderBatchList;
+    BranchNotFoundDialog branchNotFoundDialog;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         collegeNames = new ArrayList<>();
-        collegeIds= new ArrayList<>();
+        collegeIds = new ArrayList<>();
+        inflater = this.getLayoutInflater();
         Bundle temp = getIntent().getExtras();
         personName = temp.getString("personName");
         personEmail = temp.getString("personEmail");
@@ -123,14 +133,14 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
                 .error(R.mipmap.ccnoti)
                 .fit()
                 .into(profilePicture);
-//        collegeName.setHintTextColor(Color.BLACK);
+        collegeName.setHintTextColor(Color.BLACK);
         Retrofit retrofit = new Retrofit.
                 Builder()
                 .baseUrl(FragmentCourses.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        mFirebaseAnalytics.logEvent("sign_up_start",new Bundle());
+        mFirebaseAnalytics.logEvent("sign_up_start", new Bundle());
         MyApi myApi = retrofit.create(MyApi.class);
         Call<ModelCollegeList> call = myApi.getCollegeList();
         call.enqueue(new Callback<ModelCollegeList>() {
@@ -139,14 +149,14 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
                 ModelCollegeList collegeList = response.body();
                 if (collegeList != null) {
                     colleges = collegeList.getCollegeList();
-                    for(CollegeList college : colleges)
-                    {
+                    for (CollegeList college : colleges) {
                         collegeNames.add(college.getCollegeName());
                         collegeIds.add(college.getCollegeId());
 
                     }
-                    data = new ArrayAdapter<String>(RegistrationPageActivity.this,android.R.layout.simple_list_item_1,collegeNames);
-                    data.add("Request new college");
+                    data = new ArrayAdapter<String>(RegistrationPageActivity.this, android.R.layout.simple_list_item_1, collegeNames);
+                    data.add("Unable to find college");
+//                    collegeName.setAdapter(data);
 
                 }
             }
@@ -156,17 +166,138 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
 
             }
         });
+        branchName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builderBranchList = new AlertDialog.Builder(RegistrationPageActivity.this);
+                builderBranchList.setTitle("Select Your Specisalisation");
+                builderBranchList.setNegativeButton(
+                        "cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                builderBranchList.setPositiveButton("Request New Branch", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        branchNotFoundDialog = new BranchNotFoundDialog((Activity) RegistrationPageActivity.this);
+                        Window window = branchNotFoundDialog.getWindow();
+                        window.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        branchNotFoundDialog.show();
+                    }
+                });
+                builderBranchList.setAdapter(branchNameList,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.d("onClick", branchNameList.toString());
+                                branchNameString = branchNameList.getItem(which);
+                                pos_branch_name_selection = which;
+                                if (pos_branch_name_selection != branchNameList.getCount() - 1) ;
+                                branchName.setText(branchNameString);
+                            }
+                        });
+                String temp = collegeName.getText().toString();
+                int index = collegeNames.indexOf(temp);
+                if (index >= 0) {
+                    branchNameList = new ArrayAdapter<String>(RegistrationPageActivity.this, android.R.layout.simple_list_item_1, colleges.get(index).getBranchNames());
+                    builderBranchList.show();
+                }
+            }
+        });
+
+
         branchName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                                                @Override
-                                                public void onFocusChange(View v, boolean hasFocus) {
-                                                    if (hasFocus) {
-                                                        String temp = collegeName.getText().toString();
-                                                        int index = collegeNames.indexOf(temp);
-                                                        if(index < 0 ) {collegeName.setError("Select a valid college name");collegeName.requestFocus(); return;}
-                                                        branchName.setAdapter(new ArrayAdapter<String>(RegistrationPageActivity.this, android.R.layout.simple_list_item_1, colleges.get(index).getBranchNames()));
-                                                    }
-                                                }
-                                            });
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    String temp = collegeName.getText().toString();
+                    int index = collegeNames.indexOf(temp);
+                    if (index < 0) {
+                        collegeName.setError("Select a valid college name");
+                        collegeName.requestFocus();
+                        return;
+                    }
+                    branchNameList = new ArrayAdapter<String>(RegistrationPageActivity.this, android.R.layout.simple_list_item_1, colleges.get(index).getBranchNames());
+                    //     branchName.setAdapter(new ArrayAdapter<String>(RegistrationPageActivity.this, android.R.layout.simple_list_item_1, colleges.get(index).getBranchNames()));
+                }
+            }
+        });
+
+        batchName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                builderBatchList = new AlertDialog.Builder(RegistrationPageActivity.this);
+                //   builderBatchList.setTitle("Select Your Batch");
+
+                inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                final View dialogView = inflater.inflate(R.layout.custom_dialog_batch,null);
+                builderBatchList.setView(dialogView);
+                RadioGroup radioGroup = (RadioGroup) dialogView.findViewById(R.id.radio_group);
+                //to hide the soft keyboard
+                View v = RegistrationPageActivity.this.getCurrentFocus();
+                if (v != null) {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+                final AlertDialog alertDialog = builderBatchList.create();
+
+                builderBatchList.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                alertDialog.show();
+                radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                        switch (i) {
+                            case R.id.btn_2020:
+                                alertDialog.dismiss();
+                                batchName.setText("2020");
+                                break;
+                            case R.id.btn_2019:
+                                alertDialog.dismiss();
+                                batchName.setText("2019");
+                                break;
+
+                            case R.id.btn_2018:
+                                alertDialog.dismiss();
+                                batchName.setText("2018");
+                                break;
+                            case R.id.btn_2017:
+                                alertDialog.dismiss();
+                                batchName.setText("2017");
+                                break;
+
+                            case R.id.btn_2016:
+                                alertDialog.dismiss();
+                                batchName.setText("2016");
+                                break;
+                            case R.id.btn_2015:
+                                alertDialog.dismiss();
+                                batchName.setText("2015");
+                                break;
+
+                            case R.id.btn_2014:
+                                alertDialog.dismiss();
+                                batchName.setText("2014");
+                                break;
+
+                            case R.id.btn_2013:
+                                alertDialog.dismiss();
+                                batchName.setText("2013");
+                                break;
+
+                        }
+                    }
+                });
+
+            }
+        });
+
 
         continue_to_course_selection_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,25 +305,44 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
 
                 String temp = collegeName.getText().toString();
                 int index = collegeNames.indexOf(temp);
-                if(index < 0 ){collegeName.setError("Select a valid college name");collegeName.requestFocus();return; }
-                if(profileName.getText().toString().equals("")){profileName.setError("Enter Name");profileName.requestFocus();return;}
-                if(collegeName.getText().toString().equals("")){collegeName.setError("Enter College Name");collegeName.requestFocus();return;}
-                if(batchName.getText().toString().equals("")){batchName.setError("Enter Batch Name");batchName.requestFocus();return;}
-                if(branchName.getText().toString().equals("")){branchName.setError("Enter Branch Name");branchName.requestFocus();return;}
+                if (index < 0) {
+                    collegeName.setError("Select a valid college name");
+                    collegeName.requestFocus();
+                    return;
+                }
+                if (profileName.getText().toString().equals("")) {
+                    profileName.setError("Enter Name");
+                    profileName.requestFocus();
+                    return;
+                }
+                if (collegeName.getText().toString().equals("")) {
+                    collegeName.setError("Enter College Name");
+                    collegeName.requestFocus();
+                    return;
+                }
+                if (batchName.getText().toString().equals("")) {
+                    batchName.setError("Enter Batch Name");
+                    batchName.requestFocus();
+                    return;
+                }
+                if (branchName.getText().toString().equals("")) {
+                    branchName.setError("Enter Branch Name");
+                    branchName.requestFocus();
+                    return;
+                }
                 collegeId = collegeIds.get(index);
                 new sign_up().execute();
                 Bundle params = new Bundle();
-                params.putString("sign_up","success");
-                mFirebaseAnalytics.logEvent("sign_up",params);
+                params.putString("sign_up", "success");
+                mFirebaseAnalytics.logEvent("sign_up", params);
             }
         });
 
         scrollViewReg.setOnTouchListener(this);
         collegeName.setOnClickListener(this);
-        collegeName_container.setOnClickListener(this);
     }
-    public void SignUp()
-    {
+
+    public void SignUp() {
         Retrofit retrofit = new Retrofit.
                 Builder()
                 .baseUrl(FragmentCourses.BASE_URL)
@@ -201,29 +351,28 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
         MyApi myApi = retrofit.create(MyApi.class);
 
         MyApi.getProfileIdRequest request;
-        request= new MyApi.getProfileIdRequest(profileName.getText().toString(),collegeId,batchName.getText().toString(),branchName.getText().toString(),sectionName.getText().toString(),personPhoto,personEmail,FirebaseInstanceId.getInstance().getToken());
+        request = new MyApi.getProfileIdRequest(profileName.getText().toString(), collegeId, batchName.getText().toString(), branchName.getText().toString(), sectionName.getText().toString(), personPhoto, personEmail, FirebaseInstanceId.getInstance().getToken());
         Call<ModelSignUp> call = myApi.getProfileId(request);
         call.enqueue(new Callback<ModelSignUp>() {
             @Override
             public void onResponse(Call<ModelSignUp> call, Response<ModelSignUp> response) {
                 ModelSignUp signUp = response.body();
-                if(signUp!=null)
-                {
+                if (signUp != null) {
                     profileId = signUp.getKey();
-                    new mobile_register().execute(personId,profileId,batchName.getText().toString(),branchName.getText().toString(),sectionName.getText().toString(),collegeName.getText().toString());
-                    SharedPreferences sharedPreferences = getSharedPreferences("CC",MODE_PRIVATE);
+                    new mobile_register().execute(personId, profileId, batchName.getText().toString(), branchName.getText().toString(), sectionName.getText().toString(), collegeName.getText().toString());
+                    SharedPreferences sharedPreferences = getSharedPreferences("CC", MODE_PRIVATE);
                     sharedPreferences
                             .edit()
-                            .putString("profileId",profileId)
-                            .putString("collegeId",collegeId)
-                            .putString("personId",personId)
-                            .putString("collegeName",collegeName.getText().toString())
-                            .putString("batchName",batchName.getText().toString())
-                            .putString("branchName",branchName.getText().toString())
-                            .putString("sectionName",sectionName.getText().toString())
-                            .putString("profileName",personName)
-                            .putString("email",personEmail)
-                            .putString("photourl",personPhoto)
+                            .putString("profileId", profileId)
+                            .putString("collegeId", collegeId)
+                            .putString("personId", personId)
+                            .putString("collegeName", collegeName.getText().toString())
+                            .putString("batchName", batchName.getText().toString())
+                            .putString("branchName", branchName.getText().toString())
+                            .putString("sectionName", sectionName.getText().toString())
+                            .putString("profileName", personName)
+                            .putString("email", personEmail)
+                            .putString("photourl", personPhoto)
                             .apply();
                     Intent intent_temp = new Intent(getApplicationContext(), SelectCourseActivity.class);
                     intent_temp.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -242,14 +391,12 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.sv_registration:
 
                 InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
                 inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                 break;
-
-
         }
         return false;
     }
@@ -257,8 +404,7 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
     @Override
     public void onClick(View view) {
 
-        switch (view.getId()){
-            case R.id.hsv_college_name:
+        switch (view.getId()) {
             case R.id.et_college_name:
                 AlertDialog.Builder builderCollegeList = new AlertDialog.Builder(RegistrationPageActivity.this);
                 builderCollegeList.setTitle("Select your college");
@@ -276,13 +422,13 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 collegeNameString = data.getItem(which);
-                                pos_college_selection=which;
-                                if(pos_college_selection!=data.getCount()-1) {
+                                pos_college_selection = which;
+                                Log.d("regestraion page", "called");
+                                if (pos_college_selection != data.getCount() - 1)
                                     collegeName.setText(collegeNameString);
-                                    collegeName.setMinEms(0);
-                                }
-                                else{
-                                   getdetailsDialog = new CollegeNotFoundDialog((Activity) RegistrationPageActivity.this);
+
+                                else {
+                                    getdetailsDialog = new CollegeNotFoundDialog((Activity) RegistrationPageActivity.this);
                                     Window window = getdetailsDialog.getWindow();
                                     window.setLayout(450, ViewGroup.LayoutParams.WRAP_CONTENT);
                                     getdetailsDialog.show();
@@ -294,16 +440,38 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
         }
 
     }
+    private void showProgressDialog() {
+        if (progressDialog == null) {
+           progressDialog = new ProgressDialog(RegistrationPageActivity.this);
+           progressDialog.setMessage("Loading. Please wait...");
+            progressDialog.setIndeterminate(false);
+            progressDialog.setCancelable(false);
+        }
+       progressDialog.show();
+    }
+    private void dismissProgressDialog() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+    }
 
-    class sign_up extends AsyncTask<String,String,String>
-    {
-        ProgressDialog progressDialog;
+    @Override
+    protected void onDestroy() {
+        dismissProgressDialog();
+        super.onDestroy();
+
+    }
+
+    class sign_up extends AsyncTask<String, String, String> {
+       // ProgressDialog progressDialog;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
 
             progressDialog = new ProgressDialog(RegistrationPageActivity.this);
-            progressDialog.show();
+           // progressDialog.show();
+            showProgressDialog();
         }
 
         @Override
@@ -315,29 +483,51 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            progressDialog.dismiss();
+           // progressDialog.dismiss();
+           dismissProgressDialog();
         }
     }
 
 
+    class mobile_register extends AsyncTask<String, String, String> {
 
 
-    class mobile_register extends AsyncTask<String,String,String>{
 
-        ProgressDialog progressDialog;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if(profileName.getText().toString().equals("")){profileName.setError("Enter Name");profileName.requestFocus();return;}
-            if(collegeName.getText().toString().equals("")){collegeName.setError("Enter College Name");collegeName.requestFocus();return;}
-            if(batchName.getText().toString().equals("")){batchName.setError("Enter Batch Name");batchName.requestFocus();return;}
-            if(branchName.getText().toString().equals("")){branchName.setError("Enter Branch Name");branchName.requestFocus();return;}
+            if (profileName.getText().toString().equals("")) {
+                profileName.setError("Enter Name");
+                profileName.requestFocus();
+                return;
+            }
+            if (collegeName.getText().toString().equals("")) {
+                collegeName.setError("Enter College Name");
+                collegeName.requestFocus();
+                return;
+            }
+            if (batchName.getText().toString().equals("")) {
+                batchName.setError("Enter Batch Name");
+                batchName.requestFocus();
+                return;
+            }
+            if (branchName.getText().toString().equals("")) {
+                branchName.setError("Enter Branch Name");
+                branchName.requestFocus();
+                return;
+            }
             progressDialog = new ProgressDialog(RegistrationPageActivity.this);
+         //   progressDialog.show();
+            showProgressDialog();
         }
+
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            //progressDialog.dismiss();
+            dismissProgressDialog();
         }
+
         @Override
         protected String doInBackground(String... params) {
             HttpURLConnection connection;
@@ -346,25 +536,25 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
             String response;
 
             try {
-                url = new URL(FragmentCourses.django+"/mobile_sign_up");
+                url = new URL(FragmentCourses.django + "/mobile_sign_up");
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("POST");
                 connection.setDoOutput(true);
                 connection.setRequestProperty("Content-Type", "application/json");
                 connection.connect();
                 DataOutputStream os = new DataOutputStream(connection.getOutputStream());
-                jsonObject.put("gprofileId",params[0]);
-                jsonObject.put("profileId",params[1]);
-                jsonObject.put("profileName",personName);
-                jsonObject.put("collegeName",params[5]);
-                jsonObject.put("collegeId",collegeId);
-                jsonObject.put("branchName",params[3]);
-                jsonObject.put("sectionName",params[4]);
-                jsonObject.put("batchName",params[2]);
-                jsonObject.put("imageUrl",personPhoto);
-                jsonObject.put("email",personEmail);
+                jsonObject.put("gprofileId", params[0]);
+                jsonObject.put("profileId", params[1]);
+                jsonObject.put("profileName", personName);
+                jsonObject.put("collegeName", params[5]);
+                jsonObject.put("collegeId", collegeId);
+                jsonObject.put("branchName", params[3]);
+                jsonObject.put("sectionName", params[4]);
+                jsonObject.put("batchName", params[2]);
+                jsonObject.put("imageUrl", personPhoto);
+                jsonObject.put("email", personEmail);
                 jsonObject.put("gcmId", FirebaseInstanceId.getInstance().getToken());
-                Log.i("sw32",params[0] +":"+params[1]+":"+personName );
+                Log.i("sw32", params[0] + ":" + params[1] + ":" + personName);
                 os.write(jsonObject.toString().getBytes());
                 os.flush();
                 os.close();
@@ -409,7 +599,7 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
 
         public CollegeNotFoundDialog(Activity a) {
             super(a);
-            // TODO Auto-generated constructor stub
+// TODO Auto-generated constructor stub
             this.c = a;
             this.context = context;
         }
@@ -471,6 +661,7 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
                         public void onResponse(Call<Void> call, Response<Void> response) {
                             Log.d("College details", "success");
                             getdetailsDialog.dismiss();
+                            Toast.makeText(RegistrationPageActivity.this,"Your Request has been Sent",Toast.LENGTH_LONG).show();
                         }
 
                         @Override
@@ -481,28 +672,84 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
                 }
             });
         }
-        private boolean isValidEmail(String Email){
+
+        private boolean isValidEmail(String Email) {
             return Patterns.EMAIL_ADDRESS.matcher(personEmail).matches();
         }
-        private boolean isValidMobile(String mobileNos){
+
+        private boolean isValidMobile(String mobileNos) {
             return Patterns.PHONE.matcher(mobileNos).matches();
         }
 
+    }
 
+    public class BranchNotFoundDialog extends Dialog {
+        Activity c;
+        Context context;
+        @Bind(R.id.b_submit)
+        Button submit;
+        @Bind(R.id.et_branch)
+        EditText branch_name;
+        String collegeId;
+
+        public BranchNotFoundDialog(Activity a) {
+            super(a);
+// TODO Auto-generated constructor stub
+            this.c = a;
+            this.context = context;
+        }
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
+            setContentView(R.layout.dialog_branch_not_found);
+
+            ButterKnife.bind(this);
+         //   SharedPreferences sharedPreferences = getSharedPreferences("CC", MODE_PRIVATE);
+           // collegeId = sharedPreferences.getString("collegeId", "");
+            submit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Retrofit retrofit = new Retrofit.
+                            Builder()
+                            .baseUrl(MyApi.BASE_URL)
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+                    String temp = collegeName.getText().toString();
+                    int index = collegeNames.indexOf(temp);
+                    collegeId = collegeIds.get(index);
+
+                    MyApi myApi = retrofit.create(MyApi.class);
+                    if (collegeId != null) {
+                        MyApi.addBranchRequest body = new MyApi.addBranchRequest(collegeId,
+                                branch_name.getText().toString()
+                        );
+                        Call<Void> call = myApi.addBranch(body);
+                        call.enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                Log.d("sucess", "called");
+                                Log.d("CollegeId",collegeId);
+                                branchNotFoundDialog.dismiss();
+                                Toast.makeText(RegistrationPageActivity.this, "Your Request has been Sent", Toast.LENGTH_LONG).show();
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                Log.d("failed", "called");
+                            }
+                        });
+
+
+                    }
+                }
+            });
 
         }
-    @Override
-    protected void onResume() {
-        super.onResume();
-        MyApp.activityResumed();
-        ConnectionChangeReceiver.broadcast(this);
-    }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        MyApp.activityPaused();
+
     }
-    }
+}
 
 
