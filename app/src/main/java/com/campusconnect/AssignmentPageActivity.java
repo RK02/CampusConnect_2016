@@ -279,6 +279,7 @@ public class AssignmentPageActivity extends AppCompatActivity implements View.On
         share_note_button.setOnClickListener(this);
         flag_button.setOnClickListener(this);
         assignment_last_page.setOnClickListener(this);
+        Picasso.with(this).load(R.drawable.app_faces).placeholder(R.drawable.app_faces).fit().into(assignment_last_page);
 
         remind_button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

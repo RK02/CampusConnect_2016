@@ -76,6 +76,13 @@ public class FragmentAssignment extends Fragment {
             @Override
             public void onResponse(Call<ModelAssignmentList> call, Response<ModelAssignmentList> response) {
                 ModelAssignmentList modelAssignmentList = response.body();
+                if(response.code() == 503){
+                    BitmapFactory.Options bm_opts = new BitmapFactory.Options();
+                    bm_opts.inScaled = false;
+                    Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.error_five_zero_three, bm_opts);
+                    no_assignment.setImageBitmap(bitmap);
+                    no_assignment.setVisibility(View.VISIBLE);
+                }
                 if(modelAssignmentList!=null) {
                     List<AssList> modelAssignmentAssList = modelAssignmentList.getAssList();
                     for (AssList i : modelAssignmentAssList) {
@@ -83,6 +90,10 @@ public class FragmentAssignment extends Fragment {
                     }
                     if(modelAssignmentAssList.isEmpty())
                     {
+                        BitmapFactory.Options bm_opts = new BitmapFactory.Options();
+                        bm_opts.inScaled = false;
+                        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.no_value_assignments, bm_opts);
+                        no_assignment.setImageBitmap(bitmap);
                         no_assignment.setVisibility(View.VISIBLE);
                     }
                     else

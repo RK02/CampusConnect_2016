@@ -42,6 +42,7 @@ public class ConnectionChangeReceiver extends BroadcastReceiver
             Intent networkNotFoundIntent = new Intent(context, NetworkNotFoundActivity.class);
             networkNotFoundIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(networkNotFoundIntent);
+            connected=true;
         }
     }
 

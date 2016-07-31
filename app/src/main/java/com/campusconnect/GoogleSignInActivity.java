@@ -31,6 +31,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.campusconnect.POJO.ModelGetProfile;
+import com.campusconnect.POJO.MyApi;
 import com.campusconnect.fragment.Home.FragmentCourses;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -50,17 +52,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.iid.FirebaseInstanceId;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 /**
  * Demonstrate Firebase Authentication using a Google ID Token.
  */
@@ -220,7 +217,61 @@ public class GoogleSignInActivity extends BaseActivity implements
                                 startActivity(home);
                                 finish();
                             } else {
-                                new register_mobile().execute(personId);
+                                //TODO: SIGN-IN
+                                Retrofit retrofit = new Retrofit.
+                                        Builder()
+                                        .baseUrl(MyApi.BASE_URL)
+                                        .addConverterFactory(GsonConverterFactory.create())
+                                        .build();
+                                MyApi myApi = retrofit.create(MyApi.class);
+                                Log.i("sw32",personEmail + " : " + personId + " : " + FirebaseInstanceId.getInstance().getToken());
+                                MyApi.getProfileRequest body = new MyApi.getProfileRequest(personEmail,personId,FirebaseInstanceId.getInstance().getToken());
+                                Call<ModelGetProfile> call = myApi.getProfile(body);
+                                call.enqueue(new Callback<ModelGetProfile>() {
+                                    @Override
+                                    public void onResponse(Call<ModelGetProfile> call, Response<ModelGetProfile> response) {
+                                        ModelGetProfile profile = response.body();
+                                        if(profile!=null){
+                                            if(profile.getResponse().equals("0"))
+                                            {
+                                                SharedPreferences sharedPreferences = getSharedPreferences("CC", MODE_PRIVATE);
+                                                sharedPreferences
+                                                        .edit()
+                                                        .putString("profileId", profile.getProfileId())
+                                                        .putString("collegeId", profile.getCollegeId())
+                                                        .putString("personId", personId)
+                                                        .putString("collegeName", profile.getCollegeName())
+                                                        .putString("batchName", profile.getBatchName())
+                                                        .putString("branchName", profile.getBranchName())
+                                                        .putString("sectionName", profile.getSectionName())
+                                                        .putString("profileName", personName)
+                                                        .putString("email", personEmail)
+                                                        .putString("photourl", profile.getPhotourl())
+                                                        .apply();
+                                                Intent home = new Intent(GoogleSignInActivity.this,HomeActivity2.class);
+                                                home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                startActivity(home);
+                                                finish();
+                                            }
+                                            else{
+                                                Intent registration = new Intent(GoogleSignInActivity.this,RegistrationPageActivity.class);
+                                                registration.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                registration.putExtra("personName",personName);
+                                                registration.putExtra("personEmail",personEmail);
+                                                registration.putExtra("personPhoto",personPhoto);
+                                                registration.putExtra("personId",personId);
+                                                startActivity(registration);
+                                                finish();
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<ModelGetProfile> call, Throwable t) {
+
+                                    }
+                                });
+
                             }
                         }
 // [START_EXCLUDE]
@@ -293,102 +344,6 @@ public class GoogleSignInActivity extends BaseActivity implements
             case R.id.disconnect_button:
                 revokeAccess();
                 break;
-        }
-    }
-    class register_mobile extends AsyncTask<String,String,String> {
-        ProgressDialog progressBar;
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressBar = new ProgressDialog(GoogleSignInActivity.this);
-            progressBar.setTitle("Please Wait...");
-            progressBar.setCancelable(false);
-            progressBar.show();
-        }
-        @Override
-        protected String doInBackground(String... params) {
-            HttpURLConnection connection;
-            URL url;
-            JSONObject jsonObject = new JSONObject();
-            String response;
-            try {
-                url = new URL(FragmentCourses.django+"/mobile_sign_in");
-                connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("POST");
-                connection.setDoOutput(true);
-                connection.setRequestProperty("Content-Type", "application/json");
-                connection.connect();
-                DataOutputStream os = new DataOutputStream(connection.getOutputStream());
-                jsonObject.put("gprofileId",params[0]);
-                jsonObject.put("gcmId",FirebaseInstanceId.getInstance().getToken());
-                os.write(jsonObject.toString().getBytes());
-                os.flush();
-                os.close();
-                int status = connection.getResponseCode();
-                Log.i("sw32signin",status +": "+ connection.getResponseMessage());
-                InputStream is = connection.getInputStream();
-                BufferedReader br = new BufferedReader(new InputStreamReader(is));
-                StringBuilder sb = new StringBuilder();
-                String line = "";
-                while ((line = br.readLine()) != null) {
-                    sb.append(line);
-                }
-                response = sb.toString();
-                br.close();
-                is.close();
-                return response;
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            if(s.equals("0"))
-            {
-                Intent signUp = new Intent(GoogleSignInActivity.this,RegistrationPageActivity.class);
-                signUp.putExtra("personName",personName);
-                signUp.putExtra("personEmail",personEmail);
-                if(personPhoto!=null) signUp.putExtra("personPhoto",personPhoto.toString());
-                signUp.putExtra("personId",personId);
-                startActivity(signUp);
-                finish();
-            }
-            else
-            {
-                JSONObject profileData = new JSONObject();
-                try {
-                    profileData = new JSONObject(s);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                SharedPreferences sharedPreferences = getSharedPreferences("CC",MODE_PRIVATE);
-                try {
-                    sharedPreferences
-                            .edit()
-                            .putString("profileId",profileData.getString("profileId"))
-                            .putString("collegeId",profileData.getString("collegeId"))
-                            .putString("batchName",profileData.getString("batchName"))
-                            .putString("branchName",profileData.getString("branchName"))
-                            .putString("sectionName",profileData.getString("sectionName"))
-                            .putString("profileName",profileData.getString("profileName"))
-                            .putString("email",profileData.getString("email"))
-                            .putString("photourl",profileData.getString("photourl"))
-                            .apply();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                Intent home = new Intent(GoogleSignInActivity.this, HomeActivity2.class);
-                home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(home);
-                finish();
-            }
-            progressBar.dismiss();
         }
     }
     @Override

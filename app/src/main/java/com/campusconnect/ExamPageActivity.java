@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -213,6 +215,8 @@ public class ExamPageActivity extends AppCompatActivity implements View.OnClickL
         share_note_button.setOnClickListener(this);
         flag_button.setOnClickListener(this);
         exam_last_page.setOnClickListener(this);
+        Drawable drawable = getResources().getDrawable(R.drawable.app_faces);
+        Picasso.with(this).load(R.drawable.app_faces).placeholder(R.drawable.app_faces).fit().into(exam_last_page);
         remind_button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

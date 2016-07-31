@@ -66,6 +66,20 @@ Call<Void> addBranch(@Body addBranchRequest body);
         }
 
     }
+
+    @POST("getProfile")
+    Call<ModelGetProfile> getProfile(@Body getProfileRequest body);
+    class getProfileRequest{
+        private String email;
+        private String gId;
+        private String gcmId;
+        public getProfileRequest(String email,String gId,String gcmId){
+            this.email =email;
+            this.gId = gId;
+            this.gcmId = gcmId;
+        }
+    }
+
     @POST("addAdmin")
     Call<ModelMakeAdmin> addAdmin(@Body addAdminRequest addAdminRequest);
     class addAdminRequest{
@@ -235,7 +249,8 @@ Call<Void> addBranch(@Body addBranchRequest body);
         private String photoUrl;
         private String email;
         private String gcmId;
-        public getProfileIdRequest(String profileName,String collegeId,String batchName, String branchName, String sectionName,String photoUrl,String email,String gcmId)
+        private String gId;
+        public getProfileIdRequest(String profileName,String collegeId,String batchName, String branchName, String sectionName,String photoUrl,String email,String gcmId,String gId)
         {
             this.profileName = profileName;
             this.collegeId = collegeId;
@@ -248,6 +263,7 @@ Call<Void> addBranch(@Body addBranchRequest body);
             else this.sectionName = sectionName;
             this.photoUrl = photoUrl;
             this.email = email;
+            this.gId = gId;
         }
     }
 
