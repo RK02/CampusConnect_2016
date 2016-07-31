@@ -12,7 +12,8 @@
 
     <FrameLayout
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <ImageButton
             android:id="@+id/ib_menu"
@@ -20,13 +21,23 @@
             android:layout_height="match_parent"
             android:background="@android:color/transparent"
             android:src="@mipmap/ic_menu_24" />
-        <ImageButton
-            android:id="@+id/ib_close"
+
+        <LinearLayout
+            android:id="@+id/container_close_button"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:visibility="gone"
+            android:gravity="center"
             android:background="@android:color/transparent"
-            android:src="@mipmap/ic_close_24_white" />
+            android:visibility="gone">
+
+            <ImageButton
+                android:id="@+id/ib_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:src="@mipmap/ic_close_24_white"
+                android:visibility="gone" />
+        </LinearLayout>
     </FrameLayout>
 
 
@@ -45,11 +56,11 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="-2dp"
                 android:background="@android:color/transparent"
+                android:fontFamily="sans-serif"
                 android:gravity="center"
                 android:text="Home"
                 android:textColor="@color/ColorTextHeading"
-                android:textSize="22sp"
-                android:fontFamily="sans-serif"/>
+                android:textSize="22sp" />
 
             <TextView
                 android:id="@+id/tv_title_notification"
@@ -57,11 +68,11 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="-2dp"
                 android:background="@android:color/transparent"
+                android:fontFamily="sans-serif"
                 android:gravity="center"
                 android:text="Notifications"
                 android:textColor="@color/ColorTextHeading"
                 android:textSize="22sp"
-                android:fontFamily="sans-serif"
                 android:visibility="gone" />
         </FrameLayout>
 

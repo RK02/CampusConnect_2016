@@ -23,11 +23,17 @@
         android:background="@color/ColorTextInfo"
         android:layout_marginBottom="4dp"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_course_colors"
+    <GridView
+        android:id="@+id/gv_course_colors"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/divider_1"
-        android:layout_centerHorizontal="true"
-        android:clipToPadding="false" />
+        android:background="@color/ColorRecyclerBackground"
+        android:padding="16dp"
+        android:columnWidth="60dp"
+        android:stretchMode="spacingWidthUniform"
+        android:scrollbars="none"
+        android:numColumns="3"
+        />
 </RelativeLayout>

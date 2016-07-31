@@ -39,6 +39,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -111,6 +112,9 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
     ImageButton notification_button;
     @Bind(R.id.ib_close)
     ImageButton close_button;
+
+    @Bind(R.id.container_close_button)
+    LinearLayout close_button_container;
 
     public static TextView home_title;
     @Bind(R.id.container_fab)
@@ -319,6 +323,71 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
                 startActivity(intent_search);
                 break;
             case R.id.ib_notification:
+
+                if (layout_notification.getVisibility() == View.VISIBLE) {
+                    some_function();
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                }else{
+                    layout_notification.setVisibility(View.VISIBLE);
+                    notification_title.setVisibility(View.VISIBLE);
+                    close_button.setVisibility(View.VISIBLE);
+                    close_button_container.setVisibility(View.VISIBLE);
+//                    notificationCount = 0;
+//                    tv_notification_count.setText("");
+//                    tv_notification_count.setVisibility(View.INVISIBLE);
+
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                    fragment_frame.setVisibility(View.GONE);
+
+                    Animation animation = new TranslateAnimation(0, 0, -150, 0);
+                    animation.setInterpolator(interpolator_notification);
+                    animation.setDuration(650);
+                    notification_title.startAnimation(animation);
+
+                    Animation animate_close_button = new TranslateAnimation(
+                            -100, 0, 0, 0);
+                    animate_close_button
+                            .setInterpolator(interpolator_notification);
+                    animate_close_button.setStartOffset(500);
+                    animate_close_button.setDuration(650);
+                    animate_close_button.setFillAfter(true);
+                    close_button.startAnimation(animate_close_button);
+
+                    Animation fadeOut = new AlphaAnimation(1, 0);
+                    fadeOut.setInterpolator(new DecelerateInterpolator());
+                    fadeOut.setDuration(300);
+                    fadeOut.setFillAfter(true);
+
+                    fragment_frame.startAnimation(fadeOut);
+
+                    Animation fadeIn = new AlphaAnimation(0, 1);
+                    fadeIn.setInterpolator(new DecelerateInterpolator());
+                    fadeIn.setFillAfter(true);
+                    fadeIn.setStartOffset(100);
+                    fadeIn.setDuration(300);
+
+
+//                    notification_title.setVisibility(View.VISIBLE);
+
+                    home_title.setVisibility(View.GONE);
+                    bk_blur.setVisibility(View.VISIBLE);
+                    menu_button.setVisibility(View.GONE);
+                    bk_blur.startAnimation(fadeIn);
+                    //notification_clicked = true;
+
+                    applyBlur();
+
+
+                    close_button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            some_function();
+                            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                        }
+                    });
+                }
+
+                //Data loading part
                 Retrofit retrofit = new Retrofit.
                         Builder()
                         .baseUrl(MyApi.BASE_URL)
@@ -335,97 +404,33 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
                             if(modelNotificationList!=null)
                                 notifications= modelNotificationList.getNotificationList();
 
-                            layout_notification.setVisibility(View.GONE);
                             mNotificationAdapter = new NotificationAdapter(HomeActivity2.this, notifications);
-
-                            mLayoutManager = new LinearLayoutManager(HomeActivity2.this);
-
-                            notification_list.setLayoutManager(mLayoutManager);
-                            notification_list.setItemAnimator(new DefaultItemAnimator());
-
                             alphaAdapter = new AlphaInAnimationAdapter(mNotificationAdapter);
                             scaleAdapter = new ScaleInAnimationAdapter(
                                     alphaAdapter);
                             scale_back = new ScaleAdapter_reverse(
                                     mNotificationAdapter);
                             alpha_back = new AlphaAdapter_reverse(scale_back);
-                            if (layout_notification.getVisibility() == View.VISIBLE) {
-                                some_function();
-                                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-                            }else{
-                                layout_notification.setVisibility(View.VISIBLE);
-                                notification_title.setVisibility(View.VISIBLE);
-                                close_button.setVisibility(View.VISIBLE);
-//                    notificationCount = 0;
-//                    tv_notification_count.setText("");
-//                    tv_notification_count.setVisibility(View.INVISIBLE);
 
-                                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                                fragment_frame.setVisibility(View.GONE);
+                            mLayoutManager = new LinearLayoutManager(HomeActivity2.this);
 
-                                Animation animation = new TranslateAnimation(0, 0, -100, 0);
-                                animation.setInterpolator(interpolator_notification);
-                                animation.setDuration(650);
-                                notification_title.startAnimation(animation);
+                            notification_list.setLayoutManager(mLayoutManager);
+                            notification_list.setItemAnimator(new DefaultItemAnimator());
 
+//                            Handler handler_new = new Handler();
+//                            handler_new.postDelayed(new Runnable() {
+//                                @Override
+//                                public void run() {
+//
+//
+//                                }
+//                            }, 500);
 
-                                Animation animate_close_button = new TranslateAnimation(
-                                        -100, 0, 0, 0);
-                                animate_close_button
-                                        .setInterpolator(interpolator_notification);
-                                animate_close_button.setStartOffset(500);
-                                animate_close_button.setDuration(650);
-                                animate_close_button.setFillAfter(true);
-                                close_button.startAnimation(animate_close_button);
+                            notification_list.setVisibility(View.VISIBLE);
+                            alphaAdapter.setStartPosition(-1);
+                            scaleAdapter.setStartPosition(-1);
+                            notification_list.setAdapter(scaleAdapter);
 
-                                Animation fadeOut = new AlphaAnimation(1, 0);
-                                fadeOut.setInterpolator(new DecelerateInterpolator());
-                                fadeOut.setDuration(300);
-                                fadeOut.setFillAfter(true);
-
-                                fragment_frame.startAnimation(fadeOut);
-
-                                Animation fadeIn = new AlphaAnimation(0, 1);
-                                fadeIn.setInterpolator(new DecelerateInterpolator());
-                                fadeIn.setFillAfter(true);
-                                fadeIn.setStartOffset(100);
-                                fadeIn.setDuration(300);
-
-
-//                    notification_title.setVisibility(View.VISIBLE);
-
-                                home_title.setVisibility(View.GONE);
-                                bk_blur.setVisibility(View.VISIBLE);
-                                menu_button.setVisibility(View.GONE);
-                                bk_blur.startAnimation(fadeIn);
-                                //notification_clicked = true;
-
-                                applyBlur();
-
-                                Handler handler_new = new Handler();
-                                handler_new.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-
-                                        notification_list.setVisibility(View.VISIBLE);
-                                        alphaAdapter.setStartPosition(-1);
-                                        scaleAdapter.setStartPosition(-1);
-                                        notification_list.setAdapter(scaleAdapter);
-
-                                    }
-                                }, 500);
-
-
-
-
-                                close_button.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        some_function();
-                                        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-                                    }
-                                });
-                            }
                         }
                     }
 
@@ -694,7 +699,7 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
         animation_recycler.addAnimation(fade_out);
         notification_list.setAnimation(animation_recycler);
 
-        Animation animation = new TranslateAnimation(0, 0, 0, -100);
+        Animation animation = new TranslateAnimation(0, 0, 0, -150);
         animation.setInterpolator(interpolator_notification);
         animation.setDuration(650);
         animation.setFillAfter(true);
@@ -707,8 +712,14 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
                 .setInterpolator(interpolator_notification);
         animate_back_button.setDuration(650);
         animate_back_button.setFillAfter(true);
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                close_button_container.setVisibility(View.GONE);
+                close_button.setVisibility(View.GONE);
+            }
+        }, 650);
         close_button.startAnimation(animate_back_button);
-        close_button.setVisibility(View.GONE);
+
 
         Animation fadeOut = new AlphaAnimation(1, 0);
         fadeOut.setInterpolator(new DecelerateInterpolator());
