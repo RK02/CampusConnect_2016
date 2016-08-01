@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/default_portrait_two"
     android:weightSum="4">
 
     <LinearLayout
@@ -20,6 +21,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Are you ready for your greatest adventure?"
+            android:fontFamily="sans-serif"
             android:textSize="22sp"
             android:textColor="@color/ColorTextHeading"/>
 
@@ -30,10 +32,17 @@
             android:paddingTop="24dp"
             android:text="We just made it easier."
             android:textSize="24sp"
+            android:fontFamily="sans-serif-light"
+            android:textStyle="bold"
             android:textColor="@color/ColorTextHeading"/>
 
 
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@drawable/shadow" />
 
     <RelativeLayout
         android:layout_width="fill_parent"
