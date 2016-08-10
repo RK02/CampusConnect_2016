@@ -35,10 +35,13 @@ import com.campusconnect.adapter.TimetableAdapter;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import io.branch.referral.Branch;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -71,7 +74,9 @@ public class FragmentCourses extends Fragment{
     NetworkInfo activeNetwork;
     private FirebaseAnalytics mFirebaseAnalytics;
     boolean isConnected;
-    public static final String BASE_URL = "https://uploadnotes-2016.appspot.com/_ah/api/notesapi/v1/";
+    //for producation app
+    //https://uploadnotes-2016.appspot.com
+    public static final String BASE_URL = "https://uploadingtest-2016.appspot.com/_ah/api/notesapi/v1/";
     public static final String uploadURL = "https://uploadnotes-2016.appspot.com/img";
     public static final String django = "https://campusconnect-2016.herokuapp.com";
     //public static final String django = "http://10.75.133.109:8000";
@@ -88,6 +93,7 @@ public class FragmentCourses extends Fragment{
         myApi = retrofit.create(MyApi.class);
         fragment_courses = (RecyclerView) v.findViewById(R.id.rv_courses);
         swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swiperefresh);
+
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -136,6 +142,12 @@ public class FragmentCourses extends Fragment{
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
 
@@ -145,6 +157,22 @@ public class FragmentCourses extends Fragment{
             return;
         }
         Log.i("sw32call","onresume");
+        try {
+            String decider = Branch.getInstance().getLatestReferringParams().getString("+clicked_branch_link");
+            if(isConnected && decider.equals("true")) {
+                swipeRefreshLayout.post(new Runnable() {
+                    @Override public void run() {
+                        swipeRefreshLayout.setRefreshing(true);
+                        // directly call onRefresh() method
+                        Log.d("branch","refresh called");
+                        refreshPage();
+                    }
+                });
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         cm = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         activeNetwork = cm.getActiveNetworkInfo();
         isConnected= activeNetwork != null && activeNetwork.isConnected();
@@ -241,7 +269,8 @@ public class FragmentCourses extends Fragment{
                     {
                         no_course_view.setVisibility(View.GONE);
                     }
-                    for (final SubscribedCourseList x : subscribedCourseList) {
+                    for ( final SubscribedCourseList x : subscribedCourseList) {
+
                         courseNames.add(x.getCourseName());
                         courseIds.add(x.getCourseId());
                         mCourseAdapter.add(x);
