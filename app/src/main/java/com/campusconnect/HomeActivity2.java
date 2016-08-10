@@ -13,9 +13,12 @@ import android.os.Handler;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -60,6 +63,7 @@ import com.campusconnect.fragment.Drawer.FragmentHome;
 import com.campusconnect.fragment.Home.FragmentCourses;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -69,6 +73,11 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.Bind;
@@ -76,7 +85,9 @@ import butterknife.ButterKnife;
 import io.branch.indexing.BranchUniversalObject;
 import io.branch.referral.Branch;
 import io.branch.referral.BranchError;
+import io.branch.referral.SharingHelper;
 import io.branch.referral.util.LinkProperties;
+import io.branch.referral.util.ShareSheetStyle;
 import io.doorbell.android.Doorbell;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -151,6 +162,7 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_true);
         ButterKnife.bind(this);
+      //  UpdateNow(true);
 //Setting FAB container's background to be fully transparent by default
         home_title = (TextView) findViewById(R.id.tv_title);
         fab_menu_container.getBackground().setAlpha(0);
@@ -168,9 +180,14 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
                 .networkPolicy(NetworkPolicy.NO_CACHE)
                 .placeholder(R.mipmap.ccnoti)
                 .into(view);
+        String pic = getSharedPreferences("CC",MODE_PRIVATE).getString("photourl", "");
+        Log.d("pic",pic);
+
+
+
+
         ((TextView) headerView.findViewById(R.id.tv_username)).setText(getSharedPreferences("CC", MODE_PRIVATE).getString("profileName", "PLACEHOLDER"));
         firebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
         //Setting Home Fragment as default
 
 //Setting Home Fragment as default
@@ -261,9 +278,9 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
             if (b ) {
                 Context c = HomeActivity2.this;
                 builderUpdateNow = new AlertDialog.Builder(c);
+                updateNowInflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 final View viewUpdateNow = updateNowInflater.inflate(R.layout.dialog_update_now, null);
                 builderUpdateNow.setView(viewUpdateNow);
-                builderUpdateNow.show();
                 builderUpdateNow.setNegativeButton("Later", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -279,12 +296,58 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
                         }catch (android.content.ActivityNotFoundException ex){
                             startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
                         }
-
-
+                       dialogInterface.dismiss();
                     }
                 });
+                builderUpdateNow.show();
             }
         }
+//Launch by branch link
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        final Branch branch = Branch.getInstance();
+        branch.initSession(new Branch.BranchReferralInitListener() {
+            @Override
+            public void onInitFinished(JSONObject referringParams, BranchError error) {
+                Log.d("Branch", "called");
+                if (error == null) {
+                    // params are the deep linked params associated with the link that the user clicked before showing up
+                    Log.i("Branch", "deep link data: " + referringParams.toString());
+
+                    Intent googleActivity;
+                    googleActivity = new Intent(HomeActivity2.this,GoogleSignInActivity.class);
+                    startActivity(googleActivity);
+                    try {
+                        ImageView view = (ImageView) headerView.findViewById(R.id.profile_image);
+                        String decider = Branch.getInstance().getLatestReferringParams().getString("+clicked_branch_link");
+                        if (decider.equals("true")){
+                            Picasso.with(HomeActivity2.this)
+                                    .load(getSharedPreferences("CC", MODE_PRIVATE).getString("photourl", "fakedesu")).error(R.mipmap.ic_launcher)
+                                    .memoryPolicy(MemoryPolicy.NO_CACHE)
+                                    .networkPolicy(NetworkPolicy.NO_CACHE)
+                                    .placeholder(R.mipmap.ccnoti)
+                                    .into(view);
+                            ((TextView)   headerView.findViewById(R.id.tv_username)).setText(getSharedPreferences("CC",MODE_PRIVATE).getString("profileName", "PLACEHOLDER"));
+                            Log.d("branch","navigation data");
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+
+                }
+            }
+        }, this.getIntent().getData(), this);
+    }
+
+    @Override
+    public void onNewIntent(Intent intent) {
+        this.setIntent(intent);
+    }
+
 
 
     @Override
@@ -523,9 +586,18 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
                 fragment = new FragmentHome();
                 frag_title = "Home";
                 at_home=true;
+                ArrayList<String> coursesId = new ArrayList<>();
                 BranchUniversalObject branchUniversalObject = new BranchUniversalObject()
                         .setContentIndexingMode(BranchUniversalObject.CONTENT_INDEX_MODE.PUBLIC);
-
+                        branchUniversalObject.addContentMetadata("photourl",getSharedPreferences("CC",MODE_PRIVATE).getString("photourl",""));
+                        branchUniversalObject.addContentMetadata("profileName",getSharedPreferences("CC",MODE_PRIVATE).getString("profileName",""));
+                        branchUniversalObject.addContentMetadata("collegeId",getSharedPreferences("CC",MODE_PRIVATE).getString("collegeId",""));
+                        branchUniversalObject.addContentMetadata("collegeName",getSharedPreferences("CC",MODE_PRIVATE).getString("collegeName",""));
+                        branchUniversalObject.addContentMetadata("batch",getSharedPreferences("CC",MODE_PRIVATE).getString("batchName",""));
+                        branchUniversalObject.addContentMetadata("branch",getSharedPreferences("CC",MODE_PRIVATE).getString("branchName",""));
+                        branchUniversalObject.addContentMetadata("sectionName",getSharedPreferences("CC",MODE_PRIVATE).getString("sectionName",""));
+                        branchUniversalObject.addContentMetadata("coursesId",getSharedPreferences("CC",MODE_PRIVATE).getString("coursesId",""));
+                Log.d("branch", String.valueOf(branchUniversalObject.addContentMetadata("coursesId",getSharedPreferences("CC",MODE_PRIVATE).getString("coursesId",""))));
                 LinkProperties linkProperties = new LinkProperties()
                         .setChannel("Invite")
                         .setFeature("Invite")
@@ -554,8 +626,10 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
                 intent.putExtra("logout","temp");
                 FirebaseAuth.getInstance().signOut();
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 getSharedPreferences("CC",MODE_PRIVATE).edit().clear().commit();
                 startActivity(intent);
+                finish();
                 break;
             case R.id.item_faq:
                 fragment = new FragmentFAQ();
@@ -614,7 +688,7 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
                 fabMenu.setVisibility(View.VISIBLE);
 
             home_title.setText(frag_title);
-            //fragmentTransaction.remove(getSupportFragmentManager().findFragmentById(R.id.frame));
+            fragmentTransaction.remove(getSupportFragmentManager().findFragmentById(R.id.frame));
             Fragment temp  = getSupportFragmentManager().findFragmentById(R.id.frame);
 
             if(temp==homefrag) {
@@ -685,6 +759,9 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
         else
             drawerLayout.closeDrawers();
     }
+
+
+
 
     //Notification animation
     void some_function()
@@ -823,7 +900,15 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
             FragmentHome.home_pager.setCurrentItem(1);
         }
         }
+        //Checking if the previous activity is launched on Branch Auto deep link.
+        if(requestCode == getResources().getInteger(R.integer.AutoDeeplinkRequestCode)){
+            //Decide here where  to navigate  when an auto deep linked activity finishes.For e.g. go to HomeActivity or a  SignUp Activity.
+         //  Intent intent = new Intent(HomeActivity2.this,HomeActivity2.class);
+           // startActivity(intent);
+            //finish();
+            Log.d("branch","stay at home activity");
 
+        }
 
     }
 
@@ -833,4 +918,6 @@ public class HomeActivity2 extends AppCompatActivity implements FloatingActionsM
         super.onPause();
         MyApp.activityPaused();
     }
+
+
 }
