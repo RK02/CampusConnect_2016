@@ -15,23 +15,26 @@
  */
 package com.campusconnect;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.campusconnect.POJO.ModelCourseSubscribe;
 import com.campusconnect.POJO.ModelGetProfile;
+import com.campusconnect.POJO.ModelSignUp;
+import com.campusconnect.POJO.ModelSubscribe;
 import com.campusconnect.POJO.MyApi;
 import com.campusconnect.fragment.Home.FragmentCourses;
 import com.google.android.gms.auth.api.Auth;
@@ -51,7 +54,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import io.branch.referral.Branch;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -78,6 +91,11 @@ public class GoogleSignInActivity extends BaseActivity implements
 //    private TextView mDetailTextView;
     private FirebaseAnalytics firebaseAnalytics;
     String personName,personEmail,personId,personPhoto;
+    String profileId;
+    ImageView iv_branchProfileImage;
+    TextView tv_branchUserName;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +108,34 @@ public class GoogleSignInActivity extends BaseActivity implements
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.default_portrait_two, bm_opts);
         BitmapDrawable background = new BitmapDrawable(bitmap);
         rootView.setBackground(background);
+
+        iv_branchProfileImage =  (ImageView)findViewById(R.id.branch_profile_image);
+        tv_branchUserName     =  (TextView)findViewById(R.id.branch_tv_username);
+
+        try {
+            String photourl = Branch.getInstance().getLatestReferringParams().getString("photourl");
+
+            if (photourl.isEmpty()) {
+                iv_branchProfileImage.setImageResource(R.mipmap.ccnoti);
+            }else{
+                Picasso.with(GoogleSignInActivity.this)
+                .load(photourl).error(R.mipmap.ic_launcher)
+                        .memoryPolicy(MemoryPolicy.NO_CACHE)
+                        .networkPolicy(NetworkPolicy.NO_CACHE)
+                        .placeholder(R.mipmap.ccnoti)
+                        .into(iv_branchProfileImage);
+            }
+            tv_branchUserName.setText(Branch.getInstance().getLatestReferringParams().getString("profileName")+" "+"is Waiting For You");
+            iv_branchProfileImage.setVisibility(View.VISIBLE);
+            tv_branchUserName.setVisibility(View.VISIBLE);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+
 
         if(!getIntent().hasExtra("logout")){
             if(getSharedPreferences("CC",MODE_PRIVATE).contains("profileId")){
@@ -191,6 +237,9 @@ public class GoogleSignInActivity extends BaseActivity implements
 // If sign in fails, display a message to the user. If sign in succeeds
 // the auth state listener will be notified and logic to handle the
 // signed in user can be handled in the listener.
+
+
+
                         if (!task.isSuccessful()) {
                             Log.w(TAG, "signInWithCredential", task.getException());
                             Toast.makeText(GoogleSignInActivity.this, "Authentication failed.",
@@ -205,9 +254,10 @@ public class GoogleSignInActivity extends BaseActivity implements
                             personEmail = acct.getEmail();
                             personId = acct.getId();
                             Log.i("sw32", personId + ": here");
-                            if(acct.getPhotoUrl()!=null)
-                                personPhoto = acct.getPhotoUrl().toString()+"";
-                            else
+                            if(acct.getPhotoUrl()!=null) {
+                                personPhoto = acct.getPhotoUrl().toString() + "";
+                                Log.d("photourl", personPhoto);
+                            } else
                                 personPhoto = "shit";
 //                            mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
                             SharedPreferences sharedpreferences = getSharedPreferences("CC", Context.MODE_PRIVATE);
@@ -231,9 +281,8 @@ public class GoogleSignInActivity extends BaseActivity implements
                                     @Override
                                     public void onResponse(Call<ModelGetProfile> call, Response<ModelGetProfile> response) {
                                         ModelGetProfile profile = response.body();
-                                        if(profile!=null){
-                                            if(profile.getResponse().equals("0"))
-                                            {
+                                        if (profile != null) {
+                                            if (profile.getResponse().equals("0")) {
                                                 SharedPreferences sharedPreferences = getSharedPreferences("CC", MODE_PRIVATE);
                                                 sharedPreferences
                                                         .edit()
@@ -248,20 +297,29 @@ public class GoogleSignInActivity extends BaseActivity implements
                                                         .putString("email", personEmail)
                                                         .putString("photourl", profile.getPhotourl())
                                                         .apply();
-                                                Intent home = new Intent(GoogleSignInActivity.this,HomeActivity2.class);
+                                                Log.d("profileId", profile.getProfileId());
+                                                Intent home = new Intent(GoogleSignInActivity.this, HomeActivity2.class);
                                                 home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                                 startActivity(home);
                                                 finish();
-                                            }
-                                            else{
-                                                Intent registration = new Intent(GoogleSignInActivity.this,RegistrationPageActivity.class);
-                                                registration.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                registration.putExtra("personName",personName);
-                                                registration.putExtra("personEmail",personEmail);
-                                                registration.putExtra("personPhoto",personPhoto);
-                                                registration.putExtra("personId",personId);
-                                                startActivity(registration);
-                                                finish();
+                                            } else {
+                                                try {
+                                                    String decider = Branch.getInstance().getLatestReferringParams().getString("+clicked_branch_link");
+                                                    Intent registration = new Intent(GoogleSignInActivity.this, RegistrationPageActivity.class);
+                                                    if (decider.equals("false")) {
+                                                        registration.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                        registration.putExtra("personName", personName);
+                                                        registration.putExtra("personEmail", personEmail);
+                                                        registration.putExtra("personPhoto", personPhoto);
+                                                        registration.putExtra("personId", personId);
+
+                                                        startActivity(registration);
+                                                        finish();
+                                                        Log.d("branch", "regester called");
+                                                    }
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
                                             }
                                         }
                                     }
@@ -275,9 +333,125 @@ public class GoogleSignInActivity extends BaseActivity implements
                             }
                         }
 // [START_EXCLUDE]
+                        //Branch login
+                        try {
+                            String decider = Branch.getInstance().getLatestReferringParams().getString("+clicked_branch_link");
+                        if (decider.equals("true")) {
+
+                            if (Branch.isAutoDeepLinkLaunch(GoogleSignInActivity.this)) {
+
+                                    final String collegeId = Branch.getInstance().getLatestReferringParams().getString("collegeId");
+                                    final String collegeName = Branch.getInstance().getLatestReferringParams().getString("collegeName");
+                                    final String batchName = Branch.getInstance().getLatestReferringParams().getString("batch");
+                                    final String branchName = Branch.getInstance().getLatestReferringParams().getString("branch");
+                                    final String sectionName = Branch.getInstance().getLatestReferringParams().getString("sectionName");
+
+
+                                    String brachCoursesId = Branch.getInstance().getLatestReferringParams().getString("coursesId");
+                                    Log.d("brancS:", brachCoursesId);
+                                    String replace = brachCoursesId.replace("[", "");
+                                    String replace1 = replace.replace("]", "");
+                                    final List<String> coursesId = new ArrayList<String>(Arrays.asList(replace1.split("\\s*,\\s*")));
+                                    Log.d("brancL:", coursesId.toString());
+
+
+                                    Retrofit branchRetrofit = new Retrofit
+                                            .Builder()
+                                            .baseUrl(FragmentCourses.BASE_URL)
+                                            .addConverterFactory(GsonConverterFactory.create())
+                                            .build();
+                                    MyApi myApi = branchRetrofit.create(MyApi.class);
+                                    final MyApi.getProfileIdRequest request;
+                                    Log.d("firebase", FirebaseInstanceId.getInstance().getId());
+                                    request = new MyApi.getProfileIdRequest(personName, collegeId, batchName, branchName, sectionName, personPhoto, personEmail, FirebaseInstanceId.getInstance().getId(), personId);
+                                    Call<ModelSignUp> modelSignUpCall = myApi.getProfileId(request);
+                                    modelSignUpCall.enqueue(new Callback<ModelSignUp>() {
+                                        @Override
+                                        public void onResponse(Call<ModelSignUp> call, Response<ModelSignUp> response) {
+                                            ModelSignUp signUp = response.body();
+                                            if (signUp != null) {
+                                                profileId = signUp.getKey();
+                                                SharedPreferences sharedPreferences = getSharedPreferences("CC", MODE_PRIVATE);
+                                                sharedPreferences.edit()
+                                                        .putString("profileId", profileId)
+                                                        .putString("collegeId", collegeId)
+                                                        .putString("personId", personId)
+                                                        .putString("collegeName", collegeName)
+                                                        .putString("batchName", batchName)
+                                                        .putString("branchName", branchName)
+                                                        .putString("sectionName", sectionName)
+                                                        .putString("profileName", personName)
+                                                        .putString("email", personEmail)
+                                                        .putString("photourl", personPhoto)
+                                                        .apply();
+                                                Log.d("branch login sucess", profileId);
+
+
+                                                Retrofit retrofit = new Retrofit.
+                                                        Builder()
+                                                        .baseUrl(FragmentCourses.BASE_URL)
+                                                        .addConverterFactory(GsonConverterFactory.create())
+                                                        .build();
+
+                                                MyApi branchMyApi = retrofit.create(MyApi.class);
+                                                MyApi.subscribeCourseRequest subscribeCourseRequest = new MyApi.subscribeCourseRequest(profileId, coursesId);
+                                                Call<ModelSubscribe> courseSubscribeCall = branchMyApi.subscribeCourse(subscribeCourseRequest);
+                                                courseSubscribeCall.enqueue(new Callback<ModelSubscribe>() {
+                                                    @Override
+                                                    public void onResponse(Call<ModelSubscribe> call, Response<ModelSubscribe> response) {
+                                                        ModelSubscribe subscribe = response.body();
+                                                        if (subscribe != null) {
+                                                            Log.d("branch response:", subscribe.getResponse());
+                                                            SharedPreferences sharedPreferences = getSharedPreferences("CC", MODE_PRIVATE);
+                                                            sharedPreferences.edit()
+                                                                    .putString("coursesId", coursesId.toString())
+                                                                    .apply();
+                                                        }
+                                                        Intent intent_temp = new Intent(getApplicationContext(), HomeActivity2.class);
+                                                        intent_temp.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                        startActivity(intent_temp);
+                                                        Log.d("branch", "home activity");
+                                                        Bundle params = new Bundle();
+                                                        params.putString("course_subscribe", "success");
+                                                        firebaseAnalytics.logEvent("course_subscribe", params);
+                                                        finish();
+                                                    }
+
+                                                    @Override
+                                                    public void onFailure(Call<ModelSubscribe> call, Throwable t) {
+                                                        Log.d("couses", "failed");
+                                                    }
+                                                });
+
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<ModelSignUp> call, Throwable t) {
+                                            Log.d("branch login", "failed");
+                                        }
+                                    });
+
+
+
+                            } else {
+                                Log.e("BRanch", "Launched by normal application flow");
+                            }
+                        }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         hideProgressDialog();
 // [END_EXCLUDE]
+
+
+
+
+
                     }
+
+
+
                 });
     }
     // [END auth_with_google]
@@ -286,6 +460,11 @@ public class GoogleSignInActivity extends BaseActivity implements
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
+
+
+
+
+
     // [END signin]
     private void signOut() {
 // Firebase sign out
@@ -299,6 +478,9 @@ public class GoogleSignInActivity extends BaseActivity implements
                     }
                 });
     }
+
+
+
     private void revokeAccess() {
 // Firebase sign out
         mAuth.signOut();
@@ -316,8 +498,10 @@ public class GoogleSignInActivity extends BaseActivity implements
         if (user != null) {
 //            mStatusTextView.setText(getString(R.string.google_status_fmt, user.getEmail()));
 //            mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
-            findViewById(R.id.sign_in_button).setVisibility(View.GONE);
-            findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
+            findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
+            iv_branchProfileImage.setVisibility(View.GONE);
+            tv_branchUserName.setVisibility(View.GONE);
+            findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
         } else {
 //            mStatusTextView.setText(R.string.signed_out);
 //            mDetailTextView.setText(null);
@@ -353,9 +537,14 @@ public class GoogleSignInActivity extends BaseActivity implements
         ConnectionChangeReceiver.broadcast(this);
     }
 
+
     @Override
     protected void onPause() {
         super.onPause();
         MyApp.activityPaused();
     }
+
+
+
+
 }

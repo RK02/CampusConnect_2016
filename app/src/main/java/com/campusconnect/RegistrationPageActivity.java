@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -37,7 +38,15 @@ import com.campusconnect.POJO.ModelCollegeList;
 import com.campusconnect.POJO.ModelSignUp;
 import com.campusconnect.POJO.MyApi;
 import com.campusconnect.fragment.Home.FragmentCourses;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.picasso.Picasso;
 
@@ -57,6 +66,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.branch.referral.Branch;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -104,6 +114,7 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
     String collegeId;
     String collegeNameString;
     int pos_college_selection;
+    private FirebaseAuth mAuth;
     private FirebaseAnalytics mFirebaseAnalytics;
     String branchNameString;
     int pos_branch_name_selection;
@@ -112,6 +123,14 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
     AlertDialog.Builder builderBatchList;
     BranchNotFoundDialog branchNotFoundDialog;
     ProgressDialog progressDialog;
+    String collName;
+    boolean doubleBackToExitPressedOnce = false;
+    private GoogleApiClient mGoogleApiClient;
+    int backButtonCount = 0;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private static final int RC_SIGN_IN = 9001;
+    private static final String TAG = "GoogleActivity";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,10 +140,12 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
         collegeIds = new ArrayList<>();
         inflater = this.getLayoutInflater();
         Bundle temp = getIntent().getExtras();
-        personName = temp.getString("personName");
-        personEmail = temp.getString("personEmail");
-        personPhoto = temp.getString("personPhoto");
-        personId = temp.getString("personId");
+        if (temp != null) {
+            personName = temp.getString("personName");
+            personEmail = temp.getString("personEmail");
+            personPhoto = temp.getString("personPhoto");
+            personId = temp.getString("personId");
+        }
         ButterKnife.bind(this);
         profileName.setText(personName);
         profileName.setFocusable(false);
@@ -141,6 +162,40 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
                 .build();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         mFirebaseAnalytics.logEvent("sign_up_start", new Bundle());
+
+        mAuth = FirebaseAuth.getInstance();
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+// User is signed in
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                } else {
+// User is signed out
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                }
+// [START_EXCLUDE]
+
+// [END_EXCLUDE]
+            }
+        };
+// [END auth_state_listener]
+        mAuth.addAuthStateListener(mAuthListener);
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+                    }
+                } /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+        mGoogleApiClient.connect();
+
         MyApi myApi = retrofit.create(MyApi.class);
         Call<ModelCollegeList> call = myApi.getCollegeList();
         call.enqueue(new Callback<ModelCollegeList>() {
@@ -231,14 +286,14 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
                 builderBatchList = new AlertDialog.Builder(RegistrationPageActivity.this);
                 //   builderBatchList.setTitle("Select Your Batch");
 
-                inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                final View dialogView = inflater.inflate(R.layout.custom_dialog_batch,null);
+                inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                final View dialogView = inflater.inflate(R.layout.custom_dialog_batch, null);
                 builderBatchList.setView(dialogView);
                 RadioGroup radioGroup = (RadioGroup) dialogView.findViewById(R.id.radio_group);
                 //to hide the soft keyboard
                 View v = RegistrationPageActivity.this.getCurrentFocus();
                 if (v != null) {
-                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 }
                 final AlertDialog alertDialog = builderBatchList.create();
@@ -341,7 +396,6 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
         scrollViewReg.setOnTouchListener(this);
         collegeName.setOnClickListener(this);
     }
-
     public void SignUp() {
         Retrofit retrofit = new Retrofit.
                 Builder()
@@ -351,7 +405,7 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
         MyApi myApi = retrofit.create(MyApi.class);
 
         MyApi.getProfileIdRequest request;
-        request = new MyApi.getProfileIdRequest(profileName.getText().toString(), collegeId, batchName.getText().toString(), branchName.getText().toString(), sectionName.getText().toString(), personPhoto, personEmail, FirebaseInstanceId.getInstance().getToken(),personId);
+        request = new MyApi.getProfileIdRequest(profileName.getText().toString(), collegeId, batchName.getText().toString(), branchName.getText().toString(), sectionName.getText().toString(), personPhoto, personEmail, FirebaseInstanceId.getInstance().getToken(), personId);
         Call<ModelSignUp> call = myApi.getProfileId(request);
         call.enqueue(new Callback<ModelSignUp>() {
             @Override
@@ -386,6 +440,39 @@ public class RegistrationPageActivity extends AppCompatActivity implements View.
             }
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        //implementation of cilck back to sign out
+        if (backButtonCount >= 1) {
+            //firebase signout
+            mAuth.signOut();
+            //google sign out
+            Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+            Toast.makeText(this, "You have been signed out", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(RegistrationPageActivity.this, GoogleSignInActivity.class);
+            startActivity(intent);
+        } else
+            Toast.makeText(this, "Please click BACK again to sign out", Toast.LENGTH_SHORT).show();
+            backButtonCount++;
+    //reset backButtonCount to 0 after 2 secs
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                backButtonCount = 0;
+            }
+        }, 2000);
+    }
+
+
+
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        doubleBackToExitPressedOnce = false;
     }
 
     @Override

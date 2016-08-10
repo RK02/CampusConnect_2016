@@ -2,6 +2,7 @@ package com.campusconnect;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.branch.referral.util.ShareSheetStyle;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -81,6 +83,7 @@ public class SelectCourseActivity extends AppCompatActivity{
                 {
                     Log.i("sw32","here");
                     courses.addAll(courseSubscribe.getCourseList());
+                    Log.i("sw32",courses.toString());
                     mCourseSelectionAdapter.notifyDataSetChanged();
                 }
             }
@@ -105,8 +108,14 @@ public class SelectCourseActivity extends AppCompatActivity{
                 call.enqueue(new Callback<ModelSubscribe>() {
                     @Override
                     public void onResponse(Call<ModelSubscribe> call, Response<ModelSubscribe> response) {
-
+                        SharedPreferences sharedPreferences = getSharedPreferences("CC",MODE_PRIVATE);
+                               sharedPreferences.edit()
+                                       .putString("coursesId",subbed.toString())
+                                       .apply();
+                        Log.d("atul",subbed.toString());
+                        Log.d("atul size", String.valueOf(subbed.size()));
                         Intent intent_temp = new Intent(getApplicationContext(), HomeActivity2.class);
+                        intent_temp.putExtra("coursesId",subbed.toString());
                         intent_temp.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent_temp);
                         Bundle params = new Bundle();

@@ -39,6 +39,7 @@
             </intent-filter>
         </receiver>
 
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="8cf76229d4e405b251e3faf3108413ac418be0da" />
@@ -79,7 +80,8 @@
             android:name="com.campusconnect.RegistrationPageActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan" >
+            </activity>
         <activity
             android:name="com.campusconnect.SelectCourseActivity"
             android:label="@string/app_name"
@@ -94,16 +96,16 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
             <intent-filter>
-                <data
-                    android:host="campusconnectreboot.app.link"
-                    android:scheme="https" />
+                <data android:scheme="campusconnectreboot.app.link" android:host="open"/>
 
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
+
         </activity>
         <activity
             android:name="com.campusconnect.CoursePageActivity"
@@ -169,14 +171,33 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.campusconnect.GoogleSignInActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" >
+            <meta-data android:name="io.branch.sdk.auto_link_keys" android:value="collegeName" />
+            <meta-data android:name="io.branch.sdk.auto_link_request_code" android:value="@integer/AutoDeeplinkRequestCode" />
+            </activity>
         <activity
             android:name="com.campusconnect.AddEventActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.campusconnect.HomeActivity2"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"
+            android:launchMode="singleTask">
+
+            <intent-filter>
+                <data
+                    android:host="campusconnectreboot.app.link"
+                    android:scheme="https" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+
+        </activity>
+
+
         <activity
             android:name="com.campusconnect.CreateCourseActivity"
             android:screenOrientation="portrait" />

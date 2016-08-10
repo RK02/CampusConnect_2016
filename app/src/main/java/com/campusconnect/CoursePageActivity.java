@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -431,13 +432,17 @@ public class CoursePageActivity extends AppCompatActivity implements FloatingAct
                             .addConverterFactory(GsonConverterFactory.create())
                             .build();
                     MyApi myApi = retrofit.create(MyApi.class);
-                    ArrayList<String> temp = new ArrayList<String>();
+                    final ArrayList<String> temp = new ArrayList<String>();
                     temp.add(courseId);
                     MyApi.subscribeCourseRequest body = new MyApi.subscribeCourseRequest(getSharedPreferences("CC", Context.MODE_PRIVATE).getString("profileId",""),temp);
                     Call<ModelSubscribe> call = myApi.subscribeCourse(body);
                     call.enqueue(new Callback<ModelSubscribe>() {
                         @Override
                         public void onResponse(Call<ModelSubscribe> call, Response<ModelSubscribe> response) {
+                            SharedPreferences sharedPreferences = getSharedPreferences("CC",MODE_PRIVATE);
+                            sharedPreferences.edit()
+                                    .putString("coursesId",temp.toString())
+                                    .apply();
                             FirebaseMessaging.getInstance().subscribeToTopic(courseId);
                             SubscribedCourseList subscribedCourseList = new SubscribedCourseList();
                             subscribedCourseList.setCourseId(courseId);
